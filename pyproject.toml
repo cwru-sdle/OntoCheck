@@ -35,4 +35,5 @@ dependencies = [
 ]
 
 [project.urls]
-"Homepage" = "https://bitbucket.org/cwrusdle/ontologyassessment/src/main/"
+"Homepage" = "https://github.com/redad110/Ontology-Assessment"
+"Documentation" = "https://ontology-assessment.readthedocs.io"
