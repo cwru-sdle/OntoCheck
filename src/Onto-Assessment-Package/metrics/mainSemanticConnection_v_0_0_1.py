@@ -1,8 +1,3 @@
-"""
-mainSemanticConnection_v_0_0_1 metric implementation.
-Extracted from: /mnt/vstor/CSE_MSE_RXF131/cradle-members/mds3/mxm1684/Git/ontologyassessment/Scripts/Rishabh/SemanticConnection.py
-"""
-
 from ..helpers.helpers import _analyze_hierarchy_connections, _build_class_hierarchy, _find_all_named_classes, _find_root_classes, _is_connected_to_higher_ontology, _print_hierarchy_with_connection
 from collections import defaultdict
 from rdflib import Graph, RDFS, RDF, OWL, URIRef

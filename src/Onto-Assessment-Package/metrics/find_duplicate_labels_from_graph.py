@@ -1,8 +1,3 @@
-"""
-find_duplicate_labels_from_graph metric implementation.
-Extracted from: /mnt/vstor/CSE_MSE_RXF131/cradle-members/mds3/mxm1684/Git/ontologyassessment/Scripts/Van/duplication_check.py
-"""
-
 from collections import defaultdict
 from rdflib import Graph, RDF, RDFS, OWL
 

@@ -12,9 +12,6 @@ This package provides tools for assessing the quality and characteristics of ont
    :maxdepth: 2
    :caption: Contents:
 
-   api
-   modules
-
 Indices and tables
 ==================
 

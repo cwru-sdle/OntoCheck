@@ -1,8 +1,3 @@
-"""
-mainDefCheck_v_0_0_1 metric implementation.
-Extracted from: /mnt/vstor/CSE_MSE_RXF131/cradle-members/mds3/mxm1684/Git/ontologyassessment/Scripts/Rishabh/DefCheck.py
-"""
-
 from ..helpers.helpers import _analyze_definition_coverage, _find_all_named_classes, _get_additional_labels, _get_preferred_label, _print_classes_with_definitions, _print_classes_without_definitions, _print_summary_statistics, _truncate_definition
 from collections import defaultdict
 from rdflib import Graph, RDFS, RDF, OWL, URIRef, Namespace

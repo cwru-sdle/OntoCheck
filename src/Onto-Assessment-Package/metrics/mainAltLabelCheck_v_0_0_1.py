@@ -1,8 +1,3 @@
-"""
-mainAltLabelCheck_v_0_0_1 metric implementation.
-Extracted from: /mnt/vstor/CSE_MSE_RXF131/cradle-members/mds3/mxm1684/Git/ontologyassessment/Scripts/Rishabh/AltLabelCheck.py
-"""
-
 from ..helpers.helpers import _analyze_altlabel_coverage, _export_missing_altlabels_template, _find_all_named_classes, _get_preferred_label, _print_classes_with_altlabels, _print_classes_without_altlabels, _print_summary_statistics
 from collections import defaultdict
 from rdflib import Graph, RDFS, RDF, OWL, URIRef, Namespace

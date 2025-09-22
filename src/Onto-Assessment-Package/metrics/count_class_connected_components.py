@@ -1,8 +1,3 @@
-"""
-count_class_connected_components metric implementation.
-Extracted from: /mnt/vstor/CSE_MSE_RXF131/cradle-members/mds3/mxm1684/Git/ontologyassessment/Scripts/CompletenessMetrics.py
-"""
-
 from rdflib import OWL, SKOS, RDF, RDFS, Graph, Namespace, DCAT, URIRef, BNode
 import networkx as nx
 import rdflib

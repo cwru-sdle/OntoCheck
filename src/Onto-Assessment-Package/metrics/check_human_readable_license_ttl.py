@@ -1,8 +1,3 @@
-"""
-check_human_readable_license_ttl metric implementation.
-Extracted from: /mnt/vstor/CSE_MSE_RXF131/cradle-members/mds3/mxm1684/Git/ontologyassessment/Scripts/AccessibilityMetrics.py
-"""
-
 from rdflib import OWL, RDFS, SKOS
 import rdflib
 import requests
