@@ -6,11 +6,14 @@
 Welcome to Ontology Assessment's documentation!
 ===============================================
 
+This package provides tools for assessing the quality and characteristics of ontologies.
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-
+   api
+   modules
 
 Indices and tables
 ==================
