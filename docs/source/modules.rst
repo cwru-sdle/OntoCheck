@@ -1,8 +1,10 @@
  Ontology Assessment API
 =======================
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
+Metrics
+-------
 
-   Onto_Assessment.metrics
+.. automodule:: Onto_Assessment.metrics
+   :members:
+   :undoc-members:
+   :show-inheritance:

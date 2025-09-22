@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>&lt;no title&gt; &mdash; Ontology Assessment 0.0.1 documentation</title>
+  <title>Metrics &mdash; Ontology Assessment 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=86f27845" />
 
@@ -18,7 +18,6 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Onto_Assessment.metrics" href="_autosummary/Onto_Assessment.metrics.html" />
     <link rel="prev" title="Welcome to Ontology Assessment’s documentation!" href="index.html" /> 
 </head>
 
@@ -42,8 +41,22 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="_autosummary/Onto_Assessment.metrics.html">Onto_Assessment.metrics</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Metrics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Onto_Assessment.metrics.check_external_data_provider_links_ttl"><code class="docutils literal notranslate"><span class="pre">check_external_data_provider_links_ttl()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Onto_Assessment.metrics.check_for_isolated_elements"><code class="docutils literal notranslate"><span class="pre">check_for_isolated_elements()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Onto_Assessment.metrics.check_human_readable_license_ttl"><code class="docutils literal notranslate"><span class="pre">check_human_readable_license_ttl()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Onto_Assessment.metrics.check_rdf_dump_accessibility_ttl"><code class="docutils literal notranslate"><span class="pre">check_rdf_dump_accessibility_ttl()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Onto_Assessment.metrics.check_sparql_accessibility_ttl"><code class="docutils literal notranslate"><span class="pre">check_sparql_accessibility_ttl()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Onto_Assessment.metrics.count_class_connected_components"><code class="docutils literal notranslate"><span class="pre">count_class_connected_components()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Onto_Assessment.metrics.find_duplicate_labels_from_graph"><code class="docutils literal notranslate"><span class="pre">find_duplicate_labels_from_graph()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Onto_Assessment.metrics.get_properties_missing_domain_and_range"><code class="docutils literal notranslate"><span class="pre">get_properties_missing_domain_and_range()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Onto_Assessment.metrics.mainAltLabelCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainAltLabelCheck_v_0_0_1()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Onto_Assessment.metrics.mainDefCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainDefCheck_v_0_0_1()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Onto_Assessment.metrics.mainLeafNodeCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainLeafNodeCheck_v_0_0_1()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Onto_Assessment.metrics.mainSemanticConnection_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainSemanticConnection_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -60,7 +73,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">&lt;no title&gt;</li>
+      <li class="breadcrumb-item active">Metrics</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/modules.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -74,20 +87,693 @@
 <div><p>Ontology Assessment API</p>
 </div></blockquote>
 <hr class="docutils" />
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/Onto_Assessment.metrics.html#module-Onto_Assessment.metrics" title="Onto_Assessment.metrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Onto_Assessment.metrics</span></code></a></p></td>
-<td><p>Metrics implementations.</p></td>
-</tr>
-</tbody>
-</table>
+<section id="module-Onto_Assessment.metrics">
+<span id="metrics"></span><h1>Metrics<a class="headerlink" href="#module-Onto_Assessment.metrics" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="Onto_Assessment.metrics.check_external_data_provider_links_ttl">
+<span class="sig-name descname"><span class="pre">check_external_data_provider_links_ttl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ttl_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_namespace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Onto_Assessment/metrics/check_external_data_provider_links_ttl.html#check_external_data_provider_links_ttl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Onto_Assessment.metrics.check_external_data_provider_links_ttl" title="Link to this definition"></a></dt>
+<dd><p>I2 - Detection of existence and usage of external URIs</p>
+<p>Evaluates the degree to which a dataset links to external data providers
+through properties like owl:sameAs, rdfs:seeAlso, and SKOS mapping properties.
+This metric assesses the dataset’s integration with the broader Linked Data cloud.</p>
+<p>External links enhance data discoverability and enable cross-dataset queries,
+representing a key principle of Linked Data publishing.</p>
+<p>Author: Redad Mehdi
+Version: 0.1</p>
+<section id="parameters">
+<h2>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>ttl_file<span class="classifier">str</span></dt><dd><p>Path to the Turtle (.ttl) file to analyze</p>
+</dd>
+<dt>base_namespace<span class="classifier">str, optional</span></dt><dd><p>Base namespace of the ontology. If not provided, the function attempts
+to infer it from the graph’s namespace declarations.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h2>Returns:<a class="headerlink" href="#returns" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>float</dt><dd><p>Ratio of entities with external links (0.0 to 1.0)
+- 0.0: No entities have external links
+- 1.0: All entities have at least one external link</p>
+</dd>
+</dl>
+</section>
+<section id="notes">
+<h2>Notes:<a class="headerlink" href="#notes" title="Link to this heading"></a></h2>
+<p>The function examines the following linking predicates:
+- owl:sameAs, rdfs:seeAlso
+- SKOS mapping properties (exactMatch, closeMatch, etc.)
+- owl:equivalentClass, owl:equivalentProperty
+- dc:source, foaf:isPrimaryTopicOf</p>
+<p>If no base namespace is provided, the function recognizes links to known
+external data providers like DBpedia, Wikidata, GeoNames, etc.</p>
+</section>
+<section id="example">
+<h2>Example:<a class="headerlink" href="#example" title="Link to this heading"></a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">score</span> <span class="o">=</span> <span class="n">check_external_data_provider_links_ttl</span><span class="p">(</span><span class="s1">&#39;dataset.ttl&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                                                <span class="s1">&#39;http://example.org/&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;External linking score: </span><span class="si">{</span><span class="n">score</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="references">
+<h2>References:<a class="headerlink" href="#references" title="Link to this heading"></a></h2>
+<p>Zaveri, A., Rula, A., Maurino, A., Pietrobon, R., Lehmann, J., &amp; Auer, S.
+(2015). Quality assessment for Linked Data: A Survey: A systematic literature
+review and conceptual framework. Semantic Web, 7(1), 63-93.</p>
+<p>Hogan, A., Umbrich, J., Harth, A., Cyganiak, R., Polleres, A., &amp; Decker, S.
+(2012). An empirical survey of Linked Data conformance. Journal of Web
+Semantics, 14, 14-44.</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Onto_Assessment.metrics.check_for_isolated_elements">
+<span class="sig-name descname"><span class="pre">check_for_isolated_elements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ttl_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Onto_Assessment/metrics/check_for_isolated_elements.html#check_for_isolated_elements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Onto_Assessment.metrics.check_for_isolated_elements" title="Link to this definition"></a></dt>
+<dd><p>C1 - Number of isolated elements</p>
+<p>Analyze an OWL ontology in Turtle format to identify isolated atomic classes and isolated properties.</p>
+<section id="definitions">
+<h2>Definitions<a class="headerlink" href="#definitions" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Atomic classes are named classes (with URI) that are NOT constructed classes
+(i.e., they do not have owl:unionOf, owl:intersectionOf, or owl:complementOf).</p></li>
+<li><dl class="simple">
+<dt>A class (atomic or constructed with URI) is considered connected if it:</dt><dd><ul>
+<li><p>participates in rdfs:subClassOf, owl:equivalentClass, or owl:disjointWith relations
+involving atomic classes, OR</p></li>
+<li><p>is used as domain or range of properties and contains at least one atomic class
+inside its construction.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>A property is considered connected if it is related by any of:
+rdfs:subPropertyOf, owl:inverseOf, owl:propertyDisjointWith, or owl:equivalentProperty.</p></li>
+</ul>
+<p>Author: Van Tran
+Version: 0.1</p>
+<dl class="field-list simple">
+<dt class="field-odd">param ttl_file<span class="colon">:</span></dt>
+<dd class="field-odd"><p>File path to the ontology Turtle (.ttl) file.</p>
+</dd>
+<dt class="field-even">type ttl_file<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">param Prints<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">param ——<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">param Lists of isolated atomic classes and isolated properties.<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Only named classes explicitly declared as owl:Class are considered.</p></li>
+<li><p>Only properties explicitly declared as owl:ObjectProperty or owl:DatatypeProperty are considered.</p></li>
+<li><p>Relations checked for classes include rdfs:subClassOf, owl:equivalentClass, owl:disjointWith,
+and usage as domain or range of properties.</p></li>
+<li><p>Relations checked for properties include rdfs:subPropertyOf, owl:inverseOf, owl:propertyDisjointWith,
+and owl:equivalentProperty.</p></li>
+</ul>
+<p class="rubric">References</p>
+<p>Mc Gurk, S., Abela, C., &amp; Debattista, J. (2017). Towards ontology quality assessment.
+4th Workshop on Linked Data Quality (LDQ2017), co-located with the 14th Extended Semantic Web Conference (ESWC),
+Portorož, 94-106.</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Onto_Assessment.metrics.check_human_readable_license_ttl">
+<span class="sig-name descname"><span class="pre">check_human_readable_license_ttl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ttl_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Onto_Assessment/metrics/check_human_readable_license_ttl.html#check_human_readable_license_ttl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Onto_Assessment.metrics.check_human_readable_license_ttl" title="Link to this definition"></a></dt>
+<dd><p>L2 - Human-readable license detection</p>
+<p>Detects the presence of human-readable licensing information within a TTL file.
+This metric evaluates whether the dataset provides clear licensing terms that
+users can understand without legal expertise.</p>
+<p>The function searches for common license-related keywords in both RDF literals
+and TTL file comments, including references to popular licenses like Creative
+Commons, GPL, MIT, Apache, and BSD.</p>
+<p>Author: Redad Mehdi
+Version: 0.1</p>
+<section id="id1">
+<h2>Parameters:<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>ttl_file<span class="classifier">str</span></dt><dd><p>Path to the Turtle (.ttl) file to analyze</p>
+</dd>
+</dl>
+</section>
+<section id="id2">
+<h2>Returns:<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>int</dt><dd><p>Binary score (0 or 1)
+- 0: No human-readable license information found
+- 1: License-related keywords detected</p>
+</dd>
+</dl>
+</section>
+<section id="id3">
+<h2>Notes:<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>Keywords searched include: ‘license’, ‘licence’, ‘copyright’, ‘terms of use’,
+‘creative commons’, ‘GPL’, ‘MIT’, ‘Apache’, ‘BSD’</p>
+</section>
+<section id="id4">
+<h2>Example:<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">score</span> <span class="o">=</span> <span class="n">check_human_readable_license_ttl</span><span class="p">(</span><span class="s1">&#39;dataset.ttl&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">score</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Human-readable license information found&quot;</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No license information detected&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h2>References:<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<p>Zaveri, A., Rula, A., Maurino, A., Pietrobon, R., Lehmann, J., &amp; Auer, S.
+(2015). Quality assessment for Linked Data: A Survey: A systematic literature
+review and conceptual framework. Semantic Web, 7(1), 63-93.</p>
+<p>Hogan, A., Umbrich, J., Harth, A., Cyganiak, R., Polleres, A., &amp; Decker, S.
+(2012). An empirical survey of Linked Data conformance. Journal of Web
+Semantics, 14, 14-44.</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Onto_Assessment.metrics.check_rdf_dump_accessibility_ttl">
+<span class="sig-name descname"><span class="pre">check_rdf_dump_accessibility_ttl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ttl_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Onto_Assessment/metrics/check_rdf_dump_accessibility_ttl.html#check_rdf_dump_accessibility_ttl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Onto_Assessment.metrics.check_rdf_dump_accessibility_ttl" title="Link to this definition"></a></dt>
+<dd><p>A2 - RDF dump accessibility</p>
+<p>Evaluates the accessibility of RDF data dumps referenced in a TTL file
+by attempting to access each discovered dump URL via HTTP HEAD requests.</p>
+<p>This metric assesses whether the raw RDF data is available for download,
+which is important for data consumers who need offline access or bulk
+processing capabilities.</p>
+<p>Author: Redad Mehdi
+Version: 0.1</p>
+<section id="id6">
+<h2>Parameters:<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>ttl_file<span class="classifier">str</span></dt><dd><p>Path to the Turtle (.ttl) file to analyze</p>
+</dd>
+</dl>
+</section>
+<section id="id7">
+<h2>Returns:<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>float</dt><dd><p>Ratio of accessible RDF dumps (0.0 to 1.0)
+- 0.0: No accessible dumps found
+- 1.0: All discovered dumps are accessible</p>
+</dd>
+</dl>
+</section>
+<section id="id8">
+<h2>Notes:<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
+<p>The function identifies potential dump URLs by looking for common RDF
+file extensions (.rdf, .ttl, .nt, .n3, .owl, .jsonld) in referenced URLs.</p>
+</section>
+<section id="id9">
+<h2>Example:<a class="headerlink" href="#id9" title="Link to this heading"></a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">score</span> <span class="o">=</span> <span class="n">check_rdf_dump_accessibility_ttl</span><span class="p">(</span><span class="s1">&#39;dataset.ttl&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;RDF dump accessibility score: </span><span class="si">{</span><span class="n">score</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id10">
+<h2>References:<a class="headerlink" href="#id10" title="Link to this heading"></a></h2>
+<p>Zaveri, A., Rula, A., Maurino, A., Pietrobon, R., Lehmann, J., &amp; Auer, S.
+(2015). Quality assessment for Linked Data: A Survey: A systematic literature
+review and conceptual framework. Semantic Web, 7(1), 63-93.</p>
+<p>Flemming, A. (2011). Qualitätsmerkmale von Linked Data-veröffentlichenden
+Datenquellen. Diplomarbeit (Quality Criteria for Linked Data Sources).</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Onto_Assessment.metrics.check_sparql_accessibility_ttl">
+<span class="sig-name descname"><span class="pre">check_sparql_accessibility_ttl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ttl_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Onto_Assessment/metrics/check_sparql_accessibility_ttl.html#check_sparql_accessibility_ttl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Onto_Assessment.metrics.check_sparql_accessibility_ttl" title="Link to this definition"></a></dt>
+<dd><p>A1 - Accessibility of the SPARQL endpoint and the server</p>
+<p>Evaluates the accessibility of SPARQL endpoints referenced in a TTL file
+by attempting to execute a simple query against each discovered endpoint.</p>
+<p>This metric is based on Flemming (2011) quality criteria for Linked Data
+sources, specifically addressing the availability and accessibility of
+query interfaces.</p>
+<p>Author: Redad Mehdi
+Version: 0.1</p>
+<section id="id11">
+<h2>Parameters:<a class="headerlink" href="#id11" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>ttl_file<span class="classifier">str</span></dt><dd><p>Path to the Turtle (.ttl) file to analyze</p>
+</dd>
+</dl>
+</section>
+<section id="id12">
+<h2>Returns:<a class="headerlink" href="#id12" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>float</dt><dd><p>Ratio of accessible SPARQL endpoints (0.0 to 1.0)
+- 0.0: No accessible endpoints found
+- 1.0: All discovered endpoints are accessible</p>
+</dd>
+</dl>
+</section>
+<section id="id13">
+<h2>Example:<a class="headerlink" href="#id13" title="Link to this heading"></a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">score</span> <span class="o">=</span> <span class="n">check_sparql_accessibility_ttl</span><span class="p">(</span><span class="s1">&#39;dataset.ttl&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SPARQL accessibility score: </span><span class="si">{</span><span class="n">score</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id14">
+<h2>References:<a class="headerlink" href="#id14" title="Link to this heading"></a></h2>
+<p>Zaveri, A., Rula, A., Maurino, A., Pietrobon, R., Lehmann, J., &amp; Auer, S.
+(2015). Quality assessment for Linked Data: A Survey: A systematic literature
+review and conceptual framework. Semantic Web, 7(1), 63-93.</p>
+<p>Flemming, A. (2011). Qualitätsmerkmale von Linked Data-veröffentlichenden
+Datenquellen. Diplomarbeit (Quality Criteria for Linked Data Sources).</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Onto_Assessment.metrics.count_class_connected_components">
+<span class="sig-name descname"><span class="pre">count_class_connected_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ttl_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/Onto_Assessment/metrics/count_class_connected_components.html#count_class_connected_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Onto_Assessment.metrics.count_class_connected_components" title="Link to this definition"></a></dt>
+<dd><p>C3 - Count number of connected subgraphs</p>
+<p>Count the number of connected components in the “class graph” (TBox) of an OWL ontology.</p>
+<p>The “class graph” is constructed by creating undirected edges between classes that are connected
+by any of the following OWL predicates:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>rdfs:subClassOf</p></li>
+<li><p>owl:equivalentClass</p></li>
+<li><p>owl:disjointWith</p></li>
+</ul>
+</div></blockquote>
+<p>Nodes in the graph represent named classes (URIRefs) from the ontology. Edges represent these
+relationships between named classes. Classes involved only in subclass/equivalent/disjointWith
+axioms pointing to blank nodes (i.e. constructed classes) are excluded.</p>
+<p>Author: Van Tran
+Version: 0.1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ttl_file_path</strong> (<em>str</em>) – Path to the ontology Turtle (.ttl) file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The number of connected components in the class graph.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>The graph is undirected; directionality of subclass relations is ignored.</p></li>
+<li><p>Only named OWL classes are considered.</p></li>
+<li><p>Classes that participate in subclass/equivalent/disjoint axioms involving blank nodes are excluded.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Onto_Assessment.metrics.find_duplicate_labels_from_graph">
+<span class="sig-name descname"><span class="pre">find_duplicate_labels_from_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ttl_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Onto_Assessment/metrics/find_duplicate_labels_from_graph.html#find_duplicate_labels_from_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Onto_Assessment.metrics.find_duplicate_labels_from_graph" title="Link to this definition"></a></dt>
+<dd><p>IO8 - Semantically Identical Classes</p>
+<p>This metric identifies semantically identical  classes by checking if two IRIs in an ontology
+has the same value for rdfs:label or not.</p>
+<section id="params">
+<h2>Params<a class="headerlink" href="#params" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>ttl_file (string): path to ttl file</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>duplicates (dict)</strong></p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>dictionary of URIs of duplicated terms</p>
+</dd>
+</dl>
+<p>Author: Van Tran
+Version: 0.1</p>
+<p class="rubric">References</p>
+<p>Mc Gurk, S., Abela, C., &amp; Debattista, J. (2017). Towards ontology quality assessment.
+4th Workshop on Linked Data Quality (LDQ2017), co-located with the 14th Extended Semantic Web Conference (ESWC),
+Portorož, 94-106.</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Onto_Assessment.metrics.get_properties_missing_domain_and_range">
+<span class="sig-name descname"><span class="pre">get_properties_missing_domain_and_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ttl_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Onto_Assessment/metrics/get_properties_missing_domain_and_range.html#get_properties_missing_domain_and_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Onto_Assessment.metrics.get_properties_missing_domain_and_range" title="Link to this definition"></a></dt>
+<dd><p>C2 - Missing Domain and Ranges in Properties</p>
+<p>Parse an OWL ontology Turtle file and identify object and datatype properties
+that are missing domain or range declarations.</p>
+<p>Author: Van Tran
+Version: 0.1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ttl_file_path</strong> (<em>str</em>) – Path to the Turtle (.ttl) file containing the ontology.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>A dictionary containing:
+- ‘count_missing_domain’: int</p>
+<blockquote>
+<div><p>Number of properties missing an rdfs:domain declaration.</p>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>’properties_missing_domain’: list of rdflib.term.URIRef</dt><dd><p>List of properties (URIs) missing an rdfs:domain.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>’count_missing_range’: int</dt><dd><p>Number of properties missing an rdfs:range declaration.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>’properties_missing_range’: list of rdflib.term.URIRef</dt><dd><p>List of properties (URIs) missing an rdfs:range.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Only properties explicitly typed as owl:ObjectProperty or owl:DatatypeProperty
+are considered.</p></li>
+</ul>
+<p class="rubric">References</p>
+<p>Mc Gurk, S., Abela, C., &amp; Debattista, J. (2017). Towards ontology quality assessment.
+4th Workshop on Linked Data Quality (LDQ2017), co-located with the 14th Extended Semantic Web Conference (ESWC),
+Portorož, 94-106.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Onto_Assessment.metrics.mainAltLabelCheck_v_0_0_1">
+<span class="sig-name descname"><span class="pre">mainAltLabelCheck_v_0_0_1</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Onto_Assessment/metrics/altLabelCheck.html#mainAltLabelCheck_v_0_0_1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Onto_Assessment.metrics.mainAltLabelCheck_v_0_0_1" title="Link to this definition"></a></dt>
+<dd><p>SKOS Alternative Label Coverage Analysis</p>
+<p>Analyze an OWL ontology in Turtle (ttl) format to assess the coverage and quality of SKOS alternative labels (skos:altLabel) across all named classes</p>
+<p>This main function parses command-line arguments, loads an ontology file, identifies all named classes, and provides comprehensive analysis of alternative label coverage with  various display options and export capabilities</p>
+<section id="id15">
+<h2>Definitions<a class="headerlink" href="#id15" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Named classes: Classes with URIRef identifiers that are explicitly declared as owl:Class or rdfs:Class, or participate in rdfs:subClassOf relations</p></li>
+<li><p>Valid altLabels: SKOS altLabel values that are non-empty strings after whitespace trimming. Empty strings and whitespace-only altLabels are not accounted as valid altLabels</p></li>
+<li><p>Coverage percentage: The proportion of named classes that have at least one valid altLabel inclusion</p></li>
+</ul>
+<p>Author: Rishabh Kundu
+Version: 0.0.1</p>
+</section>
+<section id="command-line-arguments">
+<h2>Command Line Arguments<a class="headerlink" href="#command-line-arguments" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>ttl_file<span class="classifier">str (positional)</span></dt><dd><p>Path to the ontology Turtle (.ttl) file to analyze – input file</p>
+</dd>
+<dt>–show<span class="classifier">str, optional</span></dt><dd><p>Display option controlling what information to show:
+- “all” (default): Shows summary statistics, classes with altLabels, and classes without altLabels
+- “with”: Shows only classes that have altLabels
+- “without”: Shows only classes that lack altLabels
+- “summary”: Shows only summary statistics</p>
+</dd>
+<dt>–export-template<span class="classifier">str, optional</span></dt><dd><p>Export a Turtle format template file for classes missing altLabels
+Provide the desired output filename.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><em>None</em> – This function does not (directly) return values. It prints analysis results to your terminal/CLI and optionally exports a template file. The function may exit early on errors (file not found, parsing errors, or no classes found)</p></li>
+<li><p><em>Output Information</em></p></li>
+<li><p><em>—————–</em></p></li>
+<li><p><em>When executed successfully, the analysis provides</em></p></li>
+<li><p><em>- Total number of named classes analyzed</em></p></li>
+<li><p><em>- Number of classes with valid altLabel properties</em></p></li>
+<li><p><em>- Number of classes lacking valid altLabel properties</em></p></li>
+<li><p><em>- Coverage percentage of classes with altLabels</em></p></li>
+<li><p><em>- Total count of altLabel instances across all classes</em></p></li>
+<li><p><em>- Average number of altLabels per class (for classes with altLabels)</em></p></li>
+<li><p><em>- Qualitative assessment based on coverage thresholds</em></p></li>
+<li><p><em>Error Handling</em></p></li>
+<li><p><em>————-</em></p></li>
+<li><p><em>The function handles several error conditions</em></p></li>
+<li><p><strong>- FileNotFoundError</strong> (<em>When the specified TTL file cannot be found</em>)</p></li>
+<li><p><strong>- Parsing errors</strong> (<em>When the TTL file cannot be parsed as valid Turtle</em>)</p></li>
+<li><p><strong>- Empty ontology</strong> (<em>When no named classes are found in the ontology</em>)</p></li>
+<li><p><strong>- Template export errors</strong> (<em>File I/O issues when exporting templates</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Only named classes (URIRef instances) are considered in the analysis</p></li>
+<li><p>Empty strings and whitespace-only altLabels are filtered out</p></li>
+<li><p>Coverage assessment follows established ontology quality thresholds: ≥80%: Excellent, ≥60%: Good, ≥40%: Moderate, ≥20%: Low, &lt;20%: Very low</p></li>
+<li><p>Classes are displayed with their preferred labels (skos:prefLabel or rdfs:label) when available</p></li>
+<li><p>Template export generates valid Turtle syntax for adding missing altLabels</p></li>
+<li><p>Uses argparse for command-line interface, not direct function parameters</p></li>
+</ul>
+</section>
+<section id="llm-usage-declaration">
+<h2>LLM Usage Declaration<a class="headerlink" href="#llm-usage-declaration" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Claude AI (Sonnet 4) was employed chiefly to support documentation efforts</p></li>
+</ul>
+<p class="rubric">Examples</p>
+<dl class="simple">
+<dt>Basic usage:</dt><dd><p>python script.py ontology.ttl</p>
+</dd>
+<dt>Show only summary:</dt><dd><p>python script.py ontology.ttl –show summary</p>
+</dd>
+<dt>Export template for missing labels:</dt><dd><p>python script.py ontology.ttl –export-template missing_labels.ttl</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Onto_Assessment.metrics.mainDefCheck_v_0_0_1">
+<span class="sig-name descname"><span class="pre">mainDefCheck_v_0_0_1</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Onto_Assessment/metrics/defCheck.html#mainDefCheck_v_0_0_1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Onto_Assessment.metrics.mainDefCheck_v_0_0_1" title="Link to this definition"></a></dt>
+<dd><p>SKOS Definition Coverage Analysis</p>
+<p>Analyze an OWL ontology in Turtle (ttl) format and assess the coverage and quality of SKOS definitions (skos:definition) across all named classes</p>
+<p>This main function parses command-line arguments, loads an ontology file, identifies all named classes, and provides comprehensive analysis of definition coverage with various display options</p>
+<section id="id16">
+<h2>Definitions<a class="headerlink" href="#id16" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Named classes: Classes with URIRef identifiers that are explicitly declared as
+owl:Class or rdfs:Class, or participate in rdfs:subClassOf relations</p></li>
+<li><p>Valid definitions: SKOS definition values that exist as properties on classes
+Empty or missing definitions are identified as gaps in coverage</p></li>
+<li><p>Coverage percentage: The proportion of named classes that have at least one
+skos:definition property</p></li>
+</ul>
+<p>Author: Rishabh Kundu
+Version: 0.0.1</p>
+</section>
+<section id="id17">
+<h2>Command Line Arguments<a class="headerlink" href="#id17" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>ttl_file<span class="classifier">str (positional)</span></dt><dd><p>Path to the ontology Turtle (.ttl) file to analyze</p>
+</dd>
+<dt>–show<span class="classifier">str, optional</span></dt><dd><p>Display option controlling what information to show:
+- “all” (default): Shows summary statistics, classes with definitions, and classes without definitions
+- “with”: Shows only classes that have definitions
+- “without”: Shows only classes that lack definitions
+- “summary”: Shows only summary statistics</p>
+</dd>
+<dt>–full-definitions<span class="classifier">flag, optional</span></dt><dd><p>Show full definitions instead of truncated versions (default/set by RK: truncated to 150 chars)</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><em>None</em> – This function does not (directly) return values. It prints analysis results to terminal/CLI
+The function may exit early on errors (file not found, parsing errors, or no classes found)</p></li>
+<li><p><em>Output Information</em></p></li>
+<li><p><em>—————–</em></p></li>
+<li><p><em>When executed successfully, the analysis provides</em></p></li>
+<li><p><em>- Total number of named classes analyzed</em></p></li>
+<li><p><em>- Number of classes with definition properties</em></p></li>
+<li><p><em>- Number of classes lacking definition properties</em></p></li>
+<li><p><em>- Coverage percentage of classes with definitions</em></p></li>
+<li><p><em>- Qualitative assessment based on coverage thresholds</em></p></li>
+<li><p><em>Error Handling</em></p></li>
+<li><p><em>————-</em></p></li>
+<li><p><em>The function handles several error conditions</em></p></li>
+<li><p><strong>- FileNotFoundError</strong> (<em>When the specified TTL file cannot be found</em>)</p></li>
+<li><p><strong>- Parsing errors</strong> (<em>When the TTL file cannot be parsed as valid Turtle</em>)</p></li>
+<li><p><strong>- Empty ontology</strong> (<em>When no named classes are found in the ontology</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Only named classes (URIRef instances) are considered in the analysis</p></li>
+<li><p>Uses skos:definition property specifically for definition identification</p></li>
+<li><p>Coverage assessment follows ontology quality thresholds with higher standards than altLabels: ≥90%: Excellent, ≥75%: Good, ≥50%: Moderate, ≥25%: Low, &lt;25%: Very low</p></li>
+<li><p>Classes are displayed with their preferred labels (skos:prefLabel or rdfs:label) when available</p></li>
+</ul>
+</section>
+<section id="id18">
+<h2>LLM Usage Declaration<a class="headerlink" href="#id18" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Claude AI (Sonnet 4) was employed chiefly to support documentation efforts</p></li>
+</ul>
+<p class="rubric">Examples</p>
+<dl class="simple">
+<dt>Basic usage:</dt><dd><p>python script.py ontology.ttl</p>
+</dd>
+<dt>Show only summary:</dt><dd><p>python script.py ontology.ttl –show summary</p>
+</dd>
+<dt>Show full definitions:</dt><dd><p>python script.py ontology.ttl –full-definitions</p>
+</dd>
+<dt>Show only classes without definitions:</dt><dd><p>python script.py ontology.ttl –show without</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Onto_Assessment.metrics.mainLeafNodeCheck_v_0_0_1">
+<span class="sig-name descname"><span class="pre">mainLeafNodeCheck_v_0_0_1</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Onto_Assessment/metrics/leafNodeCheck.html#mainLeafNodeCheck_v_0_0_1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Onto_Assessment.metrics.mainLeafNodeCheck_v_0_0_1" title="Link to this definition"></a></dt>
+<dd><p>Ontology Leaf Node Analysis</p>
+<p>Analyze an OWL ontology in Turtle (ttl) format and identify all leaf nodes in the class hierarchy. Leaf nodes are classes that have no subclasses, representing the most specific classes in the ontology</p>
+<p>This main function parses command-line arguments, loads an ontology file, identifies all declared classes, and determines which classes are leaf nodes by finding classes that are never used as superclasses</p>
+<section id="id19">
+<h2>Definitions<a class="headerlink" href="#id19" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Leaf nodes: Classes that have no subclasses, meaning they do not appear as objects in rdfs:subClassOf relationships (or skos:broader)</p></li>
+<li><p>Declared classes: Classes explicitly declared with rdf:type owl:Class or rdfs:Class</p></li>
+<li><p>Hierarchy detection: Uses rdfs:subClassOf relationships to determine class hierarchy (also skos:broader)</p></li>
+</ul>
+<p>Author: Rishabh Kundu
+Version: 0.0.1</p>
+</section>
+<section id="id20">
+<h2>Command Line Arguments<a class="headerlink" href="#id20" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>ttl_file<span class="classifier">str (positional)</span></dt><dd><p>Path to the ontology Turtle (.ttl) file to analyze</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><em>None</em> – This function does not (directly) return values. It prints analysis results to terminal/CLI
+The function may exit early on errors (file not found, parsing errors, or no leaf nodes found)</p></li>
+<li><p><em>Output Information</em></p></li>
+<li><p><em>—————–</em></p></li>
+<li><p><em>When executed successfully, the analysis provides</em></p></li>
+<li><p><em>- Total number of leaf nodes found</em></p></li>
+<li><p><em>- Complete list of leaf nodes with their prefixed names (sorted alphabetically)</em></p></li>
+<li><p><em>Error Handling</em></p></li>
+<li><p><em>————-</em></p></li>
+<li><p><em>The function handles several error conditions</em></p></li>
+<li><p><strong>- FileNotFoundError</strong> (<em>When the specified TTL file cannot be found</em>)</p></li>
+<li><p><strong>- Parsing errors</strong> (<em>When the TTL file cannot be parsed as valid Turtle</em>)</p></li>
+<li><p><strong>- Empty results</strong> (<em>When no leaf nodes are found in the ontology</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Only considers explicitly declared classes (rdf:type owl:Class or rdfs:Class)</p></li>
+<li><p>Uses namespace manager for clean URI representation in output</p></li>
+<li><p>Leaf nodes are sorted alphabetically for consistent display</p></li>
+<li><p>Coverage statistics may be implemented in future versions</p></li>
+</ul>
+</section>
+<section id="id21">
+<h2>LLM Usage Declaration<a class="headerlink" href="#id21" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Claude AI (Sonnet 4) was employed chiefly to support documentation efforts</p></li>
+</ul>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p>Mc Gurk, S., Abela, C., &amp; Debattista, J. (2017). Towards ontology quality assessment. 4th Workshop on Linked Data Quality (LDQ2017), co-located with the 14th Extended Semantic Web Conference (ESWC), Portorož, 94-106.</p></li>
+</ul>
+<p class="rubric">Examples</p>
+<dl class="simple">
+<dt>Basic usage:</dt><dd><p>python script.py ontology.ttl</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Onto_Assessment.metrics.mainSemanticConnection_v_0_0_1">
+<span class="sig-name descname"><span class="pre">mainSemanticConnection_v_0_0_1</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Onto_Assessment/metrics/semanticConnection.html#mainSemanticConnection_v_0_0_1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Onto_Assessment.metrics.mainSemanticConnection_v_0_0_1" title="Link to this definition"></a></dt>
+<dd><p>Ontology Semantic Connection Analysis</p>
+<p>Analyze an OWL ontology in Turtle (ttl) format and assess the semantic connection of class hierarchies to established upper-level ontologies (specifically, Common Core Ontology and Basic Formal Ontology)</p>
+<p>This main function parses command-line arguments, loads an ontology file, builds the complete class hierarchy, identifies root classes, and determines which hierarchy chains are semantically grounded in higher-level ontologies through naming convention analysis</p>
+<section id="id22">
+<h2>Definitions<a class="headerlink" href="#id22" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Named classes: Classes with URIRef identifiers that are explicitly declared as owl:Class or rdfs:Class, or participate in rdfs:subClassOf relations</p></li>
+<li><p>Class hierarchy: The tree structure of classes connected via rdfs:subClassOf relationships</p></li>
+<li><p>Root classes: Classes that have no parent classes, representing the top level of independent hierarchy trees</p></li>
+<li><p>Semantic connection: Connection to higher-level ontologies (CCO/BFO) determined by URI prefix analysis (cco:, obo:bfo, bfo:)</p></li>
+<li><p>Hierarchy chains: Complete trees of classes rooted at root classes, inheriting the connection status of their root</p></li>
+</ul>
+<p>Author: Rishabh Kundu
+Version: 0.0.1</p>
+</section>
+<section id="id23">
+<h2>Command Line Arguments<a class="headerlink" href="#id23" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>ttl_file<span class="classifier">str (positional)</span></dt><dd><p>Path to the ontology Turtle (.ttl) file to analyze.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><em>None</em> – This function does not (directly) return values. It prints comprehensive hierarchy analysis to terminal/CLI. The function may exit early on errors (file not found, parsing errors, no classes found, or no hierarchy relationships found)</p></li>
+<li><p><em>Output Information</em></p></li>
+<li><p><em>—————–</em></p></li>
+<li><p><em>When executed successfully, the analysis provides</em></p></li>
+<li><p><em>- Total number of named classes</em></p></li>
+<li><p><em>- Number of classes with children (parent classes)</em></p></li>
+<li><p><em>- Total parent-child relationships</em></p></li>
+<li><p><em>- Number of root classes</em></p></li>
+<li><p><em>- Number of root classes connected to higher ontologies</em></p></li>
+<li><p><em>- Summary of connected vs disconnected hierarchy chains</em></p></li>
+<li><p><em>- Complete hierarchical tree view with connection status indicators</em></p></li>
+<li><p><em>Error Handling</em></p></li>
+<li><p><em>————-</em></p></li>
+<li><p><em>The function handles several error conditions</em></p></li>
+<li><p><strong>- FileNotFoundError</strong> (<em>When the specified TTL file cannot be found</em>)</p></li>
+<li><p><strong>- Parsing errors</strong> (<em>When the TTL file cannot be parsed as valid Turtle</em>)</p></li>
+<li><p><strong>- Empty ontology</strong> (<em>When no named classes are found</em>)</p></li>
+<li><p><strong>- Missing hierarchy</strong> (<em>When no rdfs:subClassOf relationships are found</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Only considers explicitly declared classes and rdfs:subClassOf relationships</p></li>
+<li><p>Connection analysis based on URI prefix patterns (cco:, obo:bfo, bfo:)</p></li>
+<li><p>Provides both statistical summary and detailed tree visualization</p></li>
+<li><p>Includes namespace bindings for common ontology prefixes</p></li>
+</ul>
+</section>
+<section id="id24">
+<h2>LLM Usage Declaration<a class="headerlink" href="#id24" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Claude AI (Sonnet 4) was employed chiefly to support documentation efforts</p></li>
+</ul>
+<p class="rubric">Examples</p>
+<dl class="simple">
+<dt>Basic usage:</dt><dd><p>python script.py ontology.ttl</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Ontology Assessment’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="_autosummary/Onto_Assessment.metrics.html" class="btn btn-neutral float-right" title="Onto_Assessment.metrics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
