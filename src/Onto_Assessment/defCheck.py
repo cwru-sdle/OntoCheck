@@ -1,4 +1,4 @@
-from ..helpers.helpers import _analyze_definition_coverage, _find_all_named_classes, _get_additional_labels, _get_preferred_label, _print_classes_with_definitions, _print_classes_without_definitions, _print_summary_statistics, _truncate_definition
+from .helpers.helpers import _analyze_definition_coverage, _find_all_named_classes, _get_additional_labels, _get_preferred_label, _print_classes_with_definitions, _print_classes_without_definitions, _print_summary_statistics, _truncate_definition
 from collections import defaultdict
 from rdflib import Graph, RDFS, RDF, OWL, URIRef, Namespace
 import argparse

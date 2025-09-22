@@ -1,4 +1,4 @@
-from ..helpers.helpers import _find_leaf_nodes
+from .helpers.helpers import _find_leaf_nodes
 from rdflib import Graph, RDFS, RDF, OWL, SKOS
 import argparse
 

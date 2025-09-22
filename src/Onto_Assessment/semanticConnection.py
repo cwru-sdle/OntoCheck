@@ -1,4 +1,4 @@
-from ..helpers.helpers import _analyze_hierarchy_connections, _build_class_hierarchy, _find_all_named_classes, _find_root_classes, _is_connected_to_higher_ontology, _print_hierarchy_with_connection
+from .helpers.helpers import _analyze_hierarchy_connections, _build_class_hierarchy, _find_all_named_classes, _find_root_classes, _is_connected_to_higher_ontology, _print_hierarchy_with_connection
 from collections import defaultdict
 from rdflib import Graph, RDFS, RDF, OWL, URIRef
 import argparse

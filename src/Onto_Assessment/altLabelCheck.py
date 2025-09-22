@@ -1,4 +1,4 @@
-from ..helpers.helpers import _analyze_altlabel_coverage, _export_missing_altlabels_template, _find_all_named_classes, _get_preferred_label, _print_classes_with_altlabels, _print_classes_without_altlabels, _print_summary_statistics
+from .helpers.helpers import _analyze_altlabel_coverage, _export_missing_altlabels_template, _find_all_named_classes, _get_preferred_label, _print_classes_with_altlabels, _print_classes_without_altlabels, _print_summary_statistics
 from collections import defaultdict
 from rdflib import Graph, RDFS, RDF, OWL, URIRef, Namespace
 import argparse
