@@ -1,0 +1,38 @@
+# This section tells packaging tools like pip how to build your project.
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+# This section contains all the metadata about your package.
+[project]
+name = "onto-assessment"
+version = "0.0.1"
+authors = [
+  { name="Rishabh Kundu", email="rxk857@case.edu" },
+  { name="Van Tran", email="vxt101@case.edu" },
+  { name="Redad Mehdi", email="mxm1684@case.edu" },
+]
+
+maintainers = [
+  { name="Redad Mehdi", email="mxm1684@case.edu" },
+]
+description = "A package for assessing the quality and structure of ontologies."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file="LICENSE" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering",
+]
+
+# The libraries your code needs to run.
+dependencies = [
+  "rdflib",
+  "networkx",
+  "requests",
+]
+
+[project.urls]
+"Homepage" = "https://bitbucket.org/cwrusdle/ontologyassessment/src/main/"
