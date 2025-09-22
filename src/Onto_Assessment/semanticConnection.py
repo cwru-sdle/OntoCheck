@@ -7,38 +7,34 @@ def mainSemanticConnection_v_0_0_1():
     """
     Ontology Semantic Connection Analysis
 
-    Analyze an OWL ontology in Turtle (ttl) format and assess the semantic connection of class hierarchies to established upper-level ontologies (specifically, Common Core Ontology and Basic Formal Ontology)
-
-    This main function parses command-line arguments, loads an ontology file, builds the complete class hierarchy, identifies root classes, and determines which hierarchy chains are semantically grounded in higher-level ontologies through naming convention analysis
+    Analyze an OWL ontology in Turtle (ttl) format and assess the semantic connection of class hierarchies to established upper-level ontologies (specifically, Common Core Ontology and Basic Formal Ontology).
+    This main function parses command-line arguments, loads an ontology file, builds the complete class hierarchy, identifies root classes, and determines which hierarchy chains are semantically grounded in higher-level ontologies through naming convention analysis.
 
     Definitions
     -----------
     - Named classes: Classes with URIRef identifiers that are explicitly declared as owl:Class or rdfs:Class, or participate in rdfs:subClassOf relations
-    
     - Class hierarchy: The tree structure of classes connected via rdfs:subClassOf relationships
-
     - Root classes: Classes that have no parent classes, representing the top level of independent hierarchy trees
-
     - Semantic connection: Connection to higher-level ontologies (CCO/BFO) determined by URI prefix analysis (cco:, obo:bfo, bfo:)
-
     - Hierarchy chains: Complete trees of classes rooted at root classes, inheriting the connection status of their root
 
     Author: Rishabh Kundu
     Version: 0.0.1
 
     Command Line Arguments
-    ---------------------
+    ----------------------
     ttl_file : str (positional)
         Path to the ontology Turtle (.ttl) file to analyze.
 
     Returns
     -------
     None
-        This function does not (directly) return values. It prints comprehensive hierarchy analysis to terminal/CLI. The function may exit early on errors (file not found, parsing errors, no classes found, or no hierarchy relationships found)
+        This function does not (directly) return values. It prints comprehensive hierarchy analysis to terminal/CLI. The function may exit early on errors (file not found, parsing errors, no classes found, or no hierarchy relationships found).
 
     Output Information
-    -----------------
+    ------------------
     When executed successfully, the analysis provides:
+
     - Total number of named classes
     - Number of classes with children (parent classes)
     - Total parent-child relationships
@@ -48,8 +44,9 @@ def mainSemanticConnection_v_0_0_1():
     - Complete hierarchical tree view with connection status indicators
 
     Error Handling
-    -------------
+    --------------
     The function handles several error conditions:
+
     - FileNotFoundError: When the specified TTL file cannot be found
     - Parsing errors: When the TTL file cannot be parsed as valid Turtle
     - Empty ontology: When no named classes are found
@@ -64,12 +61,12 @@ def mainSemanticConnection_v_0_0_1():
 
     LLM Usage Declaration
     ---------------------
-
     - Claude AI (Sonnet 4) was employed chiefly to support documentation efforts
 
     Examples
     --------
-    Basic usage:
+    Basic usage::
+
         python script.py ontology.ttl
     """
     parser = argparse.ArgumentParser(

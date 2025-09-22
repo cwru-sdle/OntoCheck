@@ -1,0 +1,2 @@
+[console_scripts]
+onto-assessment = Onto_Assessment.cli:main

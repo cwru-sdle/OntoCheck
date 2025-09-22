@@ -1,10 +1,10 @@
- Ontology Assessment API
+Ontology Assessment API
 =======================
 
 Metrics
 -------
 
-.. automodule:: Onto_Assessment.metrics
+.. automodule:: Onto_Assessment
    :members:
    :undoc-members:
    :show-inheritance:

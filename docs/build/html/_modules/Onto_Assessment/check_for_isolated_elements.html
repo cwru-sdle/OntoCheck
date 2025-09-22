@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Onto_Assessment.check_for_isolated_elements &mdash; Ontology Assessment 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=86f27845" />
+
+  
+  
+        <script src="../../_static/jquery.js?v=8dae8fb0"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Ontology Assessment
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Metrics</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ontology Assessment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">Onto_Assessment.check_for_isolated_elements</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for Onto_Assessment.check_for_isolated_elements</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">rdflib</span> <span class="kn">import</span> <span class="n">OWL</span><span class="p">,</span> <span class="n">SKOS</span><span class="p">,</span> <span class="n">RDF</span><span class="p">,</span> <span class="n">RDFS</span><span class="p">,</span> <span class="n">Graph</span><span class="p">,</span> <span class="n">Namespace</span><span class="p">,</span> <span class="n">DCAT</span><span class="p">,</span> <span class="n">URIRef</span><span class="p">,</span> <span class="n">BNode</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">rdflib</span>
+
+<div class="viewcode-block" id="check_for_isolated_elements">
+<a class="viewcode-back" href="../../modules.html#Onto_Assessment.check_for_isolated_elements">[docs]</a>
+<span class="k">def</span> <span class="nf">check_for_isolated_elements</span><span class="p">(</span><span class="n">ttl_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    C1 - Number of isolated elements</span>
+<span class="sd">    </span>
+<span class="sd">    Analyze an OWL ontology in Turtle format to identify isolated atomic classes and isolated properties.</span>
+
+<span class="sd">    Definitions</span>
+<span class="sd">    -----------</span>
+<span class="sd">    - Atomic classes are named classes (with URI) that are NOT constructed classes</span>
+<span class="sd">      (i.e., they do not have owl:unionOf, owl:intersectionOf, or owl:complementOf).</span>
+
+<span class="sd">    - A class (atomic or constructed with URI) is considered connected if it:</span>
+<span class="sd">        * participates in rdfs:subClassOf, owl:equivalentClass, or owl:disjointWith relations </span>
+<span class="sd">          involving atomic classes, OR</span>
+<span class="sd">        * is used as domain or range of properties and contains at least one atomic class</span>
+<span class="sd">          inside its construction.</span>
+
+<span class="sd">    - A property is considered connected if it is related by any of:</span>
+<span class="sd">      rdfs:subPropertyOf, owl:inverseOf, owl:propertyDisjointWith, or owl:equivalentProperty.</span>
+
+<span class="sd">    Author: Van Tran</span>
+<span class="sd">    Version: 0.1</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ttl_file : str</span>
+<span class="sd">        File path to the ontology Turtle (.ttl) file.</span>
+
+<span class="sd">    Prints</span>
+<span class="sd">    ------</span>
+<span class="sd">    Lists of isolated atomic classes and isolated properties.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Only named classes explicitly declared as owl:Class are considered.</span>
+<span class="sd">    - Only properties explicitly declared as owl:ObjectProperty or owl:DatatypeProperty are considered.</span>
+<span class="sd">    - Relations checked for classes include rdfs:subClassOf, owl:equivalentClass, owl:disjointWith,</span>
+<span class="sd">      and usage as domain or range of properties.</span>
+<span class="sd">    - Relations checked for properties include rdfs:subPropertyOf, owl:inverseOf, owl:propertyDisjointWith,</span>
+<span class="sd">      and owl:equivalentProperty.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    -----</span>
+<span class="sd">    Mc Gurk, S., Abela, C., &amp; Debattista, J. (2017). Towards ontology quality assessment. </span>
+<span class="sd">    4th Workshop on Linked Data Quality (LDQ2017), co-located with the 14th Extended Semantic Web Conference (ESWC), </span>
+<span class="sd">    Portorož, 94-106.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">()</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">ttl_file</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;turtle&quot;</span><span class="p">)</span>
+
+    <span class="c1"># All named classes</span>
+    <span class="n">named_classes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">subjects</span><span class="p">(</span><span class="n">RDF</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">OWL</span><span class="o">.</span><span class="n">Class</span><span class="p">))</span>
+
+    <span class="c1"># Identify atomic classes: named classes without OWL class constructors</span>
+    <span class="n">atomic_classes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">named_classes</span><span class="p">:</span>
+        <span class="c1"># Check for Boolean class expressions</span>
+        <span class="n">has_boolean</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">objects</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">p</span><span class="p">)))</span> <span class="o">&gt;</span> <span class="mi">0</span> 
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">[</span><span class="n">OWL</span><span class="o">.</span><span class="n">unionOf</span><span class="p">,</span> <span class="n">OWL</span><span class="o">.</span><span class="n">intersectionOf</span><span class="p">,</span> <span class="n">OWL</span><span class="o">.</span><span class="n">complementOf</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Check for restrictions in equivalentClass or subClassOf</span>
+        <span class="n">has_restriction</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">[</span><span class="n">OWL</span><span class="o">.</span><span class="n">equivalentClass</span><span class="p">,</span> <span class="n">RDFS</span><span class="o">.</span><span class="n">subClassOf</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">objects</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">RDF</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">OWL</span><span class="o">.</span><span class="n">Restriction</span><span class="p">)</span> <span class="ow">in</span> <span class="n">g</span><span class="p">:</span>
+                    <span class="n">has_restriction</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[DEBUG] </span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2"> has restriction via </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2"> → </span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">has_boolean</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[DEBUG] </span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2"> excluded because it has a boolean expression&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">has_boolean</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">has_restriction</span><span class="p">:</span>
+            <span class="n">atomic_classes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[INFO] Added atomic class: </span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[INFO] Skipped non-atomic class: </span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">properties</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">subjects</span><span class="p">(</span><span class="n">RDF</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">OWL</span><span class="o">.</span><span class="n">ObjectProperty</span><span class="p">))</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">subjects</span><span class="p">(</span><span class="n">RDF</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">OWL</span><span class="o">.</span><span class="n">DatatypeProperty</span><span class="p">))</span>
+
+    <span class="n">connected_atomic</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="c1"># Relations linking atomic classes</span>
+    <span class="k">for</span> <span class="n">pred</span> <span class="ow">in</span> <span class="p">[</span><span class="n">RDFS</span><span class="o">.</span><span class="n">subClassOf</span><span class="p">,</span> <span class="n">OWL</span><span class="o">.</span><span class="n">equivalentClass</span><span class="p">,</span> <span class="n">OWL</span><span class="o">.</span><span class="n">disjointWith</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">subject_objects</span><span class="p">(</span><span class="n">pred</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">atomic_classes</span> <span class="ow">and</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">atomic_classes</span><span class="p">:</span>
+                <span class="n">connected_atomic</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+                <span class="n">connected_atomic</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># If constructed classes involved, check their atomic content</span>
+                <span class="k">if</span> <span class="n">constructed_class_has_atomic_class</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">atomic_classes</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">URIRef</span><span class="p">)</span> <span class="ow">and</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">atomic_classes</span><span class="p">:</span>
+                        <span class="n">connected_atomic</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">constructed_class_has_atomic_class</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">atomic_classes</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">URIRef</span><span class="p">)</span> <span class="ow">and</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">atomic_classes</span><span class="p">:</span>
+                        <span class="n">connected_atomic</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+    <span class="c1"># Consider domain and range usage of properties</span>
+    <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">properties</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">domain</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">objects</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">RDFS</span><span class="o">.</span><span class="n">domain</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">constructed_class_has_atomic_class</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">atomic_classes</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">URIRef</span><span class="p">):</span>
+                    <span class="n">connected_atomic</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">range_</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">objects</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">RDFS</span><span class="o">.</span><span class="n">range</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">constructed_class_has_atomic_class</span><span class="p">(</span><span class="n">range_</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">atomic_classes</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">range_</span><span class="p">,</span> <span class="n">URIRef</span><span class="p">):</span>
+                    <span class="n">connected_atomic</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">range_</span><span class="p">)</span>
+
+    <span class="n">isolated_atomic_classes</span> <span class="o">=</span> <span class="n">atomic_classes</span> <span class="o">-</span> <span class="n">connected_atomic</span>
+
+    <span class="c1"># Properties isolation</span>
+    <span class="n">connected_properties</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">pred</span> <span class="ow">in</span> <span class="p">[</span><span class="n">RDFS</span><span class="o">.</span><span class="n">subPropertyOf</span><span class="p">,</span> <span class="n">OWL</span><span class="o">.</span><span class="n">inverseOf</span><span class="p">,</span> <span class="n">OWL</span><span class="o">.</span><span class="n">propertyDisjointWith</span><span class="p">,</span> <span class="n">OWL</span><span class="o">.</span><span class="n">equivalentProperty</span><span class="p">,</span> <span class="n">SKOS</span><span class="o">.</span><span class="n">broader</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">subject_objects</span><span class="p">(</span><span class="n">pred</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">URIRef</span><span class="p">):</span>
+                <span class="n">connected_properties</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">URIRef</span><span class="p">):</span>
+                <span class="n">connected_properties</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+
+    <span class="n">isolated_properties</span> <span class="o">=</span> <span class="n">properties</span> <span class="o">-</span> <span class="n">connected_properties</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Isolated Atomic Classes:&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">isolated_atomic_classes</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="bp">cls</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">ratio_iso_to_total_class</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">isolated_atomic_classes</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">atomic_classes</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of isolated classes: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">isolated_atomic_classes</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/nProportion of isolated classes: </span><span class="si">{</span><span class="n">ratio_iso_to_total_class</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Isolated Properties:&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">isolated_properties</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">ratio_iso_to_total_prop</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">isolated_properties</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">properties</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of isolated properties: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">isolated_properties</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/nProportion of isolated properties: </span><span class="si">{</span><span class="n">ratio_iso_to_total_prop</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;Number of isolated classes&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nb">len</span><span class="p">(</span><span class="n">isolated_atomic_classes</span><span class="p">)},</span>
+        <span class="s2">&quot;Proportion of isolated classes&quot;</span><span class="p">:</span> <span class="p">{</span><span class="n">ratio_iso_to_total_class</span><span class="p">},</span>
+        <span class="s2">&quot;Number of isolated properties&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nb">len</span><span class="p">(</span><span class="n">isolated_properties</span><span class="p">)},</span>
+        <span class="s2">&quot;Proportion of isolated properties&quot;</span><span class="p">:</span> <span class="p">{</span><span class="n">ratio_iso_to_total_prop</span><span class="p">}</span>
+    <span class="p">}</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Rishabh Kundu, Van Tran, Redad Mehdi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

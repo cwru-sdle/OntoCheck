@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: OntoAssessment
-Version: 0.0.1
+Version: 0.0.3
 Summary: A package for assessing the quality and structure of ontologies.
 Author-email: Rishabh Kundu <rxk857@case.edu>, Van Tran <vxt101@case.edu>, Redad Mehdi <mxm1684@case.edu>
 Maintainer-email: Redad Mehdi <mxm1684@case.edu>

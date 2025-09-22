@@ -7,15 +7,15 @@ def count_class_connected_components(ttl_file_path: str) -> int:
     C3 - Count number of connected subgraphs
 
     Count the number of connected components in the "class graph" (TBox) of an OWL ontology.
-
     The "class graph" is constructed by creating undirected edges between classes that are connected
     by any of the following OWL predicates:
-      - rdfs:subClassOf
-      - owl:equivalentClass
-      - owl:disjointWith
+
+    - rdfs:subClassOf
+    - owl:equivalentClass
+    - owl:disjointWith
 
     Nodes in the graph represent named classes (URIRefs) from the ontology. Edges represent these
-    relationships between named classes. Classes involved only in subclass/equivalent/disjointWith 
+    relationships between named classes. Classes involved only in subclass/equivalent/disjointWith
     axioms pointing to blank nodes (i.e. constructed classes) are excluded.
 
     Author: Van Tran

@@ -7,48 +7,47 @@ def mainDefCheck_v_0_0_1():
     """
     SKOS Definition Coverage Analysis
 
-    Analyze an OWL ontology in Turtle (ttl) format and assess the coverage and quality of SKOS definitions (skos:definition) across all named classes
-
-    This main function parses command-line arguments, loads an ontology file, identifies all named classes, and provides comprehensive analysis of definition coverage with various display options
+    Analyze an OWL ontology in Turtle (ttl) format and assess the coverage and quality of SKOS definitions (skos:definition) across all named classes.
+    This main function parses command-line arguments, loads an ontology file, identifies all named classes, and provides comprehensive analysis of definition coverage with various display options.
 
     Definitions
     -----------
-    - Named classes: Classes with URIRef identifiers that are explicitly declared as 
+    - Named classes: Classes with URIRef identifiers that are explicitly declared as
       owl:Class or rdfs:Class, or participate in rdfs:subClassOf relations
-    
-    - Valid definitions: SKOS definition values that exist as properties on classes
+    - Valid definitions: SKOS definition values that exist as properties on classes.
       Empty or missing definitions are identified as gaps in coverage
-
-    - Coverage percentage: The proportion of named classes that have at least one 
+    - Coverage percentage: The proportion of named classes that have at least one
       skos:definition property
 
     Author: Rishabh Kundu
     Version: 0.0.1
 
     Command Line Arguments
-    ---------------------
+    ----------------------
     ttl_file : str (positional)
         Path to the ontology Turtle (.ttl) file to analyze
-        
+
     --show : str, optional
         Display option controlling what information to show:
+
         - "all" (default): Shows summary statistics, classes with definitions, and classes without definitions
         - "with": Shows only classes that have definitions
-        - "without": Shows only classes that lack definitions  
+        - "without": Shows only classes that lack definitions
         - "summary": Shows only summary statistics
-        
+
     --full-definitions : flag, optional
         Show full definitions instead of truncated versions (default/set by RK: truncated to 150 chars)
 
     Returns
     -------
     None
-        This function does not (directly) return values. It prints analysis results to terminal/CLI
-        The function may exit early on errors (file not found, parsing errors, or no classes found)
+        This function does not (directly) return values. It prints analysis results to terminal/CLI.
+        The function may exit early on errors (file not found, parsing errors, or no classes found).
 
     Output Information
-    -----------------
+    ------------------
     When executed successfully, the analysis provides:
+
     - Total number of named classes analyzed
     - Number of classes with definition properties
     - Number of classes lacking definition properties
@@ -56,8 +55,9 @@ def mainDefCheck_v_0_0_1():
     - Qualitative assessment based on coverage thresholds
 
     Error Handling
-    -------------
+    --------------
     The function handles several error conditions:
+
     - FileNotFoundError: When the specified TTL file cannot be found
     - Parsing errors: When the TTL file cannot be parsed as valid Turtle
     - Empty ontology: When no named classes are found in the ontology
@@ -71,21 +71,24 @@ def mainDefCheck_v_0_0_1():
 
     LLM Usage Declaration
     ---------------------
-
     - Claude AI (Sonnet 4) was employed chiefly to support documentation efforts
 
     Examples
     --------
-    Basic usage:
+    Basic usage::
+
         python script.py ontology.ttl
-        
-    Show only summary:
+
+    Show only summary::
+
         python script.py ontology.ttl --show summary
-        
-    Show full definitions:
+
+    Show full definitions::
+
         python script.py ontology.ttl --full-definitions
-        
-    Show only classes without definitions:
+
+    Show only classes without definitions::
+
         python script.py ontology.ttl --show without
     """
     parser = argparse.ArgumentParser(

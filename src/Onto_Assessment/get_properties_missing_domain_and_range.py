@@ -6,7 +6,7 @@ def get_properties_missing_domain_and_range(ttl_file_path: str):
     """
     C2 - Missing Domain and Ranges in Properties
 
-    Parse an OWL ontology Turtle file and identify object and datatype properties 
+    Parse an OWL ontology Turtle file and identify object and datatype properties
     that are missing domain or range declarations.
 
     Author: Van Tran
@@ -21,6 +21,7 @@ def get_properties_missing_domain_and_range(ttl_file_path: str):
     -------
     dict
         A dictionary containing:
+
         - 'count_missing_domain': int
             Number of properties missing an rdfs:domain declaration.
         - 'properties_missing_domain': list of rdflib.term.URIRef
@@ -32,13 +33,13 @@ def get_properties_missing_domain_and_range(ttl_file_path: str):
 
     Notes
     -----
-    - Only properties explicitly typed as owl:ObjectProperty or owl:DatatypeProperty 
+    - Only properties explicitly typed as owl:ObjectProperty or owl:DatatypeProperty
       are considered.
 
     References
-    -----
-    Mc Gurk, S., Abela, C., & Debattista, J. (2017). Towards ontology quality assessment. 
-    4th Workshop on Linked Data Quality (LDQ2017), co-located with the 14th Extended Semantic Web Conference (ESWC), 
+    ----------
+    Mc Gurk, S., Abela, C., & Debattista, J. (2017). Towards ontology quality assessment.
+    4th Workshop on Linked Data Quality (LDQ2017), co-located with the 14th Extended Semantic Web Conference (ESWC),
     Portorož, 94-106.
     """
     g = Graph()

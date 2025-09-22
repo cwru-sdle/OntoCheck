@@ -9,18 +9,18 @@ def find_duplicate_labels_from_graph(ttl_file):
     has the same value for rdfs:label or not.
 
     Params
-    -----
+    ------
         ttl_file (string): path to ttl file
 
     Returns
-    -----
+    -------
         duplicates (dict): dictionary of URIs of duplicated terms
 
     Author: Van Tran
     Version: 0.1
 
     References
-    -----
+    ----------
     Mc Gurk, S., Abela, C., & Debattista, J. (2017). Towards ontology quality assessment. 
     4th Workshop on Linked Data Quality (LDQ2017), co-located with the 14th Extended Semantic Web Conference (ESWC), 
     Portorož, 94-106.

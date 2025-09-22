@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 # This section contains all the metadata about your package.
 [project]
 name = "OntoAssessment"
-version = "0.0.1"
+version = "0.0.3"
 authors = [
   { name="Rishabh Kundu", email="rxk857@case.edu" },
   { name="Van Tran", email="vxt101@case.edu" },
@@ -37,3 +37,6 @@ dependencies = [
 [project.urls]
 "Homepage" = "https://github.com/redad110/Ontology-Assessment"
 "Documentation" = "https://ontology-assessment.readthedocs.io"
+
+[project.scripts]
+onto-assessment = "Onto_Assessment.cli:main"
