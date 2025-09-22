@@ -30,6 +30,9 @@ extensions = [
 templates_path = ['_templates']
 exclude_patterns = []
 
+# Trim the module names from function signatures
+add_module_names = False
+
 # Napoleon settings
 napoleon_google_docstring = True
 napoleon_numpy_docstring = True

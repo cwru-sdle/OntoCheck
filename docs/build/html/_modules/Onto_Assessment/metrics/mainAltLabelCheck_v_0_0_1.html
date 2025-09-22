@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Onto_Assessment.metrics.mainAltLabelCheck_v_0_0_1 &mdash; Ontology Assessment 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=86f27845" />
+
+  
+  
+        <script src="../../../_static/jquery.js?v=8dae8fb0"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Ontology Assessment
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/Onto_Assessment.metrics.html">Onto_Assessment.metrics</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Ontology Assessment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">Onto_Assessment.metrics.mainAltLabelCheck_v_0_0_1</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for Onto_Assessment.metrics.mainAltLabelCheck_v_0_0_1</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">..helpers.helpers</span> <span class="kn">import</span> <span class="n">_analyze_altlabel_coverage</span><span class="p">,</span> <span class="n">_export_missing_altlabels_template</span><span class="p">,</span> <span class="n">_find_all_named_classes</span><span class="p">,</span> <span class="n">_get_preferred_label</span><span class="p">,</span> <span class="n">_print_classes_with_altlabels</span><span class="p">,</span> <span class="n">_print_classes_without_altlabels</span><span class="p">,</span> <span class="n">_print_summary_statistics</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">rdflib</span> <span class="kn">import</span> <span class="n">Graph</span><span class="p">,</span> <span class="n">RDFS</span><span class="p">,</span> <span class="n">RDF</span><span class="p">,</span> <span class="n">OWL</span><span class="p">,</span> <span class="n">URIRef</span><span class="p">,</span> <span class="n">Namespace</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+
+<div class="viewcode-block" id="mainAltLabelCheck_v_0_0_1">
+<a class="viewcode-back" href="../../../_autosummary/Onto_Assessment.metrics.mainAltLabelCheck_v_0_0_1.html#Onto_Assessment.metrics.mainAltLabelCheck_v_0_0_1">[docs]</a>
+<span class="k">def</span> <span class="nf">mainAltLabelCheck_v_0_0_1</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    SKOS Alternative Label Coverage Analysis</span>
+
+<span class="sd">    Analyze an OWL ontology in Turtle (ttl) format to assess the coverage and quality of SKOS alternative labels (skos:altLabel) across all named classes</span>
+
+<span class="sd">    This main function parses command-line arguments, loads an ontology file, identifies all named classes, and provides comprehensive analysis of alternative label coverage with  various display options and export capabilities</span>
+
+<span class="sd">    Definitions</span>
+<span class="sd">    -----------</span>
+<span class="sd">    - Named classes: Classes with URIRef identifiers that are explicitly declared as owl:Class or rdfs:Class, or participate in rdfs:subClassOf relations</span>
+<span class="sd">    </span>
+<span class="sd">    - Valid altLabels: SKOS altLabel values that are non-empty strings after whitespace trimming. Empty strings and whitespace-only altLabels are not accounted as valid altLabels</span>
+
+<span class="sd">    - Coverage percentage: The proportion of named classes that have at least one valid altLabel inclusion</span>
+
+<span class="sd">    Author: Rishabh Kundu</span>
+<span class="sd">    Version: 0.0.1</span>
+
+<span class="sd">    Command Line Arguments</span>
+<span class="sd">    ---------------------</span>
+<span class="sd">    ttl_file : str (positional)</span>
+<span class="sd">        Path to the ontology Turtle (.ttl) file to analyze -- input file</span>
+<span class="sd">        </span>
+<span class="sd">    --show : str, optional</span>
+<span class="sd">        Display option controlling what information to show:</span>
+<span class="sd">        - &quot;all&quot; (default): Shows summary statistics, classes with altLabels, and classes without altLabels</span>
+<span class="sd">        - &quot;with&quot;: Shows only classes that have altLabels</span>
+<span class="sd">        - &quot;without&quot;: Shows only classes that lack altLabels  </span>
+<span class="sd">        - &quot;summary&quot;: Shows only summary statistics</span>
+<span class="sd">        </span>
+<span class="sd">    --export-template : str, optional</span>
+<span class="sd">        Export a Turtle format template file for classes missing altLabels</span>
+<span class="sd">        Provide the desired output filename.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        This function does not (directly) return values. It prints analysis results to your terminal/CLI and optionally exports a template file. The function may exit early on errors (file not found, parsing errors, or no classes found)</span>
+
+<span class="sd">    Output Information</span>
+<span class="sd">    -----------------</span>
+<span class="sd">    When executed successfully, the analysis provides:</span>
+<span class="sd">    - Total number of named classes analyzed</span>
+<span class="sd">    - Number of classes with valid altLabel properties</span>
+<span class="sd">    - Number of classes lacking valid altLabel properties</span>
+<span class="sd">    - Coverage percentage of classes with altLabels</span>
+<span class="sd">    - Total count of altLabel instances across all classes</span>
+<span class="sd">    - Average number of altLabels per class (for classes with altLabels)</span>
+<span class="sd">    - Qualitative assessment based on coverage thresholds</span>
+
+<span class="sd">    Error Handling</span>
+<span class="sd">    -------------</span>
+<span class="sd">    The function handles several error conditions:</span>
+<span class="sd">    - FileNotFoundError: When the specified TTL file cannot be found</span>
+<span class="sd">    - Parsing errors: When the TTL file cannot be parsed as valid Turtle</span>
+<span class="sd">    - Empty ontology: When no named classes are found in the ontology</span>
+<span class="sd">    - Template export errors: File I/O issues when exporting templates</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Only named classes (URIRef instances) are considered in the analysis</span>
+<span class="sd">    - Empty strings and whitespace-only altLabels are filtered out</span>
+<span class="sd">    - Coverage assessment follows established ontology quality thresholds: ≥80%: Excellent, ≥60%: Good, ≥40%: Moderate, ≥20%: Low, &lt;20%: Very low</span>
+<span class="sd">    - Classes are displayed with their preferred labels (skos:prefLabel or rdfs:label) when available</span>
+<span class="sd">    - Template export generates valid Turtle syntax for adding missing altLabels</span>
+<span class="sd">    - Uses argparse for command-line interface, not direct function parameters</span>
+
+<span class="sd">    LLM Usage Declaration</span>
+<span class="sd">    ---------------------</span>
+
+<span class="sd">    - Claude AI (Sonnet 4) was employed chiefly to support documentation efforts</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Basic usage:</span>
+<span class="sd">        python script.py ontology.ttl</span>
+<span class="sd">        </span>
+<span class="sd">    Show only summary:</span>
+<span class="sd">        python script.py ontology.ttl --show summary</span>
+<span class="sd">        </span>
+<span class="sd">    Export template for missing labels:</span>
+<span class="sd">        python script.py ontology.ttl --export-template missing_labels.ttl</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Analyzes SKOS altLabel coverage in an ontology file.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;ttl_file&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to the ontology .ttl file.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--show&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="s2">&quot;with&quot;</span><span class="p">,</span> <span class="s2">&quot;without&quot;</span><span class="p">,</span> <span class="s2">&quot;summary&quot;</span><span class="p">],</span> 
+                       <span class="n">default</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;What to display: &#39;all&#39; (default), &#39;with&#39; (classes with altLabels), &#39;without&#39; (classes without altLabels), &#39;summary&#39; (statistics only)&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--export-template&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> 
+                       <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Export a template file for classes missing altLabels (provide filename)&quot;</span><span class="p">)</span>
+    
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">g</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parsing file: </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">ttl_file</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+        <span class="c1"># Bind common prefixes for cleaner output (future users can add more here)</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;mds&quot;</span><span class="p">,</span> <span class="s2">&quot;https://cwrusdle.bitbucket.io/mds/&quot;</span><span class="p">)</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;cco&quot;</span><span class="p">,</span> <span class="s2">&quot;https://www.commoncoreontologies.org/&quot;</span><span class="p">)</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;obo&quot;</span><span class="p">,</span> <span class="s2">&quot;http://purl.obolibrary.org/obo/&quot;</span><span class="p">)</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;owl&quot;</span><span class="p">,</span> <span class="s2">&quot;http://www.w3.org/2002/07/owl#&quot;</span><span class="p">)</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;rdfs&quot;</span><span class="p">,</span> <span class="s2">&quot;http://www.w3.org/2000/01/rdf-schema#&quot;</span><span class="p">)</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;skos&quot;</span><span class="p">,</span> <span class="s2">&quot;http://www.w3.org/2004/02/skos/core#&quot;</span><span class="p">)</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">ttl_file</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;turtle&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: The file &#39;</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">ttl_file</span><span class="si">}</span><span class="s2">&#39; was not found.&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: An error occurred while parsing the TTL file: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Find all classes</span>
+    <span class="n">all_classes</span> <span class="o">=</span> <span class="n">_find_all_named_classes</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">all_classes</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No named classes found in the ontology.&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Analyze altLabel coverage</span>
+    <span class="n">classes_with_altlabel</span><span class="p">,</span> <span class="n">classes_without_altlabel</span> <span class="o">=</span> <span class="n">_analyze_altlabel_coverage</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">all_classes</span><span class="p">)</span>
+
+    <span class="c1"># Display results based on show choice</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">show</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="s2">&quot;all&quot;</span><span class="p">]:</span>
+        <span class="n">_print_summary_statistics</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">classes_with_altlabel</span><span class="p">,</span> <span class="n">classes_without_altlabel</span><span class="p">,</span> <span class="n">all_classes</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">show</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;with&quot;</span><span class="p">,</span> <span class="s2">&quot;all&quot;</span><span class="p">]:</span>
+        <span class="n">_print_classes_with_altlabels</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">classes_with_altlabel</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">show</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;without&quot;</span><span class="p">,</span> <span class="s2">&quot;all&quot;</span><span class="p">]:</span>
+        <span class="n">_print_classes_without_altlabels</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">classes_without_altlabel</span><span class="p">)</span>
+
+    <span class="c1"># Export template if requested</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">export_template</span> <span class="ow">and</span> <span class="n">classes_without_altlabel</span><span class="p">:</span>
+        <span class="n">_export_missing_altlabels_template</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">classes_without_altlabel</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">export_template</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">export_template</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">classes_without_altlabel</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No classes missing altLabels - no template needed!&quot;</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Rishabh Kundu, Van Tran, Redad Mehdi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

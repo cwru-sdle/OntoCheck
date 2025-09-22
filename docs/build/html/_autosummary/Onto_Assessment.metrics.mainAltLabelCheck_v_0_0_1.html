@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Onto_Assessment.metrics.mainAltLabelCheck_v_0_0_1 &mdash; Ontology Assessment 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=86f27845" />
+
+  
+  
+        <script src="../_static/jquery.js?v=8dae8fb0"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Onto_Assessment.metrics.mainDefCheck_v_0_0_1" href="Onto_Assessment.metrics.mainDefCheck_v_0_0_1.html" />
+    <link rel="prev" title="Onto_Assessment.metrics.get_properties_missing_domain_and_range" href="Onto_Assessment.metrics.get_properties_missing_domain_and_range.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Ontology Assessment
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="Onto_Assessment.metrics.html">Onto_Assessment.metrics</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Onto_Assessment.metrics.check_external_data_provider_links_ttl.html">Onto_Assessment.metrics.check_external_data_provider_links_ttl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Onto_Assessment.metrics.check_for_isolated_elements.html">Onto_Assessment.metrics.check_for_isolated_elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Onto_Assessment.metrics.check_human_readable_license_ttl.html">Onto_Assessment.metrics.check_human_readable_license_ttl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Onto_Assessment.metrics.check_rdf_dump_accessibility_ttl.html">Onto_Assessment.metrics.check_rdf_dump_accessibility_ttl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Onto_Assessment.metrics.check_sparql_accessibility_ttl.html">Onto_Assessment.metrics.check_sparql_accessibility_ttl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Onto_Assessment.metrics.count_class_connected_components.html">Onto_Assessment.metrics.count_class_connected_components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Onto_Assessment.metrics.find_duplicate_labels_from_graph.html">Onto_Assessment.metrics.find_duplicate_labels_from_graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Onto_Assessment.metrics.get_properties_missing_domain_and_range.html">Onto_Assessment.metrics.get_properties_missing_domain_and_range</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Onto_Assessment.metrics.mainAltLabelCheck_v_0_0_1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Onto_Assessment.metrics.mainAltLabelCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainAltLabelCheck_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Onto_Assessment.metrics.mainDefCheck_v_0_0_1.html">Onto_Assessment.metrics.mainDefCheck_v_0_0_1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Onto_Assessment.metrics.mainLeafNodeCheck_v_0_0_1.html">Onto_Assessment.metrics.mainLeafNodeCheck_v_0_0_1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Onto_Assessment.metrics.mainSemanticConnection_v_0_0_1.html">Onto_Assessment.metrics.mainSemanticConnection_v_0_0_1</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ontology Assessment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../modules.html">&lt;no title&gt;</a></li>
+          <li class="breadcrumb-item"><a href="Onto_Assessment.metrics.html">Onto_Assessment.metrics</a></li>
+      <li class="breadcrumb-item active">Onto_Assessment.metrics.mainAltLabelCheck_v_0_0_1</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_autosummary/Onto_Assessment.metrics.mainAltLabelCheck_v_0_0_1.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="onto-assessment-metrics-mainaltlabelcheck-v-0-0-1">
+<h1>Onto_Assessment.metrics.mainAltLabelCheck_v_0_0_1<a class="headerlink" href="#onto-assessment-metrics-mainaltlabelcheck-v-0-0-1" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="Onto_Assessment.metrics.mainAltLabelCheck_v_0_0_1">
+<span class="sig-prename descclassname"><span class="pre">Onto_Assessment.metrics.</span></span><span class="sig-name descname"><span class="pre">mainAltLabelCheck_v_0_0_1</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Onto_Assessment/metrics/mainAltLabelCheck_v_0_0_1.html#mainAltLabelCheck_v_0_0_1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Onto_Assessment.metrics.mainAltLabelCheck_v_0_0_1" title="Link to this definition"></a></dt>
+<dd><p>SKOS Alternative Label Coverage Analysis</p>
+<p>Analyze an OWL ontology in Turtle (ttl) format to assess the coverage and quality of SKOS alternative labels (skos:altLabel) across all named classes</p>
+<p>This main function parses command-line arguments, loads an ontology file, identifies all named classes, and provides comprehensive analysis of alternative label coverage with  various display options and export capabilities</p>
+<section id="definitions">
+<h2>Definitions<a class="headerlink" href="#definitions" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Named classes: Classes with URIRef identifiers that are explicitly declared as owl:Class or rdfs:Class, or participate in rdfs:subClassOf relations</p></li>
+<li><p>Valid altLabels: SKOS altLabel values that are non-empty strings after whitespace trimming. Empty strings and whitespace-only altLabels are not accounted as valid altLabels</p></li>
+<li><p>Coverage percentage: The proportion of named classes that have at least one valid altLabel inclusion</p></li>
+</ul>
+<p>Author: Rishabh Kundu
+Version: 0.0.1</p>
+</section>
+<section id="command-line-arguments">
+<h2>Command Line Arguments<a class="headerlink" href="#command-line-arguments" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>ttl_file<span class="classifier">str (positional)</span></dt><dd><p>Path to the ontology Turtle (.ttl) file to analyze – input file</p>
+</dd>
+<dt>–show<span class="classifier">str, optional</span></dt><dd><p>Display option controlling what information to show:
+- “all” (default): Shows summary statistics, classes with altLabels, and classes without altLabels
+- “with”: Shows only classes that have altLabels
+- “without”: Shows only classes that lack altLabels
+- “summary”: Shows only summary statistics</p>
+</dd>
+<dt>–export-template<span class="classifier">str, optional</span></dt><dd><p>Export a Turtle format template file for classes missing altLabels
+Provide the desired output filename.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><em>None</em> – This function does not (directly) return values. It prints analysis results to your terminal/CLI and optionally exports a template file. The function may exit early on errors (file not found, parsing errors, or no classes found)</p></li>
+<li><p><em>Output Information</em></p></li>
+<li><p><em>—————–</em></p></li>
+<li><p><em>When executed successfully, the analysis provides</em></p></li>
+<li><p><em>- Total number of named classes analyzed</em></p></li>
+<li><p><em>- Number of classes with valid altLabel properties</em></p></li>
+<li><p><em>- Number of classes lacking valid altLabel properties</em></p></li>
+<li><p><em>- Coverage percentage of classes with altLabels</em></p></li>
+<li><p><em>- Total count of altLabel instances across all classes</em></p></li>
+<li><p><em>- Average number of altLabels per class (for classes with altLabels)</em></p></li>
+<li><p><em>- Qualitative assessment based on coverage thresholds</em></p></li>
+<li><p><em>Error Handling</em></p></li>
+<li><p><em>————-</em></p></li>
+<li><p><em>The function handles several error conditions</em></p></li>
+<li><p><strong>- FileNotFoundError</strong> (<em>When the specified TTL file cannot be found</em>)</p></li>
+<li><p><strong>- Parsing errors</strong> (<em>When the TTL file cannot be parsed as valid Turtle</em>)</p></li>
+<li><p><strong>- Empty ontology</strong> (<em>When no named classes are found in the ontology</em>)</p></li>
+<li><p><strong>- Template export errors</strong> (<em>File I/O issues when exporting templates</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Only named classes (URIRef instances) are considered in the analysis</p></li>
+<li><p>Empty strings and whitespace-only altLabels are filtered out</p></li>
+<li><p>Coverage assessment follows established ontology quality thresholds: ≥80%: Excellent, ≥60%: Good, ≥40%: Moderate, ≥20%: Low, &lt;20%: Very low</p></li>
+<li><p>Classes are displayed with their preferred labels (skos:prefLabel or rdfs:label) when available</p></li>
+<li><p>Template export generates valid Turtle syntax for adding missing altLabels</p></li>
+<li><p>Uses argparse for command-line interface, not direct function parameters</p></li>
+</ul>
+</section>
+<section id="llm-usage-declaration">
+<h2>LLM Usage Declaration<a class="headerlink" href="#llm-usage-declaration" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Claude AI (Sonnet 4) was employed chiefly to support documentation efforts</p></li>
+</ul>
+<p class="rubric">Examples</p>
+<dl class="simple">
+<dt>Basic usage:</dt><dd><p>python script.py ontology.ttl</p>
+</dd>
+<dt>Show only summary:</dt><dd><p>python script.py ontology.ttl –show summary</p>
+</dd>
+<dt>Export template for missing labels:</dt><dd><p>python script.py ontology.ttl –export-template missing_labels.ttl</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Onto_Assessment.metrics.get_properties_missing_domain_and_range.html" class="btn btn-neutral float-left" title="Onto_Assessment.metrics.get_properties_missing_domain_and_range" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Onto_Assessment.metrics.mainDefCheck_v_0_0_1.html" class="btn btn-neutral float-right" title="Onto_Assessment.metrics.mainDefCheck_v_0_0_1" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Rishabh Kundu, Van Tran, Redad Mehdi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
