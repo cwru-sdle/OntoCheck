@@ -11,7 +11,7 @@ def main():
     keyword for running all available metrics. It then calls the primary
     `run_ontology_assessment` function with the user-provided arguments.
 
-    __author__ = "Redad Mehdi"
+    Author = "Redad Mehdi"
     """
 
     parser = argparse.ArgumentParser(

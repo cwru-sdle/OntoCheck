@@ -49,7 +49,7 @@ def run_ontology_assessment(ttl_file, metrics, output_log_file="assessment.log",
         output_csv_file (str, optional): The file path for the output CSV file
             containing the assessment scores. Defaults to "assessment_scores.csv".
 
-    __author__ = "Redad Mehdi"
+    Author = "Redad Mehdi"
     """
     logging.basicConfig(
         filename=output_log_file,
