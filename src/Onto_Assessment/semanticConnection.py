@@ -1,40 +1,48 @@
+"""
+mainSemanticConnection_v_0_0_1 metric implementation.
+Extracted from: /mnt/vstor/CSE_MSE_RXF131/cradle-members/mds3/mxm1684/Git/ontologyassessment/Scripts/Rishabh/SemanticConnection.py
+"""
+
 from .helpers.helpers import _analyze_hierarchy_connections, _build_class_hierarchy, _find_all_named_classes, _find_root_classes, _is_connected_to_higher_ontology, _print_hierarchy_with_connection
 from collections import defaultdict
 from rdflib import Graph, RDFS, RDF, OWL, URIRef
-import argparse
 
-def mainSemanticConnection_v_0_0_1():
+def mainSemanticConnection_v_0_0_1(ttl_file):
     """
     Ontology Semantic Connection Analysis
 
-    Analyze an OWL ontology in Turtle (ttl) format and assess the semantic connection of class hierarchies to established upper-level ontologies (specifically, Common Core Ontology and Basic Formal Ontology).
-    This main function parses command-line arguments, loads an ontology file, builds the complete class hierarchy, identifies root classes, and determines which hierarchy chains are semantically grounded in higher-level ontologies through naming convention analysis.
+    Analyze an OWL ontology in Turtle (ttl) format and assess the semantic connection of class hierarchies to established upper-level ontologies (specifically, Common Core Ontology and Basic Formal Ontology)
+
+    This main function loads an ontology file, builds the complete class hierarchy, identifies root classes, and determines which hierarchy chains are semantically grounded in higher-level ontologies through naming convention analysis
 
     Definitions
     -----------
     - Named classes: Classes with URIRef identifiers that are explicitly declared as owl:Class or rdfs:Class, or participate in rdfs:subClassOf relations
+    
     - Class hierarchy: The tree structure of classes connected via rdfs:subClassOf relationships
+
     - Root classes: Classes that have no parent classes, representing the top level of independent hierarchy trees
+
     - Semantic connection: Connection to higher-level ontologies (CCO/BFO) determined by URI prefix analysis (cco:, obo:bfo, bfo:)
+
     - Hierarchy chains: Complete trees of classes rooted at root classes, inheriting the connection status of their root
 
     Author: Rishabh Kundu
     Version: 0.0.1
 
-    Command Line Arguments
-    ----------------------
-    ttl_file : str (positional)
-        Path to the ontology Turtle (.ttl) file to analyze.
+    Parameters
+    ----------
+    ttl_file : str
+        Path to the ontology Turtle (.ttl) file to analyze
 
     Returns
     -------
     None
-        This function does not (directly) return values. It prints comprehensive hierarchy analysis to terminal/CLI. The function may exit early on errors (file not found, parsing errors, no classes found, or no hierarchy relationships found).
+        This function does not (directly) return values. It prints comprehensive hierarchy analysis to terminal/CLI. The function may exit early on errors (file not found, parsing errors, no classes found, or no hierarchy relationships found)
 
     Output Information
-    ------------------
+    -----------------
     When executed successfully, the analysis provides:
-
     - Total number of named classes
     - Number of classes with children (parent classes)
     - Total parent-child relationships
@@ -44,9 +52,8 @@ def mainSemanticConnection_v_0_0_1():
     - Complete hierarchical tree view with connection status indicators
 
     Error Handling
-    --------------
+    -------------
     The function handles several error conditions:
-
     - FileNotFoundError: When the specified TTL file cannot be found
     - Parsing errors: When the TTL file cannot be parsed as valid Turtle
     - Empty ontology: When no named classes are found
@@ -61,32 +68,27 @@ def mainSemanticConnection_v_0_0_1():
 
     LLM Usage Declaration
     ---------------------
+
     - Claude AI (Sonnet 4) was employed chiefly to support documentation efforts
 
     Examples
     --------
-    Basic usage::
-
+    Basic usage:
         python script.py ontology.ttl
     """
-    parser = argparse.ArgumentParser(
-        description="Extracts and displays the class hierarchy from an ontology file."
-    )
-    parser.add_argument("ttl_file", help="Path to the ontology .ttl file.")
-    args = parser.parse_args()
 
     g = Graph()
     try:
-        print(f"Parsing file: {args.ttl_file}...")
+        print(f"Parsing file: {ttl_file}...")
         # Bind common prefixes for cleaner output (future users can add more here)
         g.bind("mds", "https://cwrusdle.bitbucket.io/mds/")
         g.bind("cco", "https://www.commoncoreontologies.org/")
         g.bind("obo", "http://purl.obolibrary.org/obo/")
         g.bind("owl", "http://www.w3.org/2002/07/owl#")
         g.bind("rdfs", "http://www.w3.org/2000/01/rdf-schema#")
-        g.parse(args.ttl_file, format="turtle")
+        g.parse(ttl_file, format="turtle")
     except FileNotFoundError:
-        print(f"Error: The file '{args.ttl_file}' was not found.")
+        print(f"Error: The file '{ttl_file}' was not found.")
         return
     except Exception as e:
         print(f"Error: An error occurred while parsing the TTL file: {e}")
@@ -144,7 +146,7 @@ def mainSemanticConnection_v_0_0_1():
 
     # Display results in another format
     #Other output forms can be displayed together with this only one by adding something like "both"
-    #if args.format in ["tree"]: 
+    
         print("\n--- Hierarchical Tree View with Connection Status ---")
         
         if root_classes:

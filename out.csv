@@ -1,0 +1,13 @@
+Metric,Score,Status
+altLabelCheck,,Success
+externalLinks,0.0893854748603352,Success
+isolatedElements,"{'Number of isolated classes': {3}, 'Proportion of isolated classes': {0.05454545454545454}, 'Number of isolated properties': {9}, 'Proportion of isolated properties': {1.0}}",Success
+humanLicense,0,Success
+rdfDump,0,Success
+sparqlEndpoint,0,Success
+classConnections,9,Success
+definitionCheck,,Success
+duplicateLabels,0,Success
+missingDomainRange,"{'count_missing_domain': 9, 'properties_missing_domain': [rdflib.term.URIRef('http://purl.obolibrary.org/obo/BFO_0000197'), rdflib.term.URIRef('https://www.commoncoreontologies.org/ont00001857'), rdflib.term.URIRef('http://purl.obolibrary.org/obo/BFO_0000084'), rdflib.term.URIRef('https://www.commoncoreontologies.org/ont00001863'), rdflib.term.URIRef('https://www.commoncoreontologies.org/ont00001916'), rdflib.term.URIRef('https://www.commoncoreontologies.org/ont00001769'), rdflib.term.URIRef('http://purl.obolibrary.org/obo/BFO_0000171'), rdflib.term.URIRef('http://purl.obolibrary.org/obo/BFO_0000057'), rdflib.term.URIRef('https://www.commoncoreontologies.org/ont00001986')], 'count_missing_range': 9, 'properties_missing_range': [rdflib.term.URIRef('http://purl.obolibrary.org/obo/BFO_0000197'), rdflib.term.URIRef('https://www.commoncoreontologies.org/ont00001857'), rdflib.term.URIRef('http://purl.obolibrary.org/obo/BFO_0000084'), rdflib.term.URIRef('https://www.commoncoreontologies.org/ont00001863'), rdflib.term.URIRef('https://www.commoncoreontologies.org/ont00001916'), rdflib.term.URIRef('https://www.commoncoreontologies.org/ont00001769'), rdflib.term.URIRef('http://purl.obolibrary.org/obo/BFO_0000171'), rdflib.term.URIRef('http://purl.obolibrary.org/obo/BFO_0000057'), rdflib.term.URIRef('https://www.commoncoreontologies.org/ont00001986')]}",Success
+leafNodeCheck,,Success
+semanticConnection,,Success

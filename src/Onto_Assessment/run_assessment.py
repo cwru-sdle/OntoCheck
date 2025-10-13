@@ -1,6 +1,7 @@
 import logging
-import csv
 import sys
+import csv
+
 from .altLabelCheck import mainAltLabelCheck_v_0_0_1
 from .check_external_data_provider_links_ttl import check_external_data_provider_links_ttl
 from .check_for_isolated_elements import check_for_isolated_elements
@@ -15,7 +16,6 @@ from .leafNodeCheck import mainLeafNodeCheck_v_0_0_1
 from .semanticConnection import mainSemanticConnection_v_0_0_1
 
 
-# --- This dictionary maps the user-friendly names to the functions ---
 METRIC_DISPATCHER = {
     "altLabelCheck": mainAltLabelCheck_v_0_0_1,
     "externalLinks": check_external_data_provider_links_ttl,
@@ -31,41 +31,47 @@ METRIC_DISPATCHER = {
     "semanticConnection": mainSemanticConnection_v_0_0_1,
 }
 
-
-def run_ontology_assessment(ttl_file, metrics, output_log_file="assessment.log", output_csv_file="assessment_scores.csv"):
-    """Runs a series of ontology assessment metrics on a given TTL file.
-
-    This function orchestrates the assessment process. It configures logging to
-    capture detailed information to both a file and the console. It iterates
-    through a list of specified metrics, executes them, and records the results.
-    Finally, it compiles the outcomes into a CSV file for easy analysis.
+def run_ontology_assessment(
+    ttl_file,
+    metrics,
+    output_log_file="assessment.log",
+    output_csv_file="assessment_scores.csv"
+):
+    """Runs ontology assessment metrics on a given TTL file.
 
     Args:
-        ttl_file (str): The file path to the input Turtle (.ttl) ontology file.
-        metrics (list[str]): A list of metric names to execute. These names
-            must correspond to the keys in the METRIC_DISPATCHER dictionary.
-        output_log_file (str, optional): The file path for the output log file.
-            Defaults to "assessment.log".
-        output_csv_file (str, optional): The file path for the output CSV file
-            containing the assessment scores. Defaults to "assessment_scores.csv".
-
-    Author = "Redad Mehdi"
+        ttl_file (str): Path to the input Turtle (.ttl) ontology file.
+        metrics (list[str] | str): List of metric names to execute, or "all"
+            to run every available metric in METRIC_DISPATCHER.
+        output_log_file (str, optional): Output log file path. Defaults to "assessment.log".
+        output_csv_file (str, optional): Output CSV file path. Defaults to "assessment_scores.csv".
     """
     logging.basicConfig(
         filename=output_log_file,
         level=logging.INFO,
-        format='%(asctime)s - %(levelname)s - %(message)s',
-        filemode='w'
+        format="%(asctime)s - %(levelname)s - %(message)s",
+        filemode="w"
     )
     console_handler = logging.StreamHandler(sys.stdout)
     logging.getLogger().addHandler(console_handler)
 
+    # 🔹 Handle "all" keyword
+    if metrics == "all":
+        metrics_to_run = list(METRIC_DISPATCHER.keys())
+        logging.info("Running all available metrics.")
+    elif isinstance(metrics, (list, set, tuple)):
+        metrics_to_run = list(metrics)
+    else:
+        raise ValueError(
+            "The 'metrics' argument must be a list of metric names or the string 'all'."
+        )
+
     logging.info(f"--- Starting ontology assessment for: {ttl_file} ---")
-    logging.info(f"Metrics to run: {', '.join(metrics)}")
+    logging.info(f"Metrics to run: {', '.join(metrics_to_run)}")
 
     results = []
 
-    for metric_name in metrics:
+    for metric_name in metrics_to_run:
         if metric_name not in METRIC_DISPATCHER:
             logging.warning(f"Metric '{metric_name}' not found. Skipping.")
             continue
@@ -77,13 +83,12 @@ def run_ontology_assessment(ttl_file, metrics, output_log_file="assessment.log",
             score = metric_function(ttl_file)
             logging.info(f"Metric '{metric_name}' completed successfully.")
             results.append({"Metric": metric_name, "Score": score, "Status": "Success"})
-
         except Exception as e:
             logging.error(f"Metric '{metric_name}' failed with an error: {e}", exc_info=True)
             results.append({"Metric": metric_name, "Score": "N/A", "Status": f"Error: {e}"})
 
     try:
-        with open(output_csv_file, 'w', newline='', encoding='utf-utf-8') as csvfile:
+        with open(output_csv_file, "w", newline="", encoding="utf-8") as csvfile:
             fieldnames = ["Metric", "Score", "Status"]
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
