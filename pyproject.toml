@@ -1,20 +1,15 @@
-# This section tells packaging tools like pip how to build your project.
 [build-system]
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
-# This section contains all the metadata about your package.
 [project]
-name = "OntoAssessment"
-version = "0.0.3"
+name = "ontoassess"
+version = "0.0.1"
 authors = [
-  { name="Rishabh Kundu", email="rxk857@case.edu" },
-  { name="Van Tran", email="vxt101@case.edu" },
-  { name="Redad Mehdi", email="mxm1684@case.edu" },
+  { name = "Rishabh Kundu, Van Tran, Redad Mehdi", email = "mxm1684@case.edu" },
 ]
-
 maintainers = [
-  { name="Redad Mehdi", email="mxm1684@case.edu" },
+  { name = "Redad Mehdi", email = "mxm1684@case.edu" },
 ]
 description = "A package for assessing the quality and structure of ontologies."
 readme = "README.md"
@@ -26,8 +21,6 @@ classifiers = [
     "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering",
 ]
-
-# The libraries your code needs to run.
 dependencies = [
   "rdflib",
   "networkx",
@@ -39,4 +32,8 @@ dependencies = [
 "Documentation" = "https://ontology-assessment.readthedocs.io"
 
 [project.scripts]
-onto-assessment = "Onto_Assessment.cli:main"
+onto-assessment = "ontoassess.cli:main"  # ← Updated
+
+# Add this section to tell setuptools where to find packages
+[tool.setuptools.packages.find]
+where = ["src"]
