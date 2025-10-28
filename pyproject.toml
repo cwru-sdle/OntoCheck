@@ -28,7 +28,7 @@ dependencies = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/redad110/Ontology-Assessment"
+"Homepage" = "https://github.com/cwru-sdle/OntoCheck"
 "Documentation" = "https://ontology-assessment.readthedocs.io"
 
 [project.scripts]

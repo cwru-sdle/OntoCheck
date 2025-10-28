@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ontocheck.check_rdf_dump_accessibility_ttl &mdash; OntoCheck 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=86f27845" />
+
+  
+  
+        <script src="../../_static/jquery.js?v=8dae8fb0"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            OntoCheck
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">OntoCheck</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">OntoCheck</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ontocheck.check_rdf_dump_accessibility_ttl</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ontocheck.check_rdf_dump_accessibility_ttl</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">rdflib</span> <span class="kn">import</span> <span class="n">OWL</span><span class="p">,</span> <span class="n">RDFS</span><span class="p">,</span> <span class="n">SKOS</span>
+<span class="kn">import</span> <span class="nn">rdflib</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<div class="viewcode-block" id="check_rdf_dump_accessibility_ttl">
+<a class="viewcode-back" href="../../modules.html#ontocheck.check_rdf_dump_accessibility_ttl">[docs]</a>
+<span class="k">def</span> <span class="nf">check_rdf_dump_accessibility_ttl</span><span class="p">(</span><span class="n">ttl_file</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A2 - RDF dump accessibility</span>
+<span class="sd">    </span>
+<span class="sd">    Evaluates the accessibility of RDF data dumps referenced in a TTL file</span>
+<span class="sd">    by attempting to access each discovered dump URL via HTTP HEAD requests.</span>
+<span class="sd">    </span>
+<span class="sd">    This metric assesses whether the raw RDF data is available for download,</span>
+<span class="sd">    which is important for data consumers who need offline access or bulk</span>
+<span class="sd">    processing capabilities.</span>
+<span class="sd">    </span>
+<span class="sd">    Author: Redad Mehdi</span>
+<span class="sd">    Version: 0.0.1</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    ttl_file : str</span>
+<span class="sd">        Path to the Turtle (.ttl) file to analyze</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    float</span>
+<span class="sd">        Ratio of accessible RDF dumps (0.0 to 1.0)</span>
+<span class="sd">        - 0.0: No accessible dumps found</span>
+<span class="sd">        - 1.0: All discovered dumps are accessible</span>
+<span class="sd">        </span>
+<span class="sd">    Notes:</span>
+<span class="sd">    ------</span>
+<span class="sd">    The function identifies potential dump URLs by looking for common RDF</span>
+<span class="sd">    file extensions (.rdf, .ttl, .nt, .n3, .owl, .jsonld) in referenced URLs.</span>
+<span class="sd">    </span>
+<span class="sd">    Example:</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; score = check_rdf_dump_accessibility_ttl(&#39;dataset.ttl&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;RDF dump accessibility score: {score}&quot;)</span>
+<span class="sd">    </span>
+<span class="sd">    References:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    Zaveri, A., Rula, A., Maurino, A., Pietrobon, R., Lehmann, J., &amp; Auer, S. </span>
+<span class="sd">    (2015). Quality assessment for Linked Data: A Survey: A systematic literature </span>
+<span class="sd">    review and conceptual framework. Semantic Web, 7(1), 63-93.</span>
+<span class="sd">    </span>
+<span class="sd">    Flemming, A. (2011). Qualitätsmerkmale von Linked Data-veröffentlichenden </span>
+<span class="sd">    Datenquellen. Diplomarbeit (Quality Criteria for Linked Data Sources).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">rdflib</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">ttl_file</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;turtle&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Common predicates that might point to data dumps</span>
+    <span class="n">dump_predicates</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">rdflib</span><span class="o">.</span><span class="n">URIRef</span><span class="p">(</span><span class="s2">&quot;http://rdfs.org/ns/void#dataDump&quot;</span><span class="p">),</span>
+        <span class="n">rdflib</span><span class="o">.</span><span class="n">URIRef</span><span class="p">(</span><span class="s2">&quot;http://www.w3.org/ns/dcat#downloadURL&quot;</span><span class="p">),</span>
+        <span class="n">rdflib</span><span class="o">.</span><span class="n">URIRef</span><span class="p">(</span><span class="s2">&quot;http://www.w3.org/ns/dcat#accessURL&quot;</span><span class="p">),</span>
+        <span class="n">rdflib</span><span class="o">.</span><span class="n">URIRef</span><span class="p">(</span><span class="s2">&quot;http://xmlns.com/foaf/0.1/homepage&quot;</span><span class="p">)</span>  <span class="c1"># Sometimes dumps linked from homepage</span>
+    <span class="p">]</span>
+    
+    <span class="n">dump_urls</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">pred</span> <span class="ow">in</span> <span class="n">dump_predicates</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">triples</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="kc">None</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">rdflib</span><span class="o">.</span><span class="n">URIRef</span><span class="p">):</span>
+                <span class="n">url_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+                <span class="c1"># Filter for likely dump files (common RDF formats)</span>
+                <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">ext</span> <span class="ow">in</span> <span class="n">url_str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;.rdf&#39;</span><span class="p">,</span> <span class="s1">&#39;.ttl&#39;</span><span class="p">,</span> <span class="s1">&#39;.nt&#39;</span><span class="p">,</span> <span class="s1">&#39;.n3&#39;</span><span class="p">,</span> <span class="s1">&#39;.owl&#39;</span><span class="p">,</span> <span class="s1">&#39;.jsonld&#39;</span><span class="p">]):</span>
+                    <span class="n">dump_urls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">url_str</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">dump_urls</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    
+    <span class="c1"># Test accessibility of found dump URLs</span>
+    <span class="n">accessible_dumps</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">dump_urls</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+                <span class="n">accessible_dumps</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">continue</span>
+    
+    <span class="k">return</span> <span class="n">accessible_dumps</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">dump_urls</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Rishabh Kundu, Van Tran, Redad Mehdi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
