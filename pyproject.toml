@@ -29,7 +29,7 @@ dependencies = [
 
 [project.urls]
 "Homepage" = "https://github.com/cwru-sdle/OntoCheck"
-"Documentation" = "https://ontology-assessment.readthedocs.io"
+"Documentation" = "https://ontocheck.readthedocs.io/en/latest/"
 
 [project.scripts]
 ontocheck = "ontocheck.cli:main"
