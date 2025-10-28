@@ -1,6 +1,7 @@
 from rdflib import OWL, SKOS, RDF, RDFS, Graph, Namespace, DCAT, URIRef, BNode
 import networkx as nx
 import rdflib
+from .helpers.helpers import _parse_rdf_list, _constructed_class_has_atomic_class, _get_operands
 
 def check_for_isolated_elements(ttl_file: str):
     """
@@ -23,7 +24,7 @@ def check_for_isolated_elements(ttl_file: str):
       rdfs:subPropertyOf, owl:inverseOf, owl:propertyDisjointWith, or owl:equivalentProperty.
 
     Author: Van Tran
-    Version: 0.1
+    Version: 0.0.1
 
     Parameters
     ----------
@@ -94,21 +95,21 @@ def check_for_isolated_elements(ttl_file: str):
                 connected_atomic.add(o)
             else:
                 # If constructed classes involved, check their atomic content
-                if constructed_class_has_atomic_class(s, g, atomic_classes):
+                if _constructed_class_has_atomic_class(s, g, atomic_classes):
                     if isinstance(o, URIRef) and o in atomic_classes:
                         connected_atomic.add(o)
-                if constructed_class_has_atomic_class(o, g, atomic_classes):
+                if _constructed_class_has_atomic_class(o, g, atomic_classes):
                     if isinstance(s, URIRef) and s in atomic_classes:
                         connected_atomic.add(s)
 
     # Consider domain and range usage of properties
     for prop in properties:
         for domain in g.objects(prop, RDFS.domain):
-            if constructed_class_has_atomic_class(domain, g, atomic_classes):
+            if _constructed_class_has_atomic_class(domain, g, atomic_classes):
                 if isinstance(domain, URIRef):
                     connected_atomic.add(domain)
         for range_ in g.objects(prop, RDFS.range):
-            if constructed_class_has_atomic_class(range_, g, atomic_classes):
+            if _constructed_class_has_atomic_class(range_, g, atomic_classes):
                 if isinstance(range_, URIRef):
                     connected_atomic.add(range_)
 

@@ -3,10 +3,10 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "ontoassess"
+name = "OntoCheck"
 version = "0.0.1"
 authors = [
-  { name = "Rishabh Kundu, Van Tran, Redad Mehdi", email = "mxm1684@case.edu" },
+  { name = "Rishabh Kundu, Van Tran, Redad Mehdi,Erika I. Barcelos, Alp Sehirlioglu, Yinghui Wu, Roger H. French", email = "mxm1684@case.edu" },
 ]
 maintainers = [
   { name = "Redad Mehdi", email = "mxm1684@case.edu" },
@@ -32,8 +32,7 @@ dependencies = [
 "Documentation" = "https://ontology-assessment.readthedocs.io"
 
 [project.scripts]
-onto-assessment = "ontoassess.cli:main"  # ← Updated
+ontocheck = "ontocheck.cli:main"
 
-# Add this section to tell setuptools where to find packages
 [tool.setuptools.packages.find]
 where = ["src"]

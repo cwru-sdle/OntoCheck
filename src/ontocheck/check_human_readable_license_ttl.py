@@ -15,7 +15,7 @@ def check_human_readable_license_ttl(ttl_file):
     Commons, GPL, MIT, Apache, and BSD.
     
     Author: Redad Mehdi
-    Version: 0.1
+    Version: 0.0.1
     
     Parameters:
     -----------

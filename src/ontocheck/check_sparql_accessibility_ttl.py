@@ -14,7 +14,7 @@ def check_sparql_accessibility_ttl(ttl_file):
     query interfaces.
     
     Author: Redad Mehdi
-    Version: 0.1
+    Version: 0.0.1
     
     Parameters:
     -----------

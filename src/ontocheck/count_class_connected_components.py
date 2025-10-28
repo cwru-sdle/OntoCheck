@@ -19,7 +19,7 @@ def count_class_connected_components(ttl_file_path: str) -> int:
     axioms pointing to blank nodes (i.e. constructed classes) are excluded.
 
     Author: Van Tran
-    Version: 0.1
+    Version: 0.0.1
 
     Parameters
     ----------

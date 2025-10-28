@@ -1,0 +1,129 @@
+Metadata-Version: 2.4
+Name: ontocheck
+Version: 0.1.1
+Summary: A package for assessing the quality and structure of ontologies.
+Author-email: "Rishabh Kundu, Van Tran, Redad Mehdi,Erika I. Barcelos, Alp Sehirlioglu, Yinghui Wu, Roger H. French" <mxm1684@case.edu>
+Maintainer-email: Redad Mehdi <mxm1684@case.edu>
+Project-URL: Homepage, https://github.com/redad110/Ontology-Assessment
+Project-URL: Documentation, https://ontology-assessment.readthedocs.io
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: rdflib
+Requires-Dist: networkx
+Requires-Dist: requests
+Dynamic: license-file
+
+# Introduction
+
+MDS-OntoCheck is a Py package that provides a suite of metrics for evaluating ontology quality, usability, and compliance. It aims to support both developers by revealing potential quality gaps and users by assessing an ontology’s fitness for use across different domains.
+
+-> Motivation
+
+While there are established approaches for assessing linked-data quality and FAIR data compliance, there are no widely accepted standards dedicated specifically to ontology assessment. Many existing frameworks lack maintenance, and comprehensive semantic data management metrics remain underdeveloped.
+
+-> What MDS-OntoCheck Does
+
+MDS-OntoCheck builds on existing concepts rather than reinventing them. It brings together:
+
+    - Linked-data assessment principles
+
+    - FAIR-data compliance indicators
+
+    - Semantic data management metrics
+
+All implemented within a maintainable and user-friendly Py environment.
+
+-> Key Features
+
+    – combines adapted metrics from literature with new, experience-based measures
+
+    – users can select which metrics to apply
+
+    – generates structured evaluation summaries for easy review
+
+    – ongoing development of feedback mechanisms to refine and expand metrics
+
+-> Our Goal
+
+MDS-OntoCheck strives to promote transparency and quality in ontology development. By integrating principles from linked-data and FAIR-data assessments, we aim to foster a foundation for future standardization in ontology evaluation.
+
+We welcome feedback and contributions from the community as we continue to expand the metrics and tools offered in MDS-OntoCheck.
+
+This tool is actively developed and maintained by the **SDLE Research Center at Case Western Reserve University**.
+
+---
+
+## ✍️ Authors
+
+* Rishabh Kundu
+* Redad Mehdi
+* Van Tran
+
+---
+
+## 🏢 Affiliation
+
+Materials Data Science for Stockpile Stewardship Center of Excellence, Cleveland, OH 44106, USA
+
+---
+
+## 🐍 Installation
+
+```bash
+pip install <PACKAGE_NAME>
+```
+
+---
+
+## ⏰ Quick Start
+
+```bash
+<PACKAGE_NAME> <COMMAND> 
+```
+
+---
+
+## 🛠️ Available Metrics in v0.0.1
+
+Name: 
+Version:
+Description:
+
+For more detail visit <LINK>
+
+
+    "altLabelCheck": mainAltLabelCheck_v_0_0_1,
+    "externalLinks": check_external_data_provider_links_ttl,
+    "isolatedElements": check_for_isolated_elements,
+    "humanLicense": check_human_readable_license_ttl,
+    "rdfDump": check_rdf_dump_accessibility_ttl,
+    "sparqlEndpoint": check_sparql_accessibility_ttl,
+    "classConnections": count_class_connected_components,
+    "definitionCheck": mainDefCheck_v_0_0_1,
+    "duplicateLabels": find_duplicate_labels_from_graph,
+    "missingDomainRange": get_properties_missing_domain_and_range,
+    "leafNodeCheck": mainLeafNodeCheck_v_0_0_1,
+    "semanticConnection": mainSemanticConnection_v_0_0_1,
+
+
+## Example runs
+
+
+
+
+## Acknowledge
+
+MDS^3 money organization sources
+
+
+## How to  cite package
+
+If you use <package_name> in your work please cite ...
+
+
+

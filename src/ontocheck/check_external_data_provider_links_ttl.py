@@ -14,7 +14,7 @@ def check_external_data_provider_links_ttl(ttl_file, base_namespace=None):
     representing a key principle of Linked Data publishing.
     
     Author: Redad Mehdi
-    Version: 0.1
+    Version: 0.0.1
     
     Parameters:
     -----------

@@ -5,7 +5,7 @@ Helper functions extracted from the codebase.
 from collections import defaultdict
 from rdflib import Graph, RDFS, RDF, OWL, SKOS
 from rdflib import Graph, RDFS, RDF, OWL, URIRef
-from rdflib import Graph, RDFS, RDF, OWL, URIRef, Namespace
+from rdflib import Graph, RDFS, RDF, OWL, URIRef, Namespace, BNode
 import argparse
 
 # From: /mnt/vstor/CSE_MSE_RXF131/cradle-members/mds3/mxm1684/Git/ontologyassessment/Scripts/Rishabh/AltLabelCheck.py
@@ -754,3 +754,101 @@ def _print_summary_statistics(graph, classes_with_definition, classes_without_de
     
     print(f"\nAssessment: {assessment}")
 
+def _parse_rdf_list(node, graph):
+    """
+    Parses an RDF list starting at the given node into a Python list.
+
+    Parameters
+    ----------
+    node : rdflib.term.Identifier
+        The starting node of the RDF list (usually a blank node).
+    graph : rdflib.Graph
+        The RDF graph to parse the list from.
+
+    Returns
+    -------
+    list
+        A list of RDF nodes contained in the RDF collection.
+    """
+    items = []
+    while node and node != RDF.nil:
+        firsts = list(graph.objects(node, RDF.first))
+        if not firsts:
+            break
+        items.append(firsts[0])
+        rests = list(graph.objects(node, RDF.rest))
+        node = rests[0] if rests else None
+    return items
+
+def _get_operands(node, graph):
+    """
+    Extracts operands of OWL class constructors (unionOf, intersectionOf, complementOf) from a given node.
+
+    Parameters
+    ----------
+    node : rdflib.term.Identifier
+        The node representing a class expression.
+    graph : rdflib.Graph
+        The RDF graph containing the ontology.
+
+    Returns
+    -------
+    list
+        A list of operand nodes that compose the class expression.
+    """
+    operands = []
+    # Handle unionOf and intersectionOf which are RDF lists
+    for constructor in [OWL.unionOf, OWL.intersectionOf]:
+        for collection_node in graph.objects(node, constructor):
+            operands.extend(_parse_rdf_list(collection_node, graph))
+    # complementOf has a single operand
+    for comp_node in graph.objects(node, OWL.complementOf):
+        operands.append(comp_node)
+    return operands
+
+def _constructed_class_has_atomic_class(node, graph, atomic_classes, visited=None):
+    """
+    Recursively checks whether a class expression (named or anonymous) contains
+    at least one atomic named class inside.
+
+    Parameters
+    ----------
+    node : rdflib.term.Identifier
+        The class expression node to check.
+    graph : rdflib.Graph
+        The RDF graph containing the ontology.
+    atomic_classes : set
+        A set of URIRefs that are identified as atomic named classes.
+    visited : set, optional
+        A set of nodes already visited to avoid cycles (default is None).
+
+    Returns
+    -------
+    bool
+        True if the class expression contains at least one atomic named class,
+        False otherwise.
+    """
+    if visited is None:
+        visited = set()
+    if node in visited:
+        return False
+    visited.add(node)
+
+    # If node is an atomic named class, return True
+    if isinstance(node, URIRef) and node in atomic_classes:
+        return True
+
+    # Check operands if this node is constructed via OWL constructors
+    operands = _get_operands(node, graph)
+    if operands:
+        for op in operands:
+            if _constructed_class_has_atomic_class(op, graph, atomic_classes, visited):
+                return True
+
+    # If node is a blank node, recursively check all objects linked to it
+    if isinstance(node, BNode):
+        for _, o in graph.predicate_objects(node):
+            if _constructed_class_has_atomic_class(o, graph, atomic_classes, visited):
+                return True
+
+    return False

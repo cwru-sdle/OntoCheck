@@ -17,7 +17,7 @@ def find_duplicate_labels_from_graph(ttl_file):
         duplicates (dict): dictionary of URIs of duplicated terms
 
     Author: Van Tran
-    Version: 0.1
+    Version: 0.0.1
 
     References
     ----------

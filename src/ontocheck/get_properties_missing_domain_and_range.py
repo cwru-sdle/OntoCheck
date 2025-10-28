@@ -10,7 +10,7 @@ def get_properties_missing_domain_and_range(ttl_file_path: str):
     that are missing domain or range declarations.
 
     Author: Van Tran
-    Version: 0.1
+    Version: 0.0.1
 
     Parameters
     ----------
