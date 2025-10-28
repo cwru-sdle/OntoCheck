@@ -1,6 +1,12 @@
 LICENSE
 README.md
 pyproject.toml
+src/OntoCheck.egg-info/PKG-INFO
+src/OntoCheck.egg-info/SOURCES.txt
+src/OntoCheck.egg-info/dependency_links.txt
+src/OntoCheck.egg-info/entry_points.txt
+src/OntoCheck.egg-info/requires.txt
+src/OntoCheck.egg-info/top_level.txt
 src/ontocheck/__init__.py
 src/ontocheck/altLabelCheck.py
 src/ontocheck/check_external_data_provider_links_ttl.py
@@ -16,11 +22,5 @@ src/ontocheck/get_properties_missing_domain_and_range.py
 src/ontocheck/leafNodeCheck.py
 src/ontocheck/run_assessment.py
 src/ontocheck/semanticConnection.py
-src/ontocheck.egg-info/PKG-INFO
-src/ontocheck.egg-info/SOURCES.txt
-src/ontocheck.egg-info/dependency_links.txt
-src/ontocheck.egg-info/entry_points.txt
-src/ontocheck.egg-info/requires.txt
-src/ontocheck.egg-info/top_level.txt
 src/ontocheck/helpers/__init__.py
 src/ontocheck/helpers/helpers.py
