@@ -1,8 +1,8 @@
 Metadata-Version: 2.4
 Name: OntoCheck
-Version: 0.0.1
+Version: 0.0.1.2
 Summary: A package for assessing the quality and structure of ontologies.
-Author-email: "Rishabh Kundu, Van Tran, Redad Mehdi,Erika I. Barcelos, Alp Sehirlioglu, Yinghui Wu, Roger H. French" <mxm1684@case.edu>
+Author-email: "Rishabh Kundu, Van Tran, Redad Mehdi, Erika I. Barcelos, Alp Sehirlioglu, Yinghui Wu, Roger H. French" <rxf131@case.edu>
 Maintainer-email: Redad Mehdi <mxm1684@case.edu>
 License: Copyright 2025 SDLE Lab
         
@@ -29,7 +29,7 @@ Dynamic: license-file
 
 # Introduction
 
-OntoCheck is a Py package that provides a suite of metrics for evaluating ontology quality, usability, and compliance. It aims to support both developers by revealing potential quality gaps and users by assessing an ontology’s fitness for use across different domains.
+OntoCheck is a Py package that provides a suite of metrics for evaluating ontology quality, usability, and compliance. It aims to support both developers by revealing potential quality gaps and users by assessing an ontology’s fitness for use across different domains. In order for ontocheck to work, the turtle (.ttl) file needs to be free of syntax errors. We are also building tools that will help correct a ttl file.
 
 -> Motivation
 
@@ -104,7 +104,7 @@ ontocheck -h
 ## 🛠️ Available Metrics in v0.0.1
 
 
-For more detail visit our [Read The Docs website](https://ontology-assessment.readthedocs.io)
+For more detail visit our [Read The Docs website](https://ontocheck.readthedocs.io/en/latest/)
 
     "altLabelCheck": mainAltLabelCheck_v_0_0_1,
     "externalLinks": check_external_data_provider_links_ttl_v_0_0_1,

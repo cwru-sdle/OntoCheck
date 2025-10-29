@@ -1,6 +1,6 @@
 # Introduction
 
-OntoCheck is a Py package that provides a suite of metrics for evaluating ontology quality, usability, and compliance. It aims to support both developers by revealing potential quality gaps and users by assessing an ontology’s fitness for use across different domains.
+OntoCheck is a Py package that provides a suite of metrics for evaluating ontology quality, usability, and compliance. It aims to support both developers by revealing potential quality gaps and users by assessing an ontology’s fitness for use across different domains. In order for ontocheck to work, the turtle (.ttl) file needs to be free of syntax errors. We are also building tools that will help correct a ttl file.
 
 -> Motivation
 
@@ -75,7 +75,7 @@ ontocheck -h
 ## 🛠️ Available Metrics in v0.0.1
 
 
-For more detail visit our [Read The Docs website](https://ontology-assessment.readthedocs.io)
+For more detail visit our [Read The Docs website](https://ontocheck.readthedocs.io/en/latest/)
 
     "altLabelCheck": mainAltLabelCheck_v_0_0_1,
     "externalLinks": check_external_data_provider_links_ttl_v_0_0_1,
