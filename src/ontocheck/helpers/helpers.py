@@ -7,6 +7,33 @@ from rdflib import Graph, RDFS, RDF, OWL, SKOS
 from rdflib import Graph, RDFS, RDF, OWL, URIRef
 from rdflib import Graph, RDFS, RDF, OWL, URIRef, Namespace, BNode
 import argparse
+from spellchecker import SpellChecker
+import re
+
+spell = SpellChecker()
+ 
+def _spell_checker(text):
+    # 1. Replace underscores/hyphens with spaces
+    text = text.replace('_', ' ').replace('-', ' ')
+    
+    # 2. Split CamelCase and handle normal spaces/punctuation
+    tokens = re.findall(r'[A-Z]?[a-z]+|[A-Z]+(?=[A-Z][a-z]|$)|[a-z]+', text)
+
+    # 3. Filter (ignore chemical formulas, numbers, and single characters)
+    clean_tokens = [t for t in tokens if len(t) > 1 and not any(c.isdigit() for c in t)]
+
+    # 4. Identify misspelled tokens (count every occurrence)
+    misspelled_tokens = [t for t in clean_tokens if spell.unknown([t])]
+    
+    # Create the unique error mapping for this specific string
+    errors = {word: spell.correction(word) for word in set(misspelled_tokens)}
+    
+    return {
+        "original": text,
+        "checked_count": len(clean_tokens),
+        "error_count": len(misspelled_tokens),
+        "errors": errors
+    }
 
 # From: /mnt/vstor/CSE_MSE_RXF131/cradle-members/mds3/mxm1684/Git/ontologyassessment/Scripts/Rishabh/AltLabelCheck.py
 def _analyze_altlabel_coverage(graph, all_classes):

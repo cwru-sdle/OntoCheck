@@ -31,7 +31,7 @@ METRIC_DISPATCHER = {
     "leafNodeCheck": mainLeafNodeCheck_v_0_0_1,
     "semanticConnection": mainSemanticConnection_v_0_0_1,
     "mdsDesignCheck": mds_design_check_v_0_0_1,
-    "spell_check": spell_check_v_0_0_1
+    "spellCheck": spell_check_v_0_0_1
 }
 
 def run_ontology_assessment(
