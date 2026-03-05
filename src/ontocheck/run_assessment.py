@@ -14,7 +14,8 @@ from .find_duplicate_labels_from_graph import find_duplicate_labels_from_graph
 from .get_properties_missing_domain_and_range import get_properties_missing_domain_and_range
 from .leafNodeCheck import mainLeafNodeCheck_v_0_0_1
 from .semanticConnection import mainSemanticConnection_v_0_0_1
-
+from .mds_design_check import mds_design_check_v_0_0_1
+from .spell_check import spell_check_v_0_0_1
 
 METRIC_DISPATCHER = {
     "altLabelCheck": mainAltLabelCheck_v_0_0_1,
@@ -29,6 +30,8 @@ METRIC_DISPATCHER = {
     "missingDomainRange": get_properties_missing_domain_and_range,
     "leafNodeCheck": mainLeafNodeCheck_v_0_0_1,
     "semanticConnection": mainSemanticConnection_v_0_0_1,
+    "mdsDesignCheck": mds_design_check_v_0_0_1,
+    "spell_check": spell_check_v_0_0_1
 }
 
 def run_ontology_assessment(

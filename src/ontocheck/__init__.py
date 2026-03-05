@@ -10,6 +10,8 @@ from .find_duplicate_labels_from_graph import find_duplicate_labels_from_graph
 from .get_properties_missing_domain_and_range import get_properties_missing_domain_and_range
 from .leafNodeCheck import mainLeafNodeCheck_v_0_0_1
 from .semanticConnection import mainSemanticConnection_v_0_0_1
+from .mds_design_check import mds_design_check_v_0_0_1
+from .spell_check import spell_check_v_0_0_1
 from .run_assessment import run_ontology_assessment
 
 __all__ = [
@@ -25,5 +27,7 @@ __all__ = [
     "get_properties_missing_domain_and_range",
     "mainLeafNodeCheck_v_0_0_1",
     "mainSemanticConnection_v_0_0_1",
+    "mds_design_check_v_0_0_1",
+    "spell_check_v_0_0_1",
     "run_ontology_assessment"
 ]
