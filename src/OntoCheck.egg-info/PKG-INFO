@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: OntoCheck
-Version: 0.0.1.2
+Version: 0.0.1.5
 Summary: A package for assessing the quality and structure of ontologies.
 Author-email: "Rishabh Kundu, Van Tran, Redad Mehdi, Erika I. Barcelos, Alp Sehirlioglu, Yinghui Wu, Roger H. French" <rxf131@case.edu>
 Maintainer-email: Redad Mehdi <mxm1684@case.edu>
