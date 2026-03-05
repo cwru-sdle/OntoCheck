@@ -89,6 +89,8 @@ For more detail visit our [Read The Docs website](https://ontocheck.readthedocs.
     "missingDomainRange": get_properties_missing_domain_and_range_v_0_0_1,
     "leafNodeCheck": mainLeafNodeCheck_v_0_0_1,
     "semanticConnection": mainSemanticConnection_v_0_0_1,
+    "mdsDesignCheck": mds_design_check_v_0_0_1,
+    "spellCheck": spell_check_v_0_0_1
 
 
 ## Example runs in command
