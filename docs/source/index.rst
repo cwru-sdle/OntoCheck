@@ -13,7 +13,7 @@ This package provides tools for assessing the quality and characteristics of ont
    :caption: Contents:
 
    modules
-
+   ontocheck
 
 Indices and tables
 ==================
