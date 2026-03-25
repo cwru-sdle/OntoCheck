@@ -15,7 +15,7 @@ sys.path.insert(0, os.path.abspath('../../src'))
 project = 'OntoCheck'
 copyright = '2025, Rishabh Kundu, Van Tran, Redad Mehdi'
 author = 'Rishabh Kundu, Van Tran, Redad Mehdi'
-release = '0.0.1'
+release = '0.0.3.0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
