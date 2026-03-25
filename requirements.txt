@@ -3,3 +3,4 @@ sphinx
 rdflib
 networkx
 requests
+pyspellchecker
