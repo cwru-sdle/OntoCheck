@@ -16,6 +16,10 @@ from .leafNodeCheck import mainLeafNodeCheck_v_0_0_1
 from .semanticConnection import mainSemanticConnection_v_0_0_1
 from .mds_design_check import mds_design_check_v_0_0_1
 from .spell_check import spell_check_v_0_0_1
+from check_class_name_capital import mainClassNameCapitalCheck_v_0_0_1
+from check_class_name_space import mainClassNameSpaceCheck_v_0_0_1
+from check_label import mainLabelCheck_v_0_0_1
+from class_search import mainClassSearch_v_0_0_1
 
 METRIC_DISPATCHER = {
     "altLabelCheck": mainAltLabelCheck_v_0_0_1,
@@ -31,7 +35,11 @@ METRIC_DISPATCHER = {
     "leafNodeCheck": mainLeafNodeCheck_v_0_0_1,
     "semanticConnection": mainSemanticConnection_v_0_0_1,
     "mdsDesignCheck": mds_design_check_v_0_0_1,
-    "spellCheck": spell_check_v_0_0_1
+    "spellCheck": spell_check_v_0_0_1,
+    "classCapitalCheck": mainClassNameCapitalCheck_v_0_0_1,
+    "classSpaceCheck": mainClassNameSpaceCheck_v_0_0_1,
+    "checkLabel": mainLabelCheck_v_0_0_1,
+    "searchClass":mainClassSearch_v_0_0_1, 
 }
 
 def run_ontology_assessment(

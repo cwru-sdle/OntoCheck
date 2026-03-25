@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: OntoCheck
-Version: 0.0.2.0
+Version: 0.0.3.0
 Summary: A package for assessing the quality and structure of ontologies.
 Author-email: "Rishabh Kundu, Van Tran, Redad Mehdi, Erika I. Barcelos, Alp Sehirlioglu, Yinghui Wu, Roger H. French" <rxf131@case.edu>
 Maintainer-email: Redad Mehdi <mxm1684@case.edu>
@@ -107,17 +107,23 @@ ontocheck -h
 For more detail visit our [Read The Docs website](https://ontocheck.readthedocs.io/en/latest/)
 
     "altLabelCheck": mainAltLabelCheck_v_0_0_1,
-    "externalLinks": check_external_data_provider_links_ttl_v_0_0_1,
-    "isolatedElements": check_for_isolated_elements_v_0_0_1,
-    "humanLicense": check_human_readable_license_ttl_v_0_0_1,
-    "rdfDump": check_rdf_dump_accessibility_ttl_v_0_0_1,
-    "sparqlEndpoint": check_sparql_accessibility_ttl_v_0_0_1,
-    "classConnections": count_class_connected_components_v_0_0_1,
+    "externalLinks": check_external_data_provider_links_ttl,
+    "isolatedElements": check_for_isolated_elements,
+    "humanLicense": check_human_readable_license_ttl,
+    "rdfDump": check_rdf_dump_accessibility_ttl,
+    "sparqlEndpoint": check_sparql_accessibility_ttl,
+    "classConnections": count_class_connected_components,
     "definitionCheck": mainDefCheck_v_0_0_1,
-    "duplicateLabels": find_duplicate_labels_from_graph_v_0_0_1,
-    "missingDomainRange": get_properties_missing_domain_and_range_v_0_0_1,
+    "duplicateLabels": find_duplicate_labels_from_graph,
+    "missingDomainRange": get_properties_missing_domain_and_range,
     "leafNodeCheck": mainLeafNodeCheck_v_0_0_1,
     "semanticConnection": mainSemanticConnection_v_0_0_1,
+    "mdsDesignCheck": mds_design_check_v_0_0_1,
+    "spellCheck": spell_check_v_0_0_1,
+    "classCapitalCheck": mainClassNameCapitalCheck_v_0_0_1,
+    "classSpaceCheck": mainClassNameSpaceCheck_v_0_0_1,
+    "checkLabel": mainLabelCheck_v_0_0_1,
+    "searchClass":mainClassSearch_v_0_0_1
 
 
 ## Example runs in command

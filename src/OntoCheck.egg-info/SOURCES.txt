@@ -9,11 +9,15 @@ src/OntoCheck.egg-info/requires.txt
 src/OntoCheck.egg-info/top_level.txt
 src/ontocheck/__init__.py
 src/ontocheck/altLabelCheck.py
+src/ontocheck/check_class_name_capital.py
+src/ontocheck/check_class_name_space.py
 src/ontocheck/check_external_data_provider_links_ttl.py
 src/ontocheck/check_for_isolated_elements.py
 src/ontocheck/check_human_readable_license_ttl.py
+src/ontocheck/check_label.py
 src/ontocheck/check_rdf_dump_accessibility_ttl.py
 src/ontocheck/check_sparql_accessibility_ttl.py
+src/ontocheck/class_search.py
 src/ontocheck/cli.py
 src/ontocheck/count_class_connected_components.py
 src/ontocheck/defCheck.py

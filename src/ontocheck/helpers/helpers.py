@@ -9,6 +9,7 @@ from rdflib import Graph, RDFS, RDF, OWL, URIRef, Namespace, BNode
 import argparse
 from spellchecker import SpellChecker
 import re
+import csv
 
 spell = SpellChecker()
  
@@ -879,3 +880,550 @@ def _constructed_class_has_atomic_class(node, graph, atomic_classes, visited=Non
                 return True
 
     return False
+
+def _analyze_label_coverage(g, all_classes):
+    """
+    Split all named classes into those with and without a valid rdfs:label
+
+    A valid rdfs:label is defined as a non-empty string after whitespace trimming.
+    Empty strings and whitespace-only labels are not counted as valid labels
+
+    Parameters
+    ----------
+    g : rdflib.Graph
+        The RDF graph containing the ontology
+    all_classes : set
+        Set of URIRef objects representing all named classes in the ontology
+
+    Returns
+    -------
+    tuple
+        A tuple of two lists:
+        - classes_with_label : list of URIRef objects that have at least one valid rdfs:label
+        - classes_without_label : list of URIRef objects that lack any valid rdfs:label
+    """
+    classes_with_label = []
+    classes_without_label = []
+
+    for cls in all_classes:
+        labels = [lbl for lbl in g.objects(cls, RDFS.label) if str(lbl).strip()]
+        if labels:
+            classes_with_label.append(cls)
+        else:
+            classes_without_label.append(cls)
+
+    return classes_with_label, classes_without_label
+
+
+def _print_classes_with_labels(g, classes_with_label):
+    """
+    Print all classes that have at least one valid rdfs:label
+
+    For each class, displays the prefixed class name, full URI/IRI, and all
+    associated rdfs:label values including language tags where present
+
+    Parameters
+    ----------
+    g : rdflib.Graph
+        The RDF graph containing the ontology
+    classes_with_label : list
+        List of URIRef objects representing classes that have at least one valid rdfs:label
+
+    Returns
+    -------
+    None
+        Prints results to terminal/CLI
+    """
+    print(f"\n{'='*60}")
+    print(f"CLASSES WITH rdfs:label ({len(classes_with_label)} total)")
+    print(f"{'='*60}")
+
+    for cls in sorted(classes_with_label, key=str):
+        labels = list(g.objects(cls, RDFS.label))
+        label_strs = [f'"{lbl}"' + (f"@{lbl.language}" if hasattr(lbl, "language") and lbl.language else "") for lbl in labels]
+        prefixed = cls.n3(g.namespace_manager)
+        print(f"  Class name: {prefixed}")
+        print(f"  Class URI/IRI: {cls}")
+        print(f"  rdfs:label(s): {', '.join(label_strs)} \n")
+
+
+def _print_classes_without_labels(g, classes_without_label):
+    """
+    Print all classes that are missing a valid rdfs:label
+
+    For each class, displays the prefixed class name and full URI/IRI.
+    Classes with only empty or whitespace-only labels are included here
+
+    Parameters
+    ----------
+    g : rdflib.Graph
+        The RDF graph containing the ontology
+    classes_without_label : list
+        List of URIRef objects representing classes that lack any valid rdfs:label
+
+    Returns
+    -------
+    None
+        Prints results to terminal/CLI
+        Upon request template output is also available
+    """
+    print(f"\n{'='*60}")
+    print(f"CLASSES WITHOUT rdfs:label ({len(classes_without_label)} total)")
+    print(f"{'='*60}")
+
+    for cls in sorted(classes_without_label, key=str):
+        prefixed = cls.n3(g.namespace_manager)
+        print(f"  Class name: {prefixed}")
+        print(f"  Class URI/IRI: {cls} \n")
+
+def _print_label_summary_statistics(g, classes_with_label, classes_without_label, all_classes):
+    """
+    Print summary statistics for rdfs:label coverage across the ontology
+
+    Parameters
+    ----------
+    g : rdflib.Graph
+        The RDF graph containing the ontology
+    classes_with_label : list
+        List of URIRef objects representing classes that have at least one valid rdfs:label
+    classes_without_label : list
+        List of URIRef objects representing classes that lack any valid rdfs:label
+    all_classes : set
+        Set of all named URIRef class objects in the ontology
+
+    Returns
+    -------
+    None
+        Prints summary statistics to terminal/CLI
+    """
+    total = len(all_classes)
+    with_label = len(classes_with_label)
+    without_label = len(classes_without_label)
+    coverage = (with_label / total * 100) if total > 0 else 0
+
+    print(f"\n{'='*60}")
+    print("rdfs:label COVERAGE SUMMARY")
+    print(f"{'='*60}")
+    print(f"  Total named classes : {total}")
+    print(f"  With rdfs:label     : {with_label} ({coverage:.1f}%)")
+    print(f"  Without rdfs:label  : {without_label} ({100 - coverage:.1f}%)")
+
+
+def _export_missing_labels_template(g, classes_without_label, output_file):
+    """
+    Export a CSV template listing all classes missing a valid rdfs:label (valid = empty strings covered)
+
+    Creates a CSV file with three columns: the full class URI, the prefixed
+    class name, and a placeholder rdfs:label value of "MISSING" for the user
+    to replace with appropriate labels
+
+    Parameters
+    ----------
+    g : rdflib.Graph
+        The RDF graph containing the ontology
+    classes_without_label : list
+        List of URIRef objects representing classes that lack any valid rdfs:label
+    output_file : str
+        Path where the CSV template file should be written
+
+    Returns
+    -------
+    None
+        Writes a CSV file to the specified path and prints confirmation to terminal/CLI
+
+    Notes
+    -----
+    - Output CSV columns: class_uri, class_name, rdfs_label
+    - Classes are sorted by URI for consistent ordering
+    """
+    import csv
+
+    with open(output_file, "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(["class_uri", "class_name", "rdfs_label"])
+        for cls in sorted(classes_without_label, key=str):
+            prefixed = cls.n3(g.namespace_manager)
+            writer.writerow([str(cls), prefixed, "MISSING"])
+
+    print(f"\nTemplate exported to: {output_file}")
+    print(f"  {len(classes_without_label)} classes need rdfs:label entries.")
+
+def _strip_comment(line):
+    """
+    Remove Turtle inline comments from a line, ignoring # inside string literals.
+
+    Parameters
+    ----------
+    line : str
+        A single line from the TTL file
+
+    Returns
+    -------
+    str
+        The line with any trailing comment removed
+    """
+    in_string = False
+    for i, c in enumerate(line):
+        if c == '"':
+            in_string = not in_string
+        if c == '#' and not in_string:
+            return line[:i]
+    return line
+
+
+def _strip_string_literals(text):
+    """
+    Remove string literal content so '.' inside strings is not
+    mistaken for a block terminator.
+
+    Parameters
+    ----------
+    text : str
+        A line of Turtle text
+
+    Returns
+    -------
+    str
+        The line with all string literal content replaced by empty quotes
+    """
+    return re.sub(r'"[^"]*"', '""', text)
+
+
+def _split_into_blocks(cleaned_lines):
+    """
+    Split cleaned lines into declaration blocks separated by '.'.
+
+    Parameters
+    ----------
+    cleaned_lines : list of tuple
+        List of (line_num, cleaned_text) pairs with comments stripped
+
+    Returns
+    -------
+    list of tuple
+        Each tuple contains:
+        - line_nums  : list of int, original line numbers in this block
+        - block_text : str, the full concatenated text of the block
+    """
+    blocks = []
+    current_text = []
+    current_lines = []
+
+    for line_num, text in cleaned_lines:
+        if not text.strip():
+            continue
+        current_text.append(text.strip())
+        current_lines.append(line_num)
+
+        stripped = _strip_string_literals(text)
+        if '.' in stripped:
+            blocks.append((current_lines[:], ' '.join(current_text)))
+            current_text = []
+            current_lines = []
+
+    if current_text:
+        blocks.append((current_lines, ' '.join(current_text)))
+
+    return blocks
+
+
+def _scan_file_for_space_errors(ttl_file):
+    """
+    Scan the raw TTL file for prefixed class names containing spaces.
+
+    Handles multi-line class declarations by reading the file as a continuous stream of blocks rather than line by line.
+
+    Parameters
+    ----------
+    ttl_file : str
+        Path to the Turtle (.ttl) file to scan
+
+    Returns
+    -------
+    list of dict
+        Each dict contains:
+        - 'line_num'  : int, line number where the declaration starts
+        - 'line_text' : str, the full reconstructed declaration block
+        - 'local_name': str, the class name fragment containing a space
+    """
+    with open(ttl_file, "r", encoding="utf-8") as f:
+        lines = f.readlines()
+
+    cleaned_lines = []
+    for line_num, line in enumerate(lines, 1):
+        cleaned = _strip_comment(line)
+        cleaned_lines.append((line_num, cleaned))
+
+    blocks = _split_into_blocks(cleaned_lines)
+    errors = []
+
+    for block_lines, block_text in blocks:
+        normalized = ' '.join(block_text.split())
+
+        if ' a owl:Class' not in normalized and ' a rdfs:Class' not in normalized:
+            continue
+
+        parts = normalized.split(' a ', 1)
+        if not parts:
+            continue
+
+        subject = parts[0].strip()
+
+        if ' ' in subject:
+            errors.append({
+                "line_num"  : block_lines[0],
+                "line_text" : normalized,
+                "local_name": subject
+            })
+
+    return errors
+
+
+def _print_space_errors(errors):
+    """
+    Print all detected class names that contain spaces.
+
+    Parameters
+    ----------
+    errors : list of dict
+        List of error dicts with keys: line_num, line_text, local_name
+
+    Returns
+    -------
+    None
+        Prints results to terminal/CLI
+            -   Users can also explicitly export a CSV output
+    """
+    print(f"\n{'='*60}")
+    print(f"CLASSES WITH SPACES IN NAME ({len(errors)} total)")
+    print(f"{'='*60}")
+
+    if not errors:
+        print("\n  No class names with spaces detected.")
+        return
+
+    for err in errors:
+        print(f"\n  Class name  : {err['local_name']}")
+        print(f"  Line number : {err['line_num']}")
+        print(f"  Line text   : {err['line_text']}")
+
+
+def _export_space_errors(errors, output_file):
+    """
+    Export a CSV report listing all class names containing spaces.
+
+    Parameters
+    ----------
+    errors : list of dict
+        List of error dicts with keys: line_num, line_text, local_name
+    output_file : str
+        Path where the CSV file should be written
+
+    Returns
+    -------
+    None
+        Writes a CSV file to the specified path and prints confirmation
+    
+    Notes
+    -----
+    - Output CSV columns: class_name, line_number, line_text
+    """
+    with open(output_file, "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(["class_name", "line_number", "line_text"])
+        for err in errors:
+            writer.writerow([err["local_name"], err["line_num"], err["line_text"]])
+
+    print(f"\nReport exported to: {output_file}")
+    print(f"  {len(errors)} class(es) with spaces in their name.")
+
+def _get_local_name(cls):
+    """
+    Extract the local name (fragment) from a class URI
+
+    Splits on '#' first (e.g. http://example.org/ont#MyClass → MyClass),
+    then on '/' if no '#' is present (e.g. http://example.org/ont/MyClass → MyClass)
+
+    Parameters
+    ----------
+    cls : rdflib.term.URIRef
+        The URI of the class
+
+    Returns
+    -------
+    str
+        The local name fragment of the URI
+    """
+    uri = str(cls)
+    if '#' in uri:
+        return uri.split('#')[-1]
+    return uri.split('/')[-1]
+
+
+def _analyze_capital_coverage(g, all_classes):
+    """
+    Split all named classes into those whose local name starts with a
+    capital letter and those that do not
+
+    Only the local name fragment is checked, not the full URI or namespace.
+    Classes with an empty local name are treated as non-compliant
+
+    Parameters
+    ----------
+    g : rdflib.Graph
+        The RDF graph containing the ontology
+    all_classes : set
+        Set of URIRef objects representing all named classes in the ontology
+
+    Returns
+    -------
+    tuple
+        A tuple of two lists:
+        - classes_with_capital    : list of URIRef objects whose local name starts with a capital letter
+        - classes_without_capital : list of URIRef objects whose local name does not start with a capital letter
+    """
+    classes_with_capital = []
+    classes_without_capital = []
+
+    for cls in all_classes:
+        local_name = _get_local_name(cls)
+        if local_name and local_name[0].isupper():
+            classes_with_capital.append(cls)
+        else:
+            classes_without_capital.append(cls)
+
+    return classes_with_capital, classes_without_capital
+
+
+def _print_classes_with_capital(g, classes_with_capital):
+    """
+    Print all classes whose local name starts with a capital letter
+
+    For each class, displays the prefixed class name, full URI/IRI,
+    and the local name that was checked
+
+    Parameters
+    ----------
+    g : rdflib.Graph
+        The RDF graph containing the ontology
+    classes_with_capital : list
+        List of URIRef objects whose local name starts with a capital letter
+
+    Returns
+    -------
+    None
+        Prints results to terminal/CLI
+    """
+    print(f"\n{'='*60}")
+    print(f"CLASSES WITH CAPITAL FIRST LETTER ({len(classes_with_capital)} total)")
+    print(f"{'='*60}")
+
+    for cls in sorted(classes_with_capital, key=str):
+        prefixed = cls.n3(g.namespace_manager)
+        local_name = _get_local_name(cls)
+        print(f"  Class name    : {prefixed}")
+        print(f"  Class URI/IRI : {cls}")
+        print(f"  Local name    : {local_name}\n")
+
+
+def _print_classes_without_capital(g, classes_without_capital):
+    """
+    Print all classes whose local name does not start with a capital letter
+
+    For each class, displays the prefixed class name, full URI/IRI,
+    and the local name that failed the check
+
+    Parameters
+    ----------
+    g : rdflib.Graph
+        The RDF graph containing the ontology
+    classes_without_capital : list
+        List of URIRef objects whose local name does not start with a capital letter
+
+    Returns
+    -------
+    None
+        Prints results to terminal/CLI
+    """
+    print(f"\n{'='*60}")
+    print(f"CLASSES WITHOUT CAPITAL FIRST LETTER ({len(classes_without_capital)} total)")
+    print(f"{'='*60}")
+
+    for cls in sorted(classes_without_capital, key=str):
+        prefixed = cls.n3(g.namespace_manager)
+        local_name = _get_local_name(cls)
+        print(f"  Class name    : {prefixed}")
+        print(f"  Class URI/IRI : {cls}")
+        print(f"  Local name    : {local_name} ← does not start with a capital letter\n")
+
+
+def _print_capital_summary_statistics(g, classes_with_capital, classes_without_capital, all_classes):
+    """
+    Print summary statistics for capital letter compliance across all class local names
+
+    Parameters
+    ----------
+    g : rdflib.Graph
+        The RDF graph containing the ontology
+    classes_with_capital : list
+        List of URIRef objects whose local name starts with a capital letter
+    classes_without_capital : list
+        List of URIRef objects whose local name does not start with a capital letter
+    all_classes : set
+        Set of all named URIRef class objects in the ontology
+
+    Returns
+    -------
+    None
+        Prints summary statistics to terminal/CLI
+    """
+    total = len(all_classes)
+    with_capital = len(classes_with_capital)
+    without_capital = len(classes_without_capital)
+    coverage = (with_capital / total * 100) if total > 0 else 0
+
+    print(f"\n{'='*60}")
+    print("CLASS NAME CAPITAL LETTER CHECK SUMMARY")
+    print(f"{'='*60}")
+    print(f"  Total named classes             : {total}")
+    print(f"  Starts with capital letter      : {with_capital} ({coverage:.1f}%)")
+    print(f"  Does not start with capital     : {without_capital} ({100 - coverage:.1f}%)")
+
+
+def _export_non_capital_classes_template(g, classes_without_capital, output_file):
+    """
+    Export a CSV report listing all classes whose local name does not
+    start with a capital letter
+
+    Creates a CSV file with three columns: the full class URI, the prefixed
+    class name, and the local name that failed the check
+
+    Parameters
+    ----------
+    g : rdflib.Graph
+        The RDF graph containing the ontology
+    classes_without_capital : list
+        List of URIRef objects whose local name does not start with a capital letter
+    output_file : str
+        Path where the CSV file should be written
+
+    Returns
+    -------
+    None
+        Writes a CSV file to the specified path and prints confirmation to terminal/CLI
+
+    Notes
+    -----
+    - Output CSV columns: class_uri, class_name, local_name
+    - Classes are sorted by URI for consistent ordering
+    """
+    with open(output_file, "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(["class_uri", "class_name", "local_name"])
+        for cls in sorted(classes_without_capital, key=str):
+            prefixed = cls.n3(g.namespace_manager)
+            local_name = _get_local_name(cls)
+            writer.writerow([str(cls), prefixed, local_name])
+
+    print(f"\nTemplate exported to: {output_file}")
+    print(f"  {len(classes_without_capital)} classes do not start with a capital letter.")
