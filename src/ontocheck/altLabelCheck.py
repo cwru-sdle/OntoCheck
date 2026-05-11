@@ -74,10 +74,9 @@ def mainAltLabelCheck_v_0_0_1(ttl_file, show="all", export_template = None): # s
     - Template export generates valid Turtle syntax for adding missing altLabels
     - show and export_template function parameters set to default values (all and None, respectively)
 
-    LLM Usage Declaration
-    ---------------------
+    .. note::
 
-    - Claude AI (Sonnet 4) was employed chiefly to support documentation efforts
+       Claude AI (Sonnet 4) was employed chiefly to support documentation efforts.
 
     Examples
     --------

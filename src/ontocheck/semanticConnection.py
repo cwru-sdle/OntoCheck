@@ -66,10 +66,9 @@ def mainSemanticConnection_v_0_0_1(ttl_file):
     - Provides both statistical summary and detailed tree visualization
     - Includes namespace bindings for common ontology prefixes
 
-    LLM Usage Declaration
-    ---------------------
+    .. note::
 
-    - Claude AI (Sonnet 4) was employed chiefly to support documentation efforts
+       Claude AI (Sonnet 4) was employed chiefly to support documentation efforts.
 
     Examples
     --------

@@ -77,9 +77,9 @@ def mainClassNameCapitalCheck_v_0_0_1(ttl_file, show="all", export_template=None
     - show and export_template parameters are set to default values ("all" and None)
         - thus, CSV export must be explicitly requested
 
-    LLM Usage Declaration
-    ---------------------
-    - Claude AI (Sonnet 4.6) was employed chiefly to support documentation efforts
+    .. note::
+
+       Claude AI (Sonnet 4.6) was employed chiefly to support documentation efforts.
 
     Examples
     --------

@@ -73,9 +73,9 @@ def mainLabelCheck_v_0_0_1(ttl_file, show="all", export_template=None):
     - show and export_template parameters are set to default values ("all" and None)
         - thus, CSV export request must be explicitly mentioned
 
-    LLM Usage Declaration
-    ---------------------
-    - Claude AI (Sonnet 4.6) was employed chiefly to support documentation efforts
+    .. note::
+
+       Claude AI (Sonnet 4.6) was employed chiefly to support documentation efforts.
 
     Examples
     --------

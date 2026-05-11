@@ -20,6 +20,7 @@ from .check_class_name_capital import mainClassNameCapitalCheck_v_0_0_1
 from .check_class_name_space import mainClassNameSpaceCheck_v_0_0_1
 from .check_label import mainLabelCheck_v_0_0_1
 from .class_search import mainClassSearch_v_0_0_1
+from .task_based_metric import task_based_metric
 
 METRIC_DISPATCHER = {
     "altLabelCheck": mainAltLabelCheck_v_0_0_1,

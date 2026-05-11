@@ -74,10 +74,9 @@ def mainDefCheck_v_0_0_1(ttl_file, show="all", full_definitions=False): # show a
     - Classes are displayed with their preferred labels (skos:prefLabel or rdfs:label) when available
     - show and full_definitions function parameters set to default values (all and False, respectively)
 
-    LLM Usage Declaration
-    ---------------------
+    .. note::
 
-    - Claude AI (Sonnet 4) was employed chiefly to support documentation efforts
+       Claude AI (Sonnet 4) was employed chiefly to support documentation efforts.
 
     Examples
     --------

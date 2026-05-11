@@ -48,9 +48,9 @@ def mainClassNameSpaceCheck_v_0_0_1(ttl_file, export_template=None):
     - Handles multi-line declarations by grouping on '.' block terminators
     - Comments and string literals are handled to avoid false matches
 
-    LLM Usage Declaration
-    ---------------------
-    - Claude AI (Sonnet 4.6) was employed chiefly to support documentation efforts
+    .. note::
+
+       Claude AI (Sonnet 4.6) was employed chiefly to support documentation efforts.
 
     Examples
     --------

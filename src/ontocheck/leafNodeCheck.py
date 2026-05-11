@@ -56,10 +56,9 @@ def mainLeafNodeCheck_v_0_0_1(ttl_file):
     - Leaf nodes are sorted alphabetically for consistent display
     - Coverage statistics may be implemented in future versions
 
-    LLM Usage Declaration
-    ---------------------
+    .. note::
 
-    - Claude AI (Sonnet 4) was employed chiefly to support documentation efforts
+       Claude AI (Sonnet 4) was employed chiefly to support documentation efforts.
 
     References
     ----------
