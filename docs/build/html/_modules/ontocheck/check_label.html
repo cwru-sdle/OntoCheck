@@ -1,0 +1,373 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ontocheck.check_label &mdash; OntoCheck 0.0.3.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=a8825ba5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            OntoCheck
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#install-from-pypi">Install from PyPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#install-from-source">Install from Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#verify-installation">Verify Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#command-line-interface">Command-Line Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#python-api">Python API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#task-agnostic-assessment">Task-Agnostic Assessment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#task-based-assessment">Task-Based Assessment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#available-metric-names">Available Metric Names</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#assessment-runner">Assessment Runner</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#ontocheck.run_assessment.run_ontology_assessment"><code class="docutils literal notranslate"><span class="pre">run_ontology_assessment()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#task-based-assessment">Task-Based Assessment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#ontocheck.task_based_metric.task_based_metric"><code class="docutils literal notranslate"><span class="pre">task_based_metric()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#labeling-metrics">Labeling Metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.check_label">ontocheck.check_label</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.check_label.mainLabelCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainLabelCheck_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.altLabelCheck">ontocheck.altLabelCheck</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.altLabelCheck.mainAltLabelCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainAltLabelCheck_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.defCheck">ontocheck.defCheck</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.defCheck.mainDefCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainDefCheck_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#structural-metrics">Structural Metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.check_for_isolated_elements">ontocheck.check_for_isolated_elements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.check_for_isolated_elements.check_for_isolated_elements"><code class="docutils literal notranslate"><span class="pre">check_for_isolated_elements()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.count_class_connected_components">ontocheck.count_class_connected_components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.count_class_connected_components.count_class_connected_components"><code class="docutils literal notranslate"><span class="pre">count_class_connected_components()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.get_properties_missing_domain_and_range">ontocheck.get_properties_missing_domain_and_range</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.get_properties_missing_domain_and_range.get_properties_missing_domain_and_range"><code class="docutils literal notranslate"><span class="pre">get_properties_missing_domain_and_range()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.leafNodeCheck">ontocheck.leafNodeCheck</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.leafNodeCheck.mainLeafNodeCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainLeafNodeCheck_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.semanticConnection">ontocheck.semanticConnection</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.semanticConnection.mainSemanticConnection_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainSemanticConnection_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#accessibility-metrics">Accessibility Metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.check_sparql_accessibility_ttl">ontocheck.check_sparql_accessibility_ttl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.check_sparql_accessibility_ttl.check_sparql_accessibility_ttl"><code class="docutils literal notranslate"><span class="pre">check_sparql_accessibility_ttl()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.check_rdf_dump_accessibility_ttl">ontocheck.check_rdf_dump_accessibility_ttl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.check_rdf_dump_accessibility_ttl.check_rdf_dump_accessibility_ttl"><code class="docutils literal notranslate"><span class="pre">check_rdf_dump_accessibility_ttl()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.check_human_readable_license_ttl">ontocheck.check_human_readable_license_ttl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.check_human_readable_license_ttl.check_human_readable_license_ttl"><code class="docutils literal notranslate"><span class="pre">check_human_readable_license_ttl()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.check_external_data_provider_links_ttl">ontocheck.check_external_data_provider_links_ttl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.check_external_data_provider_links_ttl.check_external_data_provider_links_ttl"><code class="docutils literal notranslate"><span class="pre">check_external_data_provider_links_ttl()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#naming-convention-metrics">Naming Convention Metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.check_class_name_capital">ontocheck.check_class_name_capital</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.check_class_name_capital.mainClassNameCapitalCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainClassNameCapitalCheck_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.check_class_name_space">ontocheck.check_class_name_space</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.check_class_name_space.mainClassNameSpaceCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainClassNameSpaceCheck_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.spell_check">ontocheck.spell_check</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.find_duplicate_labels_from_graph">ontocheck.find_duplicate_labels_from_graph</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.find_duplicate_labels_from_graph.find_duplicate_labels_from_graph"><code class="docutils literal notranslate"><span class="pre">find_duplicate_labels_from_graph()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.class_search">ontocheck.class_search</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.class_search.mainClassSearch_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainClassSearch_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#other-modules">Other Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.cli">ontocheck.cli</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.cli.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.mds_design_check">ontocheck.mds_design_check</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../helpers.html">Helper Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../helpers.html#module-ontocheck.helpers.helpers">ontocheck.helpers.helpers</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">OntoCheck</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ontocheck.check_label</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ontocheck.check_label</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">.helpers.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">_find_all_named_classes</span><span class="p">,</span> <span class="n">_export_missing_labels_template</span><span class="p">,</span>  <span class="n">_print_classes_without_labels</span><span class="p">,</span> <span class="n">_print_classes_with_labels</span><span class="p">,</span>  <span class="n">_print_label_summary_statistics</span><span class="p">,</span> <span class="n">_analyze_label_coverage</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdflib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Graph</span>
+
+<div class="viewcode-block" id="mainLabelCheck_v_0_0_1">
+<a class="viewcode-back" href="../../api.html#ontocheck.check_label.mainLabelCheck_v_0_0_1">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">mainLabelCheck_v_0_0_1</span><span class="p">(</span><span class="n">ttl_file</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="n">export_template</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    RDFS Label Coverage Analysis</span>
+
+<span class="sd">    Analyze an OWL ontology in Turtle (ttl) format to assess the coverage and</span>
+<span class="sd">    quality of RDFS labels (rdfs:label) across all named classes</span>
+
+<span class="sd">    This main function loads an ontology file, identifies all named classes, and</span>
+<span class="sd">    provides comprehensive analysis of label coverage with various display options</span>
+<span class="sd">    and export capabilities</span>
+
+<span class="sd">    Definitions</span>
+<span class="sd">    -----------</span>
+<span class="sd">    - Named classes: Classes with URIRef identifiers that are explicitly declared</span>
+<span class="sd">      as owl:Class or rdfs:Class, or participate in rdfs:subClassOf relations</span>
+
+<span class="sd">    - Valid labels: rdfs:label values that are non-empty strings after whitespace</span>
+<span class="sd">      trimming. Empty strings and whitespace-only labels are not counted as valid labels</span>
+
+<span class="sd">    - Coverage percentage: The proportion of named classes that have at least one</span>
+<span class="sd">      valid rdfs:label</span>
+
+<span class="sd">    Author: Rishabh Kundu</span>
+<span class="sd">    Version: 0.0.1</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ttl_file : str</span>
+<span class="sd">        Path to the ontology Turtle (.ttl) file to analyze -- input file</span>
+
+<span class="sd">    show : str, optional</span>
+<span class="sd">        Display option controlling what information to show:</span>
+<span class="sd">        - &quot;all&quot; (default): Shows summary statistics, classes with labels, and classes without labels</span>
+<span class="sd">        - &quot;with&quot;: Shows only classes that have rdfs:label</span>
+<span class="sd">        - &quot;without&quot;: Shows only classes that lack rdfs:label</span>
+<span class="sd">        - &quot;summary&quot;: Shows only summary statistics</span>
+
+<span class="sd">    export_template : str, optional</span>
+<span class="sd">        Export a CSV template file for classes missing rdfs:label.</span>
+<span class="sd">        Provide the desired output filename (e.g. &quot;missing_labels_in_classes.csv&quot;).</span>
+<span class="sd">        Default is None (no export)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        This function does not directly return values. It prints analysis results</span>
+<span class="sd">        to your terminal/CLI and optionally exports a CSV template file. The function</span>
+<span class="sd">        may exit early on errors (file not found, parsing errors, or no classes found)</span>
+
+<span class="sd">    Output Information</span>
+<span class="sd">    ------------------</span>
+<span class="sd">    When executed successfully, the analysis provides:</span>
+<span class="sd">    - Total number of named classes analyzed</span>
+<span class="sd">    - Number of classes with valid rdfs:label properties</span>
+<span class="sd">    - Number of classes lacking valid rdfs:label properties</span>
+<span class="sd">    - Coverage percentage of classes with rdfs:label</span>
+<span class="sd">    - Prefixed class name and full URI/IRI for each class</span>
+
+<span class="sd">    Error Handling</span>
+<span class="sd">    --------------</span>
+<span class="sd">    - FileNotFoundError: When the specified TTL file cannot be found</span>
+<span class="sd">    - Parsing errors: When the TTL file cannot be parsed as valid Turtle</span>
+<span class="sd">    - Empty ontology: When no named classes are found in the ontology</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Only named classes (URIRef instances) are considered in the analysis</span>
+<span class="sd">    - Empty strings and whitespace-only labels are treated as missing labels</span>
+<span class="sd">    - Classes are displayed with both their prefixed name and full URI/IRI</span>
+<span class="sd">    - show and export_template parameters are set to default values (&quot;all&quot; and None)</span>
+<span class="sd">        - thus, CSV export request must be explicitly mentioned</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">       Claude AI (Sonnet 4.6) was employed chiefly to support documentation efforts.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Basic usage (show all):</span>
+<span class="sd">        mainLabelCheck_v_0_0_1(&quot;ontology.ttl&quot;)</span>
+
+<span class="sd">    Show only summary:</span>
+<span class="sd">        mainLabelCheck_v_0_0_1(&quot;ontology.ttl&quot;, show=&quot;summary&quot;)</span>
+
+<span class="sd">    Show only classes missing labels:</span>
+<span class="sd">        mainLabelCheck_v_0_0_1(&quot;ontology.ttl&quot;, show=&quot;without&quot;)</span>
+
+<span class="sd">    Export CSV template for missing labels:</span>
+<span class="sd">        mainLabelCheck_v_0_0_1(&quot;ontology.ttl&quot;, export_template=&quot;missing_labels.csv&quot;)</span>
+
+<span class="sd">    Export template while showing summary only:</span>
+<span class="sd">        mainLabelCheck_v_0_0_1(&quot;ontology.ttl&quot;, show=&quot;summary&quot;, export_template=&quot;missing_labels.csv&quot;)</span>
+<span class="sd">            - in the afore a desired export path can also be inserted</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Validate &quot;show&quot; parameter of main function</span>
+    <span class="n">valid_show_options</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="s2">&quot;with&quot;</span><span class="p">,</span> <span class="s2">&quot;without&quot;</span><span class="p">,</span> <span class="s2">&quot;summary&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">show</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_show_options</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: Invalid &#39;show&#39; parameter. Must be one of </span><span class="si">{</span><span class="n">valid_show_options</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="n">g</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parsing file: </span><span class="si">{</span><span class="n">ttl_file</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+        <span class="c1"># Bind common prefixes for cleaner output (future users can add more here)</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;mds&quot;</span><span class="p">,</span>  <span class="s2">&quot;https://cwrusdle.bitbucket.io/mds/&quot;</span><span class="p">)</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;cco&quot;</span><span class="p">,</span>  <span class="s2">&quot;https://www.commoncoreontologies.org/&quot;</span><span class="p">)</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;obo&quot;</span><span class="p">,</span>  <span class="s2">&quot;http://purl.obolibrary.org/obo/&quot;</span><span class="p">)</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;owl&quot;</span><span class="p">,</span>  <span class="s2">&quot;http://www.w3.org/2002/07/owl#&quot;</span><span class="p">)</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;rdfs&quot;</span><span class="p">,</span> <span class="s2">&quot;http://www.w3.org/2000/01/rdf-schema#&quot;</span><span class="p">)</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;skos&quot;</span><span class="p">,</span> <span class="s2">&quot;http://www.w3.org/2004/02/skos/core#&quot;</span><span class="p">)</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">ttl_file</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;turtle&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: The file &#39;</span><span class="si">{</span><span class="n">ttl_file</span><span class="si">}</span><span class="s2">&#39; was not found.&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: An error occurred while parsing the TTL file: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Find all named classes</span>
+    <span class="n">all_classes</span> <span class="o">=</span> <span class="n">_find_all_named_classes</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">all_classes</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No named classes found in the ontology.&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Analyze rdfs:label coverage</span>
+    <span class="n">classes_with_label</span><span class="p">,</span> <span class="n">classes_without_label</span> <span class="o">=</span> <span class="n">_analyze_label_coverage</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">all_classes</span><span class="p">)</span>
+
+    <span class="c1"># Display results as desired by user</span>
+    <span class="k">if</span> <span class="n">show</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="s2">&quot;all&quot;</span><span class="p">]:</span>
+        <span class="n">_print_label_summary_statistics</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">classes_with_label</span><span class="p">,</span> <span class="n">classes_without_label</span><span class="p">,</span> <span class="n">all_classes</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">show</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;with&quot;</span><span class="p">,</span> <span class="s2">&quot;all&quot;</span><span class="p">]:</span>
+        <span class="n">_print_classes_with_labels</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">classes_with_label</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">show</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;without&quot;</span><span class="p">,</span> <span class="s2">&quot;all&quot;</span><span class="p">]:</span>
+        <span class="n">_print_classes_without_labels</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">classes_without_label</span><span class="p">)</span>
+
+    <span class="c1"># Export template if requested explicitly by user</span>
+    <span class="k">if</span> <span class="n">export_template</span> <span class="ow">and</span> <span class="n">classes_without_label</span><span class="p">:</span>
+        <span class="n">_export_missing_labels_template</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">classes_without_label</span><span class="p">,</span> <span class="n">export_template</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">export_template</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">classes_without_label</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;All classes have rdfs:label — no template needed!&quot;</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Rishabh Kundu, Van Tran, Redad Mehdi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

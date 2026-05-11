@@ -28,5 +28,6 @@ src/ontocheck/mds_design_check.py
 src/ontocheck/run_assessment.py
 src/ontocheck/semanticConnection.py
 src/ontocheck/spell_check.py
+src/ontocheck/task_based_metric.py
 src/ontocheck/helpers/__init__.py
 src/ontocheck/helpers/helpers.py

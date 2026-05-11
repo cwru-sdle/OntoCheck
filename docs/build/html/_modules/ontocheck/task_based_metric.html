@@ -1,0 +1,620 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ontocheck.task_based_metric &mdash; OntoCheck 0.0.3.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=a8825ba5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            OntoCheck
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#install-from-pypi">Install from PyPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#install-from-source">Install from Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#verify-installation">Verify Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#command-line-interface">Command-Line Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#python-api">Python API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#task-agnostic-assessment">Task-Agnostic Assessment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#task-based-assessment">Task-Based Assessment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#available-metric-names">Available Metric Names</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#assessment-runner">Assessment Runner</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#ontocheck.run_assessment.run_ontology_assessment"><code class="docutils literal notranslate"><span class="pre">run_ontology_assessment()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#task-based-assessment">Task-Based Assessment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#ontocheck.task_based_metric.task_based_metric"><code class="docutils literal notranslate"><span class="pre">task_based_metric()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#labeling-metrics">Labeling Metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.check_label">ontocheck.check_label</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.check_label.mainLabelCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainLabelCheck_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.altLabelCheck">ontocheck.altLabelCheck</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.altLabelCheck.mainAltLabelCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainAltLabelCheck_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.defCheck">ontocheck.defCheck</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.defCheck.mainDefCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainDefCheck_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#structural-metrics">Structural Metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.check_for_isolated_elements">ontocheck.check_for_isolated_elements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.check_for_isolated_elements.check_for_isolated_elements"><code class="docutils literal notranslate"><span class="pre">check_for_isolated_elements()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.count_class_connected_components">ontocheck.count_class_connected_components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.count_class_connected_components.count_class_connected_components"><code class="docutils literal notranslate"><span class="pre">count_class_connected_components()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.get_properties_missing_domain_and_range">ontocheck.get_properties_missing_domain_and_range</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.get_properties_missing_domain_and_range.get_properties_missing_domain_and_range"><code class="docutils literal notranslate"><span class="pre">get_properties_missing_domain_and_range()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.leafNodeCheck">ontocheck.leafNodeCheck</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.leafNodeCheck.mainLeafNodeCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainLeafNodeCheck_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.semanticConnection">ontocheck.semanticConnection</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.semanticConnection.mainSemanticConnection_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainSemanticConnection_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#accessibility-metrics">Accessibility Metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.check_sparql_accessibility_ttl">ontocheck.check_sparql_accessibility_ttl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.check_sparql_accessibility_ttl.check_sparql_accessibility_ttl"><code class="docutils literal notranslate"><span class="pre">check_sparql_accessibility_ttl()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.check_rdf_dump_accessibility_ttl">ontocheck.check_rdf_dump_accessibility_ttl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.check_rdf_dump_accessibility_ttl.check_rdf_dump_accessibility_ttl"><code class="docutils literal notranslate"><span class="pre">check_rdf_dump_accessibility_ttl()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.check_human_readable_license_ttl">ontocheck.check_human_readable_license_ttl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.check_human_readable_license_ttl.check_human_readable_license_ttl"><code class="docutils literal notranslate"><span class="pre">check_human_readable_license_ttl()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.check_external_data_provider_links_ttl">ontocheck.check_external_data_provider_links_ttl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.check_external_data_provider_links_ttl.check_external_data_provider_links_ttl"><code class="docutils literal notranslate"><span class="pre">check_external_data_provider_links_ttl()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#naming-convention-metrics">Naming Convention Metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.check_class_name_capital">ontocheck.check_class_name_capital</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.check_class_name_capital.mainClassNameCapitalCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainClassNameCapitalCheck_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.check_class_name_space">ontocheck.check_class_name_space</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.check_class_name_space.mainClassNameSpaceCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainClassNameSpaceCheck_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.spell_check">ontocheck.spell_check</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.find_duplicate_labels_from_graph">ontocheck.find_duplicate_labels_from_graph</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.find_duplicate_labels_from_graph.find_duplicate_labels_from_graph"><code class="docutils literal notranslate"><span class="pre">find_duplicate_labels_from_graph()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.class_search">ontocheck.class_search</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.class_search.mainClassSearch_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainClassSearch_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#other-modules">Other Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.cli">ontocheck.cli</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.cli.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.mds_design_check">ontocheck.mds_design_check</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../helpers.html">Helper Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../helpers.html#module-ontocheck.helpers.helpers">ontocheck.helpers.helpers</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">OntoCheck</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ontocheck.task_based_metric</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ontocheck.task_based_metric</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Task-Based Ontology Assessment Metric</span>
+
+<span class="sd">Evaluates an ontology against a set of competency questions (encoded as SPARQL</span>
+<span class="sd">queries) by computing term-overlap metrics. For each question set, two scores</span>
+<span class="sd">are produced:</span>
+
+<span class="sd">    Relevance (Recall)    = \|T_a intersection T_o\| / \|T_a\|</span>
+<span class="sd">    Accuracy  (Precision) = \|T_a intersection T_o\| / \|T_o\|</span>
+
+<span class="sd">where T_a is the set of domain terms referenced in the SPARQL queries (the</span>
+<span class="sd">&quot;task vocabulary&quot;) and T_o is the set of domain terms defined in the ontology.</span>
+
+<span class="sd">Questions can be supplied as:</span>
+<span class="sd">    - A path to a JSON file where each item contains a ``sparql_query`` key.</span>
+<span class="sd">    - A path to a Markdown file with SPARQL queries inside ``sparql`` blocks.</span>
+<span class="sd">    - A plain list of SPARQL query strings.</span>
+
+<span class="sd">Author: Redad Mehdi</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdflib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Graph</span><span class="p">,</span> <span class="n">URIRef</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdflib.namespace</span><span class="w"> </span><span class="kn">import</span> <span class="n">RDF</span><span class="p">,</span> <span class="n">RDFS</span><span class="p">,</span> <span class="n">OWL</span><span class="p">,</span> <span class="n">XSD</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Foundational namespace filter</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+<span class="n">_FOUNDATIONAL_NS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nb">str</span><span class="p">(</span><span class="n">RDF</span><span class="p">),</span>
+    <span class="nb">str</span><span class="p">(</span><span class="n">RDFS</span><span class="p">),</span>
+    <span class="nb">str</span><span class="p">(</span><span class="n">OWL</span><span class="p">),</span>
+    <span class="nb">str</span><span class="p">(</span><span class="n">XSD</span><span class="p">),</span>
+    <span class="s2">&quot;http://www.w3.org/2004/02/skos/core#&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;http://purl.org/dc/terms/&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;http://qudt.org/schema/qudt/&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;http://qudt.org/vocab/unit/&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;http://www.w3.org/XML/1998/namespace&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_is_foundational</span><span class="p">(</span><span class="n">uri_str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check whether a URI belongs to a foundational / upper-level namespace.</span>
+
+<span class="sd">    Foundational namespaces (RDF, RDFS, OWL, XSD, SKOS, Dublin Core, QUDT,</span>
+<span class="sd">    XML) are excluded from the domain term set because they represent</span>
+<span class="sd">    general-purpose vocabulary rather than domain-specific concepts.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    uri_str : str</span>
+<span class="sd">        The full URI string to check.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if the URI starts with any foundational namespace prefix.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">ns</span> <span class="ow">in</span> <span class="n">_FOUNDATIONAL_NS</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">uri_str</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">ns</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_local_name</span><span class="p">(</span><span class="n">uri_str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extract the local name fragment from a URI.</span>
+
+<span class="sd">    Splits on ``#`` first; if the fragment itself contains ``/``, a second</span>
+<span class="sd">    split is performed.  Falls back to splitting on ``/`` when no ``#`` is</span>
+<span class="sd">    present.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    uri_str : str</span>
+<span class="sd">        The full URI string.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        The local name portion of the URI.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">uri_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uri_str</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;#&quot;</span> <span class="ow">in</span> <span class="n">uri_str</span><span class="p">:</span>
+        <span class="n">fragment</span> <span class="o">=</span> <span class="n">uri_str</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;/&quot;</span> <span class="ow">in</span> <span class="n">fragment</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">fragment</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">fragment</span>
+    <span class="k">elif</span> <span class="s2">&quot;/&quot;</span> <span class="ow">in</span> <span class="n">uri_str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">uri_str</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">uri_str</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Ontology term extraction</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_ontology_terms</span><span class="p">(</span><span class="n">ttl_files</span><span class="p">,</span> <span class="n">domain_ns_fragments</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse one or more Turtle files and return the set of domain term local</span>
+<span class="sd">    names (T_o).</span>
+
+<span class="sd">    Terms are discovered through three complementary SPARQL queries:</span>
+
+<span class="sd">    1. Entities explicitly typed as ``owl:Class``, ``rdfs:Class``,</span>
+<span class="sd">       ``owl:ObjectProperty``, ``owl:DatatypeProperty``, or ``rdf:Property``.</span>
+<span class="sd">    2. Subjects that carry an ``rdfs:label`` (catches properties defined</span>
+<span class="sd">       without explicit typing).</span>
+<span class="sd">    3. Subjects of ``rdfs:domain`` or ``rdfs:range`` declarations.</span>
+
+<span class="sd">    Foundational-namespace URIs are always excluded.  When</span>
+<span class="sd">    *domain_ns_fragments* is provided, only URIs whose string representation</span>
+<span class="sd">    contains at least one of the given fragments are retained.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ttl_files : list of str or list of pathlib.Path</span>
+<span class="sd">        Paths to Turtle (.ttl) ontology files.</span>
+<span class="sd">    domain_ns_fragments : list of str or None, optional</span>
+<span class="sd">        Namespace URI sub-strings used to restrict results to domain-specific</span>
+<span class="sd">        terms.  If ``None``, all non-foundational terms are included.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    set of str</span>
+<span class="sd">        Local names of the ontology&#39;s domain terms.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">ttl_files</span><span class="p">:</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;turtle&quot;</span><span class="p">)</span>
+
+    <span class="n">queries</span> <span class="o">=</span> <span class="p">[</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        SELECT DISTINCT ?term WHERE {</span>
+<span class="sd">            { ?term a owl:Class } UNION</span>
+<span class="sd">            { ?term a rdfs:Class } UNION</span>
+<span class="sd">            { ?term a owl:ObjectProperty } UNION</span>
+<span class="sd">            { ?term a owl:DatatypeProperty } UNION</span>
+<span class="sd">            { ?term a rdf:Property }</span>
+<span class="sd">        }</span>
+<span class="sd">        &quot;&quot;&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        SELECT DISTINCT ?term WHERE {</span>
+<span class="sd">            ?term rdfs:label ?label .</span>
+<span class="sd">            FILTER(isIRI(?term))</span>
+<span class="sd">        }</span>
+<span class="sd">        &quot;&quot;&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        SELECT DISTINCT ?term WHERE {</span>
+<span class="sd">            { ?term rdfs:domain ?d } UNION</span>
+<span class="sd">            { ?term rdfs:range ?r }</span>
+<span class="sd">            FILTER(isIRI(?term))</span>
+<span class="sd">        }</span>
+<span class="sd">        &quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="n">ontology_terms</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">queries</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">q</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">term</span><span class="p">,</span> <span class="n">URIRef</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="n">uri</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">term</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">_is_foundational</span><span class="p">(</span><span class="n">uri</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="n">local</span> <span class="o">=</span> <span class="n">_get_local_name</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">local</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">local</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">domain_ns_fragments</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">frag</span> <span class="ow">in</span> <span class="n">uri</span> <span class="k">for</span> <span class="n">frag</span> <span class="ow">in</span> <span class="n">domain_ns_fragments</span><span class="p">):</span>
+                    <span class="n">ontology_terms</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">local</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ontology_terms</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">local</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ontology_terms</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># SPARQL term extraction</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_extract_terms_from_sparql</span><span class="p">(</span><span class="n">sparql_query</span><span class="p">,</span> <span class="n">domain_prefixes</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extract prefixed local names from a SPARQL query string.</span>
+
+<span class="sd">    For each prefix in *domain_prefixes*, a regex search finds all occurrences</span>
+<span class="sd">    of ``prefix:LocalName`` and collects the local name parts.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sparql_query : str</span>
+<span class="sd">        A single SPARQL query string.</span>
+<span class="sd">    domain_prefixes : list of str</span>
+<span class="sd">        Namespace prefixes to scan for (e.g., ``[&quot;mds&quot;]``).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    set of str</span>
+<span class="sd">        Local names referenced in the query under the given prefixes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">terms</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="n">domain_prefixes</span><span class="p">:</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="sa">rf</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span><span class="si">}</span><span class="s1">:([A-Za-z_][A-Za-z0-9_]*)&#39;</span>
+        <span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">sparql_query</span><span class="p">)</span>
+        <span class="n">terms</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">terms</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Question loaders</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_load_json_questions</span><span class="p">(</span><span class="n">json_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load SPARQL queries from a JSON competency-question file.</span>
+
+<span class="sd">    Each element of the JSON array is expected to contain a ``sparql_query``</span>
+<span class="sd">    key whose value is a SPARQL query string.  Elements without this key are</span>
+<span class="sd">    silently skipped.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    json_path : str or pathlib.Path</span>
+<span class="sd">        Path to the JSON file.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of str</span>
+<span class="sd">        SPARQL query strings extracted from the file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">queries</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sparql_query&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">q</span><span class="p">:</span>
+            <span class="n">queries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">queries</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_extract_sparql_from_markdown</span><span class="p">(</span><span class="n">md_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extract SPARQL queries from fenced code blocks in a Markdown file.</span>
+
+<span class="sd">    Looks for blocks delimited by ````sparql`` and the closing ``````` and</span>
+<span class="sd">    returns the content of each block as a separate string.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    md_path : str or pathlib.Path</span>
+<span class="sd">        Path to the Markdown file.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of str</span>
+<span class="sd">        SPARQL query strings found in the file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">md_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;```sparql\s*(.*?)```&quot;</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Main Function</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="task_based_metric">
+<a class="viewcode-back" href="../../api.html#ontocheck.task_based_metric.task_based_metric">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">task_based_metric</span><span class="p">(</span><span class="n">ttl_file</span><span class="p">,</span> <span class="n">questions</span><span class="p">,</span> <span class="n">domain_prefixes</span><span class="p">,</span>
+                      <span class="n">domain_ns_fragments</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute task-based Relevance and Accuracy for an ontology.</span>
+
+<span class="sd">    Given an ontology (one or more Turtle files) and a set of competency</span>
+<span class="sd">    questions expressed as SPARQL queries, this function computes two</span>
+<span class="sd">    term-overlap metrics:</span>
+
+<span class="sd">        Relevance (Recall)    = \|T_a intersection T_o\| / \|T_a\|</span>
+<span class="sd">        Accuracy  (Precision) = \|T_a intersection T_o\| / \|T_o\|</span>
+
+<span class="sd">    where *T_a* is the union of domain terms extracted from all SPARQL</span>
+<span class="sd">    queries and *T_o* is the set of domain terms defined in the ontology.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ttl_file : str, pathlib.Path, or list thereof</span>
+<span class="sd">        Path(s) to Turtle (.ttl) ontology file(s).  A single string or</span>
+<span class="sd">        ``Path`` is automatically wrapped in a list.</span>
+<span class="sd">    questions : str, pathlib.Path, or list of str</span>
+<span class="sd">        The competency questions to evaluate against.  Accepted forms:</span>
+
+<span class="sd">        * **str / Path ending in .json** -- path to a JSON file where each</span>
+<span class="sd">          array element has a ``sparql_query`` key.</span>
+<span class="sd">        * **str / Path ending in .md** -- path to a Markdown file with</span>
+<span class="sd">          SPARQL queries inside fenced ``sparql`` code blocks.</span>
+<span class="sd">        * **list of str** -- raw SPARQL query strings.</span>
+<span class="sd">    domain_prefixes : list of str</span>
+<span class="sd">        Namespace prefixes used in the SPARQL queries to identify domain</span>
+<span class="sd">        terms (e.g., ``[&quot;mds&quot;]``).</span>
+<span class="sd">    domain_ns_fragments : list of str or None, optional</span>
+<span class="sd">        Sub-strings of namespace URIs used to restrict which ontology terms</span>
+<span class="sd">        count as domain-specific.  When ``None``, every non-foundational</span>
+<span class="sd">        term is included.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        A dictionary with the following keys:</span>
+
+<span class="sd">        - ``relevance`` (float): Recall -- fraction of task terms present</span>
+<span class="sd">          in the ontology.</span>
+<span class="sd">        - ``accuracy`` (float): Precision -- fraction of ontology terms</span>
+<span class="sd">          referenced by the tasks.</span>
+<span class="sd">        - ``T_o_count`` (int): Number of ontology domain terms.</span>
+<span class="sd">        - ``T_a_count`` (int): Number of unique task terms.</span>
+<span class="sd">        - ``intersection`` (int): Number of terms in both sets.</span>
+<span class="sd">        - ``missing_from_onto`` (set of str): Task terms absent from the</span>
+<span class="sd">          ontology.</span>
+<span class="sd">        - ``unused_in_onto`` (set of str): Ontology terms not referenced</span>
+<span class="sd">          by any task query.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If *questions* is not a recognized type (list, JSON path, or</span>
+<span class="sd">        Markdown path).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; result = task_based_metric(</span>
+<span class="sd">    ...     ttl_file=&quot;my_ontology.ttl&quot;,</span>
+<span class="sd">    ...     questions=&quot;competency_questions.json&quot;,</span>
+<span class="sd">    ...     domain_prefixes=[&quot;mds&quot;],</span>
+<span class="sd">    ...     domain_ns_fragments=[&quot;cwrusdle.bitbucket.io/mds&quot;],</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;Relevance: {result[&#39;relevance&#39;]:.2%}&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;Accuracy:  {result[&#39;accuracy&#39;]:.2%}&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Normalise ttl_file to a list</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ttl_file</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">)):</span>
+        <span class="n">ttl_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">ttl_file</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ttl_files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ttl_file</span><span class="p">)</span>
+
+    <span class="c1"># Build ontology term set (T_o)</span>
+    <span class="n">T_o</span> <span class="o">=</span> <span class="n">_get_ontology_terms</span><span class="p">(</span><span class="n">ttl_files</span><span class="p">,</span> <span class="n">domain_ns_fragments</span><span class="p">)</span>
+
+    <span class="c1"># Build task term set (T_a) from SPARQL queries</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">questions</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">)):</span>
+        <span class="n">qs</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">questions</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">qs</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.json&quot;</span><span class="p">):</span>
+            <span class="n">sparql_queries</span> <span class="o">=</span> <span class="n">_load_json_questions</span><span class="p">(</span><span class="n">qs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">qs</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.md&quot;</span><span class="p">):</span>
+            <span class="n">sparql_queries</span> <span class="o">=</span> <span class="n">_extract_sparql_from_markdown</span><span class="p">(</span><span class="n">qs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unrecognised question file extension: </span><span class="si">{</span><span class="n">qs</span><span class="si">!r}</span><span class="s2">. &quot;</span>
+                <span class="s2">&quot;Expected .json or .md, or pass a list of SPARQL strings.&quot;</span>
+            <span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">questions</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">sparql_queries</span> <span class="o">=</span> <span class="n">questions</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;The &#39;questions&#39; argument must be a file path (str/Path to .json &quot;</span>
+            <span class="s2">&quot;or .md) or a list of SPARQL query strings.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">T_a</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">sparql_queries</span><span class="p">:</span>
+        <span class="n">T_a</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">_extract_terms_from_sparql</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">domain_prefixes</span><span class="p">))</span>
+
+    <span class="c1"># Compute metrics</span>
+    <span class="n">intersection</span> <span class="o">=</span> <span class="n">T_a</span> <span class="o">&amp;</span> <span class="n">T_o</span>
+    <span class="n">i_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">intersection</span><span class="p">)</span>
+
+    <span class="n">relevance</span> <span class="o">=</span> <span class="p">(</span><span class="n">i_count</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">T_a</span><span class="p">))</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">T_a</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">0.0</span>
+    <span class="n">accuracy</span> <span class="o">=</span> <span class="p">(</span><span class="n">i_count</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">T_o</span><span class="p">))</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">T_o</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">0.0</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;relevance&quot;</span><span class="p">:</span> <span class="n">relevance</span><span class="p">,</span>
+        <span class="s2">&quot;accuracy&quot;</span><span class="p">:</span> <span class="n">accuracy</span><span class="p">,</span>
+        <span class="s2">&quot;T_o_count&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">T_o</span><span class="p">),</span>
+        <span class="s2">&quot;T_a_count&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">T_a</span><span class="p">),</span>
+        <span class="s2">&quot;intersection&quot;</span><span class="p">:</span> <span class="n">i_count</span><span class="p">,</span>
+        <span class="s2">&quot;missing_from_onto&quot;</span><span class="p">:</span> <span class="n">T_a</span> <span class="o">-</span> <span class="n">T_o</span><span class="p">,</span>
+        <span class="s2">&quot;unused_in_onto&quot;</span><span class="p">:</span> <span class="n">T_o</span> <span class="o">-</span> <span class="n">T_a</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Rishabh Kundu, Van Tran, Redad Mehdi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

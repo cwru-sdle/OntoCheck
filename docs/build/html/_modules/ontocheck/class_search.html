@@ -1,0 +1,319 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ontocheck.class_search &mdash; OntoCheck 0.0.3.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=a8825ba5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            OntoCheck
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#install-from-pypi">Install from PyPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#install-from-source">Install from Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#verify-installation">Verify Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#command-line-interface">Command-Line Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#python-api">Python API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#task-agnostic-assessment">Task-Agnostic Assessment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#task-based-assessment">Task-Based Assessment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#available-metric-names">Available Metric Names</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#assessment-runner">Assessment Runner</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#ontocheck.run_assessment.run_ontology_assessment"><code class="docutils literal notranslate"><span class="pre">run_ontology_assessment()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#task-based-assessment">Task-Based Assessment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#ontocheck.task_based_metric.task_based_metric"><code class="docutils literal notranslate"><span class="pre">task_based_metric()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#labeling-metrics">Labeling Metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.check_label">ontocheck.check_label</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.check_label.mainLabelCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainLabelCheck_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.altLabelCheck">ontocheck.altLabelCheck</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.altLabelCheck.mainAltLabelCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainAltLabelCheck_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.defCheck">ontocheck.defCheck</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.defCheck.mainDefCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainDefCheck_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#structural-metrics">Structural Metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.check_for_isolated_elements">ontocheck.check_for_isolated_elements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.check_for_isolated_elements.check_for_isolated_elements"><code class="docutils literal notranslate"><span class="pre">check_for_isolated_elements()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.count_class_connected_components">ontocheck.count_class_connected_components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.count_class_connected_components.count_class_connected_components"><code class="docutils literal notranslate"><span class="pre">count_class_connected_components()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.get_properties_missing_domain_and_range">ontocheck.get_properties_missing_domain_and_range</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.get_properties_missing_domain_and_range.get_properties_missing_domain_and_range"><code class="docutils literal notranslate"><span class="pre">get_properties_missing_domain_and_range()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.leafNodeCheck">ontocheck.leafNodeCheck</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.leafNodeCheck.mainLeafNodeCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainLeafNodeCheck_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.semanticConnection">ontocheck.semanticConnection</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.semanticConnection.mainSemanticConnection_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainSemanticConnection_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#accessibility-metrics">Accessibility Metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.check_sparql_accessibility_ttl">ontocheck.check_sparql_accessibility_ttl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.check_sparql_accessibility_ttl.check_sparql_accessibility_ttl"><code class="docutils literal notranslate"><span class="pre">check_sparql_accessibility_ttl()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.check_rdf_dump_accessibility_ttl">ontocheck.check_rdf_dump_accessibility_ttl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.check_rdf_dump_accessibility_ttl.check_rdf_dump_accessibility_ttl"><code class="docutils literal notranslate"><span class="pre">check_rdf_dump_accessibility_ttl()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.check_human_readable_license_ttl">ontocheck.check_human_readable_license_ttl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.check_human_readable_license_ttl.check_human_readable_license_ttl"><code class="docutils literal notranslate"><span class="pre">check_human_readable_license_ttl()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.check_external_data_provider_links_ttl">ontocheck.check_external_data_provider_links_ttl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.check_external_data_provider_links_ttl.check_external_data_provider_links_ttl"><code class="docutils literal notranslate"><span class="pre">check_external_data_provider_links_ttl()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#naming-convention-metrics">Naming Convention Metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.check_class_name_capital">ontocheck.check_class_name_capital</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.check_class_name_capital.mainClassNameCapitalCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainClassNameCapitalCheck_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.check_class_name_space">ontocheck.check_class_name_space</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.check_class_name_space.mainClassNameSpaceCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainClassNameSpaceCheck_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.spell_check">ontocheck.spell_check</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.find_duplicate_labels_from_graph">ontocheck.find_duplicate_labels_from_graph</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.find_duplicate_labels_from_graph.find_duplicate_labels_from_graph"><code class="docutils literal notranslate"><span class="pre">find_duplicate_labels_from_graph()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.class_search">ontocheck.class_search</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.class_search.mainClassSearch_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainClassSearch_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#other-modules">Other Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.cli">ontocheck.cli</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#ontocheck.cli.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#module-ontocheck.mds_design_check">ontocheck.mds_design_check</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../helpers.html">Helper Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../helpers.html#module-ontocheck.helpers.helpers">ontocheck.helpers.helpers</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">OntoCheck</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ontocheck.class_search</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ontocheck.class_search</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rdflib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Graph</span><span class="p">,</span> <span class="n">URIRef</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdflib.namespace</span><span class="w"> </span><span class="kn">import</span> <span class="n">RDF</span><span class="p">,</span> <span class="n">RDFS</span><span class="p">,</span> <span class="n">OWL</span>
+
+<div class="viewcode-block" id="mainClassSearch_v_0_0_1">
+<a class="viewcode-back" href="../../api.html#ontocheck.class_search.mainClassSearch_v_0_0_1">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">mainClassSearch_v_0_0_1</span><span class="p">(</span><span class="n">ontology_graph_or_path</span><span class="p">,</span> <span class="n">search_term</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class Name Substring Search</span>
+<span class="sd">    </span>
+<span class="sd">    Evaluates an ontology file to find all class names that contain a specified</span>
+<span class="sd">    substring, irrespective of capitalization.</span>
+<span class="sd">    </span>
+<span class="sd">    This metric assesses whether certain concepts can be resolved from a semantic </span>
+<span class="sd">    or string basis, which is important for identifying overlapping concepts, </span>
+<span class="sd">    naming consistency, or potential duplicates (e.g., &#39;VoltageRating&#39; and &#39;VoltAgeRange&#39;).</span>
+<span class="sd">    </span>
+<span class="sd">    Author: Redad Mehdi</span>
+<span class="sd">    Version: 0.0.1</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    ontology_graph_or_path : str or rdflib.Graph</span>
+<span class="sd">        Path to the Turtle (.ttl) file to analyze, or a pre-loaded rdflib.Graph object.</span>
+<span class="sd">    search_term : str</span>
+<span class="sd">        The string to search for within the class names (case-insensitive).</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    list of dict</span>
+<span class="sd">        A list containing dictionaries of the matched classes.</span>
+<span class="sd">        Each dictionary contains:</span>
+<span class="sd">        - &#39;class_name&#39;: The extracted local name of the class (str).</span>
+<span class="sd">        - &#39;uri&#39;: The full URI string of the class (str).</span>
+<span class="sd">        Returns an empty list if no matches are found.</span>
+<span class="sd">        </span>
+<span class="sd">    Notes:</span>
+<span class="sd">    ------</span>
+<span class="sd">    The function identifies class names by looking at subjects typed as owl:Class </span>
+<span class="sd">    or rdfs:Class. It extracts the local name by splitting the URI at the last </span>
+<span class="sd">    &#39;#&#39; or &#39;/&#39; character before performing the case-insensitive comparison.</span>
+<span class="sd">    </span>
+<span class="sd">    Example:</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; matches = mainClassSearch_v_0_0_1(&#39;dataset.ttl&#39;, &#39;VOLtage&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;Found {len(matches)} matching classes.&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Load the graph if a file path is provided, otherwise use the passed graph</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ontology_graph_or_path</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">()</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">ontology_graph_or_path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;turtle&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">ontology_graph_or_path</span>
+
+    <span class="n">search_term_lower</span> <span class="o">=</span> <span class="n">search_term</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Get all unique classes (both OWL and RDFS classes just to be safe)</span>
+    <span class="n">classes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">subjects</span><span class="p">(</span><span class="n">RDF</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">OWL</span><span class="o">.</span><span class="n">Class</span><span class="p">))</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">subjects</span><span class="p">(</span><span class="n">RDF</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">RDFS</span><span class="o">.</span><span class="n">Class</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">class_uri</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">:</span>
+        <span class="c1"># We only want to check actual URIs, not BNodes (blank nodes)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">class_uri</span><span class="p">,</span> <span class="n">URIRef</span><span class="p">):</span>
+            <span class="n">uri_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">class_uri</span><span class="p">)</span>
+            
+            <span class="c1"># Extract the local class name (heuristic: get everything after the last &#39;#&#39; or &#39;/&#39;)</span>
+            <span class="k">if</span> <span class="s1">&#39;#&#39;</span> <span class="ow">in</span> <span class="n">uri_str</span><span class="p">:</span>
+                <span class="n">local_name</span> <span class="o">=</span> <span class="n">uri_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">local_name</span> <span class="o">=</span> <span class="n">uri_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="c1"># Case-insensitive check</span>
+            <span class="k">if</span> <span class="n">search_term_lower</span> <span class="ow">in</span> <span class="n">local_name</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="n">matches</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                    <span class="s2">&quot;class_name&quot;</span><span class="p">:</span> <span class="n">local_name</span><span class="p">,</span>
+                    <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="n">uri_str</span>
+                <span class="p">})</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">40</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SEARCH RESULTS FOR: &#39;</span><span class="si">{</span><span class="n">search_term</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">40</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span><span class="si">}</span><span class="s2"> matching class(es):</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  * Class: </span><span class="si">{</span><span class="n">match</span><span class="p">[</span><span class="s1">&#39;class_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    URI:   </span><span class="si">{</span><span class="n">match</span><span class="p">[</span><span class="s1">&#39;uri&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No classes found containing &#39;</span><span class="si">{</span><span class="n">search_term</span><span class="si">}</span><span class="s2">&#39;.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">40</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">matches</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Rishabh Kundu, Van Tran, Redad Mehdi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

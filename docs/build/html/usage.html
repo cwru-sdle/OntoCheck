@@ -1,0 +1,373 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usage Guide &mdash; OntoCheck 0.0.3.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=a8825ba5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="api.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            OntoCheck
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#install-from-pypi">Install from PyPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#install-from-source">Install from Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#verify-installation">Verify Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#command-line-interface">Command-Line Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#python-api">Python API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#task-agnostic-assessment">Task-Agnostic Assessment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#task-based-assessment">Task-Based Assessment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#available-metric-names">Available Metric Names</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#assessment-runner">Assessment Runner</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#ontocheck.run_assessment.run_ontology_assessment"><code class="docutils literal notranslate"><span class="pre">run_ontology_assessment()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#task-based-assessment">Task-Based Assessment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#ontocheck.task_based_metric.task_based_metric"><code class="docutils literal notranslate"><span class="pre">task_based_metric()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#labeling-metrics">Labeling Metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#module-ontocheck.check_label">ontocheck.check_label</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#ontocheck.check_label.mainLabelCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainLabelCheck_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#module-ontocheck.altLabelCheck">ontocheck.altLabelCheck</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#ontocheck.altLabelCheck.mainAltLabelCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainAltLabelCheck_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#module-ontocheck.defCheck">ontocheck.defCheck</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#ontocheck.defCheck.mainDefCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainDefCheck_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#structural-metrics">Structural Metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#module-ontocheck.check_for_isolated_elements">ontocheck.check_for_isolated_elements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#ontocheck.check_for_isolated_elements.check_for_isolated_elements"><code class="docutils literal notranslate"><span class="pre">check_for_isolated_elements()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#module-ontocheck.count_class_connected_components">ontocheck.count_class_connected_components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#ontocheck.count_class_connected_components.count_class_connected_components"><code class="docutils literal notranslate"><span class="pre">count_class_connected_components()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#module-ontocheck.get_properties_missing_domain_and_range">ontocheck.get_properties_missing_domain_and_range</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#ontocheck.get_properties_missing_domain_and_range.get_properties_missing_domain_and_range"><code class="docutils literal notranslate"><span class="pre">get_properties_missing_domain_and_range()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#module-ontocheck.leafNodeCheck">ontocheck.leafNodeCheck</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#ontocheck.leafNodeCheck.mainLeafNodeCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainLeafNodeCheck_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#module-ontocheck.semanticConnection">ontocheck.semanticConnection</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#ontocheck.semanticConnection.mainSemanticConnection_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainSemanticConnection_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#accessibility-metrics">Accessibility Metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#module-ontocheck.check_sparql_accessibility_ttl">ontocheck.check_sparql_accessibility_ttl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#ontocheck.check_sparql_accessibility_ttl.check_sparql_accessibility_ttl"><code class="docutils literal notranslate"><span class="pre">check_sparql_accessibility_ttl()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#module-ontocheck.check_rdf_dump_accessibility_ttl">ontocheck.check_rdf_dump_accessibility_ttl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#ontocheck.check_rdf_dump_accessibility_ttl.check_rdf_dump_accessibility_ttl"><code class="docutils literal notranslate"><span class="pre">check_rdf_dump_accessibility_ttl()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#module-ontocheck.check_human_readable_license_ttl">ontocheck.check_human_readable_license_ttl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#ontocheck.check_human_readable_license_ttl.check_human_readable_license_ttl"><code class="docutils literal notranslate"><span class="pre">check_human_readable_license_ttl()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#module-ontocheck.check_external_data_provider_links_ttl">ontocheck.check_external_data_provider_links_ttl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#ontocheck.check_external_data_provider_links_ttl.check_external_data_provider_links_ttl"><code class="docutils literal notranslate"><span class="pre">check_external_data_provider_links_ttl()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#naming-convention-metrics">Naming Convention Metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#module-ontocheck.check_class_name_capital">ontocheck.check_class_name_capital</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#ontocheck.check_class_name_capital.mainClassNameCapitalCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainClassNameCapitalCheck_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#module-ontocheck.check_class_name_space">ontocheck.check_class_name_space</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#ontocheck.check_class_name_space.mainClassNameSpaceCheck_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainClassNameSpaceCheck_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#module-ontocheck.spell_check">ontocheck.spell_check</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#module-ontocheck.find_duplicate_labels_from_graph">ontocheck.find_duplicate_labels_from_graph</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#ontocheck.find_duplicate_labels_from_graph.find_duplicate_labels_from_graph"><code class="docutils literal notranslate"><span class="pre">find_duplicate_labels_from_graph()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#module-ontocheck.class_search">ontocheck.class_search</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#ontocheck.class_search.mainClassSearch_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">mainClassSearch_v_0_0_1()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#other-modules">Other Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#module-ontocheck.cli">ontocheck.cli</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#ontocheck.cli.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#module-ontocheck.mds_design_check">ontocheck.mds_design_check</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html">Helper Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="helpers.html#module-ontocheck.helpers.helpers">ontocheck.helpers.helpers</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">OntoCheck</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Usage Guide</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/cwru-sdle/OntoCheck/blob/main/docs/source/usage.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="usage-guide">
+<h1>Usage Guide<a class="headerlink" href="#usage-guide" title="Link to this heading"></a></h1>
+<p>OntoCheck provides two interfaces: a command-line tool for quick assessments
+and a Python API for programmatic use and integration into data pipelines.</p>
+<p>All assessments require an ontology serialized in Turtle (<code class="docutils literal notranslate"><span class="pre">.ttl</span></code>) format.
+The input file must be free of syntax errors.</p>
+<section id="command-line-interface">
+<h2>Command-Line Interface<a class="headerlink" href="#command-line-interface" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">ontocheck</span></code> command runs one or more task-agnostic metrics on a Turtle
+file and produces a log file and a CSV results summary.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ontocheck<span class="w"> </span>&lt;ttl_file&gt;<span class="w"> </span>--metrics<span class="w"> </span>&lt;metric1&gt;<span class="w"> </span><span class="o">[</span>&lt;metric2&gt;<span class="w"> </span>...<span class="o">]</span><span class="w"> </span><span class="o">[</span>options<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Arguments:</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ttl_file</span></code></dt><dd><p>Path to the input Turtle ontology file.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">--metrics</span></code></dt><dd><p>One or more metric names to run, or <code class="docutils literal notranslate"><span class="pre">all</span></code> to run every available metric.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">--log-file</span></code></dt><dd><p>Path for the output log file (default: <code class="docutils literal notranslate"><span class="pre">assessment.log</span></code>).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">--csv-file</span></code></dt><dd><p>Path for the output CSV results file (default: <code class="docutils literal notranslate"><span class="pre">assessment_scores.csv</span></code>).</p>
+</dd>
+</dl>
+<section id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h3>
+<p>Run two specific metrics:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ontocheck<span class="w"> </span>my_ontology.ttl<span class="w"> </span>--metrics<span class="w"> </span>altLabelCheck<span class="w"> </span>definitionCheck
+</pre></div>
+</div>
+<p>Run all available metrics with custom output paths:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ontocheck<span class="w"> </span>my_ontology.ttl<span class="w"> </span>--metrics<span class="w"> </span>all<span class="w"> </span>--log-file<span class="w"> </span>results.log<span class="w"> </span>--csv-file<span class="w"> </span>results.csv
+</pre></div>
+</div>
+</section>
+</section>
+<section id="python-api">
+<h2>Python API<a class="headerlink" href="#python-api" title="Link to this heading"></a></h2>
+<section id="task-agnostic-assessment">
+<h3>Task-Agnostic Assessment<a class="headerlink" href="#task-agnostic-assessment" title="Link to this heading"></a></h3>
+<p>The <a class="reference internal" href="api.html#ontocheck.run_assessment.run_ontology_assessment" title="ontocheck.run_assessment.run_ontology_assessment"><code class="xref py py-func docutils literal notranslate"><span class="pre">run_ontology_assessment()</span></code></a> function runs one or
+more task-agnostic metrics on a Turtle file.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ontocheck</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_ontology_assessment</span>
+
+<span class="c1"># Run selected metrics</span>
+<span class="n">run_ontology_assessment</span><span class="p">(</span>
+    <span class="n">ttl_file</span><span class="o">=</span><span class="s2">&quot;my_ontology.ttl&quot;</span><span class="p">,</span>
+    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;altLabelCheck&quot;</span><span class="p">,</span> <span class="s2">&quot;isolatedElements&quot;</span><span class="p">,</span> <span class="s2">&quot;semanticConnection&quot;</span><span class="p">],</span>
+    <span class="n">output_log_file</span><span class="o">=</span><span class="s2">&quot;assessment.log&quot;</span><span class="p">,</span>
+    <span class="n">output_csv_file</span><span class="o">=</span><span class="s2">&quot;scores.csv&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Run all metrics</span>
+<span class="n">run_ontology_assessment</span><span class="p">(</span>
+    <span class="n">ttl_file</span><span class="o">=</span><span class="s2">&quot;my_ontology.ttl&quot;</span><span class="p">,</span>
+    <span class="n">metrics</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Each metric takes a Turtle file as input and returns a score or diagnostic
+report. Results are written to the log file and aggregated in the CSV output.</p>
+</section>
+<section id="task-based-assessment">
+<h3>Task-Based Assessment<a class="headerlink" href="#task-based-assessment" title="Link to this heading"></a></h3>
+<p>The <a class="reference internal" href="api.html#ontocheck.task_based_metric.task_based_metric" title="ontocheck.task_based_metric.task_based_metric"><code class="xref py py-func docutils literal notranslate"><span class="pre">task_based_metric()</span></code></a> function evaluates an
+ontology against competency questions encoded as SPARQL queries. It computes
+two complementary metrics:</p>
+<ul class="simple">
+<li><p><strong>Relevance</strong> (Recall) = |T_a intersection T_o| / |T_a| – the fraction
+of task-required terms that the ontology defines.</p></li>
+<li><p><strong>Accuracy</strong> (Precision) = |T_a intersection T_o| / |T_o| – the
+fraction of ontology terms utilized by the task queries.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ontocheck</span><span class="w"> </span><span class="kn">import</span> <span class="n">task_based_metric</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">task_based_metric</span><span class="p">(</span>
+    <span class="n">ttl_file</span><span class="o">=</span><span class="s2">&quot;my_ontology.ttl&quot;</span><span class="p">,</span>
+    <span class="n">questions</span><span class="o">=</span><span class="s2">&quot;competency_questions.json&quot;</span><span class="p">,</span>
+    <span class="n">domain_prefixes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mds&quot;</span><span class="p">],</span>
+    <span class="n">domain_ns_fragments</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;cwrusdle.bitbucket.io/mds&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Relevance: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;relevance&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accuracy:  </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Ontology terms (T_o): </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;T_o_count&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Task terms (T_a):     </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;T_a_count&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Intersection:         </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;intersection&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Supplying questions.</strong> The <code class="docutils literal notranslate"><span class="pre">questions</span></code> parameter accepts three formats:</p>
+<ol class="arabic simple">
+<li><p><strong>JSON file path</strong> (ending in <code class="docutils literal notranslate"><span class="pre">.json</span></code>): Each element of the JSON array
+should contain a <code class="docutils literal notranslate"><span class="pre">sparql_query</span></code> key with a SPARQL query string.</p></li>
+<li><p><strong>Markdown file path</strong> (ending in <code class="docutils literal notranslate"><span class="pre">.md</span></code>): SPARQL queries are extracted from
+fenced code blocks marked with <code class="docutils literal notranslate"><span class="pre">sparql</span></code>.</p></li>
+<li><p><strong>List of strings</strong>: Raw SPARQL query strings passed directly.</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># From a list of SPARQL query strings</span>
+<span class="n">queries</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;SELECT ?x WHERE { ?x a mds:Sample }&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SELECT ?x WHERE { ?x mds:hasMaterialComposition ?comp }&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">task_based_metric</span><span class="p">(</span>
+    <span class="n">ttl_file</span><span class="o">=</span><span class="s2">&quot;my_ontology.ttl&quot;</span><span class="p">,</span>
+    <span class="n">questions</span><span class="o">=</span><span class="n">queries</span><span class="p">,</span>
+    <span class="n">domain_prefixes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mds&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Inspecting gaps.</strong> The returned dictionary includes diagnostic sets for
+identifying vocabulary gaps:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Terms the tasks require but the ontology lacks</span>
+<span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;missing_from_onto&#39;</span><span class="p">]):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Missing: </span><span class="si">{</span><span class="n">term</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Ontology terms not exercised by any task query</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unused ontology terms: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;unused_in_onto&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="available-metric-names">
+<h2>Available Metric Names<a class="headerlink" href="#available-metric-names" title="Link to this heading"></a></h2>
+<p>The following metric names can be passed to the <code class="docutils literal notranslate"><span class="pre">--metrics</span></code> CLI argument
+or the <code class="docutils literal notranslate"><span class="pre">metrics</span></code> parameter of <code class="docutils literal notranslate"><span class="pre">run_ontology_assessment</span></code>:</p>
+<p><strong>Labeling:</strong>
+<code class="docutils literal notranslate"><span class="pre">checkLabel</span></code>, <code class="docutils literal notranslate"><span class="pre">altLabelCheck</span></code>, <code class="docutils literal notranslate"><span class="pre">definitionCheck</span></code></p>
+<p><strong>Structural:</strong>
+<code class="docutils literal notranslate"><span class="pre">isolatedElements</span></code>, <code class="docutils literal notranslate"><span class="pre">classConnections</span></code>, <code class="docutils literal notranslate"><span class="pre">missingDomainRange</span></code>,
+<code class="docutils literal notranslate"><span class="pre">leafNodeCheck</span></code>, <code class="docutils literal notranslate"><span class="pre">semanticConnection</span></code></p>
+<p><strong>Accessibility:</strong>
+<code class="docutils literal notranslate"><span class="pre">sparqlEndpoint</span></code>, <code class="docutils literal notranslate"><span class="pre">rdfDump</span></code>, <code class="docutils literal notranslate"><span class="pre">humanLicense</span></code>, <code class="docutils literal notranslate"><span class="pre">externalLinks</span></code></p>
+<p><strong>Naming Convention:</strong>
+<code class="docutils literal notranslate"><span class="pre">classCapitalCheck</span></code>, <code class="docutils literal notranslate"><span class="pre">classSpaceCheck</span></code>, <code class="docutils literal notranslate"><span class="pre">spellCheck</span></code>,
+<code class="docutils literal notranslate"><span class="pre">duplicateLabels</span></code>, <code class="docutils literal notranslate"><span class="pre">searchClass</span></code></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Rishabh Kundu, Van Tran, Redad Mehdi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

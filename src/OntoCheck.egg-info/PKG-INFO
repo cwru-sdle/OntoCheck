@@ -1,8 +1,8 @@
 Metadata-Version: 2.4
 Name: OntoCheck
-Version: 0.0.3.0
+Version: 0.0.4.0
 Summary: A package for assessing the quality and structure of ontologies.
-Author-email: "Rishabh Kundu, Van Tran, Redad Mehdi, Erika I. Barcelos, Alp Sehirlioglu, Yinghui Wu, Roger H. French" <rxf131@case.edu>
+Author-email: "Rishabh Kundu, Van Tran, Redad Mehdi, Ethan Frakes, Abhishek Daundkar, Maliesha Sumudumalie, Vibha S. Mandayam, Jacob A. Lample, Mengjie Li, Laura S. Bruckman, Erika I. Barcelos, Alp Sehirlioglu, Yinghui Wu, Roger H. French" <rxf131@case.edu>
 Maintainer-email: Redad Mehdi <mxm1684@case.edu>
 License: Copyright 2025 SDLE Lab
         
@@ -27,191 +27,187 @@ Requires-Dist: networkx
 Requires-Dist: requests
 Dynamic: license-file
 
-# Introduction
+# OntoCheck
 
-OntoCheck is a Py package that provides a suite of metrics for evaluating ontology quality, usability, and compliance. It aims to support both developers by revealing potential quality gaps and users by assessing an ontology’s fitness for use across different domains. In order for ontocheck to work, the turtle (.ttl) file needs to be free of syntax errors. We are also building tools that will help correct a ttl file.
+**Query-Driven Ontology Assessment for Scientific Domain Applications**
 
--> Motivation
-
-While there are established approaches for assessing linked-data quality and FAIR data compliance, there are no widely accepted standards dedicated specifically to ontology assessment. Many existing frameworks lack maintenance, and comprehensive semantic data management metrics remain underdeveloped.
-
--> What OntoCheck Does
-
-OntoCheck builds on existing concepts rather than reinventing them. It brings together:
-
-    - Linked-data assessment principles
-
-    - FAIR-data compliance indicators
-
-    - Semantic data management metrics
-
-All implemented within a maintainable and user-friendly Py environment.
-
--> Key Features
-
-    – combines adapted metrics from literature with new, experience-based measures
-
-    – users can select which metrics to apply
-
-    – generates structured evaluation summaries for easy review
-
-    – ongoing development of feedback mechanisms to refine and expand metrics
-
--> Our Goal
-
-OntoCheck strives to promote transparency and quality in ontology development. By integrating principles from linked-data and FAIR-data assessments, we aim to foster a foundation for future standardization in ontology evaluation.
-
-We welcome feedback and contributions from the community as we continue to expand the metrics and tools offered in OntoCheck.
-
-This tool is actively developed and maintained by the **SDLE Research Center at Case Western Reserve University**.
+[![PyPI](https://img.shields.io/pypi/v/OntoCheck)](https://pypi.org/project/OntoCheck/)
+[![Documentation](https://readthedocs.org/projects/ontocheck/badge/?version=latest)](https://ontocheck.readthedocs.io/en/latest/)
+[![License: BSD-2](https://img.shields.io/badge/License-BSD--2-blue.svg)](LICENSE)
 
 ---
 
-## ✍️ Authors
+## Overview
 
-* Rishabh Kundu
-* Redad Mehdi
-* Van D. Tran
-* Erika I. Barcelos
-* Alp Sehirlioglu
-* Yinghui Wu
-* Roger H. French
+As scientific fields increasingly adopt FAIR data principles, ontologies have become essential for encoding the semantics of scientific investigations. Yet evaluating ontology quality remains a manual, technically demanding bottleneck. Current frameworks emphasize structural correctness but fail to assess practical utility against the real-world queries posed by domain scientists.
+
+OntoCheck is an open-source Python tool that unifies domain-agnostic structural metrics with a novel, query-driven assessment methodology. By analyzing SPARQL queries derived from natural-language competency questions, OntoCheck compares the required query terms against an ontology's full vocabulary to yield complementary metrics for vocabulary coverage and utilization density. This empowers domain scientists and data engineers to make evidence-based decisions about ontology selection without requiring deep expertise in formal knowledge representation.
+
+OntoCheck is actively developed and maintained by the **SDLE Research Center at Case Western Reserve University**.
 
 ---
 
-## 🏢 Affiliation
-
-Materials Data Science for Stockpile Stewardship Center of Excellence, Case Western Reserve University, Cleveland, OH 44106, USA
-
----
-
-## 🐍 Installation
+## Installation
 
 ```bash
 pip install OntoCheck
 ```
 
+**Requirements:** Python 3.8 or later.
+
 ---
 
-## ⏰ Quick Start
+## Quick Start
+
+### Command-Line Interface
 
 ```bash
+# Display available metrics and usage information
 ontocheck -h
+
+# Run specific metrics on an ontology file
+ontocheck path/to/ontology.ttl --metrics altLabelCheck definitionCheck
+
+# Run all available task-agnostic metrics
+ontocheck path/to/ontology.ttl --metrics all
+
+# Specify custom output file paths
+ontocheck path/to/ontology.ttl --metrics all --log-file results.log --csv-file results.csv
+```
+
+### Python API
+
+```python
+from ontocheck import run_ontology_assessment
+
+# Run selected metrics
+run_ontology_assessment(
+    ttl_file="path/to/ontology.ttl",
+    metrics=["altLabelCheck", "definitionCheck", "isolatedElements"],
+)
+
+# Run all task-agnostic metrics
+run_ontology_assessment(
+    ttl_file="path/to/ontology.ttl",
+    metrics="all",
+)
+```
+
+### Task-Based Assessment
+
+```python
+from ontocheck import task_based_metric
+
+result = task_based_metric(
+    ttl_file="path/to/ontology.ttl",
+    questions="competency_questions.json",
+    domain_prefixes=["mds"],
+    domain_ns_fragments=["cwrusdle.bitbucket.io/mds"],
+)
+
+print(f"Relevance: {result['relevance']:.2%}")
+print(f"Accuracy:  {result['accuracy']:.2%}")
 ```
 
 ---
 
-## 🛠️ Available Metrics in v0.0.1
+## Available Metrics
 
+OntoCheck provides **17 task-agnostic metrics** organized into four categories, along with a **task-based assessment methodology**.
 
-For more detail visit our [Read The Docs website](https://ontocheck.readthedocs.io/en/latest/)
+### Labeling
 
-    "altLabelCheck": mainAltLabelCheck_v_0_0_1,
-    "externalLinks": check_external_data_provider_links_ttl,
-    "isolatedElements": check_for_isolated_elements,
-    "humanLicense": check_human_readable_license_ttl,
-    "rdfDump": check_rdf_dump_accessibility_ttl,
-    "sparqlEndpoint": check_sparql_accessibility_ttl,
-    "classConnections": count_class_connected_components,
-    "definitionCheck": mainDefCheck_v_0_0_1,
-    "duplicateLabels": find_duplicate_labels_from_graph,
-    "missingDomainRange": get_properties_missing_domain_and_range,
-    "leafNodeCheck": mainLeafNodeCheck_v_0_0_1,
-    "semanticConnection": mainSemanticConnection_v_0_0_1,
-    "mdsDesignCheck": mds_design_check_v_0_0_1,
-    "spellCheck": spell_check_v_0_0_1,
-    "classCapitalCheck": mainClassNameCapitalCheck_v_0_0_1,
-    "classSpaceCheck": mainClassNameSpaceCheck_v_0_0_1,
-    "checkLabel": mainLabelCheck_v_0_0_1,
-    "searchClass":mainClassSearch_v_0_0_1
-
-
-## Example runs in command
-
-
-Running metrics: altLabelCheck and humanLicense
-
-``bash
-ontocheck path/to/ontology.ttl --metrics altLabelCheck humanLicense -log-file path/to/log/file.log --csv-file path/to/file.csv
-``
-
-Results of run:
-
-``text
---- SKOS Definition Coverage Summary ---
-Total classes analyzed: 1406
-Classes with definitions: 360(25.6%)
-Classes without definitions: 1046 (74.4%)
-Assessment: Low definition coverage
-``
-
-``text
---- Classes WITH altLabel (360) ---
-Class: afe:AFE_0002281
-Preferred Label: Nuclear Magnetic Resonance Tube
-Alternative Labels (1):
-- "NMR Tube"
-Class: cco: ont00000003
-Preferred Label: Designative Name
-Alternative Labels (1):
-- "Name"
-Class: cco: ont00000009
-Preferred Label: Mass Density
-Alternative Labels (1):
-- "Density"
-``
-
-``text
---- Classes WITHOUT altLabel (1046) ---
-<https://w3id.org/ODE_AM/AMAO#AdditiveManufacturingMachine>
-afe:AFE_0000029 (Label: "well-plate") afe: AFE_0000052 (Label: "cuvette") afe:AFE_0000329 (Label: "Vial")
-afe:AFE_0000409 (Label: "monochromator") afe:AFE_0000718 (Label: "Tube")
-afe:AFE_0001691 (Label: "non-contactprobe") afe:AFE_0001703 (Label: "pressure regulator") afe:AFE_0001772 (Label: "deuteriumlamp") afe:AFE_0002248 (Label: "probe")
-afe: AFR_0001856 (Label: "electric current") afm: AFM_0000059 (Label: "additive") afm:AFM_0000884 (Label: "electricalenergy")
-afm: AFM_0001032 (Label: "foam") afm:AFM_0001097 afr: AFR_0000955
-afr:AFR_0002641 (Label: "viscosity")
-``
-
-Run status:
-
-
-| Metric | Score | Status |
+| Metric | Function | Description |
 |---|---|---|
-| altLabelCheck | | Success |
-| humanLicense | 1 | Success |
+| `checkLabel` | `mainLabelCheck_v_0_0_1` | Proportion of named classes carrying human-readable identifiers |
+| `altLabelCheck` | `mainAltLabelCheck_v_0_0_1` | Proportion of named classes carrying synonyms |
+| `definitionCheck` | `mainDefCheck_v_0_0_1` | Proportion of named classes carrying formal definitions |
 
+### Structural
 
-(all metrics)
-
-| Metric | Score | Status |
+| Metric | Function | Description |
 |---|---|---|
-| altLabelCheck | | Success |
-| externalLinks | 0.08476821 | Success |
-| isolatedElements | ['Number of i... | Success |
-| humanLicense | 1 | Success |
-| rdfDump | 0 | Success |
-| sparqlEndpoint | 0 | Success |
-| classConnections | 268 | Success |
-| definitionCheck | | Success |
-| duplicateLabels | 51 | Success |
-| missingDomains | ['count_missi... | Success |
-| leafNodeCheck | | Success |
-| semanticConnection | | Success |
+| `isolatedElements` | `check_for_isolated_elements` | Identifies orphaned classes within the ontology |
+| `classConnections` | `count_class_connected_components` | Identifies disconnected subgraphs |
+| `missingDomainRange` | `get_properties_missing_domain_and_range` | Identifies undeclared domain and range restrictions |
+| `leafNodeCheck` | `mainLeafNodeCheck_v_0_0_1` | Identifies all leaf nodes in the ontology hierarchy |
+| `semanticConnection` | `mainSemanticConnection_v_0_0_1` | Verifies grounding in upper-level ontologies (e.g., CCO, BFO) |
 
+### Accessibility
 
+| Metric | Function | Description |
+|---|---|---|
+| `sparqlEndpoint` | `check_sparql_accessibility_ttl` | Verifies reachability of the SPARQL endpoint |
+| `rdfDump` | `check_rdf_dump_accessibility_ttl` | Verifies availability of the RDF data dump |
+| `humanLicense` | `check_human_readable_license_ttl` | Verifies presence and fitness of licensing information |
+| `externalLinks` | `check_external_data_provider_links_ttl` | Checks validity of external links within the ontology |
 
-## Acknowledge
+### Naming Convention
 
-* U.S. Department of Energy’s Office of Energy Efficiency and Renewable Energy (EERE) under the Solar Energy Technologies Office (SETO) — Agreement Numbers **DE-EE0009353** and **DE-EE0009347**
-* Department of Energy (National Nuclear Security Administration) — Award Number **DE-NA0004104** and Contract Number **B647887**
-* U.S. National Science Foundation — Award Number **2133576**
+| Metric | Function | Description |
+|---|---|---|
+| `classCapitalCheck` | `mainClassNameCapitalCheck_v_0_0_1` | Flags departures from standard capitalization |
+| `classSpaceCheck` | `mainClassNameSpaceCheck_v_0_0_1` | Flags use of spaces in class identifiers |
+| `spellCheck` | `spell_check_v_0_0_1` | Spell checking on labels and definitions |
+| `duplicateLabels` | `find_duplicate_labels_from_graph` | Identifies duplicate labels across entities |
+| `searchClass` | `mainClassSearch_v_0_0_1` | Identifies classes matching a user-specified string |
 
+### Task-Based Assessment
 
-## How to cite package
+The task-based methodology measures how well an ontology supports analytical queries by computing two complementary metrics from SPARQL competency questions:
 
-If you use ``OntoCheck`` in your work please cite   
+- **Relevance** = |T_a intersection T_o| / |T_a| -- the fraction of task-required terms that the ontology defines
+- **Accuracy** = |T_a intersection T_o| / |T_o| -- the fraction of ontology terms utilized by the task queries
 
-Rishabh Kundu, Redad Mehdi, Van D. Tran, Erika I. Barcelos, Alp Sehirlioglu, Yinghui Wu, Roger H. French (2025). OntoCheck: A package for assessing the quality and structure of ontologies. [Python]. https://pypi.org/project/OntoCheck/
+where T_a is the set of domain terms extracted from the SPARQL queries and T_o is the set of domain terms defined in the ontology.
 
+---
 
+## Documentation
 
+Full documentation is available at [ontocheck.readthedocs.io](https://ontocheck.readthedocs.io/en/latest/).
+
+---
+
+## Authors
+
+- Rishabh Kundu
+- Redad Mehdi
+- Van D. Tran
+- Ethan Frakes
+- Abhishek Daundkar
+- Maliesha Sumudumalie
+- Vibha S. Mandayam
+- Jacob A. Lample
+- Mengjie Li
+- Laura S. Bruckman
+- Erika I. Barcelos
+- Alp Sehirlioglu
+- Roger H. French
+- Yinghui Wu
+
+## Affiliation
+
+Materials Data Science for Stockpile Stewardship Center of Excellence (MDS3 COE), Case Western Reserve University, Cleveland, OH 44106, USA
+
+---
+
+## Acknowledgments
+
+- U.S. Department of Energy's National Nuclear Security Administration -- Award Number **DE-NA0004104** and Contract Number **B647887**
+- U.S. Department of Energy's Office of Energy Efficiency and Renewable Energy (EERE) under the Solar Energy Technologies Office (SETO) -- Agreement Numbers **DE-EE0009353** and **DE-EE0009347**
+- U.S. National Science Foundation -- Award Number **2133576**
+
+---
+
+## How to Cite
+
+If you use OntoCheck in your work, please cite:
+
+> Rishabh Kundu, Redad Mehdi, Van D. Tran, Ethan Frakes, Abhishek Daundkar, Maliesha Sumudumalie, Vibha S. Mandayam, Jacob A. Lample, Mengjie Li, Laura S. Bruckman, Erika I. Barcelos, Alp Sehirlioglu, Roger H. French, Yinghui Wu (2025). OntoCheck: Query-Driven Ontology Assessments for Scientific Domain Applications. [Python]. https://pypi.org/project/OntoCheck/
+
+---
+
+## License
+
+OntoCheck is released under the [BSD-2-Clause License](LICENSE).
