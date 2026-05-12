@@ -32,13 +32,20 @@ body {
 }
 
 pre {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  background-color: #1e1e2e;
+  color: #cdd6f4;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
 }
 
 pre code {
-  font-size: 0.85em;
+  font-family: 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+  font-size: 0.875em;
+  line-height: 1.6;
+  color: inherit;
+  background: none;
+  padding: 0;
 }
 
 .content figure {
