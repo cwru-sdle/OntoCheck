@@ -20,6 +20,8 @@ OntoCheck is actively developed and maintained by the **SDLE Research Center at 
 
 ## Installation
 
+OntoCheck is available as a PyPI package: [https://pypi.org/project/OntoCheck/](https://pypi.org/project/OntoCheck/)
+
 ```bash
 pip install OntoCheck
 ```
@@ -30,14 +32,23 @@ pip install OntoCheck
 
 ## Assessment Modes
 
-OntoCheck supports four assessment modes controlled by a declarative configuration `C = (O, Q, M, G)`:
+OntoCheck supports four assessment modes controlled by a declarative configuration `C = (O, Q, M, G)`, where:
+
+- **O** — Ontology: the target ontology file(s) under evaluation (e.g., a `.ttl` or `.owl` file).
+- **Q** — Questions: a set of competency questions or SPARQL queries representing the analytical tasks the ontology should support.
+- **M** — Metrics: the evaluation metrics to compute (structural, labeling, accessibility, naming, or task-based).
+- **G** — Ground-truth Knowledge Graph: a reference KG used for validation in web-based benchmarking scenarios.
+
+For cross-domain assessment (Mode 4), `O[]` denotes a union of multiple ontologies: `O[] = O[O₁ + O₂ + O₃ + ...]`, where each Oᵢ is an individual domain ontology merged into a single evaluation target.
 
 | Mode | Name | Configuration | Description |
 |------|------|---------------|-------------|
 | 1 | Task-agnostic | `(O, -, M, -)` | Structural, labeling, accessibility, and naming metrics |
 | 2 | Task-specific Web | `(O, Q, M, G)` | Validation against KGQA benchmarks (e.g., LC-QuAD / DBpedia) |
-| 3 | Task-based Scientific | `(O, Q, M, -)` | Domain ontology vs. competency questions |
-| 4 | Cross-Domain | `(O[], Q, M, -)` | Merged ontologies vs. cross-domain questions |
+| 3 | Task-based Scientific | `(O, Q, M, -)` | Domain ontology vs. competency questions¹ |
+| 4 | Cross-Domain | `(O[], Q, M, -)` | Merged ontologies vs. cross-domain questions¹ |
+
+¹ Knowledge graphs backed by an ontology can also be evaluated in Modes 3 and 4.
 
 ---
 
@@ -71,10 +82,14 @@ ontocheck path/to/ontology.ttl --metrics all --log-file results.log --csv-file r
 
 ### Python API
 
+For user convenience, OntoCheck provides a Python API. The assessment modes can be operated as follows:
+
+#### Mode 1: Task-Agnostic Assessment
+
 ```python
 from ontocheck import run_ontology_assessment
 
-# Mode 1: Run task-agnostic metrics
+# Run specific task-agnostic metrics
 run_ontology_assessment(
     ttl_file="path/to/ontology.ttl",
     metrics=["altLabelCheck", "definitionCheck", "isolatedElements"],
@@ -87,7 +102,20 @@ run_ontology_assessment(
 )
 ```
 
-### Task-Based Assessment (Modes 3 and 4)
+#### Mode 2: Web Ontology Assessment
+
+```python
+from ontocheck import run_web_ontology_assessment
+
+result = run_web_ontology_assessment(
+    ttl_file="dbpedia_ontology.ttl",
+    questions="lcquad_queries.json",
+    domain_prefixes=["dbo"],
+    knowledge_graph="dbpedia_kg.ttl",
+)
+```
+
+#### Modes 3 and 4: Task-Based and Cross-Domain Assessment
 
 ```python
 from ontocheck import run_task_based_assessment
@@ -111,38 +139,9 @@ result = run_task_based_assessment(
 )
 ```
 
-### Web Ontology Assessment (Mode 2)
-
-```python
-from ontocheck import run_web_ontology_assessment
-
-result = run_web_ontology_assessment(
-    ttl_file="dbpedia_ontology.ttl",
-    questions="lcquad_queries.json",
-    domain_prefixes=["dbo"],
-    knowledge_graph="dbpedia_kg.ttl",
-)
-```
-
-### Direct Metric Access
-
-```python
-from ontocheck import task_based_metric_v_0_0_1
-
-result = task_based_metric_v_0_0_1(
-    ttl_file="path/to/ontology.ttl",
-    questions="competency_questions.json",
-    domain_prefixes=["mds"],
-    domain_ns_fragments=["cwrusdle.bitbucket.io/mds"],
-)
-
-print(f"Relevance: {result['relevance']:.2%}")
-print(f"Accuracy:  {result['accuracy']:.2%}")
-```
-
 ---
 
-## Available Metrics
+## Available Task-Agnostic Metrics
 
 OntoCheck provides **17 task-agnostic metrics** organized into four categories, along with a **task-based assessment methodology**.
 
@@ -194,6 +193,12 @@ where T_a is the set of domain terms extracted from the SPARQL queries and T_o i
 
 ---
 
+## OntoCheck is Built for the Community
+
+OntoCheck is conceived as a community resource: we actively encourage collaboration, contribution of new metrics, and submission of domain competency question sets, in the shared interest of building robust, reusable semantic infrastructure for FAIR scientific data.
+
+---
+
 ## Documentation
 
 Full documentation is available at [ontocheck.readthedocs.io](https://ontocheck.readthedocs.io/en/latest/).
@@ -202,9 +207,9 @@ Full documentation is available at [ontocheck.readthedocs.io](https://ontocheck.
 
 ## Authors
 
-- Rishabh Kundu
-- Redad Mehdi
-- Van D. Tran
+- Rishabh Kundu\*
+- Redad Mehdi\*
+- Van D. Tran\*
 - Ethan Frakes
 - Abhishek Daundkar
 - Maliesha Sumudumalie
@@ -217,6 +222,8 @@ Full documentation is available at [ontocheck.readthedocs.io](https://ontocheck.
 - Roger H. French
 - Yinghui Wu
 
+\* These authors contributed equally to this project.
+
 ## Affiliation
 
 Materials Data Science for Stockpile Stewardship Center of Excellence (MDS3 COE), Case Western Reserve University, Cleveland, OH 44106, USA
@@ -225,9 +232,7 @@ Materials Data Science for Stockpile Stewardship Center of Excellence (MDS3 COE)
 
 ## Acknowledgments
 
-- Materials Data Science for Stockpile Stewardship Center of Excellence (MDS3 COE), Case Western Reserve University
-- University of Central Florida Advanced Research Computing Center
-- Case Western Reserve University High Performance Computing (HPC) resources
+We are grateful to the MDS-Onto user community, who are also early users of OntoCheck, across several universities and organizations whose feedback and real-world use cases have directly shaped the tool's development. This material is based upon research in the Materials Data Science for Stockpile Stewardship Center of Excellence (MDS3 COE), and supported by the Department of Energy's National Nuclear Security Administration under Award Number DE-NA0004104. All authors thank the CWRU University Technology Center and the UCF Advanced Research Computing Center for their High Performance Computing (HPC) resources, which were utilized in this work.
 
 ---
 

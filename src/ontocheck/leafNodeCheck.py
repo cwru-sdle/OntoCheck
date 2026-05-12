@@ -1,6 +1,5 @@
 """
 mainLeafNodeCheck_v_0_0_1 metric implementation.
-Extracted from: /mnt/vstor/CSE_MSE_RXF131/cradle-members/mds3/mxm1684/Git/ontologyassessment/Scripts/Rishabh/LeafNodeCheck.py
 """
 
 from .helpers.helpers import _find_leaf_nodes

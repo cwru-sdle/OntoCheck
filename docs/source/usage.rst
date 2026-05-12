@@ -5,7 +5,9 @@ OntoCheck provides two interfaces: a command-line tool for quick assessments
 and a Python API for programmatic use and integration into data pipelines.
 
 All assessments require an ontology serialized in Turtle (``.ttl``) format.
-The input file must be free of syntax errors.
+The input file must be free of syntax errors. Some assessments (see Modes 3
+and 4 below) also require a set of SPARQL queries derived from competency
+questions.
 
 Assessment Modes
 ----------------
@@ -311,3 +313,11 @@ or the ``metrics`` parameter of ``run_ontology_assessment``:
 **Naming Convention:**
 ``classCapitalCheck``, ``classSpaceCheck``, ``spellCheck``,
 ``duplicateLabels``, ``searchClass``
+
+OntoCheck is Built for the Community
+-------------------------------------
+
+OntoCheck is conceived as a community resource: we actively encourage
+collaboration, contribution of new metrics, and submission of domain
+competency question sets, in the shared interest of building robust,
+reusable semantic infrastructure for FAIR scientific data.

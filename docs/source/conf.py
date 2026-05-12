@@ -12,8 +12,8 @@ sys.path.insert(0, os.path.abspath('../../src'))
 # -- Project information -----------------------------------------------------
 
 project = 'OntoCheck'
-copyright = '2025, Rishabh Kundu, Van Tran, Redad Mehdi'
-author = 'Rishabh Kundu, Van Tran, Redad Mehdi'
+copyright = '2026, SDLE Research Center, Case Western Reserve University'
+author = ''
 release = '0.0.6.0'
 
 # -- General configuration ---------------------------------------------------
