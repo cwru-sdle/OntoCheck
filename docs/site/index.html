@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
     <link rel="stylesheet" href="static/css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 </head>
 
 <body>
@@ -710,10 +711,10 @@
             </div>
             <div class="content">
                 <h5 class="title is-5">Installation</h5>
-                <pre><code>pip install OntoCheck</code></pre>
+                <pre><code class="language-bash">pip install OntoCheck</code></pre>
 
                 <h5 class="title is-5">Command-Line Interface</h5>
-                <pre><code># Mode 1: Run task-agnostic metrics
+                <pre><code class="language-bash"># Mode 1: Run task-agnostic metrics
 ontocheck path/to/ontology.ttl --metrics all
 
 # Mode 3: Task-based scientific assessment
@@ -729,7 +730,7 @@ ontocheck xrd.ttl capacitors.ttl \
     --domain-prefixes mds</code></pre>
 
                 <h5 class="title is-5">Python API</h5>
-                <pre><code>from ontocheck import run_ontology_assessment, run_task_based_assessment
+                <pre><code class="language-python">from ontocheck import run_ontology_assessment, run_task_based_assessment
 
 # Mode 1: Task-agnostic assessment
 run_ontology_assessment(
@@ -863,6 +864,10 @@ print(f"Accuracy:  {result['accuracy']:.2%}")</code></pre>
         </div>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <script>hljs.highlightAll();</script>
 </body>
 
 </html>
