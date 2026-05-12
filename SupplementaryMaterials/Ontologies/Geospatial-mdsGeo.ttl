@@ -1,0 +1,263 @@
+@prefix cco: <https://www.commoncoreontologies.org/> .
+@prefix mds: <https://cwrusdle.bitbucket.io/mds/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+mds:hasCentroid a owl:ObjectProperty ;
+    rdfs:domain mds:Geohash ;
+    rdfs:range mds:Centroid ;
+    skos:definition "indicates the center point of the geohash in latitude and longitude." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasEastNeighbor a owl:ObjectProperty ;
+    rdfs:domain mds:Geohash ;
+    rdfs:range mds:Geohash ;
+    skos:definition "Indicates the geohash to the east of the current geohash." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasGeohashPrecision a owl:DatatypeProperty ;
+    rdfs:domain mds:Geohash ;
+    rdfs:range xsd:integer ;
+    skos:definition "Indicates the level of precision of the geohash " ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasGeospatialBoundingBox a owl:ObjectProperty ;
+    rdfs:domain mds:Geohash ;
+    rdfs:range mds:GeospatialRegionBoundingBox ;
+    skos:definition "Indicates the bounding box encapsulated by the geohash." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasMaximumLatitude a owl:DatatypeProperty ;
+    rdfs:domain mds:GeospatialRegionBoundingBox ;
+    rdfs:range xsd:decimal ;
+    skos:definition "Denotes the maximum latitudinal value of a geospatial region bounding box." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasMaximumLongitude a owl:DatatypeProperty ;
+    rdfs:domain mds:GeospatialRegionBoundingBox ;
+    rdfs:range xsd:decimal ;
+    skos:definition "Denotes the maximum longitudinal value of a geospatial region bounding box." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasMinimumLatitude a owl:DatatypeProperty ;
+    rdfs:domain mds:GeospatialRegionBoundingBox ;
+    rdfs:range xsd:decimal ;
+    skos:definition "Denotes the minimum latitudinal value of a geospatial region bounding box." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasMinimumLongitude a owl:DatatypeProperty ;
+    rdfs:domain mds:GeospatialRegionBoundingBox ;
+    rdfs:range xsd:decimal ;
+    skos:definition "Denotes the minimum longitudinal value of a geospatial region bounding box." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasNorthNeighbor a owl:ObjectProperty ;
+    rdfs:domain mds:Geohash ;
+    rdfs:range mds:Geohash ;
+    skos:definition "Indicates the geohash to the north of the current geohash." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasNortheastNeighbor a owl:ObjectProperty ;
+    rdfs:domain mds:Geohash ;
+    rdfs:range mds:Geohash ;
+    skos:definition "Indicates the geohash to the northeast of the current geohash." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasNorthwestNeighbor a owl:ObjectProperty ;
+    rdfs:domain mds:Geohash ;
+    rdfs:range mds:Geohash ;
+    skos:definition "Indicates the geohash to the northwest of the current geohash." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasSouthNeighbor a owl:ObjectProperty ;
+    rdfs:domain mds:Geohash ;
+    rdfs:range mds:Geohash ;
+    skos:definition "Indicates the geohash to the south of the current geohash." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasSoutheastNeighbor a owl:ObjectProperty ;
+    rdfs:domain mds:Geohash ;
+    rdfs:range mds:Geohash ;
+    skos:definition "Indicates the geohash to the southeast of the current geohash." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasSouthwestNeighbor a owl:ObjectProperty ;
+    rdfs:domain mds:Geohash ;
+    rdfs:range mds:Geohash ;
+    skos:definition "Indicates the geohash to the southwest of the current geohash." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasWestNeighbor a owl:ObjectProperty ;
+    rdfs:domain mds:Geohash ;
+    rdfs:range mds:Geohash ;
+    skos:definition "Indicates the geohash to the west of the current geohash." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:occupiesSpatialRegion a owl:ObjectProperty ;
+    rdfs:domain mds:GeospatiotemporalData ;
+    rdfs:range mds:Geohash ;
+    skos:definition "Indicates the geohash spatial region occupied by the data scope." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:usesSpatialReferenceSystem a owl:ObjectProperty ;
+    rdfs:domain mds:Geohash ;
+    rdfs:range mds:SpatialReferenceSystem ;
+    skos:definition "Indicates the spatial reference system or coordinate reference system used by the data" ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:GeospatiotemporalData a owl:Class ;
+    rdfs:label "GeospatiotemporalData" ;
+    rdfs:subClassOf cco:ont00000958 ;
+    skos:altLabel "GeospatialData",
+        "GeospatiotemporalDataset" ;
+    skos:definition "Data that contains one or more properties that depend on geospatial locations and times." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:SpatialReferenceSystem a owl:Class ;
+    rdfs:label "SpatialReferenceSystem" ;
+    rdfs:subClassOf cco:ont00000469 ;
+    skos:altLabel "CoordinateReferenceSystem",
+        "GeospatialCoordinateReferenceSystem" ;
+    skos:definition "Reference system that defines how a two-dimensional projected map relates to real places on the earth's three-dimensional surface." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+cco:ont00001764 a owl:DatatypeProperty,
+        owl:NamedIndividual ;
+    rdfs:label "has longitude value"@en ;
+    rdfs:domain mds:Centroid ;
+    rdfs:range xsd:decimal ;
+    skos:definition "A Data Property that has as its range the longitude value from some Geospatial Location coordinates set expressed in decimal degrees."@en ;
+    skos:exactMatch cco:ont00001764 ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+cco:ont00001766 a owl:DatatypeProperty,
+        owl:NamedIndividual ;
+    rdfs:label "has latitude value"@en ;
+    rdfs:domain mds:Centroid ;
+    rdfs:range xsd:decimal ;
+    skos:definition "A Data Property that has as its range the latitude value from some Geospatial Location coordinates set expressed in decimal degrees."@en ;
+    skos:exactMatch cco:ont00001766 ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+xsd:integer skos:exactMatch xsd:integer .
+
+cco:ont00000358 a owl:Class ;
+    rdfs:label "Geospatial Region Bounding Box"@en ;
+    skos:definition "A Geospatial Polygon that has some Geospatial Region as a non-tangential proper part."@en ;
+    skos:exactMatch cco:ont00000358 ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+cco:ont00000406 a owl:Class ;
+    rdfs:label "Measurement Unit of Geocoordinate"@en ;
+    skos:definition "A Measurement Unit specifying the geospatial coordinates of a location."@en ;
+    skos:exactMatch cco:ont00000406 ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+cco:ont00000469 a owl:Class ;
+    rdfs:label "Geospatial Coordinate Reference System"@en ;
+    skos:definition "A Spatial Reference System that is used to determine and identify the location of a point or object at or near the surface of the Earth."@en ;
+    skos:exactMatch cco:ont00000469 ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+cco:ont00000472 a owl:Class ;
+    rdfs:label "Geospatial Region"@en ;
+    skos:definition "A Site that is at or near the surface of the Earth."@en ;
+    skos:exactMatch cco:ont00000472 ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+cco:ont00000958 a owl:Class ;
+    rdfs:label "Information Content Entity"@en ;
+    skos:definition "A Generically Dependent Continuant that generically depends on some Information Bearing Entity and stands in relation of aboutness to some Entity."@en ;
+    skos:exactMatch cco:ont00000958 ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:Centroid a owl:Class ;
+    rdfs:label "Centroid" ;
+    rdfs:subClassOf cco:ont00000406 ;
+    skos:altLabel "CenterCoordinate",
+        "GeospatialCenter",
+        "GeospatialCentroid" ;
+    skos:definition "Coordinate pair representing center point of geospatial region." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:GeospatialRegionBoundingBox a owl:Class ;
+    rdfs:label "GeospatialRegionBoundingBox" ;
+    rdfs:subClassOf cco:ont00000358 ;
+    skos:altLabel "BoundingBox",
+        "SpatialBoundingBox" ;
+    skos:definition "Rectangular box defined by two points of a geographical area ." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+xsd:decimal skos:exactMatch xsd:decimal .
+
+mds:Geohash a owl:Class ;
+    rdfs:label "Geohash" ;
+    rdfs:subClassOf cco:ont00000472 ;
+    skos:altLabel "GeoCode",
+        "GeographicHash",
+        "LocationHash" ;
+    skos:definition " ",
+        "String encoding of geographic location in EPSG:4326/WGS:84 coordinate reference system using base-32 system and Z-order curve." ;
+    skos:exactMatch mds:Geohash ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+

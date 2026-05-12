@@ -1,0 +1,544 @@
+@prefix cco: <https://www.commoncoreontologies.org/> .
+@prefix mds: <https://cwrusdle.bitbucket.io/mds/> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+mds:containsBand a owl:ObjectProperty ;
+    rdfs:domain mds:Sensor ;
+    rdfs:range mds:Band ;
+    skos:definition "Indicates the band contained by the sensor." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:containsBandCategory a owl:DatatypeProperty ;
+    rdfs:domain mds:Sensor ;
+    rdfs:range xsd:string ;
+    skos:definition "Describes the band category or categories of the sensor." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:containsSensor a owl:ObjectProperty ;
+    rdfs:domain mds:Satellite ;
+    rdfs:range mds:Sensor ;
+    skos:definition "Indicates the sensor contained by the satellite." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasApogeeAltitude a owl:DatatypeProperty ;
+    rdfs:domain mds:SatelliteAltitude ;
+    rdfs:range xsd:decimal ;
+    skos:definition "Denotes the apogee altitude value of the satellite altitude." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasBandCategory a owl:DatatypeProperty ;
+    rdfs:domain mds:Band ;
+    rdfs:range xsd:string ;
+    skos:definition "Describes the category of the band." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasBandCommonName a owl:DatatypeProperty ;
+    rdfs:domain mds:Band ;
+    rdfs:range xsd:string ;
+    skos:definition "Denotes the common name of the band." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasBandDescription a owl:ObjectProperty ;
+    rdfs:domain mds:Band ;
+    rdfs:range mds:BandDescription ;
+    skos:definition "Specifies a description or categorization of the band." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasEndedOn a owl:ObjectProperty ;
+    rdfs:domain mds:Satellite ;
+    rdfs:range mds:EndOfLifeDate ;
+    skos:definition "Specifies the end of life date of the satellite." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasInstrumentStatus a owl:ObjectProperty ;
+    rdfs:domain mds:Sensor ;
+    rdfs:range mds:InstrumentStatus ;
+    skos:definition "Specifies the instrument status of the sensor." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasMaximumWavelength a owl:DatatypeProperty ;
+    rdfs:domain mds:WavelengthRange ;
+    rdfs:range xsd:decimal ;
+    skos:definition "Denotes the maximum value of the wavelength range." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasMinimumWavelength a owl:DatatypeProperty ;
+    rdfs:domain mds:WavelengthRange ;
+    rdfs:range xsd:decimal ;
+    skos:definition "Denotes the minimum value of the wavelength range." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasMission a owl:ObjectProperty ;
+    rdfs:domain mds:Satellite ;
+    rdfs:range mds:Mission ;
+    skos:definition "Indicates the mission of the satellite." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasOperationalStatus a owl:ObjectProperty ;
+    rdfs:domain mds:Satellite ;
+    rdfs:range mds:MissionStatus ;
+    skos:definition "Specifies the operational status of the satellite's mission." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasOrbitAltitude a owl:DatatypeProperty ;
+    rdfs:domain mds:OrbitType ;
+    rdfs:range xsd:decimal ;
+    skos:definition "Denotes the orbit altitude value of the orbit type." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasOrbitalPeriod a owl:DatatypeProperty ;
+    rdfs:domain mds:OrbitType ;
+    rdfs:range xsd:decimal ;
+    skos:definition "Denotes the orbital period value of the orbit type." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasOrbitalType a owl:ObjectProperty ;
+    rdfs:domain mds:Satellite ;
+    rdfs:range mds:OrbitType ;
+    skos:definition "Specifies the orbital type of the satellite." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasOwner a owl:ObjectProperty ;
+    rdfs:domain mds:Satellite ;
+    rdfs:range mds:Owner ;
+    skos:definition "Indicates the owner of the satellite." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasPerigeeAltitude a owl:DatatypeProperty ;
+    rdfs:domain mds:SatelliteAltitude ;
+    rdfs:range xsd:decimal ;
+    skos:definition "Denotes the perigee altitude value of the satellite altitude." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasSatelliteAltitude a owl:ObjectProperty ;
+    rdfs:domain mds:Satellite ;
+    rdfs:range mds:SatelliteAltitude ;
+    skos:definition "Specifies the altitude of the satellite." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasSatelliteCommonName a owl:DatatypeProperty ;
+    rdfs:domain mds:Satellite ;
+    rdfs:range xsd:string ;
+    skos:definition "Denotes the common name of the satellite." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasSatelliteDetails a owl:DatatypeProperty ;
+    rdfs:domain mds:Satellite ;
+    rdfs:range xsd:string ;
+    skos:definition "Describes specific details of the satellite." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasSensorCommonName a owl:DatatypeProperty ;
+    rdfs:domain mds:Sensor ;
+    rdfs:range xsd:string ;
+    skos:definition "Denotes the common name of the sensor." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasSensorDetails a owl:DatatypeProperty ;
+    rdfs:domain mds:Sensor ;
+    rdfs:range xsd:string ;
+    skos:definition "Describes specific details of the sensor." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasSpatialResolution a owl:ObjectProperty ;
+    rdfs:domain mds:Band ;
+    rdfs:range mds:SpatialResolution ;
+    skos:definition "Specifies the spatial resolution of the band." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasSpectralResolution a owl:ObjectProperty ;
+    rdfs:domain mds:Band ;
+    rdfs:range mds:SpectralResolution ;
+    skos:definition "Specifies the spectral resolution of the band." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasSwathWidth a owl:DatatypeProperty ;
+    rdfs:domain mds:Band ;
+    rdfs:range xsd:decimal ;
+    skos:definition "Denotes the swath width value of the band." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasTemporalResolution a owl:ObjectProperty ;
+    rdfs:domain mds:Band ;
+    rdfs:range mds:TemporalResolution ;
+    skos:definition "Specifies the temporal resolution of the band." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:hasWavelengthRange a owl:ObjectProperty ;
+    rdfs:domain mds:Band ;
+    rdfs:range mds:WavelengthRange ;
+    skos:definition "Indicates the wavelength range of the band." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:launchedFrom a owl:ObjectProperty ;
+    rdfs:domain mds:Satellite ;
+    rdfs:range mds:LaunchSite ;
+    skos:definition "Specifies the site where the satellite is launched from." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:launchedOn a owl:ObjectProperty ;
+    rdfs:domain mds:Satellite ;
+    rdfs:range mds:LaunchDate ;
+    skos:definition "Specifies the launch date of the satellite." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:mountedOn a owl:ObjectProperty ;
+    rdfs:domain mds:Sensor ;
+    rdfs:range mds:Satellite ;
+    skos:definition "Indicates the satellite on which the sensor is mounted on." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:ownedByAgency a owl:ObjectProperty ;
+    rdfs:domain mds:Satellite,
+        mds:Sensor ;
+    rdfs:range mds:Agency ;
+    skos:definition "Indicates the agency that owns the object.",
+        "Indicates the agency that owns the satellite or sensor instrument." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:producedBy a owl:ObjectProperty ;
+    rdfs:domain mds:Band ;
+    rdfs:range mds:Sensor ;
+    skos:definition "Specifies the sensor that produced the band." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:Agency a owl:Class ;
+    rdfs:label "Agency" ;
+    rdfs:subClassOf cco:ont00001017 ;
+    skos:altLabel "SatelliteAgency" ;
+    skos:definition "The lead agency for the satellite mission." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:BandDescription a owl:Class ;
+    rdfs:label "BandDescription" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:altLabel "OperationalBandDescription",
+        "WavebandDescription" ;
+    skos:definition "A description of the waveband captured by the sensor." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:EndOfLifeDate a owl:Class ;
+    rdfs:label "EndOfLifeDate" ;
+    rdfs:subClassOf cco:ont00000529 ;
+    skos:altLabel "EOLDate" ;
+    skos:definition "The past, planned or projected end of life  date for the mission." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:Instrument a owl:Class,
+        owl:NamedIndividual,
+        owl:ObjectProperty ;
+    rdfs:label "Instrument" ;
+    rdfs:domain mds:Sensor ;
+    rdfs:range mds:InstrumentType ;
+    skos:definition "A NicoletFTIR-OpticalSpectroscopy for chemical analysis",
+        "Indicates the instrument type for the sensor." ;
+    skos:exactMatch mds:Instrument ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:InstrumentStatus a owl:Class ;
+    rdfs:label "InstrumentStatus" ;
+    rdfs:subClassOf cco:ont00000203 ;
+    skos:altLabel "SensorStatus" ;
+    skos:definition "The current status of the sensor or instrument." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:InstrumentType a owl:Class ;
+    rdfs:label "InstrumentType" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:altLabel "SensorType" ;
+    skos:definition "The type of the sensor used to capture the data." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:LaunchDate a owl:Class ;
+    rdfs:label "LaunchDate" ;
+    rdfs:subClassOf cco:ont00000529 ;
+    skos:altLabel "LaunchDay",
+        "SatelliteLaunchDate" ;
+    skos:definition "A single channel or range of the electromagnetic spectrum recorded by the sensor." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:LaunchSite a owl:Class ;
+    rdfs:label "LaunchSite" ;
+    rdfs:subClassOf cco:ont00000487 ;
+    skos:altLabel "LaunchLocation",
+        "PointOfLaunch" ;
+    skos:definition "The site from which the satellite was launched." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:Mission a owl:Class ;
+    rdfs:label "Mission" ;
+    rdfs:subClassOf cco:ont00000476 ;
+    skos:altLabel "Program",
+        "SatelliteProgram",
+        "SatelliteProject" ;
+    skos:definition "A specific objective or set of objectives that a satellite  is designed to achieve." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:MissionStatus a owl:Class ;
+    rdfs:label "MissionStatus" ;
+    rdfs:subClassOf cco:ont00000203 ;
+    skos:altLabel "OperationalStatus",
+        "Status" ;
+    skos:definition "The current operational state of the satellite or the mission." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:Owner a owl:Class ;
+    rdfs:label "Owner" ;
+    rdfs:subClassOf cco:ont00001017 ;
+    skos:altLabel "DataProvider",
+        "ManagingAgency",
+        "SatelliteOwner" ;
+    skos:definition " ",
+        "The agency, company, or organization responsible for controlling the satellite and acquiring the data." ;
+    skos:exactMatch mds:Owner ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:SpatialResolution a owl:Class ;
+    rdfs:label "SpatialResolution" ;
+    skos:definition " " ;
+    skos:exactMatch mds:SpatialResolution ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:SpectralResolution a owl:Class ;
+    rdfs:label "SpectralResolution" ;
+    skos:definition "The ability for a measuring instrument to differentiate different wavelengths or measurements of spectra" ;
+    skos:exactMatch mds:SpectralResolution ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:TemporalResolution a owl:Class ;
+    rdfs:label "TemporalResolution" ;
+    skos:definition " " ;
+    skos:exactMatch mds:TemporalResolution ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+cco:ont00000068 a owl:Class ;
+    rdfs:label "Three-Dimensional Path"@en ;
+    skos:definition "A Three-Dimensional Spatial Region that encompasses the spatial region through which some Object travels."@en ;
+    skos:exactMatch cco:ont00000068 .
+
+cco:ont00000313 a owl:Class ;
+    rdfs:label "Wavelength"@en ;
+    skos:definition "A Wave Process Profile that is the distance the Wave Process traverses during one Wave Cycle."@en ;
+    skos:exactMatch cco:ont00000313 .
+
+cco:ont00000352 a owl:Class ;
+    rdfs:label "Satellite Artifact"@en ;
+    skos:definition "A Spacecraft that is designed to Orbit a Space Object (typically Earth)."@en ;
+    skos:exactMatch cco:ont00000352 .
+
+cco:ont00000476 a owl:Class ;
+    rdfs:label "Objective"@en ;
+    skos:definition "A Directive Information Content Entity that prescribes some projected state that some Agent intends to achieve."@en ;
+    skos:exactMatch cco:ont00000476 .
+
+cco:ont00000487 a owl:Class ;
+    rdfs:label "Geospatial Location"@en ;
+    skos:definition "A Geospatial Region that is at which an Entity or Event is located."@en ;
+    skos:exactMatch cco:ont00000487 .
+
+cco:ont00000702 a owl:Class ;
+    rdfs:label "Image"@en ;
+    skos:definition "An Information Bearing Artifact that is designed to carry an Information Content Entity that represents some entity owing to a visual isomorphism between the carrying artifact and the entity."@en ;
+    skos:exactMatch cco:ont00000702 .
+
+cco:ont00000771 a owl:Class ;
+    rdfs:label "Imaging Instrument"@en ;
+    skos:definition "A Material Artifact that is designed to produce images (visual representations) of an entity."@en ;
+    skos:exactMatch cco:ont00000771 .
+
+cco:ont00000787 a owl:Class ;
+    rdfs:label "Altitude"@en ;
+    skos:definition "A Height that inheres in a Site that externally connects an Independent Continuant to either the surface of the Earth or the Earth's mean Sea Level."@en ;
+    skos:exactMatch cco:ont00000787 .
+
+obo:BFO_0000019 a owl:Class ;
+    rdfs:label "quality"@en ;
+    skos:definition "(Elucidation) A quality is a specifically dependent continuant that, in contrast to roles and dispositions, does not require any further process in order to be realized"@en ;
+    skos:exactMatch obo:BFO_0000019 .
+
+mds:OrbitType a owl:Class ;
+    rdfs:label "OrbitType" ;
+    rdfs:subClassOf cco:ont00000068 ;
+    skos:altLabel "OrbitClass" ;
+    skos:definition "The classification of the satellite's path around the planet." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:SatelliteAltitude a owl:Class ;
+    rdfs:label "SatelliteAltitude" ;
+    rdfs:subClassOf cco:ont00000787 ;
+    skos:altLabel "OperatingAltitude",
+        "ScanningAltitude" ;
+    skos:definition "The altitude at which a satellite is designated to perform its objectives at." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+cco:ont00000203 a owl:Class ;
+    rdfs:label "Event Status Nominal Information Content Entity"@en ;
+    skos:definition "A Nominal Measurement Information Content Entity that is a measurement of the current state of a process."@en ;
+    skos:exactMatch cco:ont00000203 .
+
+cco:ont00000529 a owl:Class ;
+    rdfs:label "Date Identifier"@en ;
+    skos:definition "A Temporal Interval Identifier that designates some Day."@en ;
+    skos:exactMatch cco:ont00000529 .
+
+cco:ont00001017 a owl:Class ;
+    rdfs:label "Agent"@en ;
+    skos:definition "A Material Entity that bears an Agent Capability."@en ;
+    skos:exactMatch cco:ont00001017 .
+
+mds:WavelengthRange a owl:Class ;
+    rdfs:label "WavelengthRange" ;
+    rdfs:subClassOf cco:ont00000313 ;
+    skos:altLabel "SpectralRange",
+        "WavebandRange" ;
+    skos:definition "The span of electromagnetic wavelengths that the instrument can measure.",
+        "The spectral range captured by the band," ;
+    skos:exactMatch mds:WavelengthRange ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+xsd:decimal skos:exactMatch xsd:decimal .
+
+xsd:string skos:exactMatch xsd:string .
+
+mds:Band a owl:Class ;
+    rdfs:label "Band" ;
+    rdfs:subClassOf cco:ont00000702 ;
+    skos:altLabel "Channel",
+        "SpectralChannel" ;
+    skos:definition " ",
+        "A single channel or range of the electromagnetic spectrum recorded by the sensor." ;
+    skos:exactMatch mds:Band ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:Sensor a owl:Class ;
+    rdfs:label "Sensor" ;
+    rdfs:subClassOf cco:ont00000771 ;
+    skos:altLabel "EarthObservationInstrument",
+        "Instrument",
+        "RemoteSensingObject",
+        "RemoteSensor",
+        "SensorID" ;
+    skos:definition " ",
+        "The instrument on the satellite that collects the data." ;
+    skos:exactMatch mds:Sensor ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+mds:Satellite a owl:Class ;
+    rdfs:label "Satellite" ;
+    rdfs:subClassOf cco:ont00000352 ;
+    skos:altLabel "EarthObservationObject",
+        "EarthObservationSatellite",
+        "SatelliteID" ;
+    skos:definition "A spacecraft that serves as a platform for the remote sensing instruments to acquire the image data." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+

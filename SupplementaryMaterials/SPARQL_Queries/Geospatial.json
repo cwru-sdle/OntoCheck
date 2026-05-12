@@ -1,0 +1,406 @@
+[
+  {
+    "qid": 1000000,
+    "question": "How many geohashes exist within a certain bounding box in EPSG:4326 coordinate reference system?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 3,
+    "graph_query": {
+      "nodes": [
+        {"nid": 0, "node_type": "class", "id": "mds:Geohash", "class": "mds:Geohash", "friendly_name": "Geohash", "question_node": 1, "function": "count"},
+        {"nid": 1, "node_type": "class", "id": "mds:GeospatialRegionBoundingBox", "class": "mds:GeospatialRegionBoundingBox", "friendly_name": "Bounding Box", "question_node": 0, "function": "none"},
+        {"nid": 2, "node_type": "class", "id": "mds:SpatialReferenceSystem", "class": "mds:SpatialReferenceSystem", "friendly_name": "Spatial Reference System", "question_node": 0, "function": "none"}
+      ],
+      "edges": [
+        {"start": 0, "end": 1, "relation": "mds:hasGeospatialBoundingBox", "friendly_name": "has bounding box"},
+        {"start": 0, "end": 2, "relation": "mds:usesSpatialReferenceSystem", "friendly_name": "uses spatial reference system"},
+        {"start": 1, "end": 0, "relation": "contains", "friendly_name": "contains"}
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT (COUNT(?geohash) AS ?count) WHERE {\n  ?geohash a mds:Geohash .\n  ?geohash mds:hasGeospatialBoundingBox ?bbox .\n  ?bbox mds:hasMinimumLatitude ?minLat .\n  ?bbox mds:hasMaximumLatitude ?maxLat .\n  ?bbox mds:hasMinimumLongitude ?minLon .\n  ?bbox mds:hasMaximumLongitude ?maxLon .\n  ?geohash mds:usesSpatialReferenceSystem ?srs .\n  FILTER(?minLat >= ?queryMinLat && ?maxLat <= ?queryMaxLat && ?minLon >= ?queryMinLon && ?maxLon <= ?queryMaxLon)\n}"
+  },
+  {
+    "qid": 1000001,
+    "question": "What satellite is the ASTER sensor mounted on?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {"nid": 0, "node_type": "class", "id": "mds:Sensor", "class": "mds:Sensor", "friendly_name": "Sensor", "question_node": 0, "function": "none"},
+        {"nid": 1, "node_type": "class", "id": "mds:Satellite", "class": "mds:Satellite", "friendly_name": "Satellite", "question_node": 1, "function": "none"}
+      ],
+      "edges": [
+        {"start": 0, "end": 1, "relation": "mds:mountedOn", "friendly_name": "mounted on"}
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?satellite ?satelliteName WHERE {\n  ?sensor a mds:Sensor .\n  ?sensor mds:hasSensorCommonName \"ASTER\" .\n  ?sensor mds:mountedOn ?satellite .\n  ?satellite mds:hasSatelliteCommonName ?satelliteName .\n}"
+  },
+  {
+    "qid": 1000002,
+    "question": "How many bands does the ASTER sensor collect?",
+    "answer": [],
+    "function": "count",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {"nid": 0, "node_type": "class", "id": "mds:Sensor", "class": "mds:Sensor", "friendly_name": "Sensor", "question_node": 0, "function": "none"},
+        {"nid": 1, "node_type": "class", "id": "mds:Band", "class": "mds:Band", "friendly_name": "Band", "question_node": 1, "function": "count"}
+      ],
+      "edges": [
+        {"start": 0, "end": 1, "relation": "mds:containsBand", "friendly_name": "contains band"}
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT (COUNT(?band) AS ?bandCount) WHERE {\n  ?sensor a mds:Sensor .\n  ?sensor mds:hasSensorCommonName \"ASTER\" .\n  ?sensor mds:containsBand ?band .\n}"
+  },
+  {
+    "qid": 1000003,
+    "question": "What of the available geospatial data has a spatial resolution of 250 meters or lower (i.e., finer)?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {"nid": 0, "node_type": "class", "id": "mds:GeospatialRaster", "class": "mds:GeospatialRaster", "friendly_name": "Geospatial Raster", "question_node": 1, "function": "none"},
+        {"nid": 1, "node_type": "class", "id": "mds:SpatialResolution", "class": "mds:SpatialResolution", "friendly_name": "Spatial Resolution", "question_node": 0, "function": "none"}
+      ],
+      "edges": [
+        {"start": 0, "end": 1, "relation": "mds:hasSpatialResolution", "friendly_name": "has spatial resolution"}
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX qudt: <http://qudt.org/schema/qudt/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?raster ?resolution WHERE {\n  ?raster a mds:GeospatialRaster .\n  ?raster mds:hasSpatialResolution ?sr .\n  ?sr qudt:numericValue ?resolution .\n  FILTER(?resolution <= 250)\n}"
+  },
+  {
+    "qid": 1000004,
+    "question": "What geospatial raster data contains information about elevation?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {"nid": 0, "node_type": "class", "id": "mds:GeospatialRaster", "class": "mds:GeospatialRaster", "friendly_name": "Geospatial Raster", "question_node": 1, "function": "none"},
+        {"nid": 1, "node_type": "class", "id": "mds:Elevation", "class": "mds:Elevation", "friendly_name": "Elevation", "question_node": 0, "function": "none"}
+      ],
+      "edges": [
+        {"start": 0, "end": 1, "relation": "mds:containsGeospatialProperty", "friendly_name": "contains geospatial property"}
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?raster WHERE {\n  ?raster a mds:GeospatialRaster .\n  ?raster mds:containsGeospatialProperty ?prop .\n  ?prop a mds:Elevation .\n}"
+  },
+  {
+    "qid": 1000005,
+    "question": "What geospatial raster data was acquired in 2016?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {"nid": 0, "node_type": "class", "id": "mds:GeospatialRaster", "class": "mds:GeospatialRaster", "friendly_name": "Geospatial Raster", "question_node": 1, "function": "none"},
+        {"nid": 1, "node_type": "class", "id": "mds:AcquisitionDate", "class": "mds:AcquisitionDate", "friendly_name": "Acquisition Date", "question_node": 0, "function": "none"}
+      ],
+      "edges": [
+        {"start": 0, "end": 1, "relation": "mds:acquiredOn", "friendly_name": "acquired on"}
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?raster ?date WHERE {\n  ?raster a mds:GeospatialRaster .\n  ?raster mds:acquiredOn ?acqDate .\n  ?acqDate rdfs:label ?date .\n  FILTER(CONTAINS(STR(?date), \"2016\"))\n}"
+  },
+  {
+    "qid": 1000006,
+    "question": "What geospatial raster data exists in the geohash \"dpn\"?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {"nid": 0, "node_type": "class", "id": "mds:GeospatialRaster", "class": "mds:GeospatialRaster", "friendly_name": "Geospatial Raster", "question_node": 1, "function": "none"},
+        {"nid": 1, "node_type": "class", "id": "mds:Geohash", "class": "mds:Geohash", "friendly_name": "Geohash", "question_node": 0, "function": "none"}
+      ],
+      "edges": [
+        {"start": 0, "end": 1, "relation": "mds:occupiesSpatialRegion", "friendly_name": "occupies spatial region"}
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?raster WHERE {\n  ?raster a mds:GeospatialRaster .\n  ?raster mds:occupiesSpatialRegion ?geohash .\n  ?geohash a mds:Geohash .\n  ?geohash rdfs:label \"dpn\" .\n}"
+  },
+  {
+    "qid": 1000007,
+    "question": "What geohashes border the geohash \"bccc\"?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 8,
+    "graph_query": {
+      "nodes": [
+        {"nid": 0, "node_type": "class", "id": "mds:Geohash", "class": "mds:Geohash", "friendly_name": "Center Geohash", "question_node": 0, "function": "none"},
+        {"nid": 1, "node_type": "class", "id": "mds:Geohash", "class": "mds:Geohash", "friendly_name": "Neighbor Geohash", "question_node": 1, "function": "none"}
+      ],
+      "edges": [
+        {"start": 0, "end": 1, "relation": "mds:hasNorthNeighbor", "friendly_name": "has north neighbor"},
+        {"start": 0, "end": 1, "relation": "mds:hasSouthNeighbor", "friendly_name": "has south neighbor"},
+        {"start": 0, "end": 1, "relation": "mds:hasEastNeighbor", "friendly_name": "has east neighbor"},
+        {"start": 0, "end": 1, "relation": "mds:hasWestNeighbor", "friendly_name": "has west neighbor"},
+        {"start": 0, "end": 1, "relation": "mds:hasNortheastNeighbor", "friendly_name": "has northeast neighbor"},
+        {"start": 0, "end": 1, "relation": "mds:hasNorthwestNeighbor", "friendly_name": "has northwest neighbor"},
+        {"start": 0, "end": 1, "relation": "mds:hasSoutheastNeighbor", "friendly_name": "has southeast neighbor"},
+        {"start": 0, "end": 1, "relation": "mds:hasSouthwestNeighbor", "friendly_name": "has southwest neighbor"}
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?neighbor ?neighborLabel WHERE {\n  ?geohash a mds:Geohash .\n  ?geohash rdfs:label \"bccc\" .\n  {\n    { ?geohash mds:hasNorthNeighbor ?neighbor }\n    UNION { ?geohash mds:hasSouthNeighbor ?neighbor }\n    UNION { ?geohash mds:hasEastNeighbor ?neighbor }\n    UNION { ?geohash mds:hasWestNeighbor ?neighbor }\n    UNION { ?geohash mds:hasNortheastNeighbor ?neighbor }\n    UNION { ?geohash mds:hasNorthwestNeighbor ?neighbor }\n    UNION { ?geohash mds:hasSoutheastNeighbor ?neighbor }\n    UNION { ?geohash mds:hasSouthwestNeighbor ?neighbor }\n  }\n  ?neighbor rdfs:label ?neighborLabel .\n}"
+  },
+  {
+    "qid": 1000008,
+    "question": "What bands contain near infrared information from the ASTER sensor?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {"nid": 0, "node_type": "class", "id": "mds:Band", "class": "mds:Band", "friendly_name": "Band", "question_node": 1, "function": "none"},
+        {"nid": 1, "node_type": "class", "id": "mds:Sensor", "class": "mds:Sensor", "friendly_name": "Sensor", "question_node": 0, "function": "none"},
+        {"nid": 2, "node_type": "class", "id": "mds:BandDescription", "class": "mds:BandDescription", "friendly_name": "Band Description", "question_node": 0, "function": "none"}
+      ],
+      "edges": [
+        {"start": 0, "end": 1, "relation": "mds:producedBy", "friendly_name": "produced by"},
+        {"start": 0, "end": 2, "relation": "mds:hasBandDescription", "friendly_name": "has band description"}
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?band ?bandName WHERE {\n  ?sensor a mds:Sensor .\n  ?sensor mds:hasSensorCommonName \"ASTER\" .\n  ?sensor mds:containsBand ?band .\n  ?band mds:hasBandCategory ?category .\n  FILTER(CONTAINS(LCASE(?category), \"near infrared\"))\n  ?band mds:hasBandCommonName ?bandName .\n}"
+  },
+  {
+    "qid": 1000009,
+    "question": "What satellites were launched in 2020?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {"nid": 0, "node_type": "class", "id": "mds:Satellite", "class": "mds:Satellite", "friendly_name": "Satellite", "question_node": 1, "function": "none"},
+        {"nid": 1, "node_type": "class", "id": "mds:LaunchDate", "class": "mds:LaunchDate", "friendly_name": "Launch Date", "question_node": 0, "function": "none"}
+      ],
+      "edges": [
+        {"start": 0, "end": 1, "relation": "mds:launchedOn", "friendly_name": "launched on"}
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?satellite ?name WHERE {\n  ?satellite a mds:Satellite .\n  ?satellite mds:hasSatelliteCommonName ?name .\n  ?satellite mds:launchedOn ?launchDate .\n  ?launchDate rdfs:label ?dateStr .\n  FILTER(CONTAINS(STR(?dateStr), \"2020\"))\n}"
+  },
+  {
+    "qid": 1000010,
+    "question": "What geospatial data exists in the EPSG:5070 coordinate reference system?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {"nid": 0, "node_type": "class", "id": "mds:GeospatialRaster", "class": "mds:GeospatialRaster", "friendly_name": "Geospatial Raster", "question_node": 1, "function": "none"},
+        {"nid": 1, "node_type": "class", "id": "mds:SpatialReferenceSystem", "class": "mds:SpatialReferenceSystem", "friendly_name": "Spatial Reference System", "question_node": 0, "function": "none"}
+      ],
+      "edges": [
+        {"start": 0, "end": 1, "relation": "mds:usesSpatialReferenceSystem", "friendly_name": "uses spatial reference system"}
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?raster WHERE {\n  ?raster a mds:GeospatialRaster .\n  ?raster mds:usesSpatialReferenceSystem ?srs .\n  ?srs a mds:SpatialReferenceSystem .\n  ?srs rdfs:label \"EPSG:5070\" .\n}"
+  },
+  {
+    "qid": 1000011,
+    "question": "What geospatial data exists in the neighborhood of geohash \"dpnq\"?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {"nid": 0, "node_type": "class", "id": "mds:Geohash", "class": "mds:Geohash", "friendly_name": "Center Geohash", "question_node": 0, "function": "none"},
+        {"nid": 1, "node_type": "class", "id": "mds:Geohash", "class": "mds:Geohash", "friendly_name": "Neighbor Geohash", "question_node": 0, "function": "none"},
+        {"nid": 2, "node_type": "class", "id": "mds:GeospatialRaster", "class": "mds:GeospatialRaster", "friendly_name": "Geospatial Raster", "question_node": 1, "function": "none"}
+      ],
+      "edges": [
+        {"start": 0, "end": 1, "relation": "mds:hasNorthNeighbor", "friendly_name": "has neighbor"},
+        {"start": 2, "end": 1, "relation": "mds:occupiesSpatialRegion", "friendly_name": "occupies spatial region"}
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?raster ?neighborLabel WHERE {\n  ?center a mds:Geohash .\n  ?center rdfs:label \"dpnq\" .\n  {\n    { ?center mds:hasNorthNeighbor ?neighbor }\n    UNION { ?center mds:hasSouthNeighbor ?neighbor }\n    UNION { ?center mds:hasEastNeighbor ?neighbor }\n    UNION { ?center mds:hasWestNeighbor ?neighbor }\n    UNION { ?center mds:hasNortheastNeighbor ?neighbor }\n    UNION { ?center mds:hasNorthwestNeighbor ?neighbor }\n    UNION { ?center mds:hasSoutheastNeighbor ?neighbor }\n    UNION { ?center mds:hasSouthwestNeighbor ?neighbor }\n    UNION { BIND(?center AS ?neighbor) }\n  }\n  ?raster a mds:GeospatialRaster .\n  ?raster mds:occupiesSpatialRegion ?neighbor .\n  ?neighbor rdfs:label ?neighborLabel .\n}"
+  },
+  {
+    "qid": 1000012,
+    "question": "What satellites are still operational?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {"nid": 0, "node_type": "class", "id": "mds:Satellite", "class": "mds:Satellite", "friendly_name": "Satellite", "question_node": 1, "function": "none"},
+        {"nid": 1, "node_type": "class", "id": "mds:MissionStatus", "class": "mds:MissionStatus", "friendly_name": "Mission Status", "question_node": 0, "function": "none"}
+      ],
+      "edges": [
+        {"start": 0, "end": 1, "relation": "mds:hasOperationalStatus", "friendly_name": "has operational status"}
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?satellite ?name WHERE {\n  ?satellite a mds:Satellite .\n  ?satellite mds:hasSatelliteCommonName ?name .\n  ?satellite mds:hasOperationalStatus ?status .\n  ?status rdfs:label \"Operational\" .\n}"
+  },
+  {
+    "qid": 1000013,
+    "question": "What satellites and sensors are owned by NASA?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {"nid": 0, "node_type": "class", "id": "mds:Satellite", "class": "mds:Satellite", "friendly_name": "Satellite", "question_node": 1, "function": "none"},
+        {"nid": 1, "node_type": "class", "id": "mds:Sensor", "class": "mds:Sensor", "friendly_name": "Sensor", "question_node": 1, "function": "none"},
+        {"nid": 2, "node_type": "class", "id": "mds:Agency", "class": "mds:Agency", "friendly_name": "Agency", "question_node": 0, "function": "none"}
+      ],
+      "edges": [
+        {"start": 0, "end": 2, "relation": "mds:ownedByAgency", "friendly_name": "owned by agency"},
+        {"start": 1, "end": 2, "relation": "mds:ownedByAgency", "friendly_name": "owned by agency"}
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?name ?type WHERE {\n  ?agency a mds:Agency .\n  ?agency rdfs:label \"NASA\" .\n  {\n    ?satellite a mds:Satellite .\n    ?satellite mds:ownedByAgency ?agency .\n    ?satellite mds:hasSatelliteCommonName ?name .\n    BIND(\"Satellite\" AS ?type)\n  } UNION {\n    ?sensor a mds:Sensor .\n    ?sensor mds:ownedByAgency ?agency .\n    ?sensor mds:hasSensorCommonName ?name .\n    BIND(\"Sensor\" AS ?type)\n  }\n}"
+  },
+  {
+    "qid": 1000014,
+    "question": "What geotiff files are available from 2020 to 2022?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {"nid": 0, "node_type": "class", "id": "mds:GeospatialRaster", "class": "mds:GeospatialRaster", "friendly_name": "Geospatial Raster", "question_node": 1, "function": "none"},
+        {"nid": 1, "node_type": "class", "id": "mds:FileFormat", "class": "mds:FileFormat", "friendly_name": "File Format", "question_node": 0, "function": "none"},
+        {"nid": 2, "node_type": "class", "id": "mds:AcquisitionDate", "class": "mds:AcquisitionDate", "friendly_name": "Acquisition Date", "question_node": 0, "function": "none"}
+      ],
+      "edges": [
+        {"start": 0, "end": 1, "relation": "mds:hasFileFormat", "friendly_name": "has file format"},
+        {"start": 0, "end": 2, "relation": "mds:acquiredOn", "friendly_name": "acquired on"}
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?raster ?date WHERE {\n  ?raster a mds:GeospatialRaster .\n  ?raster mds:hasFileFormat ?fmt .\n  ?fmt rdfs:label \"GeoTIFF\" .\n  ?raster mds:acquiredOn ?acqDate .\n  ?acqDate rdfs:label ?date .\n  FILTER(?date >= \"2020-01-01\" && ?date <= \"2022-12-31\")\n}"
+  },
+  {
+    "qid": 1000015,
+    "question": "What raster datasets are available from the Terra satellite?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {"nid": 0, "node_type": "class", "id": "mds:GeospatialRaster", "class": "mds:GeospatialRaster", "friendly_name": "Geospatial Raster", "question_node": 1, "function": "none"},
+        {"nid": 1, "node_type": "class", "id": "mds:Satellite", "class": "mds:Satellite", "friendly_name": "Satellite", "question_node": 0, "function": "none"}
+      ],
+      "edges": [
+        {"start": 0, "end": 1, "relation": "mds:generatedBySatellite", "friendly_name": "generated by satellite"}
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?raster WHERE {\n  ?raster a mds:GeospatialRaster .\n  ?raster mds:generatedBySatellite ?satellite .\n  ?satellite a mds:Satellite .\n  ?satellite mds:hasSatelliteCommonName \"Terra\" .\n}"
+  },
+  {
+    "qid": 1000016,
+    "question": "What band categories are available for the ASTER sensor?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {"nid": 0, "node_type": "class", "id": "mds:Sensor", "class": "mds:Sensor", "friendly_name": "Sensor", "question_node": 0, "function": "none"},
+        {"nid": 1, "node_type": "literal", "id": "bandCategory", "class": "xsd:string", "friendly_name": "Band Category", "question_node": 1, "function": "none"}
+      ],
+      "edges": [
+        {"start": 0, "end": 1, "relation": "mds:containsBandCategory", "friendly_name": "contains band category"}
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT DISTINCT ?category WHERE {\n  ?sensor a mds:Sensor .\n  ?sensor mds:hasSensorCommonName \"ASTER\" .\n  ?sensor mds:containsBand ?band .\n  ?band mds:hasBandCategory ?category .\n}"
+  },
+  {
+    "qid": 1000017,
+    "question": "What raster data is available every 30 minutes in the geohash \"bcff\"?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {"nid": 0, "node_type": "class", "id": "mds:GeospatialRaster", "class": "mds:GeospatialRaster", "friendly_name": "Geospatial Raster", "question_node": 1, "function": "none"},
+        {"nid": 1, "node_type": "class", "id": "mds:TemporalResolution", "class": "mds:TemporalResolution", "friendly_name": "Temporal Resolution", "question_node": 0, "function": "none"},
+        {"nid": 2, "node_type": "class", "id": "mds:Geohash", "class": "mds:Geohash", "friendly_name": "Geohash", "question_node": 0, "function": "none"}
+      ],
+      "edges": [
+        {"start": 0, "end": 1, "relation": "mds:hasTemporalResolution", "friendly_name": "has temporal resolution"},
+        {"start": 0, "end": 2, "relation": "mds:occupiesSpatialRegion", "friendly_name": "occupies spatial region"}
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?raster WHERE {\n  ?raster a mds:GeospatialRaster .\n  ?raster mds:hasTemporalResolution ?tempRes .\n  ?tempRes rdfs:label \"30 minutes\" .\n  ?raster mds:occupiesSpatialRegion ?geohash .\n  ?geohash a mds:Geohash .\n  ?geohash rdfs:label \"bcff\" .\n}"
+  },
+  {
+    "qid": 1000018,
+    "question": "What is the finest spatial resolution available from Terra datasets?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {"nid": 0, "node_type": "class", "id": "mds:GeospatialRaster", "class": "mds:GeospatialRaster", "friendly_name": "Geospatial Raster", "question_node": 0, "function": "none"},
+        {"nid": 1, "node_type": "class", "id": "mds:Satellite", "class": "mds:Satellite", "friendly_name": "Satellite", "question_node": 0, "function": "none"},
+        {"nid": 2, "node_type": "class", "id": "mds:SpatialResolution", "class": "mds:SpatialResolution", "friendly_name": "Spatial Resolution", "question_node": 1, "function": "min"}
+      ],
+      "edges": [
+        {"start": 0, "end": 1, "relation": "mds:generatedBySatellite", "friendly_name": "generated by satellite"},
+        {"start": 0, "end": 2, "relation": "mds:hasSpatialResolution", "friendly_name": "has spatial resolution"}
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX qudt: <http://qudt.org/schema/qudt/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT (MIN(?resValue) AS ?finestResolution) WHERE {\n  ?raster a mds:GeospatialRaster .\n  ?raster mds:generatedBySatellite ?satellite .\n  ?satellite mds:hasSatelliteCommonName \"Terra\" .\n  ?raster mds:hasSpatialResolution ?sr .\n  ?sr qudt:numericValue ?resValue .\n}"
+  },
+  {
+    "qid": 1000019,
+    "question": "What is the finest temporal resolution available from Terra datasets?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {"nid": 0, "node_type": "class", "id": "mds:GeospatialRaster", "class": "mds:GeospatialRaster", "friendly_name": "Geospatial Raster", "question_node": 0, "function": "none"},
+        {"nid": 1, "node_type": "class", "id": "mds:Satellite", "class": "mds:Satellite", "friendly_name": "Satellite", "question_node": 0, "function": "none"},
+        {"nid": 2, "node_type": "class", "id": "mds:TemporalResolution", "class": "mds:TemporalResolution", "friendly_name": "Temporal Resolution", "question_node": 1, "function": "min"}
+      ],
+      "edges": [
+        {"start": 0, "end": 1, "relation": "mds:generatedBySatellite", "friendly_name": "generated by satellite"},
+        {"start": 0, "end": 2, "relation": "mds:hasTemporalResolution", "friendly_name": "has temporal resolution"}
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?temporalRes WHERE {\n  ?raster a mds:GeospatialRaster .\n  ?raster mds:generatedBySatellite ?satellite .\n  ?satellite mds:hasSatelliteCommonName \"Terra\" .\n  ?raster mds:hasTemporalResolution ?tempRes .\n  ?tempRes rdfs:label ?temporalRes .\n}\nORDER BY ?temporalRes\nLIMIT 1"
+  }
+]

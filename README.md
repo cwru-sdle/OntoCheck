@@ -4,7 +4,7 @@
 
 [![PyPI](https://img.shields.io/pypi/v/OntoCheck)](https://pypi.org/project/OntoCheck/)
 [![Documentation](https://readthedocs.org/projects/ontocheck/badge/?version=latest)](https://ontocheck.readthedocs.io/en/latest/)
-[![License: BSD-2](https://img.shields.io/badge/License-BSD--2-blue.svg)](LICENSE)
+[![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
 ---
 
@@ -28,21 +28,44 @@ pip install OntoCheck
 
 ---
 
+## Assessment Modes
+
+OntoCheck supports four assessment modes controlled by a declarative configuration `C = (O, Q, M, G)`:
+
+| Mode | Name | Configuration | Description |
+|------|------|---------------|-------------|
+| 1 | Task-agnostic | `(O, -, M, -)` | Structural, labeling, accessibility, and naming metrics |
+| 2 | Task-specific Web | `(O, Q, M, G)` | Validation against KGQA benchmarks (e.g., LC-QuAD / DBpedia) |
+| 3 | Task-based Scientific | `(O, Q, M, -)` | Domain ontology vs. competency questions |
+| 4 | Cross-Domain | `(O[], Q, M, -)` | Merged ontologies vs. cross-domain questions |
+
+---
+
 ## Quick Start
 
 ### Command-Line Interface
 
 ```bash
-# Display available metrics and usage information
+# Display available options and assessment modes
 ontocheck -h
 
-# Run specific metrics on an ontology file
+# Mode 1: Run task-agnostic metrics
 ontocheck path/to/ontology.ttl --metrics altLabelCheck definitionCheck
-
-# Run all available task-agnostic metrics
 ontocheck path/to/ontology.ttl --metrics all
 
-# Specify custom output file paths
+# Mode 3: Task-based scientific assessment
+ontocheck path/to/ontology.ttl \
+    --mode 3 \
+    --questions competency_questions.json \
+    --domain-prefixes mds
+
+# Mode 4: Cross-domain assessment (multiple ontologies)
+ontocheck xrd.ttl capacitors.ttl \
+    --mode 4 \
+    --questions cross_domain_questions.json \
+    --domain-prefixes mds
+
+# Custom output paths
 ontocheck path/to/ontology.ttl --metrics all --log-file results.log --csv-file results.csv
 ```
 
@@ -51,7 +74,7 @@ ontocheck path/to/ontology.ttl --metrics all --log-file results.log --csv-file r
 ```python
 from ontocheck import run_ontology_assessment
 
-# Run selected metrics
+# Mode 1: Run task-agnostic metrics
 run_ontology_assessment(
     ttl_file="path/to/ontology.ttl",
     metrics=["altLabelCheck", "definitionCheck", "isolatedElements"],
@@ -64,12 +87,49 @@ run_ontology_assessment(
 )
 ```
 
-### Task-Based Assessment
+### Task-Based Assessment (Modes 3 and 4)
 
 ```python
-from ontocheck import task_based_metric
+from ontocheck import run_task_based_assessment
 
-result = task_based_metric(
+# Mode 3: Single ontology vs. competency questions
+result = run_task_based_assessment(
+    ttl_files="path/to/ontology.ttl",
+    questions="competency_questions.json",
+    domain_prefixes=["mds"],
+    domain_ns_fragments=["cwrusdle.bitbucket.io/mds"],
+)
+
+print(f"Relevance: {result['relevance']:.2%}")
+print(f"Accuracy:  {result['accuracy']:.2%}")
+
+# Mode 4: Cross-domain -- merge multiple ontologies
+result = run_task_based_assessment(
+    ttl_files=["xrd.ttl", "capacitors.ttl"],
+    questions="cross_domain_questions.json",
+    domain_prefixes=["mds"],
+)
+```
+
+### Web Ontology Assessment (Mode 2)
+
+```python
+from ontocheck import run_web_ontology_assessment
+
+result = run_web_ontology_assessment(
+    ttl_file="dbpedia_ontology.ttl",
+    questions="lcquad_queries.json",
+    domain_prefixes=["dbo"],
+    knowledge_graph="dbpedia_kg.ttl",
+)
+```
+
+### Direct Metric Access
+
+```python
+from ontocheck import task_based_metric_v_0_0_1
+
+result = task_based_metric_v_0_0_1(
     ttl_file="path/to/ontology.ttl",
     questions="competency_questions.json",
     domain_prefixes=["mds"],
@@ -165,9 +225,9 @@ Materials Data Science for Stockpile Stewardship Center of Excellence (MDS3 COE)
 
 ## Acknowledgments
 
-- U.S. Department of Energy's National Nuclear Security Administration -- Award Number **DE-NA0004104** and Contract Number **B647887**
-- U.S. Department of Energy's Office of Energy Efficiency and Renewable Energy (EERE) under the Solar Energy Technologies Office (SETO) -- Agreement Numbers **DE-EE0009353** and **DE-EE0009347**
-- U.S. National Science Foundation -- Award Number **2133576**
+- Materials Data Science for Stockpile Stewardship Center of Excellence (MDS3 COE), Case Western Reserve University
+- University of Central Florida Advanced Research Computing Center
+- Case Western Reserve University High Performance Computing (HPC) resources
 
 ---
 
@@ -181,4 +241,4 @@ If you use OntoCheck in your work, please cite:
 
 ## License
 
-OntoCheck is released under the [BSD-2-Clause License](LICENSE).
+OntoCheck is released under the [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/).

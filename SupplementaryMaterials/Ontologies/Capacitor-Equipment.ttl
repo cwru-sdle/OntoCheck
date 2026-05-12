@@ -1,0 +1,340 @@
+@prefix ElectronicComponents-Capacitor-Equipment: <https://cwrusdle.bitbucket.io/mds/EC-Equipment/> .
+@prefix cco: <https://www.commoncoreontologies.org/> .
+@prefix mds: <https://cwrusdle.bitbucket.io/mds/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcmi: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix xsd: <https://www.w3.org/TR/xmlschema-1#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+ElectronicComponents-Capacitor-Equipment:Ontology a owl:Ontology ;
+    rdfs:label "ElectronicComponents-Capacitor-Equipment" ;
+    dcmi:creator "Rishabh Kundu, Jacob Anthony Lample, Quynh Tran, Van Tran, Ravi Lin, Roger French, Alp Sehirlioglu" ;
+    dcmi:description "An ontology for the equipment surrounding capacitors undergoing HALT through aixHALT. The aim is to capture all the metadata associated with the tools required so this ontology may be used universally." ;
+    dcmi:title "ElectronicComponents-Capacitor-Equipment" ;
+    owl:versionInfo "0.0.1" .
+
+### Mostly for ZPH related items till next comment line
+
+mds:ExposureChamber a owl:Class ;
+    rdfs:label "Exposure Chamber" ;
+    rdfs:subClassOf cco:ont00000453;
+    skos:altLabel "Environment Control Chamber" ;
+    rdfs:comment "This will have an instance of Upper and Lower Temperature Limit" ;
+    skos:definition "Any contained unit which posseses the capability to alter environmental conditions with the intent of accelerating degradation of an artifact within for the purpose of studying the effect on the contained artifact." .
+
+mds:TypeKThermocouple a owl:Class ;
+    rdfs:label "Type K Thermocouple" ;
+    rdfs:subClassOf mds:Thermocouple ;
+    skos:altLabel "" ;
+    skos:definition "A type of thermocouple which can be operated from -270°C to 1260°C (approx.)." .
+
+mds:RelativeHumiditySensor a owl:Class ;
+    rdfs:label "Realative Humidity Sensor" ;
+    rdfs:subClassOf cco:ont00000569 ;
+    skos:altLabel "RH Sensor" ;
+    skos:definition "A type of sensor/transducer that measures relative humidity" .
+
+mds:ExposureChamberFan a owl:Class ;
+    rdfs:label "Exposure Chamber Fan" ;
+    rdfs:subClassOf cco:ont00000338 ;
+    skos:altLabel "" ;
+    skos:definition "A type of fan that resides within some type of chamber with the object of maintaing air flow within the chamber." ;
+    skos:example "Airflow fan within an exposure chamber" ;
+    mds:value xsd:string .
+
+mds:ExposureChamberWireGrate a owl:Class ;
+    rdfs:label "Exposure Chamber Wire Grate" ;
+    rdfs:subClassOf cco:ont00001042 ;
+    skos:altLabel "Exposure Chamber Sample Rack" ;
+    skos:definition "The rack, stand, or support on which a sample or sample holder rests upon during testing within a exposure chamber." ;
+    rdfs:comment "Within the scope of SDLE, CWRU, US, facilities, this is not the interlock or metal cage in which samples are held but the surface which holds all samples and sample holders" ;
+    skos:example "Wire grate in an exposure chamber; wire grate in a high temperature oven" .
+
+mds:ExposureChamberWireGrateHeight a owl:Class ;
+    rdfs:label "Exposure Chamber Wire Grate Height" ;
+    rdfs:subClassOf cco:ont00000967, mds:ExposureChamberWireGrate ;
+    skos:altLabel "Exposure Chamber Rack Level" ;
+    skos:definition "The height at which a chamber rack is set at during testing." ;
+    rdfs:comment "Refer to the equipment instruction to enter the appropriate rack level" ;
+    mds:value xsd:integer .
+
+mds:NumberOfExposureChamberWireGrates a owl:Class ;
+    rdfs:label "Number of Exposure Chamber Wire Grates" ;
+    rdfs:subClassOf mds:ExposureChamberWireGrate ;
+    skos:altLabel "Exposure Chamber Grates in Usage" ;
+    skos:definition "How many chamber racks are being used at one instance in a particular application." ;
+    mds:value xsd:integer .
+
+mds:ExposureChamberVent a owl:Class ;
+    rdfs:label "Exposure Chamber Vent" ;
+    rdfs:subClassOf cco:ont00000256 ;
+    skos:altLabel "" ;
+    skos:definition "Class to represent an exposure chamber vent." ;
+    mds:value xsd:string .
+
+mds:ExposureChamberLight a owl:Class ;
+    rdfs:label "Exposure Chamber Light" ;
+    rdfs:subClassOf cco:ont00000236 ;
+    skos:altLabel "Exposure Chamber Lamp" ;
+    skos:definition "Class to represent the light within an exposure chamber." ;
+    mds:value xsd:boolean .
+
+mds:ExposureChamberInsulationMaterial a owl:Class ;
+    rdfs:label "Exposure Chamber Insulation Material" ;
+    rdfs:subClassOf mds:ExposureChamber  ;
+    skos:altLabel "Exposure Chamber Side Hole Plug Material" ;
+    skos:definition "Class to represent the insulation/plug material on the sides of an environment control chamber." ;
+    skos:example "Polymer coated styrofoam" ;
+    mds:value xsd:string .
+
+### This is where aixACCT terms will begin to appear
+
+# Intent here is to have a class to represent aixACCT and make things instances of this <- has two reasons: makes searching aixACCT terms easier and comply with new design choice. Right now the former design choice has been followed
+# mds:aixACCT-MaterialArtifact a owl:Class ;
+#     rdfs:label "aixACCT Material Artifact" ;
+#     rdfs:subClassOf cco:ont00000995 ;
+#     skos:altLabel "aixACCT Manufactured Material Artifact" ;
+#     skos:definition "Class to represent any material artifact produced by the company aixACCT Systems." ;
+#     skos:example "aixHALT system" .
+
+mds:HighlyAcceleratedLifetimeTestingSystem a owl:Class ;
+    rdfs:label "Highly Accelerated Lifetime Testing System" ;
+    rdfs:subClassOf cco:ont00000995 ;
+    skos:altLabel "HALT" ;
+    skos:definition "Any system that is intented to measure/estimate/analyze the lifetime of a material artifact by exposing it to stressors that accelerates its degradation." .
+
+mds:ElectricalComponentHighlyAcceleratedLifetimeTestingSystem a owl:Class ;
+    rdfs:label "Electrical Component Lifetime Testing System" ;
+    rdfs:subClassOf mds:HighlyAcceleratedLifetimeTestingSystem ;
+    skos:altLabel "EC-HALT" ;
+    skos:definition "A type of Highly Accelerated Lifetime Testing System that is used specifically for electrical components" .
+
+mds:MicroController a owl:Class ;
+    rdfs:label "MircoController" ;
+    rdfs:subClassOf cco:ont00000781, mds:ElectricalComponentHighlyAcceleratedLifetimeTestingSystem ;
+    skos:altLabel "µC" ;
+    skos:definition "An artifact that controls the input and output signals." .
+
+mds:Amplifier a owl:Class ;
+    rdfs:label "Amplifier" ;
+    rdfs:subClassOf cco:ont00000995 ;
+    skos:altLabel "" ;
+    skos:definition "Any system that recieves some kind of external force or energy and increases its magnitude." ;
+    skos:example "A voltage amplifier that recieves a voltage of 25V and outputs a voltage of 200V; A music amplifier that recives a quiet vocal signal and increases its volume" .
+
+mds:VoltageAmplifier a owl:Class ;
+    rdfs:label "Voltage Amplifier" ;
+    rdfs:subClassOf mds:Amplifier ;
+    skos:altLabel "" ;
+    skos:definition "Any system that recieves an external electrical energy and increases it." ;
+    rdfs:comment "A type of amplifier that specializes in electrical energies only | This will have an instance of voltage rating" ;
+    skos:example "A voltage amplifier that recieves a voltage of 25V and outputs a voltage of 200V; A current amplifier that recives a current of 50A and outputs 200A" .
+
+mds:SampleHolderCase a owl:Class ;
+    rdfs:label "Sample Holder Case" ;
+    rdfs:subClassOf cco:ont00001042, mds:ElectricalComponentHighlyAcceleratedLifetimeTestingSystem ;
+    skos:altLabel "Sample Holder Cage" ;
+    rdfs:comment "This will be the bearer of (or something) an interlock and ground port" ;
+    skos:definition "The metal cage in which a sample and/or sample holder is contained within during electrical testing." .
+
+mds:ElectricalWire a owl:Class ;
+    rdfs:label "Electrical Wire" ;
+    rdfs:subClassOf cco:ont00000663 ;
+    skos:altLabel "Electrical Cable" ;
+    skos:definition "A power transmission artifact made of conductive material that carries charge from one location to another." .
+
+mds:PhaseToGroundVoltage a owl:Class ;
+    rdfs:label "Phase To Ground Voltage" ;
+    rdfs:subClassOf mds:VoltageRating, mds:ElectricalWire ;
+    skos:altLabel "PtG-V" ;
+    skos:definition "The voltage rating of a wire for phase to ground applications." ;
+    mds:value xsd:integer .
+
+mds:PhaseToPhaseVoltage a owl:Class ;
+    rdfs:label "Phase To Phase Voltage" ;
+    rdfs:subClassOf mds:VoltageRating, mds:ElectricalWire ;
+    skos:altLabel "PtP-V" ;
+    skos:definition "The voltage rating of a wire for phase to phase applications." ;
+    mds:value xsd:integer .
+
+mds:ElectricalWireGauge a owl:Class ;
+    rdfs:label "Electrical Wire Gauge" ;
+    rdfs:subClassOf mds:ElectricalWire, cco:ont00001304 ;
+    skos:altLabel "Electrical Wire Thickness, Electrical Wire Diameter" ;
+    skos:definition "Represents the gauge of an electrical wire. May be provided with the American Wire Gauge (AWG) standard" ;
+    skos:example "A 14 AWG wire" ;
+    mds:value xsd:integer .
+
+mds:ElectricalWireMaterial a owl:Class ;
+    rdfs:label "Electrical Wire Material" ;
+    rdfs:subClassOf mds:ElectricalWire, cco:ont00000575 ;
+    skos:altLabel "Electrical Wire Composition" ;
+    skos:definition "Represents the material an electrical wire is composed of." ;
+    skos:example "A copper wire, an aluminum wire" ;
+    rdfs:comment "This does not include the insulation material." ;
+    mds:value xsd:string .
+
+mds:ElectricalWireInsulationMaterial a owl:Class ;
+    rdfs:label "Electrical Wire Insulation Material" ;
+    rdfs:subClassOf mds:ElectricalWire, cco:ont00000575 ;
+    skos:altLabel "Electrical Wire Insulation Composition" ;
+    skos:definition "Represents the material of which the insulation on an electrical wire is composed of." ;
+    mds:value xsd:string .
+
+mds:ElectricalWireInsulationDiameter a owl:Class ;
+    rdfs:label "Electrical Wire Insulation Diameter" ;
+    rdfs:subClassOf mds:ElectricalWire, cco:ont00001304 ;
+    skos:altLabel "Electrical Wire Insulation Thickness" ;
+    skos:definition "Represents the thickness of a given electrical wire's insulation." ;
+    rdfs:comment "This is found by subtracting the thickness of the conducting wire inside (usually given by the AWG standard) from the measured diameter of the given wire." ;
+    mds:value xsd:float .
+
+mds:DIN-Connector a owl:Class ;
+    rdfs:label "DIN Connector" ;
+    rdfs:subClassOf mds:ElectricalConnector ;
+    skos:altLabel "" ;
+    rdfs:comment "The 32 pin DIN 41612 connector (JSEN) will be an instance of this <- also maintains an Artifact Function as given by cco to be included later <- this instance will connect to PCB and µC" ;
+    skos:definition "A type of electrical connector which adheres to the Deutsches Institut fur Normung (DIN) standards for connectors." .
+
+mds:EthernetCable a owl:Class ;
+    rdfs:label "Ethernet Cable" ;
+    rdfs:subClassOf mds:ElectricalWire ;
+    skos:altLabel "Ethernet Wire" ;
+    skos:definition "A type of electrical wire that transmits data through encoded electrical signals." .
+
+mds:GroundWire a owl:Class ;
+    rdfs:label "Ground Wire" ;
+    rdfs:subClassOf mds:ElectricalWire ;
+    skos:altLabel "Ground Cable" ;
+    skos:definition "A type of electrical wire that attempts to prevent damage and fires by provideing a low resistance path for electricity to flow to in the event of a current surge or other electrical anomaly." .
+
+mds:ElectricalConnector a owl:Class ;
+    rdfs:label "Electrical Connector" ;
+    rdfs:subClassOf cco:ont00000663 ;
+    skos:altLabel "Electrical Port, Electrical Interface" ;
+    skos:definition "A power transmission artifact that provides an interface for another power transmission artifact (ex. an electrical wire)." ;
+    skos:example "USB port on a laptop, RJ45 (ethernet) port from the wall (not the respective wires)" ;
+    rdfs:comment "At every joint in any given electrical circuit, there is some form of connector present at the joint" .
+
+mds:VoltageInConnector a owl:Class ;
+    rdfs:label "Voltage In Connector" ;
+    rdfs:subClassOf mds:ElectricalConnector ;
+    skos:altLabel "V-In Connector" ;
+    skos:definition "An electrical connector where voltage is the input." .
+
+mds:VoltageOutConnector a owl:Class ;
+    rdfs:label "Voltage Out Connector" ;
+    rdfs:subClassOf mds:ElectricalConnector ;
+    skos:altLabel "V-Out Connector" ;
+    skos:definition "An electrical connector where voltage is the output." .
+
+mds:VoltageMonitorConnector a owl:Class ;
+    rdfs:label "Voltage Monitor Connector" ;
+    rdfs:subClassOf mds:ElectricalConnector ;
+    skos:altLabel "V-Mon Connector" ;
+    skos:definition "An electrical connector for monitoring voltage." .
+
+mds:AuxiliaryInputConnector a owl:Class ;
+    rdfs:label "Auxiliary Input Connector" ;
+    rdfs:subClassOf mds:ElectricalConnector ;
+    skos:altLabel "AUX-In Connector" ;
+    skos:definition "An electrical connector for an auxiliary input." .
+
+mds:AuxiliaryOutputConnector a owl:Class ;
+    rdfs:label "Auxiliary Output Connector" ;
+    rdfs:subClassOf mds:ElectricalConnector ;
+    skos:altLabel "AUX-Out Connector" ;
+    skos:definition "An electrical connector for an auxiliary output." .
+
+mds:DigitalEnableConnector a owl:Class ;
+    rdfs:label "Digital Enable Connector" ;
+    rdfs:subClassOf mds:ElectricalConnector ;
+    skos:altLabel "" ;
+    skos:definition "An electrical connector for controlling specific features of a system or digital circuit." .
+
+mds:UniversialSerialBusConnector a owl:Class ;
+    rdfs:label "Universial Serial Bus Connector" ;
+    rdfs:subClassOf mds:ElectricalConnector ;
+    skos:altLabel "USB Connector" ;
+    skos:definition "An electrical connector, present on most or all computers and numerous other devices" .
+
+mds:CommunicationPortConnector a owl:Class ;
+    rdfs:label "Communication Connector" ;
+    rdfs:subClassOf mds:ElectricalConnector ;
+    skos:altLabel "COM Connector" ;
+    skos:definition "An electrical connector primarily used for trasfering data between one system to another." .
+
+mds:JSEN-Connector a owl:Class ;
+    rdfs:label "JSEN Connector" ;
+    rdfs:subClassOf mds:DIN-Connector, mds:ElectricalComponentHighlyAcceleratedLifetimeTestingSystem ;
+    skos:altLabel "" ;
+    skos:definition "An electrical connector for interacting with electrical samples in an Electrical Component Lifetime Testing System." .
+
+mds:WallOutlet a owl:Class ;
+    rdfs:label "Wall Outlet" ;
+    rdfs:subClassOf cco:ont00001049 ;
+    skos:altLabel "Power Outlet" ;
+    skos:definition "An electrical outlet that is tied into the main wiring of a building in order to provide power to devices plugged into it." .
+
+### CCO terms below
+
+cco:ont00001042 rdf:type owl:Class ;
+    rdfs:subClassOf cco:ont00000995 ;
+    rdfs:label "Equipment Mount"@en ;
+    skos:definition "A Material Artifact that is designed to support an Artifact."@en ;
+    cco:ont00001760 "https://www.commoncoreontologies.org/ArtifactOntology"^^xsd:anyURI .
+
+cco:ont00000338 rdf:type owl:Class ;
+    rdfs:subClassOf cco:ont00000256 ;
+    rdfs:label "Fan"@en ;
+    skos:definition "A Fluid Control Artifact that consists of a rotating arrangement of vanes or blades that are designed to act on a portion of fluid to create flow within it."@en ;
+    cco:ont00001754 "https://en.wikipedia.org/wiki/Fan_(machine)" ;
+    cco:ont00001760 "https://www.commoncoreontologies.org/ArtifactOntology"^^xsd:anyURI .
+
+cco:ont00000453 rdf:type owl:Class ;
+    rdfs:subClassOf cco:ont00000995 ;
+    rdfs:comment "Controlling air quality typically involves temperature control, oxygen replenishment, and removal of moisture, odor, smoke, heat, dust, airborne bacteria, carbon dioxide, and other undesired gases or particulates."@en ;
+    rdfs:label "Environment Control System"@en ;
+    skos:definition "A Material Artifact that is designed to control the temperature, air quality, or other feature of a Site that is relevant to the comfort or operation of entities located within that Site."@en ;
+    cco:ont00001760 "https://www.commoncoreontologies.org/ArtifactOntology"^^xsd:anyURI .
+
+cco:ont00000256 rdf:type owl:Class ;
+    rdfs:subClassOf cco:ont00000995 ;
+    rdfs:label "Fluid Control Artifact"@en ;
+    skos:definition "A Material Artifact that is designed to manipulate the flow of a fluid (i.e. a liquid or a gas)."@en ;
+    cco:ont00001760 "https://www.commoncoreontologies.org/ArtifactOntology"^^xsd:anyURI .
+
+cco:ont00000236 rdf:type owl:Class ;
+    rdfs:subClassOf cco:ont00000995 ;
+    rdfs:label "Lighting System"@en ;
+    skos:definition "A Material Artifact that is designed to emit light within some area."@en ;
+    cco:ont00001760 "https://www.commoncoreontologies.org/ArtifactOntology"^^xsd:anyURI .
+
+cco:ont00000781 rdf:type owl:Class ;
+    rdfs:subClassOf cco:ont00000995 ;
+    rdfs:label "Control System"@en ;
+    skos:definition "A Material Artifact that is designed to manage, command, direct, or regulate the behavior of at least one other Artifact."@en ;
+    cco:ont00001754 "https://en.wikipedia.org/w/index.php?title=Control_system&oldid=1061817176"^^xsd:anyURI ;
+    cco:ont00001760 "https://www.commoncoreontologies.org/ArtifactOntology"^^xsd:anyURI .
+
+cco:ont00001049 rdf:type owl:Class ;
+    rdfs:subClassOf cco:ont00000288 ;
+    rdfs:label "Electrical Power Source"@en ;
+    skos:definition "A Power Source that is designed to generate, control, and transfer power in the form of electrical energy."@en ;
+    cco:ont00001760 "https://www.commoncoreontologies.org/ArtifactOntology"^^xsd:anyURI .
+
+cco:ont00000663 rdf:type owl:Class ;
+    rdfs:subClassOf cco:ont00000995 ;
+    rdfs:label "Power Transmission Artifact"@en ;
+    skos:definition "A Material Artifact that is designed to transfer and regulate Power flow from a Power Source to an application point."@en ;
+    cco:ont00001760 "https://www.commoncoreontologies.org/ArtifactOntology"^^xsd:anyURI .
+
+cco:ont00000995 rdf:type owl:Class ;
+    rdfs:subClassOf obo:BFO_0000040 ;
+    rdfs:label "Material Artifact"@en ;
+    skos:definition "A Material Entity that was designed by some Agent to realize a certain Function."@en ;
+    cco:ont00001760 "https://www.commoncoreontologies.org/ArtifactOntology"^^xsd:anyURI .
+

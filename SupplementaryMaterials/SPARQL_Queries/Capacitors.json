@@ -1,0 +1,1027 @@
+[
+  {
+    "qid": 1000000,
+    "question": "What types of electrical connectors are available in the EC-HALT system, and what is the function of each?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:ElectricalConnector",
+          "class": "mds:ElectricalConnector",
+          "friendly_name": "Electrical Connector",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:ElectricalComponentHighlyAcceleratedLifetimeTestingSystem",
+          "class": "mds:ElectricalComponentHighlyAcceleratedLifetimeTestingSystem",
+          "friendly_name": "EC-HALT System",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "rdfs:subClassOf",
+          "friendly_name": "subclass of"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX skos: <http://www.w3.org/2004/02/skos/core#>\nSELECT ?connector ?label ?definition\nWHERE {\n  ?connector rdfs:subClassOf mds:ElectricalConnector .\n  OPTIONAL { ?connector rdfs:label ?label }\n  OPTIONAL { ?connector skos:definition ?definition }\n}"
+  },
+  {
+    "qid": 1000001,
+    "question": "What is the wire gauge and material of the electrical wire used in the HALT testing setup?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:ElectricalWireGauge",
+          "class": "mds:ElectricalWireGauge",
+          "friendly_name": "Electrical Wire Gauge",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:ElectricalWireMaterial",
+          "class": "mds:ElectricalWireMaterial",
+          "friendly_name": "Electrical Wire Material",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "entity",
+          "id": "http://example.org/resource#wire.001",
+          "class": "mds:ElectricalWire",
+          "friendly_name": "this electrical wire",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 2,
+          "relation": "rdfs:subClassOf",
+          "friendly_name": "subclass of"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "relation": "rdfs:subClassOf",
+          "friendly_name": "subclass of"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?gauge ?material\nWHERE {\n  VALUES ?wire { <http://example.org/resource#wire.001> }\n  ?wire a mds:ElectricalWire .\n  ?gauge a mds:ElectricalWireGauge .\n  ?material a mds:ElectricalWireMaterial .\n}"
+  },
+  {
+    "qid": 1000002,
+    "question": "What equipment components are classified as part of the EC-HALT?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:ElectricalComponentHighlyAcceleratedLifetimeTestingSystem",
+          "class": "mds:ElectricalComponentHighlyAcceleratedLifetimeTestingSystem",
+          "friendly_name": "EC-HALT",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "owl:Class",
+          "class": "owl:Class",
+          "friendly_name": "Equipment Component",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "rdfs:subClassOf",
+          "friendly_name": "subclass of"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?component ?label\nWHERE {\n  ?component rdfs:subClassOf mds:ElectricalComponentHighlyAcceleratedLifetimeTestingSystem .\n  OPTIONAL { ?component rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 1000003,
+    "question": "What is the phase-to-ground voltage rating of the electrical wire used in the testing system?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:PhaseToGroundVoltage",
+          "class": "mds:PhaseToGroundVoltage",
+          "friendly_name": "Phase To Ground Voltage",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "http://example.org/resource#wire.001",
+          "class": "mds:ElectricalWire",
+          "friendly_name": "this electrical wire",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "rdfs:subClassOf",
+          "friendly_name": "subclass of (ElectricalWire)"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?ptgVoltage\nWHERE {\n  ?ptgVoltage a mds:PhaseToGroundVoltage .\n}"
+  },
+  {
+    "qid": 1000004,
+    "question": "What type of insulation material is used on the electrical wires, and what is its diameter?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:ElectricalWireInsulationMaterial",
+          "class": "mds:ElectricalWireInsulationMaterial",
+          "friendly_name": "Insulation Material",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:ElectricalWireInsulationDiameter",
+          "class": "mds:ElectricalWireInsulationDiameter",
+          "friendly_name": "Insulation Diameter",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "entity",
+          "id": "http://example.org/resource#wire.001",
+          "class": "mds:ElectricalWire",
+          "friendly_name": "this wire",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 2,
+          "relation": "rdfs:subClassOf",
+          "friendly_name": "subclass of"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "relation": "rdfs:subClassOf",
+          "friendly_name": "subclass of"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nSELECT ?insulationMaterial ?insulationDiameter\nWHERE {\n  ?insulationMaterial a mds:ElectricalWireInsulationMaterial .\n  ?insulationDiameter a mds:ElectricalWireInsulationDiameter .\n}"
+  },
+  {
+    "qid": 1000005,
+    "question": "What sensor is used to monitor relative humidity inside the exposure chamber?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:RelativeHumiditySensor",
+          "class": "mds:RelativeHumiditySensor",
+          "friendly_name": "Relative Humidity Sensor",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:ExposureChamber",
+          "class": "mds:ExposureChamber",
+          "friendly_name": "Exposure Chamber",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "obo:BFO_0000050",
+          "friendly_name": "part of"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX skos: <http://www.w3.org/2004/02/skos/core#>\nSELECT ?sensor ?label ?definition\nWHERE {\n  ?sensor a mds:RelativeHumiditySensor .\n  OPTIONAL { ?sensor rdfs:label ?label }\n  OPTIONAL { ?sensor skos:definition ?definition }\n}"
+  },
+  {
+    "qid": 1000006,
+    "question": "What is the height setting of the wire grate within the exposure chamber, and how many wire grates are in use?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:ExposureChamberWireGrateHeight",
+          "class": "mds:ExposureChamberWireGrateHeight",
+          "friendly_name": "Wire Grate Height",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:NumberOfExposureChamberWireGrates",
+          "class": "mds:NumberOfExposureChamberWireGrates",
+          "friendly_name": "Number of Wire Grates",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "mds:ExposureChamberWireGrate",
+          "class": "mds:ExposureChamberWireGrate",
+          "friendly_name": "Exposure Chamber Wire Grate",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 2,
+          "relation": "rdfs:subClassOf",
+          "friendly_name": "subclass of"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "relation": "rdfs:subClassOf",
+          "friendly_name": "subclass of"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nSELECT ?grateHeight ?numGrates\nWHERE {\n  ?grateHeight a mds:ExposureChamberWireGrateHeight .\n  ?numGrates a mds:NumberOfExposureChamberWireGrates .\n}"
+  },
+  {
+    "qid": 1000007,
+    "question": "What type of thermocouple is used in the exposure chamber, and what is its operational temperature range?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:TypeKThermocouple",
+          "class": "mds:TypeKThermocouple",
+          "friendly_name": "Type K Thermocouple",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:ExposureChamber",
+          "class": "mds:ExposureChamber",
+          "friendly_name": "Exposure Chamber",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "obo:BFO_0000050",
+          "friendly_name": "part of"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX skos: <http://www.w3.org/2004/02/skos/core#>\nSELECT ?thermocouple ?label ?definition\nWHERE {\n  ?thermocouple a mds:TypeKThermocouple .\n  OPTIONAL { ?thermocouple rdfs:label ?label }\n  OPTIONAL { ?thermocouple skos:definition ?definition }\n}"
+  },
+  {
+    "qid": 1000008,
+    "question": "What are the manufacturer-specified dimensions (height, length, and width) of the capacitor under test?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 4,
+    "num_edge": 3,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:CapacitorHeight",
+          "class": "mds:CapacitorHeight",
+          "friendly_name": "Capacitor Height",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:CapacitorLength",
+          "class": "mds:CapacitorLength",
+          "friendly_name": "Capacitor Length",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "mds:CapacitorWidth",
+          "class": "mds:CapacitorWidth",
+          "friendly_name": "Capacitor Width",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 3,
+          "node_type": "entity",
+          "id": "http://example.org/resource#capacitor.001",
+          "class": "mds:Capacitor",
+          "friendly_name": "this capacitor",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 3,
+          "relation": "mds:hasDimension",
+          "friendly_name": "has dimension"
+        },
+        {
+          "start": 1,
+          "end": 3,
+          "relation": "mds:hasDimension",
+          "friendly_name": "has dimension"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "relation": "mds:hasDimension",
+          "friendly_name": "has dimension"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nSELECT ?height ?length ?width\nWHERE {\n  VALUES ?cap { <http://example.org/resource#capacitor.001> }\n  ?cap a mds:Capacitor .\n  ?height a mds:CapacitorHeight .\n  ?length a mds:CapacitorLength .\n  ?width a mds:CapacitorWidth .\n}"
+  },
+  {
+    "qid": 1000009,
+    "question": "What is the capacitance value and its tolerance for the capacitor being tested?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:Capacitance",
+          "class": "mds:Capacitance",
+          "friendly_name": "Capacitance",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:CapacitanceTolerance",
+          "class": "mds:CapacitanceTolerance",
+          "friendly_name": "Capacitance Tolerance",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "entity",
+          "id": "http://example.org/resource#capacitor.001",
+          "class": "mds:Capacitor",
+          "friendly_name": "this capacitor",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 2,
+          "end": 0,
+          "relation": "mds:hasCapacitance",
+          "friendly_name": "has capacitance"
+        },
+        {
+          "start": 2,
+          "end": 1,
+          "relation": "mds:hasTolerance",
+          "friendly_name": "has tolerance"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nSELECT ?capacitance ?tolerance\nWHERE {\n  VALUES ?cap { <http://example.org/resource#capacitor.001> }\n  ?cap a mds:Capacitor .\n  ?capacitance a mds:Capacitance .\n  ?tolerance a mds:CapacitanceTolerance .\n}"
+  },
+  {
+    "qid": 1000010,
+    "question": "What are the upper and lower temperature limits specified by the manufacturer for the capacitor?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:UpperTemperatureLimit",
+          "class": "mds:UpperTemperatureLimit",
+          "friendly_name": "Upper Temperature Limit",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:LowerTemperatureLimit",
+          "class": "mds:LowerTemperatureLimit",
+          "friendly_name": "Lower Temperature Limit",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "entity",
+          "id": "http://example.org/resource#capacitor.001",
+          "class": "mds:Capacitor",
+          "friendly_name": "this capacitor",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 2,
+          "end": 0,
+          "relation": "mds:hasTemperatureLimit",
+          "friendly_name": "has upper temp limit"
+        },
+        {
+          "start": 2,
+          "end": 1,
+          "relation": "mds:hasTemperatureLimit",
+          "friendly_name": "has lower temp limit"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nSELECT ?upperLimit ?lowerLimit\nWHERE {\n  VALUES ?cap { <http://example.org/resource#capacitor.001> }\n  ?cap a mds:Capacitor .\n  ?upperLimit a mds:UpperTemperatureLimit .\n  ?lowerLimit a mds:LowerTemperatureLimit .\n}"
+  },
+  {
+    "qid": 1000011,
+    "question": "What is the voltage rating of the capacitor, and what application norm is it rated for?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:VoltageRating",
+          "class": "mds:VoltageRating",
+          "friendly_name": "Voltage Rating",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:ApplicationNorm",
+          "class": "mds:ApplicationNorm",
+          "friendly_name": "Application Norm",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "entity",
+          "id": "http://example.org/resource#capacitor.001",
+          "class": "mds:Capacitor",
+          "friendly_name": "this capacitor",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 2,
+          "end": 0,
+          "relation": "mds:hasVoltageRating",
+          "friendly_name": "has voltage rating"
+        },
+        {
+          "start": 2,
+          "end": 1,
+          "relation": "mds:hasApplicationNorm",
+          "friendly_name": "has application norm"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nSELECT ?voltageRating ?applicationNorm\nWHERE {\n  VALUES ?cap { <http://example.org/resource#capacitor.001> }\n  ?cap a mds:Capacitor .\n  ?voltageRating a mds:VoltageRating .\n  ?applicationNorm a mds:ApplicationNorm .\n}"
+  },
+  {
+    "qid": 1000012,
+    "question": "What is the lot code of the capacitor, and who is the supplier?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:LotCode",
+          "class": "mds:LotCode",
+          "friendly_name": "Lot Code",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:Supplier",
+          "class": "mds:Supplier",
+          "friendly_name": "Supplier",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "entity",
+          "id": "http://example.org/resource#capacitor.001",
+          "class": "mds:Capacitor",
+          "friendly_name": "this capacitor",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 2,
+          "end": 0,
+          "relation": "mds:hasLotCode",
+          "friendly_name": "has lot code"
+        },
+        {
+          "start": 2,
+          "end": 1,
+          "relation": "mds:hasSupplier",
+          "friendly_name": "has supplier"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nSELECT ?lotCode ?supplier\nWHERE {\n  VALUES ?cap { <http://example.org/resource#capacitor.001> }\n  ?cap a mds:Capacitor .\n  ?lotCode a mds:LotCode .\n  ?supplier a mds:Supplier .\n}"
+  },
+  {
+    "qid": 1000013,
+    "question": "What type of capacitor is being tested — is it a MultiLayer Ceramic Capacitor (MLCC) or another type?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:Capacitor",
+          "class": "mds:Capacitor",
+          "friendly_name": "Capacitor",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:MultiLayerCeramicCapacitor",
+          "class": "mds:MultiLayerCeramicCapacitor",
+          "friendly_name": "MLCC",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "rdfs:subClassOf",
+          "friendly_name": "subclass of"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?capacitorType ?label\nWHERE {\n  VALUES ?cap { <http://example.org/resource#capacitor.001> }\n  ?cap a ?capacitorType .\n  ?capacitorType rdfs:subClassOf* mds:Capacitor .\n  OPTIONAL { ?capacitorType rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 1000014,
+    "question": "What is the packaging material the capacitor was supplied in?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:PackagingMaterial",
+          "class": "mds:PackagingMaterial",
+          "friendly_name": "Packaging Material",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "http://example.org/resource#capacitor.001",
+          "class": "mds:Capacitor",
+          "friendly_name": "this capacitor",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "mds:hasPackaging",
+          "friendly_name": "has packaging"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nSELECT ?packagingMaterial\nWHERE {\n  VALUES ?cap { <http://example.org/resource#capacitor.001> }\n  ?cap a mds:Capacitor .\n  ?packagingMaterial a mds:PackagingMaterial .\n}"
+  },
+  {
+    "qid": 1000015,
+    "question": "What are the terminal electrode length and its tolerance for the capacitor under test?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:CapactiorTerminalElectrodeLength",
+          "class": "mds:CapactiorTerminalElectrodeLength",
+          "friendly_name": "Terminal Electrode Length",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:CapactiorTerminalElectrodeLengthTolerance",
+          "class": "mds:CapactiorTerminalElectrodeLengthTolerance",
+          "friendly_name": "Terminal Electrode Length Tolerance",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "entity",
+          "id": "http://example.org/resource#capacitor.001",
+          "class": "mds:Capacitor",
+          "friendly_name": "this capacitor",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 2,
+          "end": 0,
+          "relation": "mds:hasDimension",
+          "friendly_name": "has dimension"
+        },
+        {
+          "start": 2,
+          "end": 1,
+          "relation": "mds:hasTolerance",
+          "friendly_name": "has tolerance"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nSELECT ?electrodeLength ?electrodeTolerance\nWHERE {\n  VALUES ?cap { <http://example.org/resource#capacitor.001> }\n  ?cap a mds:Capacitor .\n  ?electrodeLength a mds:CapactiorTerminalElectrodeLength .\n  ?electrodeTolerance a mds:CapactiorTerminalElectrodeLengthTolerance .\n}"
+  },
+  {
+    "qid": 1000016,
+    "question": "What is the design and coating type of the printed circuit board (PCB) used as the sample holder?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:PrintedCircuitBoardDesign",
+          "class": "mds:PrintedCircuitBoardDesign",
+          "friendly_name": "PCB Design",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:PrintedCircuitBoardCoatingType",
+          "class": "mds:PrintedCircuitBoardCoatingType",
+          "friendly_name": "PCB Coating Type",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "entity",
+          "id": "http://example.org/resource#pcb.001",
+          "class": "mds:PrintedCircuitBoard",
+          "friendly_name": "this PCB",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 2,
+          "end": 0,
+          "relation": "mds:hasDesign",
+          "friendly_name": "has design"
+        },
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "rdfs:subClassOf",
+          "friendly_name": "subclass of"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nSELECT ?pcbDesign ?coatingType\nWHERE {\n  VALUES ?pcb { <http://example.org/resource#pcb.001> }\n  ?pcb a mds:PrintedCircuitBoard .\n  ?pcbDesign a mds:PrintedCircuitBoardDesign .\n  ?coatingType a mds:PrintedCircuitBoardCoatingType .\n}"
+  },
+  {
+    "qid": 1000017,
+    "question": "How many layers does the PCB have, and what is its glass transition temperature?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:NumberOfPrintedCircuitBoardLayers",
+          "class": "mds:NumberOfPrintedCircuitBoardLayers",
+          "friendly_name": "Number of PCB Layers",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:GlassTransitionTemperature",
+          "class": "mds:GlassTransitionTemperature",
+          "friendly_name": "Glass Transition Temperature",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "entity",
+          "id": "http://example.org/resource#pcb.001",
+          "class": "mds:PrintedCircuitBoard",
+          "friendly_name": "this PCB",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 2,
+          "end": 0,
+          "relation": "mds:hasLayers",
+          "friendly_name": "has layers"
+        },
+        {
+          "start": 2,
+          "end": 1,
+          "relation": "mds:hasGlassTransitionTemperature",
+          "friendly_name": "has glass transition temperature"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nSELECT ?numLayers ?glassTempValue\nWHERE {\n  VALUES ?pcb { <http://example.org/resource#pcb.001> }\n  ?pcb a mds:PrintedCircuitBoard .\n  ?numLayers a mds:NumberOfPrintedCircuitBoardLayers .\n  ?glassTemp a mds:GlassTransitionTemperature .\n}"
+  },
+  {
+    "qid": 1000018,
+    "question": "What solder process type and solder material were used when mounting the capacitor onto the PCB, and at what iron temperature?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 4,
+    "num_edge": 3,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:SolderProcessType",
+          "class": "mds:SolderProcessType",
+          "friendly_name": "Solder Process Type",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:SolderMaterial",
+          "class": "mds:SolderMaterial",
+          "friendly_name": "Solder Material",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "mds:SolderIronTemp",
+          "class": "mds:SolderIronTemp",
+          "friendly_name": "Solder Iron Temperature",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 3,
+          "node_type": "entity",
+          "id": "http://example.org/resource#soldering.001",
+          "class": "mds:SolderingProcess",
+          "friendly_name": "this soldering process",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 3,
+          "end": 0,
+          "relation": "mds:hasProcessType",
+          "friendly_name": "has process type"
+        },
+        {
+          "start": 3,
+          "end": 1,
+          "relation": "mds:hasMaterial",
+          "friendly_name": "has material"
+        },
+        {
+          "start": 3,
+          "end": 2,
+          "relation": "mds:hasIronTemp",
+          "friendly_name": "has iron temperature"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nSELECT ?processType ?solderMaterial ?ironTemp\nWHERE {\n  VALUES ?process { <http://example.org/resource#soldering.001> }\n  ?process a mds:SolderingProcess .\n  ?processType a mds:SolderProcessType .\n  ?solderMaterial a mds:SolderMaterial .\n  ?ironTemp a mds:SolderIronTemp .\n}"
+  },
+  {
+    "qid": 1000019,
+    "question": "Was external flux used during the soldering process, and if so, what type of flux material was applied?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:ExternalFluxUsed",
+          "class": "mds:ExternalFluxUsed",
+          "friendly_name": "External Flux Used",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:FluxMaterial",
+          "class": "mds:FluxMaterial",
+          "friendly_name": "Flux Material",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "entity",
+          "id": "http://example.org/resource#soldering.001",
+          "class": "mds:SolderingProcess",
+          "friendly_name": "this soldering process",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 2,
+          "end": 0,
+          "relation": "mds:usedFlux",
+          "friendly_name": "used flux"
+        },
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "rdfs:subClassOf",
+          "friendly_name": "has flux material"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nSELECT ?fluxUsed ?fluxMaterial\nWHERE {\n  VALUES ?process { <http://example.org/resource#soldering.001> }\n  ?process a mds:SolderingProcess .\n  ?fluxUsed a mds:ExternalFluxUsed .\n  ?fluxMaterial a mds:FluxMaterial .\n}"
+  }
+]

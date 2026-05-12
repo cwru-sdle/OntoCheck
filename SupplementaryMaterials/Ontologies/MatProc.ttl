@@ -1,0 +1,1357 @@
+@prefix mds: <https://cwrusdle.bitbucket.io/mds/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix cco: <https://www.commoncoreontologies.org/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+
+################### Ontology Metadata ###########################
+
+<https://cwrusdle.bitbucket.io/mds/MatProcModule> a owl:Ontology ;
+    rdfs:label "MDS-Onto Materials Processing Module" ;
+    dcterms:creator "SDLE Research Center" ;
+    dcterms:description "Materials Processing module extracted from MDS-Onto. Covers 36 process classes and 71 processing parameter classes across additive manufacturing, heat treatment, forming/casting, melting/synthesis, thin film deposition, joining/welding, mechanical processing, surface treatment, and exfoliation domains." ;
+    dcterms:license <https://creativecommons.org/licenses/by-sa/4.0/> ;
+    dcterms:title "MDS-Onto MatProc Module" ;
+    owl:versionInfo "0.3.2.0" .
+
+################### External Entity Declarations ###################
+
+cco:ont00000908 a owl:Class ;
+    rdfs:label "Act of Artifact Processing"@en .
+
+obo:BFO_0000019 a owl:Class ;
+    rdfs:label "quality"@en .
+
+################### Annotation Property Declarations ################
+
+mds:hasDomain a owl:AnnotationProperty .
+mds:hasSubDomain a owl:AnnotationProperty .
+mds:hasStudyStage a owl:AnnotationProperty .
+
+################### Object Property #################################
+
+mds:hasProcessingParameter a owl:ObjectProperty ;
+    rdfs:label "has processing parameter"@en ;
+    skos:definition "Relates a materials processing operation to a processing parameter that characterizes or controls that operation."@en ;
+    rdfs:domain mds:MaterialsProcessing ;
+    rdfs:range mds:ProcessingParameter .
+
+################### Root Classes ######################################
+
+mds:MaterialsProcessing a owl:Class ;
+    rdfs:label "Materials Processing"@en ;
+    rdfs:subClassOf cco:ont00000908 ;
+    skos:definition "A process that transforms, modifies, or fabricates materials through physical, chemical, thermal, or mechanical means to achieve desired properties, shapes, or structures. This includes additive manufacturing, subtractive manufacturing, forming, joining, heat treatment, surface treatment, and other material transformation processes."@en ;
+    skos:altLabel "Material Processing", "Manufacturing Process", "Fabrication Process" ;
+    dcterms:source "ISO 9000:2015" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:ProcessingParameter a owl:Class ;
+    rdfs:label "Processing Parameter"@en ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:definition "A measurable quantity or quality that characterizes or controls a materials processing operation."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en .
+
+################### Additive Manufacturing Processes ###################
+
+mds:LaserPowderBedFusion a owl:Class ;
+    rdfs:label "Laser Powder Bed Fusion"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:LaserPowerParameter ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:ScanSpeed ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:LayerThickness ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:HatchSpacing ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:TrackOverlap ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:Wavelength ] ;
+    skos:definition "An additive manufacturing process in which thermal energy selectively fuses regions of a powder bed using a laser beam. The process builds parts layer by layer from metal or polymer powders."@en ;
+    skos:altLabel "LPBF", "L-PBF", "Selective Laser Melting", "SLM", "Direct Metal Laser Sintering", "DMLS" ;
+    dcterms:source "ISO/ASTM 52900:2021", "ASTM F2792-12a" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "Material-LPBF"@en .
+
+mds:ElectronBeamMelting a owl:Class ;
+    rdfs:label "Electron Beam Melting"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:BeamCurrent ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:AcceleratingVoltage ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:ScanSpeed ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:VacuumLevel ] ;
+    skos:definition "An additive manufacturing process that uses an electron beam to selectively melt and fuse metallic powder in a vacuum environment layer by layer."@en ;
+    skos:altLabel "EBM", "Electron Beam Additive Manufacturing", "EBAM" ;
+    dcterms:source "ISO/ASTM 52900:2021" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:DirectMetalDeposition a owl:Class ;
+    rdfs:label "Direct Metal Deposition"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:LaserPowerParameter ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:PowderFeedRate ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:CarrierGas ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:TrackOverlap ] ;
+    skos:definition "An additive manufacturing process that uses a focused thermal energy source to fuse materials by melting as they are deposited."@en ;
+    skos:altLabel "DMD", "Direct Energy Deposition", "DED" ;
+    dcterms:source "ISO/ASTM 52900:2021" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:LaserEngineeredNetShaping a owl:Class ;
+    rdfs:label "Laser Engineered Net Shaping"@en ;
+    rdfs:subClassOf mds:DirectMetalDeposition ;
+    skos:definition "A laser-based directed energy deposition process that creates three-dimensional components by depositing and melting metal powder layer by layer."@en ;
+    skos:altLabel "LENS", "Laser Metal Deposition", "LMD" ;
+    dcterms:source "Sandia National Laboratories" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:WireArcAdditiveManufacturing a owl:Class ;
+    rdfs:label "Wire Arc Additive Manufacturing"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:WireFeedSpeed ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:Current ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:ArcVoltage ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:ShieldingGas ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:HeatInput ] ;
+    skos:definition "An additive manufacturing process that uses an electric arc as heat source to melt wire feedstock material, depositing it layer by layer to build a component."@en ;
+    skos:altLabel "WAAM", "Wire-Arc AM" ;
+    dcterms:source "ISO/ASTM 52900:2021" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:FusedDepositionModeling a owl:Class ;
+    rdfs:label "Fused Deposition Modeling"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:ExtrusionTemperature ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:LayerThickness ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:InfillDensity ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:HeadTemperature ] ;
+    skos:definition "An additive manufacturing process that builds parts by extruding thermoplastic material through a heated nozzle in a layer-by-layer fashion."@en ;
+    skos:altLabel "FDM", "Fused Filament Fabrication", "FFF" ;
+    dcterms:source "ISO/ASTM 52900:2021" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+################### Heat Treatment Processes ###################
+
+mds:Annealing a owl:Class ;
+    rdfs:label "Annealing"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:ProcessingTemperature ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:DwellTime ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:CoolingRate ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:HeatingRate ] ;
+    skos:definition "A heat treatment process that involves heating a material to a specific temperature, holding it at that temperature, and then cooling it at a controlled rate to alter its physical and sometimes chemical properties, typically to reduce hardness, improve ductility, and relieve internal stresses."@en ;
+    skos:altLabel "Thermal Annealing", "Heat Annealing" ;
+    dcterms:source "ISO 4885:2018" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:Quenching a owl:Class ;
+    rdfs:label "Quenching"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:QuenchingTemperature ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:QuenchingMedia ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:QuenchType ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:CoolingRate ] ;
+    skos:definition "A rapid cooling process used in heat treatment where a material is cooled quickly from an elevated temperature by immersion in water, oil, or another quenching medium to achieve desired mechanical properties such as increased hardness."@en ;
+    skos:altLabel "Rapid Cooling", "Quench Hardening" ;
+    dcterms:source "ISO 4885:2018" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:PrecipitationHardening a owl:Class ;
+    rdfs:label "Precipitation Hardening"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:AgingTemperature ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:AgingTime ] ;
+    skos:definition "A heat treatment technique used to increase the yield strength of malleable materials by forming uniformly dispersed precipitates within the material's crystal structure through controlled aging."@en ;
+    skos:altLabel "Age Hardening", "Precipitation Heat Treatment" ;
+    dcterms:source "ISO 4885:2018" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:ThermalCuring a owl:Class ;
+    rdfs:label "Thermal Curing"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:CuringTemperature ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:CuringTime ] ;
+    skos:definition "A process that uses heat to initiate or accelerate a chemical reaction that hardens or sets a material, commonly used for polymers, composites, and coatings."@en ;
+    skos:altLabel "Heat Curing", "Thermal Polymerization" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+################### Forming and Casting Processes ###################
+
+mds:Casting a owl:Class ;
+    rdfs:label "Casting"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:PouringTemperature ] ;
+    skos:definition "A manufacturing process in which a liquid material is poured into a mold containing a hollow cavity of the desired shape, and then allowed to solidify."@en ;
+    skos:altLabel "Metal Casting", "Molding" ;
+    dcterms:source "ISO 8062-3:2007" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:Forging a owl:Class ;
+    rdfs:label "Forging"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:ForgingTemperature ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:ForgingPressure ] ;
+    skos:definition "A manufacturing process involving the shaping of metal using localized compressive forces, typically delivered with a hammer or die."@en ;
+    skos:altLabel "Metal Forging", "Press Forging" ;
+    dcterms:source "ISO 7912:2013" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:SpinCasting a owl:Class ;
+    rdfs:label "Spin Casting"@en ;
+    rdfs:subClassOf mds:Casting ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:RotationSpeed ] ;
+    skos:definition "A casting method where molten material is poured into a rotating mold, with centrifugal force distributing the material uniformly."@en ;
+    skos:altLabel "Centrifugal Casting", "Rotational Casting" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:SpinCoating a owl:Class ;
+    rdfs:label "Spin Coating"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:RotationSpeed ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:Solvent ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:FilmThickness ] ;
+    skos:definition "A procedure used to deposit uniform thin films onto flat substrates by applying a solution to the center of a substrate and spinning it at high speed."@en ;
+    skos:altLabel "Spin-On Coating" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:HotIsostaticPressing a owl:Class ;
+    rdfs:label "Hot Isostatic Pressing"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:ProcessingTemperature ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:IsostaticPressure ] ;
+    skos:definition "A manufacturing process that subjects materials to both elevated temperature and isostatic gas pressure in a high-pressure containment vessel to eliminate porosity and increase density."@en ;
+    skos:altLabel "HIP", "Hot Isostatic Compaction" ;
+    dcterms:source "ASTM F2924-14" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+################### Melting and Synthesis Processes ###################
+
+mds:ArcMelting a owl:Class ;
+    rdfs:label "Arc Melting"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:ArcCurrent ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:ArcVoltage ] ;
+    skos:definition "A melting process that uses an electric arc between an electrode and the material being melted to generate intense heat for melting metals and alloys."@en ;
+    skos:altLabel "Electric Arc Melting", "Arc Furnace Melting" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:InductionMelting a owl:Class ;
+    rdfs:label "Induction Melting"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:InductionFrequency ] ;
+    skos:definition "A melting process that uses electromagnetic induction to generate heat within electrically conductive materials for melting metals and alloys."@en ;
+    skos:altLabel "Induction Furnace Melting" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:CzochralskiMethod a owl:Class ;
+    rdfs:label "Czochralski Method"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:PullRate ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:RotationSpeed ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:GrowthTime ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:SolventFlux ] ;
+    skos:definition "A method of crystal growth used to obtain single crystals by slowly pulling a seed crystal from a melt while rotating it."@en ;
+    skos:altLabel "Czochralski Process", "CZ Method", "Crystal Pulling" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:FlameFusion a owl:Class ;
+    rdfs:label "Flame Fusion"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ;
+    skos:definition "A method for growing single crystals by melting powdered material in an oxy-hydrogen flame and allowing it to crystallize as it cools."@en ;
+    skos:altLabel "Verneuil Process", "Flame Synthesis" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:SolvothermalProcessing a owl:Class ;
+    rdfs:label "Solvothermal Processing"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:ReactionTemperature ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:ReactionPressure ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:Solvent ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:GrowthTime ] ;
+    skos:definition "A synthesis method that uses a solvent under elevated temperature and pressure to facilitate chemical reactions and crystal growth."@en ;
+    skos:altLabel "Solvothermal Synthesis", "Hydrothermal Processing" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+################### Thin Film Deposition Processes ###################
+
+mds:MagnetronSputtering a owl:Class ;
+    rdfs:label "Magnetron Sputtering"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:SputterPower ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:SputterPressure ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:VacuumLevel ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:FilmThickness ] ;
+    skos:definition "A physical vapor deposition method where atoms are ejected from a target material by ion bombardment and deposited onto a substrate to form a thin film."@en ;
+    skos:altLabel "Sputter Deposition", "RF Sputtering", "DC Sputtering" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:PulsedLaserDeposition a owl:Class ;
+    rdfs:label "Pulsed Laser Deposition"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:LaserFluence ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:PulseFrequency ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:Wavelength ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:VacuumLevel ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:FilmThickness ] ;
+    skos:definition "A thin film deposition technique where a high-power pulsed laser beam ablates material from a target, which is then deposited onto a substrate."@en ;
+    skos:altLabel "PLD", "Laser Ablation Deposition" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:ThermalAtomicLayerDeposition a owl:Class ;
+    rdfs:label "Thermal Atomic Layer Deposition"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:DepositionTemperature ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:Precursors ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:FilmThickness ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:GrowthTime ] ;
+    skos:definition "A thin film deposition technique that uses sequential, self-limiting surface reactions to deposit materials one atomic layer at a time using thermal activation."@en ;
+    skos:altLabel "Thermal ALD", "T-ALD" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+################### Joining and Welding Processes ###################
+
+mds:Welding a owl:Class ;
+    rdfs:label "Welding"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:HeatInput ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:ShieldingGas ] ;
+    skos:definition "A fabrication process that joins materials, usually metals or thermoplastics, by using high heat to melt the parts together and allowing them to cool, causing fusion."@en ;
+    skos:altLabel "Fusion Welding" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:FrictionStirWelding a owl:Class ;
+    rdfs:label "Friction Stir Welding"@en ;
+    rdfs:subClassOf mds:Welding ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:ToolRotationSpeed ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:TraverseSpeed ] ;
+    skos:definition "A solid-state joining process that uses a non-consumable rotating tool to generate frictional heat and plastic deformation to join two workpieces."@en ;
+    skos:altLabel "FSW", "Friction Welding" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+################### Mechanical Processing ###################
+
+mds:BallMilling a owl:Class ;
+    rdfs:label "Ball Milling"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:MillingSpeed ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:MillingTime ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:BallSize ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:BallMaterial ] ;
+    skos:definition "A grinding and mixing method that uses impact and attrition forces between grinding media (balls) and the material being processed in a rotating cylindrical container."@en ;
+    skos:altLabel "Ball Mill", "Mechanical Milling", "High Energy Ball Milling", "HEBM" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:WireDrawing a owl:Class ;
+    rdfs:label "Wire Drawing"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:DrawingSpeed ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:Tension ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:AreaReduction ] ;
+    skos:definition "A metalworking process used to reduce the cross-section of a wire by pulling it through a series of drawing dies."@en ;
+    skos:altLabel "Wire Pulling", "Drawing Process" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:Sintering a owl:Class ;
+    rdfs:label "Sintering"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:SinteringTemperature ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:DwellTime ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:HeatingRate ] ;
+    skos:definition "A heat treatment process for bonding particles into a coherent, predominantly solid structure via mass transport events that occur at the atomic scale, often driven by elevated temperature. The process consolidates powdered materials by heating them below their melting point."@en ;
+    skos:altLabel "Solid State Sintering", "Powder Consolidation" ;
+    dcterms:source "ISO 3252:2019" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:SparkPlasmaSintering a owl:Class ;
+    rdfs:label "Spark Plasma Sintering"@en ;
+    rdfs:subClassOf mds:Sintering ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:SinteringTemperature ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:SinteringPressure ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:PulsedCurrent ] ;
+    skos:definition "A sintering technique that uses uniaxial pressure and pulsed direct electric current to rapidly consolidate powder materials at relatively low temperatures."@en ;
+    skos:altLabel "SPS", "Field Assisted Sintering", "FAST", "Pulsed Electric Current Sintering", "PECS" ;
+    dcterms:source "ISO 18755:2020" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:PressurelessSintering a owl:Class ;
+    rdfs:label "Pressureless Sintering"@en ;
+    rdfs:subClassOf mds:Sintering ;
+    skos:definition "A sintering process performed without external applied pressure, relying solely on temperature-driven diffusion."@en ;
+    skos:altLabel "Free Sintering", "Natural Sintering" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:HotPressing a owl:Class ;
+    rdfs:label "Hot Pressing"@en ;
+    rdfs:subClassOf mds:Sintering ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:SinteringTemperature ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:SinteringPressure ] ;
+    skos:definition "A sintering process where uniaxial pressure and heat are simultaneously applied to powder compact."@en ;
+    skos:altLabel "Pressure Sintering" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:GasAtomization a owl:Class ;
+    rdfs:label "Gas Atomization"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:GasPressure ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:MeltTemperature ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:GasMetalRatio ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:CarrierGas ] ;
+    skos:definition "A powder production process where a molten metal stream is broken up into fine droplets by high-velocity gas jets, which then solidify into spherical powder particles."@en ;
+    skos:altLabel "Gas Atomization Process", "Inert Gas Atomization" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+################### Surface Treatment Processes ###################
+
+mds:Anodizing a owl:Class ;
+    rdfs:label "Anodizing"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:CurrentDensity ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:ElectrolyteConcentration ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:Voltage ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:SolutionType ] ;
+    skos:definition "An electrochemical process that converts the metal surface into a decorative, durable, corrosion-resistant, anodic oxide finish."@en ;
+    skos:altLabel "Anodization", "Electrolytic Passivation" ;
+    dcterms:source "ASTM B580-79" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:Etching a owl:Class ;
+    rdfs:label "Etching"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ;
+    skos:definition "A process that uses chemical reactions or physical means to remove layers from the surface of a material during manufacturing, typically for creating patterns or surface features."@en ;
+    skos:altLabel "Chemical Etching", "Wet Etching", "Dry Etching" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:UVCuring a owl:Class ;
+    rdfs:label "UV Curing"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:UVIntensity ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:ExposureTime ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:Wavelength ] ;
+    skos:definition "A process that uses ultraviolet light to initiate a photochemical reaction that instantly cures or hardens inks, coatings, or adhesives."@en ;
+    skos:altLabel "Ultraviolet Curing", "Photocuring", "UV Polymerization" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+################### Exfoliation and Separation Processes ###################
+
+mds:TapeTransferExfoliation a owl:Class ;
+    rdfs:label "Tape Transfer Exfoliation"@en ;
+    rdfs:subClassOf mds:MaterialsProcessing ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:TapeType ] ,
+        [ a owl:Restriction ; owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:FoilType ] ;
+    skos:definition "A mechanical exfoliation technique that uses adhesive tape to repeatedly cleave layered materials to obtain atomically thin layers."@en ;
+    skos:altLabel "Scotch Tape Method", "Mechanical Exfoliation", "Tape Exfoliation" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain "MatProc"@en .
+
+################### Processing Parameters - Base ###################
+
+mds:LaserPowerParameter a owl:Class ;
+    rdfs:label "Laser Power"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The optical power of the laser beam used in a laser-based materials processing operation."@en ;
+    skos:altLabel "Beam Power", "Laser Output Power" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:W .
+
+mds:ScanSpeed a owl:Class ;
+    rdfs:label "Scan Speed"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The velocity at which the energy beam or tool moves across the material surface during processing."@en ;
+    skos:altLabel "Beam Velocity", "Travel Speed" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:MilliM-PER-SEC .
+
+mds:LayerThickness a owl:Class ;
+    rdfs:label "Layer Thickness"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The thickness of each individual layer deposited or processed in an additive manufacturing or layered processing operation."@en ;
+    skos:altLabel "Layer Height", "Build Layer Thickness" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:MicroM .
+
+mds:HatchSpacing a owl:Class ;
+    rdfs:label "Hatch Spacing"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The distance between adjacent scan vectors in a layer during laser-based additive manufacturing."@en ;
+    skos:altLabel "Hatch Distance", "Line Spacing", "Track Spacing" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:MicroM .
+
+mds:ProcessingTemperature a owl:Class ;
+    rdfs:label "Processing Temperature"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The temperature at which a materials processing operation is performed or maintained."@en ;
+    skos:altLabel "Process Temperature", "Operating Temperature", "Set Temperature" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:DEG_C .
+
+mds:PreheatTemperature a owl:Class ;
+    rdfs:label "Preheat Temperature"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The temperature to which a material or build platform is heated before the main processing operation begins."@en ;
+    skos:altLabel "Build Platform Temperature", "Substrate Temperature" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:DEG_C .
+
+mds:CoolingRate a owl:Class ;
+    rdfs:label "Cooling Rate"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The rate at which a material is cooled during or after a processing operation."@en ;
+    skos:altLabel "Quench Rate", "Solidification Rate" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:K-PER-SEC .
+
+mds:ProcessingPressure a owl:Class ;
+    rdfs:label "Processing Pressure"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The pressure applied or maintained during a materials processing operation."@en ;
+    skos:altLabel "Applied Pressure", "Operating Pressure" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:MegaPA .
+
+mds:DwellTime a owl:Class ;
+    rdfs:label "Dwell Time"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The duration for which a material is held at a specific temperature or condition during processing."@en ;
+    skos:altLabel "Hold Time", "Soaking Time" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:SEC .
+
+mds:BeamCurrent a owl:Class ;
+    rdfs:label "Beam Current"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The electric current of an electron beam used in electron beam-based processing operations."@en ;
+    skos:altLabel "Electron Beam Current", "E-Beam Current" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:MilliA .
+
+mds:AcceleratingVoltage a owl:Class ;
+    rdfs:label "Accelerating Voltage"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The voltage used to accelerate charged particles in an electron beam or ion beam processing system."@en ;
+    skos:altLabel "Acceleration Voltage", "Beam Voltage" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:KiloV .
+
+mds:PowderFeedRate a owl:Class ;
+    rdfs:label "Powder Feed Rate"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The mass or volume rate at which powder material is delivered to the processing zone in powder-based manufacturing."@en ;
+    skos:altLabel "Powder Flow Rate", "Feed Rate" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:GM-PER-MIN .
+
+mds:WireFeedSpeed a owl:Class ;
+    rdfs:label "Wire Feed Speed"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The rate at which wire feedstock is supplied to the welding or deposition zone."@en ;
+    skos:altLabel "Wire Feed Rate" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:MilliM-PER-SEC .
+
+mds:RotationSpeed a owl:Class ;
+    rdfs:label "Rotation Speed"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The angular velocity at which a component or tool rotates during processing."@en ;
+    skos:altLabel "Rotational Speed", "RPM", "Spin Rate" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:REV-PER-MIN .
+
+mds:GasFlowRate a owl:Class ;
+    rdfs:label "Gas Flow Rate"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The volumetric or mass flow rate of gas supplied during a processing operation."@en ;
+    skos:altLabel "Flow Rate", "Gas Supply Rate" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:L-PER-MIN .
+
+mds:PowderParticleSize a owl:Class ;
+    rdfs:label "Powder Particle Size"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The characteristic dimension or size distribution of powder particles used in powder-based processing."@en ;
+    skos:altLabel "Particle Size", "Powder Size", "Grain Size" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Sample" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:MicroM .
+
+mds:BuildDirection a owl:Class ;
+    rdfs:label "Build Direction"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The orientation or direction in which material is deposited or built up during additive manufacturing."@en ;
+    skos:altLabel "Deposition Direction", "Growth Direction" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:EnergyDensity a owl:Class ;
+    rdfs:label "Energy Density"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The amount of energy delivered per unit volume or area during a materials processing operation."@en ;
+    skos:altLabel "Volumetric Energy Density", "VED", "Linear Energy Density" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:J-PER-M3 .
+
+mds:Current a owl:Class ;
+    rdfs:label "Current"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "Electric current used in a processing operation."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:A .
+
+################### Temperature Subtypes ###################
+
+mds:ExtrusionTemperature a owl:Class ;
+    rdfs:label "Extrusion Temperature"@en ;
+    rdfs:subClassOf mds:ProcessingTemperature ;
+    skos:definition "The temperature of the material during an extrusion process."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:DEG_C .
+
+mds:QuenchingTemperature a owl:Class ;
+    rdfs:label "Quenching Temperature"@en ;
+    rdfs:subClassOf mds:ProcessingTemperature ;
+    skos:definition "The elevated temperature from which material is rapidly cooled during quenching."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:DEG_C .
+
+mds:AgingTemperature a owl:Class ;
+    rdfs:label "Aging Temperature"@en ;
+    rdfs:subClassOf mds:ProcessingTemperature ;
+    skos:definition "The temperature at which precipitation hardening occurs."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:DEG_C .
+
+mds:CuringTemperature a owl:Class ;
+    rdfs:label "Curing Temperature"@en ;
+    rdfs:subClassOf mds:ProcessingTemperature ;
+    skos:definition "The temperature at which a curing reaction occurs."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:DEG_C .
+
+mds:PouringTemperature a owl:Class ;
+    rdfs:label "Pouring Temperature"@en ;
+    rdfs:subClassOf mds:ProcessingTemperature ;
+    skos:definition "The temperature of molten material when poured into a mold."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:DEG_C .
+
+mds:ForgingTemperature a owl:Class ;
+    rdfs:label "Forging Temperature"@en ;
+    rdfs:subClassOf mds:ProcessingTemperature ;
+    skos:definition "The temperature at which forging is performed."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:DEG_C .
+
+mds:DepositionTemperature a owl:Class ;
+    rdfs:label "Deposition Temperature"@en ;
+    rdfs:subClassOf mds:ProcessingTemperature ;
+    skos:definition "The substrate temperature during a deposition process."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:DEG_C .
+
+mds:SinteringTemperature a owl:Class ;
+    rdfs:label "Sintering Temperature"@en ;
+    rdfs:subClassOf mds:ProcessingTemperature ;
+    skos:definition "The temperature at which sintering occurs."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:DEG_C .
+
+mds:MeltTemperature a owl:Class ;
+    rdfs:label "Melt Temperature"@en ;
+    rdfs:subClassOf mds:ProcessingTemperature ;
+    skos:definition "The temperature of molten material during processing."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:DEG_C .
+
+mds:ReactionTemperature a owl:Class ;
+    rdfs:label "Reaction Temperature"@en ;
+    rdfs:subClassOf mds:ProcessingTemperature ;
+    skos:definition "The temperature at which a chemical reaction or synthesis occurs."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:DEG_C .
+
+mds:HeadTemperature a owl:Class ;
+    rdfs:label "Head Temperature"@en ;
+    rdfs:subClassOf mds:ProcessingTemperature ;
+    skos:definition "The temperature of the print head or nozzle during an extrusion-based additive manufacturing process."@en ;
+    skos:altLabel "Nozzle Temperature", "Print Head Temperature" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:DEG_C .
+
+################### Power/Energy Parameters ###################
+
+mds:SputterPower a owl:Class ;
+    rdfs:label "Sputter Power"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The electrical power applied to the sputtering target."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:W .
+
+mds:PulsedCurrent a owl:Class ;
+    rdfs:label "Pulsed Current"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "Electric current delivered in pulses during processing."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:A .
+
+mds:ArcCurrent a owl:Class ;
+    rdfs:label "Arc Current"@en ;
+    rdfs:subClassOf mds:Current ;
+    skos:definition "The electric current flowing through an electric arc."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:A .
+
+mds:CurrentDensity a owl:Class ;
+    rdfs:label "Current Density"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "Electric current per unit area."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:A-PER-M2 .
+
+################### Speed/Rate Parameters ###################
+
+mds:ToolRotationSpeed a owl:Class ;
+    rdfs:label "Tool Rotation Speed"@en ;
+    rdfs:subClassOf mds:RotationSpeed ;
+    skos:definition "The rotational speed of a tool during processing."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:REV-PER-MIN .
+
+mds:MillingSpeed a owl:Class ;
+    rdfs:label "Milling Speed"@en ;
+    rdfs:subClassOf mds:RotationSpeed ;
+    skos:definition "The rotational speed of a ball mill."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:REV-PER-MIN .
+
+mds:TraverseSpeed a owl:Class ;
+    rdfs:label "Traverse Speed"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The speed at which a tool or workpiece moves laterally during processing."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:MilliM-PER-SEC .
+
+mds:DrawingSpeed a owl:Class ;
+    rdfs:label "Drawing Speed"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The speed at which material is pulled through a die during wire drawing."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:MilliM-PER-SEC .
+
+mds:PullRate a owl:Class ;
+    rdfs:label "Pull Rate"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The rate at which a crystal is pulled from a melt during crystal growth."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:MilliM-PER-HR .
+
+################### Time Parameters ###################
+
+mds:AgingTime a owl:Class ;
+    rdfs:label "Aging Time"@en ;
+    rdfs:subClassOf mds:DwellTime ;
+    skos:definition "The duration of precipitation hardening treatment."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:HR .
+
+mds:CuringTime a owl:Class ;
+    rdfs:label "Curing Time"@en ;
+    rdfs:subClassOf mds:DwellTime ;
+    skos:definition "The duration of curing treatment."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:MIN .
+
+mds:MillingTime a owl:Class ;
+    rdfs:label "Milling Time"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The duration of ball milling."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:HR .
+
+mds:ExposureTime a owl:Class ;
+    rdfs:label "Exposure Time"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The duration of exposure to radiation or light."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:SEC .
+
+mds:GrowthTime a owl:Class ;
+    rdfs:label "Growth Time"@en ;
+    rdfs:subClassOf mds:DwellTime ;
+    skos:definition "The duration of crystal or film growth during a synthesis or deposition process."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:HR .
+
+mds:ProcessingTime a owl:Class ;
+    rdfs:label "Processing Time"@en ;
+    rdfs:subClassOf mds:DwellTime ;
+    skos:definition "The total duration of a processing operation or cycle."@en ;
+    skos:altLabel "Time", "Duration", "Cycle Time", "Process Duration" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:SEC .
+
+################### Beam/Radiation Parameters ###################
+
+mds:LaserFluence a owl:Class ;
+    rdfs:label "Laser Fluence"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The energy delivered per unit area by a laser pulse."@en ;
+    skos:altLabel "Pulse Energy Density" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:J-PER-M2 .
+
+mds:PulseFrequency a owl:Class ;
+    rdfs:label "Pulse Frequency"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The repetition rate of laser pulses or electrical pulses."@en ;
+    skos:altLabel "Repetition Rate" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:HZ .
+
+mds:LaserFrequency a owl:Class ;
+    rdfs:label "Laser Frequency"@en ;
+    rdfs:subClassOf mds:PulseFrequency ;
+    skos:definition "The repetition rate of a pulsed laser used in laser-based processing."@en ;
+    skos:altLabel "Laser Repetition Rate", "Laser Pulse Rate" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:HZ .
+
+mds:InductionFrequency a owl:Class ;
+    rdfs:label "Induction Frequency"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The frequency of electromagnetic field used in induction heating."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:HZ .
+
+mds:UVIntensity a owl:Class ;
+    rdfs:label "UV Intensity"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The power per unit area of ultraviolet radiation."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:W-PER-M2 .
+
+mds:Wavelength a owl:Class ;
+    rdfs:label "Wavelength"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The wavelength of electromagnetic radiation (laser, UV, or other light source) used in a processing operation."@en ;
+    skos:altLabel "Laser Wavelength", "Radiation Wavelength" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:NanoM .
+
+mds:PowerDensity a owl:Class ;
+    rdfs:label "Power Density"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The power delivered per unit area at the processing zone."@en ;
+    skos:altLabel "Irradiance", "Intensity" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:W-PER-M2 .
+
+################### Pressure Parameters ###################
+
+mds:IsostaticPressure a owl:Class ;
+    rdfs:label "Isostatic Pressure"@en ;
+    rdfs:subClassOf mds:ProcessingPressure ;
+    skos:definition "Uniform pressure applied from all directions."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:MegaPA .
+
+mds:ForgingPressure a owl:Class ;
+    rdfs:label "Forging Pressure"@en ;
+    rdfs:subClassOf mds:ProcessingPressure ;
+    skos:definition "The compressive force per unit area during forging."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:MegaPA .
+
+mds:ReactionPressure a owl:Class ;
+    rdfs:label "Reaction Pressure"@en ;
+    rdfs:subClassOf mds:ProcessingPressure ;
+    skos:definition "The pressure maintained during a chemical reaction."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:MegaPA .
+
+mds:SputterPressure a owl:Class ;
+    rdfs:label "Sputter Pressure"@en ;
+    rdfs:subClassOf mds:ProcessingPressure ;
+    skos:definition "The vacuum chamber pressure during sputtering."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:PA .
+
+mds:SinteringPressure a owl:Class ;
+    rdfs:label "Sintering Pressure"@en ;
+    rdfs:subClassOf mds:ProcessingPressure ;
+    skos:definition "The pressure applied during sintering."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:MegaPA .
+
+mds:GasPressure a owl:Class ;
+    rdfs:label "Gas Pressure"@en ;
+    rdfs:subClassOf mds:ProcessingPressure ;
+    skos:definition "The pressure of gas used in a processing operation."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:MegaPA .
+
+mds:VacuumLevel a owl:Class ;
+    rdfs:label "Vacuum Level"@en ;
+    rdfs:subClassOf mds:ProcessingPressure ;
+    skos:definition "The base pressure maintained in a vacuum chamber during processing operations."@en ;
+    skos:altLabel "Vacuum Pressure", "Chamber Pressure", "Base Pressure", "Background Pressure" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:PA .
+
+################### Chemical/Material Parameters ###################
+
+mds:QuenchingMedia a owl:Class ;
+    rdfs:label "Quenching Media"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The fluid or medium used to rapidly cool material during quenching (e.g., water, oil, air)."@en ;
+    skos:altLabel "Quench Medium", "Cooling Medium" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:ElectrolyteConcentration a owl:Class ;
+    rdfs:label "Electrolyte Concentration"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The concentration of electrolyte solution used in electrochemical processing."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:MOL-PER-L .
+
+################### Additional Parameters (from original matproc) ###################
+
+mds:Acceleration a owl:Class ;
+    rdfs:label "Acceleration"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The rate of change of velocity of a component, beam, or material during processing."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:M-PER-SEC2 .
+
+mds:ArcVoltage a owl:Class ;
+    rdfs:label "Arc Voltage"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The electrical voltage across an arc during arc-based processing operations."@en ;
+    skos:altLabel "Arc", "Arc Length Voltage" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:V .
+
+mds:BallMaterial a owl:Class ;
+    rdfs:label "Ball Material"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The material composition of the grinding balls used in ball milling (e.g., steel, zirconia, tungsten carbide)."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:BallSize a owl:Class ;
+    rdfs:label "Ball Size"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The diameter of the grinding balls used in ball milling."@en ;
+    skos:altLabel "Ball Diameter" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:MilliM .
+
+mds:CarrierGas a owl:Class ;
+    rdfs:label "Carrier Gas"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The gas used to transport powder or precursor material to the processing zone during deposition or atomization."@en ;
+    skos:altLabel "Transport Gas", "Carrier Gas Type" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:FeedstockComposition a owl:Class ;
+    rdfs:label "Feedstock Composition"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The chemical or elemental composition of the feedstock material used in a processing operation."@en ;
+    skos:altLabel "Composition", "Material Composition", "Alloy Composition" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:FilmThickness a owl:Class ;
+    rdfs:label "Film Thickness"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The thickness of a deposited thin film or coating produced during a deposition process."@en ;
+    skos:altLabel "Thickness", "Coating Thickness", "Deposit Thickness" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:NanoM .
+
+mds:FoilType a owl:Class ;
+    rdfs:label "Foil Type"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The type or material of foil used as a substrate or interlayer in a processing operation."@en ;
+    skos:altLabel "Foil" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:GasMetalRatio a owl:Class ;
+    rdfs:label "Gas Metal Ratio"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The ratio of gas flow rate to metal feed rate during gas atomization, influencing powder particle size and morphology."@en ;
+    skos:altLabel "Gas/Metal Ratio", "GMR" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:HeatInput a owl:Class ;
+    rdfs:label "Heat Input"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The amount of thermal energy transferred per unit length during welding or directed energy deposition."@en ;
+    skos:altLabel "Line Energy", "Heat Input per Unit Length" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:J-PER-M .
+
+mds:HeatingRate a owl:Class ;
+    rdfs:label "Heating Rate"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The rate at which temperature is increased during a heating step in thermal processing."@en ;
+    skos:altLabel "Ramp Rate", "Temperature Ramp Rate" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:K-PER-SEC .
+
+mds:HotWirePower a owl:Class ;
+    rdfs:label "Hot Wire Power"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The electrical power supplied to a resistively heated wire feedstock during hot wire deposition or welding."@en ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:W .
+
+mds:InfillDensity a owl:Class ;
+    rdfs:label "Infill Density"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The percentage of solid material within the interior volume of a 3D printed part."@en ;
+    skos:altLabel "Infill", "Infill Percentage", "Fill Density" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:PERCENT .
+
+mds:QuenchType a owl:Class ;
+    rdfs:label "Quench Type"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The method or technique used for quenching (e.g., direct quench, interrupted quench, martempering)."@en ;
+    skos:altLabel "Quench", "Quenching Method", "Quench Technique" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:AreaReduction a owl:Class ;
+    rdfs:label "Area Reduction"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The percentage reduction in cross-sectional area during a forming, drawing, or rolling process."@en ;
+    skos:altLabel "Reduction", "Cross-Section Reduction", "Reduction Ratio" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:PERCENT .
+
+mds:ShieldingGas a owl:Class ;
+    rdfs:label "Shielding Gas"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The inert or semi-inert gas used to protect the weld pool or processing zone from atmospheric contamination."@en ;
+    skos:altLabel "Protective Gas", "Cover Gas" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:SolutionType a owl:Class ;
+    rdfs:label "Solution Type"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The type or composition of solution used in a chemical or electrochemical processing operation."@en ;
+    skos:altLabel "Solution", "Electrolyte Type", "Process Solution" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:Solvent a owl:Class ;
+    rdfs:label "Solvent"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The liquid medium used to dissolve or disperse reactants or materials during a processing operation."@en ;
+    skos:altLabel "Process Solvent", "Reaction Solvent" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:SolventFlux a owl:Class ;
+    rdfs:label "Solvent Flux"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The flux or solvent material used to facilitate crystal growth, acting as the growth medium in flux methods."@en ;
+    skos:altLabel "Flux", "Crystal Growth Flux" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:TapeType a owl:Class ;
+    rdfs:label "Tape Type"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The type of adhesive tape used in tape-based mechanical exfoliation or transfer processes."@en ;
+    skos:altLabel "Tape", "Adhesive Tape Type" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:Tension a owl:Class ;
+    rdfs:label "Tension"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The tensile force or stress applied to a material during a drawing, pulling, or stretching process."@en ;
+    skos:altLabel "Tensile Force", "Drawing Tension" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:N .
+
+mds:TrackOverlap a owl:Class ;
+    rdfs:label "Track Overlap"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The percentage of overlap between adjacent deposition tracks or scan paths."@en ;
+    skos:altLabel "Overlap", "Bead Overlap", "Scan Overlap" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:PERCENT .
+
+mds:Voltage a owl:Class ;
+    rdfs:label "Voltage"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The electrical potential difference applied during a processing operation."@en ;
+    skos:altLabel "Electric Potential", "Applied Voltage" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:V .
+
+mds:Wattage a owl:Class ;
+    rdfs:label "Wattage"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The electrical power consumption or output of a processing system or component."@en ;
+    skos:altLabel "Power Output", "Electrical Power" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:W .
+
+mds:Precursors a owl:Class ;
+    rdfs:label "Precursors"@en ;
+    rdfs:subClassOf mds:ProcessingParameter ;
+    skos:definition "The chemical precursor materials used in a deposition or synthesis process to form the desired product."@en ;
+    skos:altLabel "Precursor Materials", "Precursor Gases" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Process" ;
+    mds:hasSubDomain "MatProc"@en .
+
+mds:PowderDiameter a owl:Class ;
+    rdfs:label "Powder Diameter"@en ;
+    rdfs:subClassOf mds:PowderParticleSize ;
+    skos:definition "The mean or median diameter of powder particles, characterizing the particle size distribution."@en ;
+    skos:altLabel "Particle Diameter", "D50", "Median Particle Size" ;
+    mds:hasDomain "Manufacture"@en ;
+    mds:hasStudyStage "Sample" ;
+    mds:hasSubDomain "MatProc"@en ;
+    qudt:applicableUnit unit:MicroM .

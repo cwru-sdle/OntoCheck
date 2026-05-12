@@ -1,6 +1,24 @@
+"""
+Ontology Assessment Runner
+
+Provides runner functions for the four OntoCheck assessment modes:
+
+    Mode 1 -- Task-agnostic:  structural, labeling, accessibility, and
+              naming-convention metrics applied to a single ontology.
+    Mode 2 -- Task-specific Web ontology:  task-based Relevance/Accuracy
+              validated against a knowledge graph (e.g., DBpedia via LC-QuAD).
+    Mode 3 -- Task-based Scientific:  domain ontology assessed against
+              competency questions encoded as SPARQL queries.
+    Mode 4 -- Cross-Domain:  multiple ontologies merged and assessed against
+              cross-domain competency questions.
+
+Author: Redad Mehdi
+"""
+
 import logging
 import sys
 import csv
+from pathlib import Path
 
 from .altLabelCheck import mainAltLabelCheck_v_0_0_1
 from .check_external_data_provider_links_ttl import check_external_data_provider_links_ttl
@@ -20,7 +38,7 @@ from .check_class_name_capital import mainClassNameCapitalCheck_v_0_0_1
 from .check_class_name_space import mainClassNameSpaceCheck_v_0_0_1
 from .check_label import mainLabelCheck_v_0_0_1
 from .class_search import mainClassSearch_v_0_0_1
-from .task_based_metric import task_based_metric
+from .task_based_metric import task_based_metric_v_0_0_1
 
 METRIC_DISPATCHER = {
     "altLabelCheck": mainAltLabelCheck_v_0_0_1,
@@ -40,34 +58,58 @@ METRIC_DISPATCHER = {
     "classCapitalCheck": mainClassNameCapitalCheck_v_0_0_1,
     "classSpaceCheck": mainClassNameSpaceCheck_v_0_0_1,
     "checkLabel": mainLabelCheck_v_0_0_1,
-    "searchClass":mainClassSearch_v_0_0_1, 
+    "searchClass": mainClassSearch_v_0_0_1,
 }
+
+
+# ---------------------------------------------------------------------------
+# Logging helpers
+# ---------------------------------------------------------------------------
+
+def _setup_logging(output_log_file):
+    """Configure file and console logging, returning the console handler."""
+    logging.basicConfig(
+        filename=output_log_file,
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(message)s",
+        filemode="w",
+    )
+    console_handler = logging.StreamHandler(sys.stdout)
+    logging.getLogger().addHandler(console_handler)
+    return console_handler
+
+
+def _teardown_logging(console_handler):
+    """Remove the console handler added by ``_setup_logging``."""
+    logging.getLogger().removeHandler(console_handler)
+
+
+# ---------------------------------------------------------------------------
+# Mode 1: Task-agnostic assessment
+# ---------------------------------------------------------------------------
 
 def run_ontology_assessment(
     ttl_file,
     metrics,
     output_log_file="assessment.log",
-    output_csv_file="assessment_scores.csv"
+    output_csv_file="assessment_scores.csv",
 ):
-    """Runs ontology assessment metrics on a given TTL file.
+    """Run task-agnostic metrics on a single ontology (Mode 1).
 
-    Args:
-        ttl_file (str): Path to the input Turtle (.ttl) ontology file.
-        metrics (list[str] | str): List of metric names to execute, or "all"
-            to run every available metric in METRIC_DISPATCHER.
-        output_log_file (str, optional): Output log file path. Defaults to "assessment.log".
-        output_csv_file (str, optional): Output CSV file path. Defaults to "assessment_scores.csv".
+    Parameters
+    ----------
+    ttl_file : str
+        Path to the input Turtle (.ttl) ontology file.
+    metrics : list of str or str
+        Metric names to execute, or ``"all"`` to run every metric in
+        ``METRIC_DISPATCHER``.
+    output_log_file : str, optional
+        Output log file path.
+    output_csv_file : str, optional
+        Output CSV file path.
     """
-    logging.basicConfig(
-        filename=output_log_file,
-        level=logging.INFO,
-        format="%(asctime)s - %(levelname)s - %(message)s",
-        filemode="w"
-    )
-    console_handler = logging.StreamHandler(sys.stdout)
-    logging.getLogger().addHandler(console_handler)
+    console = _setup_logging(output_log_file)
 
-    # 🔹 Handle "all" keyword
     if metrics == "all":
         metrics_to_run = list(METRIC_DISPATCHER.keys())
         logging.info("Running all available metrics.")
@@ -99,6 +141,228 @@ def run_ontology_assessment(
             logging.error(f"Metric '{metric_name}' failed with an error: {e}", exc_info=True)
             results.append({"Metric": metric_name, "Score": "N/A", "Status": f"Error: {e}"})
 
+    _write_csv(results, output_csv_file)
+
+    logging.info("--- Assessment Complete ---")
+    _teardown_logging(console)
+
+
+# ---------------------------------------------------------------------------
+# Mode 2: Task-specific Web ontology assessment
+# ---------------------------------------------------------------------------
+
+def run_web_ontology_assessment(
+    ttl_file,
+    questions,
+    domain_prefixes,
+    knowledge_graph,
+    domain_ns_fragments=None,
+    metrics=None,
+    output_log_file="assessment.log",
+    output_csv_file="assessment_scores.csv",
+):
+    """Assess a Web ontology against KGQA benchmark queries (Mode 2).
+
+    Runs the task-based Relevance/Accuracy assessment using competency
+    queries drawn from a knowledge-graph question-answering benchmark
+    (e.g., LC-QuAD over DBpedia).  Optionally runs task-agnostic metrics
+    as well.
+
+    Parameters
+    ----------
+    ttl_file : str
+        Path to the ontology Turtle file.
+    questions : str or list of str
+        Path to a JSON/Markdown file of SPARQL queries, or a list of raw
+        SPARQL query strings.
+    domain_prefixes : list of str
+        Namespace prefixes used in the SPARQL queries (e.g., ``["dbo"]``).
+    knowledge_graph : str
+        Path to the knowledge-graph file (Turtle/RDF) used for validation
+        context.
+    domain_ns_fragments : list of str or None, optional
+        Namespace URI fragments to restrict domain-term filtering.
+    metrics : list of str or None, optional
+        Task-agnostic metric names to run alongside the task-based
+        assessment.  Pass ``"all"`` for every available metric.
+    output_log_file : str, optional
+        Output log file path.
+    output_csv_file : str, optional
+        Output CSV file path.
+    """
+    console = _setup_logging(output_log_file)
+
+    logging.info("--- Mode 2: Task-specific Web Ontology Assessment ---")
+    logging.info(f"Ontology: {ttl_file}")
+    logging.info(f"Knowledge graph: {knowledge_graph}")
+
+    result = task_based_metric_v_0_0_1(
+        ttl_file=ttl_file,
+        questions=questions,
+        domain_prefixes=domain_prefixes,
+        domain_ns_fragments=domain_ns_fragments,
+    )
+
+    _log_task_based_result(result)
+
+    results = _task_based_result_to_rows(result)
+
+    if metrics:
+        logging.info("--- Running task-agnostic metrics ---")
+        results.extend(_run_agnostic_metrics(ttl_file, metrics))
+
+    _write_csv(results, output_csv_file)
+
+    logging.info("--- Assessment Complete ---")
+    _teardown_logging(console)
+
+    return result
+
+
+# ---------------------------------------------------------------------------
+# Mode 3 & 4: Task-based Scientific / Cross-Domain assessment
+# ---------------------------------------------------------------------------
+
+def run_task_based_assessment(
+    ttl_files,
+    questions,
+    domain_prefixes,
+    domain_ns_fragments=None,
+    metrics=None,
+    output_log_file="assessment.log",
+    output_csv_file="assessment_scores.csv",
+):
+    """Assess one or more ontologies against competency questions (Modes 3/4).
+
+    When a single ontology is provided this corresponds to Mode 3
+    (task-based scientific assessment).  When multiple ontologies are
+    provided they are merged and evaluated jointly, corresponding to
+    Mode 4 (cross-domain assessment).
+
+    Parameters
+    ----------
+    ttl_files : str or list of str
+        Path(s) to Turtle (.ttl) ontology file(s).  A single path is
+        accepted and will be wrapped in a list internally.
+    questions : str or list of str
+        Path to a JSON/Markdown file of SPARQL queries, or a list of raw
+        SPARQL query strings.
+    domain_prefixes : list of str
+        Namespace prefixes used in the SPARQL queries (e.g., ``["mds"]``).
+    domain_ns_fragments : list of str or None, optional
+        Namespace URI fragments to restrict domain-term filtering.
+    metrics : list of str or None, optional
+        Task-agnostic metric names to run alongside the task-based
+        assessment.  Pass ``"all"`` for every available metric.
+    output_log_file : str, optional
+        Output log file path.
+    output_csv_file : str, optional
+        Output CSV file path.
+
+    Returns
+    -------
+    dict
+        The result dictionary from ``task_based_metric_v_0_0_1``.
+    """
+    if isinstance(ttl_files, (str, Path)):
+        ttl_files = [ttl_files]
+
+    console = _setup_logging(output_log_file)
+
+    if len(ttl_files) > 1:
+        logging.info("--- Mode 4: Cross-Domain Ontology Assessment ---")
+    else:
+        logging.info("--- Mode 3: Task-based Scientific Ontology Assessment ---")
+    logging.info(f"Ontologies: {', '.join(str(f) for f in ttl_files)}")
+
+    result = task_based_metric_v_0_0_1(
+        ttl_file=ttl_files,
+        questions=questions,
+        domain_prefixes=domain_prefixes,
+        domain_ns_fragments=domain_ns_fragments,
+    )
+
+    _log_task_based_result(result)
+
+    results = _task_based_result_to_rows(result)
+
+    if metrics:
+        logging.info("--- Running task-agnostic metrics ---")
+        for f in ttl_files:
+            logging.info(f"--- Task-agnostic metrics for: {f} ---")
+            results.extend(_run_agnostic_metrics(str(f), metrics))
+
+    _write_csv(results, output_csv_file)
+
+    logging.info("--- Assessment Complete ---")
+    _teardown_logging(console)
+
+    return result
+
+
+# ---------------------------------------------------------------------------
+# Internal helpers
+# ---------------------------------------------------------------------------
+
+def _log_task_based_result(result):
+    """Log the task-based Relevance/Accuracy results."""
+    logging.info(f"Relevance (Recall):    {result['relevance']:.4f}")
+    logging.info(f"Accuracy  (Precision): {result['accuracy']:.4f}")
+    logging.info(f"Ontology terms  (T_o): {result['T_o_count']}")
+    logging.info(f"Task terms      (T_a): {result['T_a_count']}")
+    logging.info(f"Intersection:          {result['intersection']}")
+    if result["missing_from_onto"]:
+        logging.info(
+            f"Missing from ontology: {', '.join(sorted(result['missing_from_onto']))}"
+        )
+    if result["unused_in_onto"]:
+        logging.info(
+            f"Unused ontology terms: {len(result['unused_in_onto'])} terms"
+        )
+
+
+def _task_based_result_to_rows(result):
+    """Convert a task-based result dict to CSV-compatible row dicts."""
+    return [
+        {"Metric": "Relevance", "Score": f"{result['relevance']:.4f}", "Status": "Success"},
+        {"Metric": "Accuracy", "Score": f"{result['accuracy']:.4f}", "Status": "Success"},
+        {"Metric": "T_o_count", "Score": result["T_o_count"], "Status": "Success"},
+        {"Metric": "T_a_count", "Score": result["T_a_count"], "Status": "Success"},
+        {"Metric": "Intersection", "Score": result["intersection"], "Status": "Success"},
+    ]
+
+
+def _run_agnostic_metrics(ttl_file, metrics):
+    """Run task-agnostic metrics and return a list of result row dicts."""
+    if metrics == "all":
+        metrics_to_run = list(METRIC_DISPATCHER.keys())
+    elif isinstance(metrics, (list, set, tuple)):
+        metrics_to_run = list(metrics)
+    else:
+        metrics_to_run = []
+
+    rows = []
+    for metric_name in metrics_to_run:
+        if metric_name not in METRIC_DISPATCHER:
+            logging.warning(f"Metric '{metric_name}' not found. Skipping.")
+            continue
+
+        metric_function = METRIC_DISPATCHER[metric_name]
+        logging.info(f"--- Running Metric: {metric_name} ---")
+
+        try:
+            score = metric_function(ttl_file)
+            logging.info(f"Metric '{metric_name}' completed successfully.")
+            rows.append({"Metric": metric_name, "Score": score, "Status": "Success"})
+        except Exception as e:
+            logging.error(f"Metric '{metric_name}' failed with an error: {e}", exc_info=True)
+            rows.append({"Metric": metric_name, "Score": "N/A", "Status": f"Error: {e}"})
+
+    return rows
+
+
+def _write_csv(results, output_csv_file):
+    """Write a list of result row dicts to a CSV file."""
     try:
         with open(output_csv_file, "w", newline="", encoding="utf-8") as csvfile:
             fieldnames = ["Metric", "Score", "Status"]
@@ -108,6 +372,3 @@ def run_ontology_assessment(
         logging.info(f"--- Successfully wrote results to {output_csv_file} ---")
     except IOError as e:
         logging.error(f"Failed to write to CSV file {output_csv_file}: {e}")
-
-    logging.info("--- Assessment Complete ---")
-    logging.getLogger().removeHandler(console_handler)

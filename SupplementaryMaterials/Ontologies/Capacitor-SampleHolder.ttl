@@ -1,0 +1,262 @@
+@prefix ElectronicComponents-Capacitor-Sample_Holder: <https://cwrusdle.bitbucket.io/mds/EC-Sample_Holder/> .
+@prefix cco: <https://www.commoncoreontologies.org/> .
+@prefix mds: <https://cwrusdle.bitbucket.io/mds/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcmi: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix xsd: <https://www.w3.org/TR/xmlschema-1#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+
+ElectronicComponents-Capacitor-Sample_Holder:Ontology a owl:Ontology ;
+    rdfs:label "ElectronicComponents-Capacitor-Sample_Holder" ;
+    dcmi:creator "Rishabh Kundu, Jacob Anthony Lample, Quynh Tran, Van Tran, Ravi Lin, Roger French, Alp Sehirlioglu" ;
+    dcmi:description "An ontology for sample holders for capacitors undergoing HALT through aixHALT. The aim is to capture all the metadata associated with a capacitor sample holder so this ontology may be used universally. " ;
+    dcmi:title "ElectronicComponents-Capacitor-Sample_Holder" ;
+    owl:versionInfo "0.0.1" .
+
+mds:CapacitorRemoved a owl:Class ;
+    rdfs:label "Capacitor Removed" ;
+    rdfs:subClassOf mds:DesolderingProcess, mds:PrintedCircuitBoardContactPad ;
+    skos:altLabel "" ;
+    skos:definition "Boolean for whether a capacior was removed from a contact pad (like from on a PCB)" ;
+    mds:value xsd:boolean .
+
+mds:Desolderer a owl:Class ;
+    rdfs:label "Desolderer" ;
+    rdfs:subClassOf cco:ont00001017, mds:DesolderingProcess ;
+    skos:altLabel "" ;
+    skos:definition "Agent which carries out the desoldering process" ;
+    mds:value xsd:string .
+
+mds:DesolderingProcess a owl:Class ;
+    rdfs:label "Desoldering Process" ;
+    rdfs:subClassOf cco:ont00001196 ;
+    skos:altLabel "Act of Desoldering, Desoldering" ;
+    skos:definition "Represents the process of desoldering an electric component to a circuit board (ex. capacitor off of a PCB)" .
+
+mds:DesolderingGunUsed a owl:Class ;
+    rdfs:label "Desoldering Gun Used" ;
+    rdfs:subClassOf mds:DesolderingProcess ;
+    skos:altLabel "Desoldering Pump Used" ;
+    skos:definition "Boolean for whether the solder removal gun was used" ;
+    mds:value xsd:boolean .
+
+mds:DesolderingGun a owl:Class ;
+    rdfs:label "Desoldering Gun" ;
+    rdfs:subClassOf mds:ont00000581, mds:DesolderingGunUsed ;
+    skos:altLabel "Solder Sucker" ;
+    skos:definition "Tool used to remove the solder during the desoldering process" .
+
+mds:ExternalFluxUsed a owl:Class ;
+    rdfs:label "External Flux Used" ;
+    rdfs:subClassOf mds:SolderingProcess, mds:PrintedCircuitBoardContactPad ;
+    skos:altLabel "" ;
+    skos:definition "Boolean for whether or not external flux was used in the soldering process" ;
+    mds:value xsd:boolean .
+
+mds:PrintedCircuitBoardContactPad a owl:Class ;
+    rdfs:label "Printed Circuit Board Contact Pad" ;
+    rdfs:subClassOf mds:PrintedCircuitBoardDesign ;
+    skos:altLabel "PCB Contact Pad" ;
+    skos:definition "Individual contact pad on a PCB (ex.: these can be used for HALT testing of capacitors)" .
+
+mds:PrintedCircuitBoardContactPadCleaned a owl:Class ;
+    rdfs:label "Printed Circuit Board Contact Pad Cleaned" ;
+    rdfs:subClassOf mds:PrintedCircuitBoardContactPad ;
+    skos:altLabel "PCB Contact Pad Cleaned" ;
+    skos:definition "Boolean for whether or not a PCB contact pad has been cleaned with alcohol/anything else before undergoing a function" ;
+    mds:value xsd:boolean .
+
+mds:PrintedCircuitBoardContactPadReference a owl:Class ;
+    rdfs:label "Printed Circuit Board Contact Pad Reference" ;
+    rdfs:subClassOf cco:ont00000292 ;
+    skos:altLabel "Contact Pad Identifier, Contact Pad Position, PCB Contact Pad Reference" ;
+    skos:definition "Identifier for each unique contact pad position on a PCB (ex. C54)" ;
+    mds:value xsd:string .
+
+mds:PrintedCircuitBoardID a owl:Class ;
+    rdfs:label "Printed Circuit Board ID" ;
+    rdfs:subClassOf cco:ont00000292 ;
+    skos:altLabel "PCB code, PCB number, PCB pin, PCB ID" ;
+    skos:definition "Unique identifing pin/number for a PCB" ;
+    mds:value xsd:integer .
+
+mds:SolderIron a owl:Class ;
+    rdfs:label "Solder Iron" ;
+    rdfs:subClassOf cco:ont00000581, mds:SolderingProcess, mds:DesolderingProcess ;
+    skos:altLabel "Solder Fe" ;
+    skos:definition "Soldering Iron used to carry out the soldering or desoldering process" ;
+    mds:value xsd:string .
+
+mds:SolderIronTemp a owl:Class ;
+    rdfs:label "Solder Iron Temp" ;
+    rdfs:subClassOf cco:ont00000441, mds:SolderIron ;
+    skos:altLabel "Solder Fe Temp, Solder Temp, Solder Fe T" ;
+    skos:definition "Temperature of a solder iron throughout the soldering or desoldering process as desired by the agent using it" ;
+    mds:value xsd:float .
+
+mds:SolderLocation a owl:Class ;
+    rdfs:label "Solder Location" ;
+    rdfs:subClassOf mds:SolderingProcess ;
+    skos:altLabel "Solder geographic area" ;
+    skos:definition "Location where soldering process occured" ;
+    mds:value xsd:string .
+
+mds:SolderProcessType a owl:Class ;
+    rdfs:label "Solder Process Type" ;
+    rdfs:subClassOf mds:SolderParameters ;
+    skos:altLabel "Soldering Process Style" ;
+    skos:definition "Type of solder process used for soldering (ex. reflow, wire, wave, etc.)" ;
+    mds:value xsd:string .
+
+mds:SolderWireThickness a owl:Class ;
+    rdfs:label "Solder Wire Thickness" ;
+    rdfs:subClassOf mds:SolderProcessType, cco:ont00001304 ;
+    skos:altLabel "Solder Thickness" ;
+    skos:definition "Thickness of solder wire used (if any) in soldering process" ;
+    mds:value xsd:float .
+
+mds:Solderer a owl:Class ;
+    rdfs:label "Solderer" ;
+    rdfs:subClassOf cco:ont00001017, mds:SolderingProcess ;
+    skos:altLabel "" ;
+    skos:definition "Agent which carries out the soldeirng process" ;
+    mds:value xsd:string .
+
+cco:ont00000995 rdf:type owl:Class ;
+    rdfs:subClassOf obo:BFO_0000040 ;
+    rdfs:label "Material Artifact"@en ;
+    skos:definition "A Material Entity that was designed by some Agent to realize a certain Function."@en ;
+    cco:ont00001760 "https://www.commoncoreontologies.org/ArtifactOntology"^^xsd:anyURI .
+
+mds:PrintedCircuitBoardDesign a owl:Class ;
+    rdfs:label "Printed Circuit Board Design" ;
+    rdfs:subClassOf mds:PrintedCircuitBoard ;
+    skos:altLabel "PCB Style, PCB Design" ;
+    skos:definition "Determines design of PCB that is being used for a function" .
+
+mds:PrintedCircuitBoard a owl:Class ;
+    rdfs:label "Printed Circuit Board" ;
+    rdfs:subClassOf mds:ElectricalTestingSampleHolder ;
+    skos:altLabel "PCB" ;
+    skos:definition "Material artifact that electronic components (like capacitors) are soldered on to to be subjected to desired function/testing" .
+
+mds:SolderParameters a owl:Class ;
+    rdfs:label "Solder Parameters" ;
+    rdfs:subClassOf cco:ont00000575, mds:SolderingProcess ;
+    skos:altLabel "" ;
+    skos:definition "Umbrella to represents solder variables (like solder material, solder wire thickness, etc.)" .
+
+mds:SolderingProcess a owl:Class ;
+    rdfs:label "Soldering Process" ;
+    rdfs:subClassOf cco:ont00001196 ;
+    skos:altLabel "Act of Soldering, Soldering" ;
+    skos:definition "Represents the process of soldering an electric component to a circuit board (ex. capacitor to a PCB)" .
+
+cco:ont00000292 rdf:type owl:Class ;
+    owl:equivalentClass [ owl:intersectionOf ( cco:ont00000686
+                                            [ rdf:type owl:Restriction ;
+                                                owl:onProperty cco:ont00001916 ;
+                                                owl:someValuesFrom cco:ont00000995
+                                            ]
+                                            ) ;
+                        rdf:type owl:Class
+                        ] ;
+    rdfs:subClassOf cco:ont00000686 ;
+    rdfs:label "Artifact Identifier"@en ;
+    skos:definition "A Designative Information Content Entity which designates some Artifact."@en ;
+    cco:ont00001760 "https://www.commoncoreontologies.org/ArtifactOntology"^^xsd:anyURI .
+
+cco:ont00001017 rdf:type owl:Class ;
+    owl:equivalentClass [ owl:intersectionOf ( obo:BFO_0000040
+                                            [ rdf:type owl:Restriction ;
+                                                owl:onProperty obo:BFO_0000196 ;
+                                                owl:someValuesFrom cco:ont00001379
+                                            ]
+                                            ) ;
+                        rdf:type owl:Class
+                        ] ;
+    rdfs:subClassOf obo:BFO_0000040 ;
+    rdfs:label "Agent"@en ;
+    skos:definition "A Material Entity that bears an Agent Capability."@en ;
+    cco:ont00001754 "Schlosser, Markus, \"Agency\", The Stanford Encyclopedia of Philosophy (Winter 2019 Edition), Edward N. Zalta (ed.), available at: https://plato.stanford.edu/archives/win2019/entries/agency/"@en ;
+    cco:ont00001760 "https://www.commoncoreontologies.org/AgentOntology"^^xsd:anyURI .
+
+cco:ont00001304 rdf:type owl:Class ;
+                 rdfs:subClassOf cco:ont00000575 ;
+                 rdfs:label "Dimension Specification"@en ;
+                 skos:definition "An Quality Specification that prescribes some Size Quality."@en ;
+                 cco:ont00001760 "https://www.commoncoreontologies.org/ArtifactOntology"^^xsd:anyURI .
+
+mds:GlassTransitionTemperature a owl:Class ;
+    rdfs:label "Glass Transition Temperature" ;
+    rdfs:subClassOf cco:ont00000441, mds:PrintedCircuitBoardDesign ;
+    skos:altLabel "GTT" ;
+    skos:definition "Represents the glass transition temperature of a material" ;
+    mds:value xsd:float .
+
+mds:NumberOfPrintedCircuitBoardLayers a owl:Class ;
+    rdfs:label "Number of Printed Circuit Board Layers" ;
+    rdfs:subClassOf mds:PrintedCircuitBoardDesign ;
+    skos:altLabel "Number of PCB Layers" ;
+    skos:definition "Represents how many layers a PCB has" ;
+    mds:value xsd:float .
+
+mds:PrintedCircuitBoardCoatingType a owl:Class ;
+    rdfs:label "Printed Circuit Board Coating Type" ;
+    rdfs:subClassOf mds:PrintedCircuitBoardDesign ;
+    skos:altLabel "PCB Coating Type, PCB Coating Material" ;
+    skos:definition "Represents the material that a PCB is coated with (ex. gold or copper)" ;
+    mds:value xsd:string .
+
+cco:ont00000575 rdf:type owl:Class ;
+    owl:equivalentClass [ owl:intersectionOf ( cco:ont00000965
+                                            [ rdf:type owl:Restriction ;
+                                                owl:onProperty cco:ont00001942 ;
+                                                owl:someValuesFrom obo:BFO_0000019
+                                            ]
+                                            ) ;
+                        rdf:type owl:Class
+                        ] ;
+    rdfs:subClassOf cco:ont00000965 ;
+    rdfs:label "Quality Specification"@en ;
+    skos:definition "A Directive Information Content Entity that prescribes some Quality."@en ;
+    cco:ont00001760 "https://www.commoncoreontologies.org/ArtifactOntology"^^xsd:anyURI .
+
+mds:SolderMaterial a owl:Class ;
+    rdfs:label "Solder Material" ;
+    rdfs:subClassOf mds:SolderProcessType ;
+    skos:altlabel "" ;
+    skos:definition "Represents the material which the chosen solder is comprised of in the soldering process (ex. PbSn, Sn, etc.)" ;
+    mds:value xsd:string .
+
+mds:FluxMaterial a owl:Class ;
+    rdfs:label "Flux Material" ;
+    rdfs:subClassOf mds:ExternalFluxUsed ;
+    skos:altlabel "Kind of Flux" ;
+    skos:definition "If flux was used in the soldering process, what type of flux is it (ex. rosin, inorganic flux, etc.)" ;
+    mds:value xsd:string .
+
+mds:DeSolderLocation a owl:Class ;
+    rdfs:label "Desolder Location" ;
+    rdfs:subClassOf mds:DesolderingProcess ;
+    skos:altLabel "Desolder geographic area" ;
+    skos:definition "Location where desoldering process occured" ;
+    mds:value xsd:string .
+
+cco:ont00001196 rdf:type owl:Class ;
+                 rdfs:subClassOf cco:ont00000908 ;
+                 rdfs:comment "Many Acts of Manufacturing and Construction involve one or more Acts of Artifact Assembly, but Acts of Artifact Assembly can also occur in isolation from these activities."@en ;
+                 rdfs:label "Act of Artifact Assembly"@en ;
+                 skos:definition "An Act of Artifact Processing wherein a new Artifact is created by fitting component parts together."@en ;
+                 skos:example "putting together a piece of furniture purchased from Ikea" ;
+                 cco:ont00001760 "https://www.commoncoreontologies.org/EventOntology"^^xsd:anyURI .
+
+mds:ElectricalTestingSampleHolder a owl:Class ;
+    rdfs:label "Electrical Testing Sample Holder" ;
+    rdfs:subClassOf cco:ont00000995 ;
+    skos:altLabel "" ;
+    skos:definition "A material artifact that is used to test and hold electrical components" .

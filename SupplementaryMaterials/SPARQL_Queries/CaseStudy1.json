@@ -1,0 +1,152 @@
+[
+  {
+    "qid": 3000000,
+    "question": "What X-ray detector was used in this experiment?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:XrayDetector",
+          "class": "mds:XrayDetector",
+          "friendly_name": "X-ray Detector",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "http://example.org/resource#recipe.001",
+          "class": "mds:XrayRecipe",
+          "friendly_name": "this experiment",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "obo:BFO_0000057",
+          "friendly_name": "has participant"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?detector ?label\nWHERE {\n  VALUES ?recipe { <http://example.org/resource#recipe.001> }\n  ?recipe a mds:XrayRecipe .\n  ?tool obo:BFO_0000056 ?recipe .\n  ?tool a mds:XrayDetector .\n  BIND(?tool AS ?detector)\n  OPTIONAL { ?detector rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 3000001,
+    "question": "What are the lattice parameters determined by Rietveld refinement of this diffraction pattern?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:LatticeParameter",
+          "class": "mds:LatticeParameter",
+          "friendly_name": "Lattice Parameter",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:RietveldRefinement",
+          "class": "mds:RietveldRefinement",
+          "friendly_name": "Rietveld Refinement",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "entity",
+          "id": "http://example.org/resource#pattern.001",
+          "class": "mds:IntegratedDiffractionPattern",
+          "friendly_name": "this diffraction pattern",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 2,
+          "relation": "cco:ont00001921",
+          "friendly_name": "has input"
+        },
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "cco:ont00001986",
+          "friendly_name": "has output"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?latticeParam ?value\nWHERE {\n  VALUES ?pattern { <http://example.org/resource#pattern.001> }\n  ?refinement a mds:RietveldRefinement ;\n              cco:ont00001921 ?pattern ;\n              cco:ont00001986 ?latticeParam .\n  ?latticeParam a mds:LatticeParameter .\n  OPTIONAL { ?latticeParam cco:ont00001769 ?value }\n}"
+  },
+  {
+    "qid": 3000002,
+    "question": "What is the capacitance value and its tolerance for the capacitor being tested?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:Capacitance",
+          "class": "mds:Capacitance",
+          "friendly_name": "Capacitance",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:CapacitanceTolerance",
+          "class": "mds:CapacitanceTolerance",
+          "friendly_name": "Capacitance Tolerance",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "entity",
+          "id": "http://example.org/resource#capacitor.001",
+          "class": "mds:Capacitor",
+          "friendly_name": "this capacitor",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 2,
+          "end": 0,
+          "relation": "mds:hasCapacitance",
+          "friendly_name": "has capacitance"
+        },
+        {
+          "start": 2,
+          "end": 1,
+          "relation": "mds:hasTolerance",
+          "friendly_name": "has tolerance"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nSELECT ?capacitance ?tolerance\nWHERE {\n  VALUES ?cap { <http://example.org/resource#capacitor.001> }\n  ?cap a mds:Capacitor .\n  ?capacitance a mds:Capacitance .\n  ?tolerance a mds:CapacitanceTolerance .\n}"
+  }
+]

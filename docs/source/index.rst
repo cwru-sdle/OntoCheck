@@ -42,13 +42,13 @@ Getting Started
 
 .. code-block:: python
 
-   from ontocheck import run_ontology_assessment, task_based_metric
+   from ontocheck import run_ontology_assessment, task_based_metric_v_0_0_1
 
    # Task-agnostic assessment
    run_ontology_assessment("ontology.ttl", metrics="all")
 
    # Task-based assessment against competency questions
-   result = task_based_metric(
+   result = task_based_metric_v_0_0_1(
        ttl_file="ontology.ttl",
        questions="competency_questions.json",
        domain_prefixes=["mds"],

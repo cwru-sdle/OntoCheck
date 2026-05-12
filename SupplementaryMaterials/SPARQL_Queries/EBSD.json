@@ -1,0 +1,1405 @@
+[
+  {
+    "qid": 1000000,
+    "question": "What is the material composition of this sample?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:MaterialComposition",
+          "class": "mds:MaterialComposition",
+          "friendly_name": "Material Composition",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "http://example.org/resource#sample.001",
+          "class": "mds:Sample",
+          "friendly_name": "this sample",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "mds:hasMaterialComposition",
+          "friendly_name": "has material composition"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?materialComposition\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample a mds:Sample ;\n          mds:hasMaterialComposition ?materialComposition .\n}"
+  },
+  {
+    "qid": 1000001,
+    "question": "What laser power was used for this sample?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:LaserPower",
+          "class": "mds:LaserPower",
+          "friendly_name": "Laser Power",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "http://example.org/resource#sample.001",
+          "class": "mds:Sample",
+          "friendly_name": "this sample",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "mds:hasLaserPower",
+          "friendly_name": "has laser power"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?laserPower\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample a mds:Sample ;\n          mds:hasLaserPower ?laserPower .\n}"
+  },
+  {
+    "qid": 1000002,
+    "question": "What manufacturing method was used to produce this sample?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:ManufacturingMethod",
+          "class": "mds:ManufacturingMethod",
+          "friendly_name": "Manufacturing Method",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "http://example.org/resource#sample.001",
+          "class": "mds:Sample",
+          "friendly_name": "this sample",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "mds:hasManufacturingMethod",
+          "friendly_name": "has manufacturing method"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?manufacturingMethod\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample a mds:Sample ;\n          mds:hasManufacturingMethod ?manufacturingMethod .\n}"
+  },
+  {
+    "qid": 1000003,
+    "question": "What surface of this sample was prepared for EBSD characterization?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:PreparedSurface",
+          "class": "mds:PreparedSurface",
+          "friendly_name": "Prepared Surface",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "http://example.org/resource#sample.001",
+          "class": "mds:Sample",
+          "friendly_name": "this sample",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "mds:hasPreparedSurface",
+          "friendly_name": "has prepared surface"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?preparedSurface\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample a mds:Sample ;\n          mds:hasPreparedSurface ?preparedSurface .\n}"
+  },
+  {
+    "qid": 1000004,
+    "question": "What is the total grinding removal depth of this sample?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "literal",
+          "id": "xsd:decimal",
+          "class": "xsd:decimal",
+          "friendly_name": "total grinding removal depth",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "http://example.org/resource#sample.001",
+          "class": "mds:Sample",
+          "friendly_name": "this sample",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "mds:hasTotalGrindingRemovalDepth",
+          "friendly_name": "has total grinding removal depth"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?totalGrindingRemovalDepth\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample a mds:Sample ;\n          mds:hasTotalGrindingRemovalDepth ?totalGrindingRemovalDepth .\n}"
+  },
+  {
+    "qid": 1000005,
+    "question": "What is the mass change recorded in the surface quality check of this sample?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "literal",
+          "id": "xsd:decimal",
+          "class": "xsd:decimal",
+          "friendly_name": "mass change",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:SampleSurfaceQualityChecks",
+          "class": "mds:SampleSurfaceQualityChecks",
+          "friendly_name": "Sample Surface Quality Check",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "entity",
+          "id": "http://example.org/resource#sample.001",
+          "class": "mds:Sample",
+          "friendly_name": "this sample",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 2,
+          "relation": "mds:isQualityCheckOf",
+          "friendly_name": "is quality check of"
+        },
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "mds:hasMassChange",
+          "friendly_name": "has mass change"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?massChange\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?qualityCheck a mds:SampleSurfaceQualityChecks ;\n                mds:isQualityCheckOf ?sample ;\n                mds:hasMassChange ?massChange .\n}"
+  },
+  {
+    "qid": 1000006,
+    "question": "Who performed the grinding operation and on what date was it carried out?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#grinding.001",
+          "class": "mds:Grinding",
+          "friendly_name": "this grinding process",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "literal",
+          "id": "xsd:string",
+          "class": "xsd:string",
+          "friendly_name": "grinding operator",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "literal",
+          "id": "xsd:date",
+          "class": "xsd:date",
+          "friendly_name": "prepared date",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "mds:hasGrindingOperator",
+          "friendly_name": "has grinding operator"
+        },
+        {
+          "start": 0,
+          "end": 2,
+          "relation": "mds:hasPreparedDate",
+          "friendly_name": "has prepared date"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?grindingOperator ?preparedDate\nWHERE {\n  VALUES ?grinding { <http://example.org/resource#grinding.001> }\n  ?grinding a mds:Grinding ;\n            mds:hasGrindingOperator ?grindingOperator ;\n            mds:hasPreparedDate ?preparedDate .\n}"
+  },
+  {
+    "qid": 1000007,
+    "question": "What solvent and drying gas were used in the cleaning step of this sample's processing?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 5,
+    "num_edge": 4,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#sample.001",
+          "class": "mds:Sample",
+          "friendly_name": "this sample",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:MaterialsProcessing",
+          "class": "mds:MaterialsProcessing",
+          "friendly_name": "Materials Processing",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "mds:SampleCleaning",
+          "class": "mds:SampleCleaning",
+          "friendly_name": "Sample Cleaning",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 3,
+          "node_type": "literal",
+          "id": "xsd:string",
+          "class": "xsd:string",
+          "friendly_name": "solvent",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 4,
+          "node_type": "literal",
+          "id": "xsd:string",
+          "class": "xsd:string",
+          "friendly_name": "drying gas",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "mds:undergoesProcessing",
+          "friendly_name": "undergoes processing"
+        },
+        {
+          "start": 2,
+          "end": 1,
+          "relation": "mds:isProcessStepOf",
+          "friendly_name": "is process step of"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "relation": "mds:usesSolvent",
+          "friendly_name": "uses solvent"
+        },
+        {
+          "start": 2,
+          "end": 4,
+          "relation": "mds:usesDryingGas",
+          "friendly_name": "uses drying gas"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?solvent ?dryingGas\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample mds:undergoesProcessing ?materialsProcessing .\n  ?cleaning a mds:SampleCleaning ;\n            mds:isProcessStepOf ?materialsProcessing ;\n            mds:usesSolvent ?solvent ;\n            mds:usesDryingGas ?dryingGas .\n}"
+  },
+  {
+    "qid": 1000008,
+    "question": "What equipment was used in the grinding step of this sample's preparation?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 4,
+    "num_edge": 3,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#sample.001",
+          "class": "mds:Sample",
+          "friendly_name": "this sample",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:MaterialsProcessing",
+          "class": "mds:MaterialsProcessing",
+          "friendly_name": "Materials Processing",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "mds:Grinding",
+          "class": "mds:Grinding",
+          "friendly_name": "Grinding",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 3,
+          "node_type": "class",
+          "id": "mds:GrindingMachine",
+          "class": "mds:GrindingMachine",
+          "friendly_name": "Grinding Machine",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "mds:undergoesProcessing",
+          "friendly_name": "undergoes processing"
+        },
+        {
+          "start": 2,
+          "end": 1,
+          "relation": "mds:isProcessStepOf",
+          "friendly_name": "is process step of"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "relation": "mds:usesEquipment",
+          "friendly_name": "uses equipment"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?grindingMachine\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample mds:undergoesProcessing ?materialsProcessing .\n  ?grinding a mds:Grinding ;\n            mds:isProcessStepOf ?materialsProcessing ;\n            mds:usesEquipment ?grindingMachine .\n  ?grindingMachine a mds:GrindingMachine .\n}"
+  },
+  {
+    "qid": 1000009,
+    "question": "What is the polishing voltage used in the dry electropolishing of this sample?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 5,
+    "num_edge": 4,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#sample.001",
+          "class": "mds:Sample",
+          "friendly_name": "this sample",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:MaterialsProcessing",
+          "class": "mds:MaterialsProcessing",
+          "friendly_name": "Materials Processing",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "mds:DryElectropolishing",
+          "class": "mds:DryElectropolishing",
+          "friendly_name": "Dry Electropolishing",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 3,
+          "node_type": "class",
+          "id": "mds:ElectropolishSystem",
+          "class": "mds:ElectropolishSystem",
+          "friendly_name": "Electropolish System",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 4,
+          "node_type": "literal",
+          "id": "xsd:decimal",
+          "class": "xsd:decimal",
+          "friendly_name": "polishing voltage",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "mds:undergoesProcessing",
+          "friendly_name": "undergoes processing"
+        },
+        {
+          "start": 2,
+          "end": 1,
+          "relation": "mds:isProcessStepOf",
+          "friendly_name": "is process step of"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "relation": "mds:usesEquipment",
+          "friendly_name": "uses equipment"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "relation": "mds:hasPolishingVoltage",
+          "friendly_name": "has polishing voltage"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?polishingVoltage\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample mds:undergoesProcessing ?materialsProcessing .\n  ?dryElectropolishing a mds:DryElectropolishing ;\n                       mds:isProcessStepOf ?materialsProcessing ;\n                       mds:usesEquipment ?electropolishSystem .\n  ?electropolishSystem a mds:ElectropolishSystem ;\n                       mds:hasPolishingVoltage ?polishingVoltage .\n}"
+  },
+  {
+    "qid": 1000010,
+    "question": "What is the grinding wheel speed of the machine used in the grinding step of this sample's processing?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 5,
+    "num_edge": 4,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#sample.001",
+          "class": "mds:Sample",
+          "friendly_name": "this sample",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:MaterialsProcessing",
+          "class": "mds:MaterialsProcessing",
+          "friendly_name": "Materials Processing",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "mds:Grinding",
+          "class": "mds:Grinding",
+          "friendly_name": "Grinding",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 3,
+          "node_type": "class",
+          "id": "mds:GrindingMachine",
+          "class": "mds:GrindingMachine",
+          "friendly_name": "Grinding Machine",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 4,
+          "node_type": "literal",
+          "id": "xsd:decimal",
+          "class": "xsd:decimal",
+          "friendly_name": "grinding wheel speed",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "mds:undergoesProcessing",
+          "friendly_name": "undergoes processing"
+        },
+        {
+          "start": 2,
+          "end": 1,
+          "relation": "mds:isProcessStepOf",
+          "friendly_name": "is process step of"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "relation": "mds:usesEquipment",
+          "friendly_name": "uses equipment"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "relation": "mds:hasGrindingWheelSpeed",
+          "friendly_name": "has grinding wheel speed"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?grindingWheelSpeed\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample mds:undergoesProcessing ?materialsProcessing .\n  ?grinding a mds:Grinding ;\n            mds:isProcessStepOf ?materialsProcessing ;\n            mds:usesEquipment ?grindingMachine .\n  ?grindingMachine a mds:GrindingMachine ;\n                   mds:hasGrindingWheelSpeed ?grindingWheelSpeed .\n}"
+  },
+  {
+    "qid": 1000011,
+    "question": "What coolant is delivered by the grinding machine used in the grinding step of this sample's processing?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 5,
+    "num_edge": 4,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#sample.001",
+          "class": "mds:Sample",
+          "friendly_name": "this sample",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:MaterialsProcessing",
+          "class": "mds:MaterialsProcessing",
+          "friendly_name": "Materials Processing",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "mds:Grinding",
+          "class": "mds:Grinding",
+          "friendly_name": "Grinding",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 3,
+          "node_type": "class",
+          "id": "mds:GrindingMachine",
+          "class": "mds:GrindingMachine",
+          "friendly_name": "Grinding Machine",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 4,
+          "node_type": "class",
+          "id": "mds:GrindingCoolant",
+          "class": "mds:GrindingCoolant",
+          "friendly_name": "Grinding Coolant",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "mds:undergoesProcessing",
+          "friendly_name": "undergoes processing"
+        },
+        {
+          "start": 2,
+          "end": 1,
+          "relation": "mds:isProcessStepOf",
+          "friendly_name": "is process step of"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "relation": "mds:usesEquipment",
+          "friendly_name": "uses equipment"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "relation": "mds:deliversCoolant",
+          "friendly_name": "delivers coolant"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?grindingCoolant\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample mds:undergoesProcessing ?materialsProcessing .\n  ?grinding a mds:Grinding ;\n            mds:isProcessStepOf ?materialsProcessing ;\n            mds:usesEquipment ?grindingMachine .\n  ?grindingMachine a mds:GrindingMachine ;\n                   mds:deliversCoolant ?grindingCoolant .\n}"
+  },
+  {
+    "qid": 1000012,
+    "question": "What is the relative humidity of the electrolyte bead media used in the electropolish system for this sample's dry electropolishing?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 6,
+    "num_edge": 5,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#sample.001",
+          "class": "mds:Sample",
+          "friendly_name": "this sample",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:MaterialsProcessing",
+          "class": "mds:MaterialsProcessing",
+          "friendly_name": "Materials Processing",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "mds:DryElectropolishing",
+          "class": "mds:DryElectropolishing",
+          "friendly_name": "Dry Electropolishing",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 3,
+          "node_type": "class",
+          "id": "mds:ElectropolishSystem",
+          "class": "mds:ElectropolishSystem",
+          "friendly_name": "Electropolish System",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 4,
+          "node_type": "class",
+          "id": "mds:ElectrolyteBeadMedia",
+          "class": "mds:ElectrolyteBeadMedia",
+          "friendly_name": "Electrolyte Bead Media",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 5,
+          "node_type": "literal",
+          "id": "xsd:decimal",
+          "class": "xsd:decimal",
+          "friendly_name": "media relative humidity",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "mds:undergoesProcessing",
+          "friendly_name": "undergoes processing"
+        },
+        {
+          "start": 2,
+          "end": 1,
+          "relation": "mds:isProcessStepOf",
+          "friendly_name": "is process step of"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "relation": "mds:usesEquipment",
+          "friendly_name": "uses equipment"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "relation": "mds:usesMedia",
+          "friendly_name": "uses media"
+        },
+        {
+          "start": 4,
+          "end": 5,
+          "relation": "mds:hasMediaRelativeHumidity",
+          "friendly_name": "has media relative humidity"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?mediaRelativeHumidity\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample mds:undergoesProcessing ?materialsProcessing .\n  ?dryElectropolishing a mds:DryElectropolishing ;\n                       mds:isProcessStepOf ?materialsProcessing ;\n                       mds:usesEquipment ?electropolishSystem .\n  ?electropolishSystem a mds:ElectropolishSystem ;\n                       mds:usesMedia ?electrolyteBeadMedia .\n  ?electrolyteBeadMedia a mds:ElectrolyteBeadMedia ;\n                        mds:hasMediaRelativeHumidity ?mediaRelativeHumidity .\n}"
+  },
+  {
+    "qid": 1000013,
+    "question": "What cathode material is a component of the electropolish system used in the dry electropolishing step of this sample's preparation?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 5,
+    "num_edge": 4,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#sample.001",
+          "class": "mds:Sample",
+          "friendly_name": "this sample",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:MaterialsProcessing",
+          "class": "mds:MaterialsProcessing",
+          "friendly_name": "Materials Processing",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "mds:DryElectropolishing",
+          "class": "mds:DryElectropolishing",
+          "friendly_name": "Dry Electropolishing",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 3,
+          "node_type": "class",
+          "id": "mds:ElectropolishSystem",
+          "class": "mds:ElectropolishSystem",
+          "friendly_name": "Electropolish System",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 4,
+          "node_type": "class",
+          "id": "mds:CathodeMaterial",
+          "class": "mds:CathodeMaterial",
+          "friendly_name": "Cathode Material",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "mds:undergoesProcessing",
+          "friendly_name": "undergoes processing"
+        },
+        {
+          "start": 2,
+          "end": 1,
+          "relation": "mds:isProcessStepOf",
+          "friendly_name": "is process step of"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "relation": "mds:usesEquipment",
+          "friendly_name": "uses equipment"
+        },
+        {
+          "start": 4,
+          "end": 3,
+          "relation": "mds:isComponentOf",
+          "friendly_name": "is component of"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?cathodeMaterial\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample mds:undergoesProcessing ?materialsProcessing .\n  ?dryElectropolishing a mds:DryElectropolishing ;\n                       mds:isProcessStepOf ?materialsProcessing ;\n                       mds:usesEquipment ?electropolishSystem .\n  ?electropolishSystem a mds:ElectropolishSystem .\n  ?cathodeMaterial a mds:CathodeMaterial ;\n                   mds:isComponentOf ?electropolishSystem .\n}"
+  },
+  {
+    "qid": 1000014,
+    "question": "For this sample, what are both the grinding wheel speed and the depth of cut per pass of the grinding machine used in its preparation?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 6,
+    "num_edge": 5,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#sample.001",
+          "class": "mds:Sample",
+          "friendly_name": "this sample",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:MaterialsProcessing",
+          "class": "mds:MaterialsProcessing",
+          "friendly_name": "Materials Processing",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "mds:Grinding",
+          "class": "mds:Grinding",
+          "friendly_name": "Grinding",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 3,
+          "node_type": "class",
+          "id": "mds:GrindingMachine",
+          "class": "mds:GrindingMachine",
+          "friendly_name": "Grinding Machine",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 4,
+          "node_type": "literal",
+          "id": "xsd:decimal",
+          "class": "xsd:decimal",
+          "friendly_name": "grinding wheel speed",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 5,
+          "node_type": "literal",
+          "id": "xsd:decimal",
+          "class": "xsd:decimal",
+          "friendly_name": "depth of cut per pass",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "mds:undergoesProcessing",
+          "friendly_name": "undergoes processing"
+        },
+        {
+          "start": 2,
+          "end": 1,
+          "relation": "mds:isProcessStepOf",
+          "friendly_name": "is process step of"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "relation": "mds:usesEquipment",
+          "friendly_name": "uses equipment"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "relation": "mds:hasGrindingWheelSpeed",
+          "friendly_name": "has grinding wheel speed"
+        },
+        {
+          "start": 3,
+          "end": 5,
+          "relation": "mds:hasDepthOfCutPerPass",
+          "friendly_name": "has depth of cut per pass"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?grindingWheelSpeed ?depthOfCutPerPass\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample mds:undergoesProcessing ?materialsProcessing .\n  ?grinding a mds:Grinding ;\n            mds:isProcessStepOf ?materialsProcessing ;\n            mds:usesEquipment ?grindingMachine .\n  ?grindingMachine a mds:GrindingMachine ;\n                   mds:hasGrindingWheelSpeed ?grindingWheelSpeed ;\n                   mds:hasDepthOfCutPerPass ?depthOfCutPerPass .\n}"
+  },
+  {
+    "qid": 1000015,
+    "question": "For this sample, what are the polishing voltage, motor speed setting, and frequency mode of the electropolish system used in its dry electropolishing?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 7,
+    "num_edge": 6,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#sample.001",
+          "class": "mds:Sample",
+          "friendly_name": "this sample",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:MaterialsProcessing",
+          "class": "mds:MaterialsProcessing",
+          "friendly_name": "Materials Processing",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "mds:DryElectropolishing",
+          "class": "mds:DryElectropolishing",
+          "friendly_name": "Dry Electropolishing",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 3,
+          "node_type": "class",
+          "id": "mds:ElectropolishSystem",
+          "class": "mds:ElectropolishSystem",
+          "friendly_name": "Electropolish System",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 4,
+          "node_type": "literal",
+          "id": "xsd:decimal",
+          "class": "xsd:decimal",
+          "friendly_name": "polishing voltage",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 5,
+          "node_type": "literal",
+          "id": "xsd:string",
+          "class": "xsd:string",
+          "friendly_name": "motor speed setting",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 6,
+          "node_type": "literal",
+          "id": "xsd:string",
+          "class": "xsd:string",
+          "friendly_name": "polishing frequency mode",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "mds:undergoesProcessing",
+          "friendly_name": "undergoes processing"
+        },
+        {
+          "start": 2,
+          "end": 1,
+          "relation": "mds:isProcessStepOf",
+          "friendly_name": "is process step of"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "relation": "mds:usesEquipment",
+          "friendly_name": "uses equipment"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "relation": "mds:hasPolishingVoltage",
+          "friendly_name": "has polishing voltage"
+        },
+        {
+          "start": 3,
+          "end": 5,
+          "relation": "mds:hasMotorSpeedSetting",
+          "friendly_name": "has motor speed setting"
+        },
+        {
+          "start": 3,
+          "end": 6,
+          "relation": "mds:hasPolishingFrequencyMode",
+          "friendly_name": "has polishing frequency mode"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?polishingVoltage ?motorSpeedSetting ?polishingFrequencyMode\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample mds:undergoesProcessing ?materialsProcessing .\n  ?dryElectropolishing a mds:DryElectropolishing ;\n                       mds:isProcessStepOf ?materialsProcessing ;\n                       mds:usesEquipment ?electropolishSystem .\n  ?electropolishSystem a mds:ElectropolishSystem ;\n                       mds:hasPolishingVoltage ?polishingVoltage ;\n                       mds:hasMotorSpeedSetting ?motorSpeedSetting ;\n                       mds:hasPolishingFrequencyMode ?polishingFrequencyMode .\n}"
+  },
+  {
+    "qid": 1000016,
+    "question": "For this sample, what are the grinding wheel speed used during grinding and the polishing voltage used during dry electropolishing?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 8,
+    "num_edge": 7,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#sample.001",
+          "class": "mds:Sample",
+          "friendly_name": "this sample",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:MaterialsProcessing",
+          "class": "mds:MaterialsProcessing",
+          "friendly_name": "Materials Processing",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "mds:Grinding",
+          "class": "mds:Grinding",
+          "friendly_name": "Grinding",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 3,
+          "node_type": "class",
+          "id": "mds:GrindingMachine",
+          "class": "mds:GrindingMachine",
+          "friendly_name": "Grinding Machine",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 4,
+          "node_type": "literal",
+          "id": "xsd:decimal",
+          "class": "xsd:decimal",
+          "friendly_name": "grinding wheel speed",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 5,
+          "node_type": "class",
+          "id": "mds:DryElectropolishing",
+          "class": "mds:DryElectropolishing",
+          "friendly_name": "Dry Electropolishing",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 6,
+          "node_type": "class",
+          "id": "mds:ElectropolishSystem",
+          "class": "mds:ElectropolishSystem",
+          "friendly_name": "Electropolish System",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 7,
+          "node_type": "literal",
+          "id": "xsd:decimal",
+          "class": "xsd:decimal",
+          "friendly_name": "polishing voltage",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "mds:undergoesProcessing",
+          "friendly_name": "undergoes processing"
+        },
+        {
+          "start": 2,
+          "end": 1,
+          "relation": "mds:isProcessStepOf",
+          "friendly_name": "is process step of"
+        },
+        {
+          "start": 2,
+          "end": 3,
+          "relation": "mds:usesEquipment",
+          "friendly_name": "uses equipment"
+        },
+        {
+          "start": 3,
+          "end": 4,
+          "relation": "mds:hasGrindingWheelSpeed",
+          "friendly_name": "has grinding wheel speed"
+        },
+        {
+          "start": 5,
+          "end": 1,
+          "relation": "mds:isProcessStepOf",
+          "friendly_name": "is process step of"
+        },
+        {
+          "start": 5,
+          "end": 6,
+          "relation": "mds:usesEquipment",
+          "friendly_name": "uses equipment"
+        },
+        {
+          "start": 6,
+          "end": 7,
+          "relation": "mds:hasPolishingVoltage",
+          "friendly_name": "has polishing voltage"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?grindingWheelSpeed ?polishingVoltage\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample mds:undergoesProcessing ?materialsProcessing .\n  ?grinding a mds:Grinding ;\n            mds:isProcessStepOf ?materialsProcessing ;\n            mds:usesEquipment ?grindingMachine .\n  ?grindingMachine a mds:GrindingMachine ;\n                   mds:hasGrindingWheelSpeed ?grindingWheelSpeed .\n  ?dryElectropolishing a mds:DryElectropolishing ;\n                       mds:isProcessStepOf ?materialsProcessing ;\n                       mds:usesEquipment ?electropolishSystem .\n  ?electropolishSystem a mds:ElectropolishSystem ;\n                       mds:hasPolishingVoltage ?polishingVoltage .\n}"
+  },
+  {
+    "qid": 1000017,
+    "question": "Which samples have a grinding-induced deformation layer depth greater than 50 micrometers?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 1,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:Sample",
+          "class": "mds:Sample",
+          "friendly_name": "Sample",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 0,
+          "relation": "mds:hasGrindInducedDeformationLayerDepth",
+          "friendly_name": "has grind induced deformation layer depth"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?sample ?grindInducedDeformationLayerDepth\nWHERE {\n  ?sample a mds:Sample ;\n          mds:hasGrindInducedDeformationLayerDepth ?grindInducedDeformationLayerDepth .\n  FILTER (?grindInducedDeformationLayerDepth > 50)\n}"
+  },
+  {
+    "qid": 1000018,
+    "question": "Which samples have the highest electropolish rate of mass change?",
+    "answer": [],
+    "function": "max",
+    "commonness": null,
+    "num_node": 1,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:Sample",
+          "class": "mds:Sample",
+          "friendly_name": "Sample",
+          "question_node": 1,
+          "function": "max"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 0,
+          "relation": "mds:hasElectropolishRateOfMassChange",
+          "friendly_name": "has electropolish rate of mass change"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?sample ?electropolishRateOfMassChange\nWHERE {\n  ?sample a mds:Sample ;\n          mds:hasElectropolishRateOfMassChange ?electropolishRateOfMassChange .\n}\nORDER BY DESC(?electropolishRateOfMassChange)\nLIMIT 10"
+  },
+  {
+    "qid": 1000019,
+    "question": "Which samples from the same batch that were manufactured by LPBF with a laser power above 200W had a total surface removal depth less than 100 micrometers after preparation?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 5,
+    "num_edge": 5,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:Sample",
+          "class": "mds:Sample",
+          "friendly_name": "Sample",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:LaserPower",
+          "class": "mds:LaserPower",
+          "friendly_name": "Laser Power",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "mds:BatchNumber",
+          "class": "mds:BatchNumber",
+          "friendly_name": "Batch Number",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 3,
+          "node_type": "class",
+          "id": "mds:SampleSurfaceQualityChecks",
+          "class": "mds:SampleSurfaceQualityChecks",
+          "friendly_name": "Sample Surface Quality Check",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 4,
+          "node_type": "class",
+          "id": "mds:ManufacturingMethod",
+          "class": "mds:ManufacturingMethod",
+          "friendly_name": "Manufacturing Method",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "mds:hasLaserPower",
+          "friendly_name": "has laser power"
+        },
+        {
+          "start": 0,
+          "end": 2,
+          "relation": "mds:hasBatchNumber",
+          "friendly_name": "has batch number"
+        },
+        {
+          "start": 0,
+          "end": 4,
+          "relation": "mds:hasManufacturingMethod",
+          "friendly_name": "has manufacturing method"
+        },
+        {
+          "start": 3,
+          "end": 0,
+          "relation": "mds:isQualityCheckOf",
+          "friendly_name": "is quality check of"
+        },
+        {
+          "start": 3,
+          "end": 3,
+          "relation": "mds:hasTotalSurfaceRemovalDepth",
+          "friendly_name": "has total surface removal depth"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?sample ?batchNumber ?laserPower ?totalSurfaceRemovalDepth\nWHERE {\n  ?sample a mds:Sample ;\n          mds:hasLaserPower ?laserPower ;\n          mds:hasBatchNumber ?batchNumber ;\n          mds:hasManufacturingMethod ?manufacturingMethod .\n  ?qualityCheck a mds:SampleSurfaceQualityChecks ;\n                mds:isQualityCheckOf ?sample ;\n                mds:hasTotalSurfaceRemovalDepth ?totalSurfaceRemovalDepth .\n  FILTER (?laserPower > 200)\n  FILTER (?totalSurfaceRemovalDepth < 100)\n}\nORDER BY ?batchNumber"
+  }
+]

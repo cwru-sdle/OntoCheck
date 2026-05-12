@@ -269,7 +269,7 @@ def _extract_sparql_from_markdown(md_path):
 # Main Function
 # ---------------------------------------------------------------------------
 
-def task_based_metric(ttl_file, questions, domain_prefixes,
+def task_based_metric_v_0_0_1(ttl_file, questions, domain_prefixes,
                       domain_ns_fragments=None):
     """
     Compute task-based Relevance and Accuracy for an ontology.
@@ -330,7 +330,7 @@ def task_based_metric(ttl_file, questions, domain_prefixes,
 
     Examples
     --------
-    >>> result = task_based_metric(
+    >>> result = task_based_metric_v_0_0_1(
     ...     ttl_file="my_ontology.ttl",
     ...     questions="competency_questions.json",
     ...     domain_prefixes=["mds"],

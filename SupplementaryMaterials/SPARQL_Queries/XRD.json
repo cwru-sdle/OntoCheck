@@ -1,0 +1,892 @@
+[
+  {
+    "qid": 1000000,
+    "question": "What synchrotron facility is this beamline part of?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:SynchrotronFacility",
+          "class": "mds:SynchrotronFacility",
+          "friendly_name": "Synchrotron Facility",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "http://example.org/resource#beamline.001",
+          "class": "mds:Beamline",
+          "friendly_name": "this beamline",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "cco:ont00001857",
+          "friendly_name": "is part of process"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?facility ?label\nWHERE {\n  VALUES ?beamline { <http://example.org/resource#beamline.001> }\n  ?beamline a mds:Beamline .\n  ?beamline cco:ont00001857 ?facility .\n  ?facility a mds:SynchrotronFacility .\n  OPTIONAL { ?facility rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 1000001,
+    "question": "What X-ray detector was used in this experiment?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:XrayDetector",
+          "class": "mds:XrayDetector",
+          "friendly_name": "X-ray Detector",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "http://example.org/resource#recipe.001",
+          "class": "mds:XrayRecipe",
+          "friendly_name": "this experiment",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "obo:BFO_0000057",
+          "friendly_name": "has participant"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?detector ?label\nWHERE {\n  VALUES ?recipe { <http://example.org/resource#recipe.001> }\n  ?recipe a mds:XrayRecipe .\n  ?tool obo:BFO_0000056 ?recipe .\n  ?tool a mds:XrayDetector .\n  BIND(?tool AS ?detector)\n  OPTIONAL { ?detector rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 1000002,
+    "question": "What is the pixel size width of this detector?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:PixelSizeWidth",
+          "class": "mds:PixelSizeWidth",
+          "friendly_name": "Pixel Size Width",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "http://example.org/resource#detector.001",
+          "class": "mds:XrayDetector",
+          "friendly_name": "this detector",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "cco:ont00001904",
+          "friendly_name": "is measured by"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?pixelSizeWidth\nWHERE {\n  VALUES ?detector { <http://example.org/resource#detector.001> }\n  ?detector a mds:XrayDetector .\n  ?detector cco:ont00001904 ?pixelSizeWidth .\n  ?pixelSizeWidth a mds:PixelSizeWidth .\n}"
+  },
+  {
+    "qid": 1000003,
+    "question": "What processing method was used to manufacture this sample?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:ProcessingMethod",
+          "class": "mds:ProcessingMethod",
+          "friendly_name": "Processing Method",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "http://example.org/resource#sample.001",
+          "class": "mds:XraySample",
+          "friendly_name": "this sample",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "obo:BFO_0000057",
+          "friendly_name": "has participant"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?method ?label\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample a mds:XraySample .\n  ?method a mds:ProcessingMethod ;\n          obo:BFO_0000057 ?sample .\n  OPTIONAL { ?method rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 1000004,
+    "question": "What is the chemical formula of this sample?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:ChemicalFormula",
+          "class": "mds:ChemicalFormula",
+          "friendly_name": "Chemical Formula",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "http://example.org/resource#sample.001",
+          "class": "mds:XraySample",
+          "friendly_name": "this sample",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "cco:ont00001879",
+          "friendly_name": "designated by"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?formula\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample a mds:XraySample ;\n          cco:ont00001879 ?formula .\n  ?formula a mds:ChemicalFormula .\n}"
+  },
+  {
+    "qid": 1000005,
+    "question": "What are the lattice parameters determined by Rietveld refinement of this diffraction pattern?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:LatticeParameter",
+          "class": "mds:LatticeParameter",
+          "friendly_name": "Lattice Parameter",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:RietveldRefinement",
+          "class": "mds:RietveldRefinement",
+          "friendly_name": "Rietveld Refinement",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "entity",
+          "id": "http://example.org/resource#pattern.001",
+          "class": "mds:IntegratedDiffractionPattern",
+          "friendly_name": "this diffraction pattern",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 2,
+          "relation": "cco:ont00001921",
+          "friendly_name": "has input"
+        },
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "cco:ont00001986",
+          "friendly_name": "has output"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?latticeParam ?value\nWHERE {\n  VALUES ?pattern { <http://example.org/resource#pattern.001> }\n  ?refinement a mds:RietveldRefinement ;\n              cco:ont00001921 ?pattern ;\n              cco:ont00001986 ?latticeParam .\n  ?latticeParam a mds:LatticeParameter .\n  OPTIONAL { ?latticeParam cco:ont00001769 ?value }\n}"
+  },
+  {
+    "qid": 1000006,
+    "question": "What is the dislocation density obtained from diffraction line profile analysis?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:DislocationDensity",
+          "class": "mds:DislocationDensity",
+          "friendly_name": "Dislocation Density",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:DiffractionLineProfileAnalysis",
+          "class": "mds:DiffractionLineProfileAnalysis",
+          "friendly_name": "Diffraction Line Profile Analysis",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "entity",
+          "id": "http://example.org/resource#pattern.001",
+          "class": "mds:IntegratedDiffractionPattern",
+          "friendly_name": "this diffraction pattern",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 2,
+          "relation": "cco:ont00001921",
+          "friendly_name": "has input"
+        },
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "cco:ont00001986",
+          "friendly_name": "has output"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?dislocationDensity ?value\nWHERE {\n  VALUES ?pattern { <http://example.org/resource#pattern.001> }\n  ?dlpa a mds:DiffractionLineProfileAnalysis ;\n        cco:ont00001921 ?pattern ;\n        cco:ont00001986 ?dislocationDensity .\n  ?dislocationDensity a mds:DislocationDensity .\n  OPTIONAL { ?dislocationDensity cco:ont00001769 ?value }\n}"
+  },
+  {
+    "qid": 1000007,
+    "question": "What phase fractions were determined by Rietveld refinement?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:PhaseFraction",
+          "class": "mds:PhaseFraction",
+          "friendly_name": "Phase Fraction",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "http://example.org/resource#refinement.001",
+          "class": "mds:RietveldRefinement",
+          "friendly_name": "this Rietveld refinement",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "cco:ont00001986",
+          "friendly_name": "has output"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?phaseFraction ?value\nWHERE {\n  VALUES ?refinement { <http://example.org/resource#refinement.001> }\n  ?refinement a mds:RietveldRefinement ;\n              cco:ont00001986 ?phaseFraction .\n  ?phaseFraction a mds:PhaseFraction .\n  OPTIONAL { ?phaseFraction cco:ont00001769 ?value }\n}"
+  },
+  {
+    "qid": 1000008,
+    "question": "What is the beta transus temperature for this titanium alloy sample?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:BetaTitaniumTransusTemperature",
+          "class": "mds:BetaTitaniumTransusTemperature",
+          "friendly_name": "Beta Titanium Transus Temperature",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "http://example.org/resource#sample.001",
+          "class": "mds:XraySample",
+          "friendly_name": "this sample",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "obo:BFO_0000197",
+          "friendly_name": "inheres in"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?transusTemp ?value\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample a mds:XraySample .\n  ?transusTemp a mds:BetaTitaniumTransusTemperature ;\n               obo:BFO_0000197 ?sample .\n  OPTIONAL { ?transusTemp cco:ont00001769 ?value }\n}"
+  },
+  {
+    "qid": 1000009,
+    "question": "What crystal structure does the alpha-titanium phase have?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:CrystalStructure",
+          "class": "mds:CrystalStructure",
+          "friendly_name": "Crystal Structure",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:AlphaTiUnitCell",
+          "class": "mds:AlphaTiUnitCell",
+          "friendly_name": "Alpha-Ti Unit Cell",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "mds:AlphaTiPhase",
+          "class": "mds:AlphaTiPhase",
+          "friendly_name": "Alpha-Titanium Phase",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 2,
+          "end": 1,
+          "relation": "obo:BFO_0000171",
+          "friendly_name": "located in"
+        },
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "obo:BFO_0000196",
+          "friendly_name": "bearer of"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?crystalStructure ?label\nWHERE {\n  ?phase a mds:AlphaTiPhase ;\n         obo:BFO_0000171 ?unitCell .\n  ?unitCell a mds:AlphaTiUnitCell ;\n            obo:BFO_0000196 ?crystalStructure .\n  ?crystalStructure a mds:CrystalStructure .\n  OPTIONAL { ?crystalStructure rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 1000010,
+    "question": "What grain morphology results from rapid solidification in LPBF?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:GrainMorphology",
+          "class": "mds:GrainMorphology",
+          "friendly_name": "Grain Morphology",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:RapidSolidification",
+          "class": "mds:RapidSolidification",
+          "friendly_name": "Rapid Solidification",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "cco:ont00001986",
+          "friendly_name": "has output"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?morphology ?label\nWHERE {\n  ?solidification a mds:RapidSolidification ;\n                  cco:ont00001986 ?morphology .\n  ?morphology a/rdfs:subClassOf* mds:GrainMorphology .\n  OPTIONAL { ?morphology rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 1000011,
+    "question": "What thermal profile was prescribed for this heat treatment?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:ThermalProfile",
+          "class": "mds:ThermalProfile",
+          "friendly_name": "Thermal Profile",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "http://example.org/resource#heattreatment.001",
+          "class": "mds:IsothermalTransformation",
+          "friendly_name": "this heat treatment",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "cco:ont00001808",
+          "friendly_name": "is about"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?thermalProfile\nWHERE {\n  VALUES ?ht { <http://example.org/resource#heattreatment.001> }\n  ?ht a mds:IsothermalTransformation .\n  ?directive cco:ont00001808 ?ht .\n  ?directive a mds:ThermalProfile .\n  BIND(?directive AS ?thermalProfile)\n}"
+  },
+  {
+    "qid": 1000012,
+    "question": "What is the cooling rate used in this continuous cooling transformation experiment?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:CoolingRate",
+          "class": "mds:CoolingRate",
+          "friendly_name": "Cooling Rate",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "http://example.org/resource#cct.001",
+          "class": "mds:ContinuousCoolingTransformation",
+          "friendly_name": "this continuous cooling transformation",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "obo:BFO_0000197",
+          "friendly_name": "inheres in"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?coolingRate ?value\nWHERE {\n  VALUES ?cct { <http://example.org/resource#cct.001> }\n  ?cct a mds:ContinuousCoolingTransformation .\n  ?coolingRate a mds:CoolingRate ;\n              obo:BFO_0000197 ?cct .\n  OPTIONAL { ?coolingRate cco:ont00001769 ?value }\n}"
+  },
+  {
+    "qid": 1000013,
+    "question": "What azimuthal integration parameters were used to produce this 1D diffraction pattern?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:IntegrationOptions",
+          "class": "mds:IntegrationOptions",
+          "friendly_name": "Integration Configuration",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:AzimuthalIntegration",
+          "class": "mds:AzimuthalIntegration",
+          "friendly_name": "Azimuthal Integration",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "entity",
+          "id": "http://example.org/resource#pattern1d.001",
+          "class": "mds:IntegratedDiffractionPattern",
+          "friendly_name": "this 1D pattern",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 2,
+          "relation": "cco:ont00001986",
+          "friendly_name": "has output"
+        },
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "cco:ont00001921",
+          "friendly_name": "has input"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?config\nWHERE {\n  VALUES ?pattern { <http://example.org/resource#pattern1d.001> }\n  ?integration a mds:AzimuthalIntegration ;\n               cco:ont00001986 ?pattern ;\n               cco:ont00001921 ?config .\n  ?config a mds:IntegrationOptions .\n}"
+  },
+  {
+    "qid": 1000014,
+    "question": "What types of solid-state phase transformations are defined in the ontology?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:SolidStatePhaseTransformation",
+          "class": "mds:SolidStatePhaseTransformation",
+          "friendly_name": "Solid State Phase Transformation",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "rdfs:Class",
+          "class": "rdfs:Class",
+          "friendly_name": "subtype",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "rdfs:subClassOf",
+          "friendly_name": "subclass of"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?transformation ?label\nWHERE {\n  ?transformation rdfs:subClassOf mds:SolidStatePhaseTransformation .\n  OPTIONAL { ?transformation rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 1000015,
+    "question": "What beamlines are available at the Advanced Photon Source?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:Beamline",
+          "class": "mds:Beamline",
+          "friendly_name": "Beamline",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:APS",
+          "class": "mds:APS",
+          "friendly_name": "Advanced Photon Source",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "rdfs:subClassOf",
+          "friendly_name": "subclass of (facility)"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?beamline ?label\nWHERE {\n  ?beamline rdfs:subClassOf mds:Beamline .\n  ?beamline rdfs:label ?label .\n  FILTER(CONTAINS(STR(?label), \"APS\"))\n}"
+  },
+  {
+    "qid": 1000016,
+    "question": "What governing laws relate lattice parameters to other measurable quantities?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:GoverningLaw",
+          "class": "mds:GoverningLaw",
+          "friendly_name": "Governing Law",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:LatticeParameter",
+          "class": "mds:LatticeParameter",
+          "friendly_name": "Lattice Parameter",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "owl:Restriction",
+          "class": "owl:Restriction",
+          "friendly_name": "restriction",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 2,
+          "relation": "rdfs:subClassOf",
+          "friendly_name": "subclass of"
+        },
+        {
+          "start": 2,
+          "end": 1,
+          "relation": "cco:ont00001808",
+          "friendly_name": "is about"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX owl: <http://www.w3.org/2002/07/owl#>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?law ?label\nWHERE {\n  ?law rdfs:subClassOf mds:GoverningLaw ;\n       rdfs:subClassOf [ a owl:Restriction ;\n                         owl:onProperty cco:ont00001808 ;\n                         owl:someValuesFrom mds:LatticeParameter ] .\n  OPTIONAL { ?law rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 1000017,
+    "question": "What phase does the beta-titanium phase transform into on cooling?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:CrystallinePhase",
+          "class": "mds:CrystallinePhase",
+          "friendly_name": "Crystalline Phase",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:BetaTiPhase",
+          "class": "mds:BetaTiPhase",
+          "friendly_name": "Beta-Titanium Phase",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "mds:transforms_into",
+          "friendly_name": "transforms into"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX owl: <http://www.w3.org/2002/07/owl#>\nSELECT ?targetPhase ?label\nWHERE {\n  mds:BetaTiPhase rdfs:subClassOf [ a owl:Restriction ;\n                                     owl:onProperty mds:transforms_into ;\n                                     owl:someValuesFrom ?targetPhase ] .\n  OPTIONAL { ?targetPhase rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 1000018,
+    "question": "What is the isothermal hold temperature prescribed for this transformation experiment?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:IsothermalHoldTemperature",
+          "class": "mds:IsothermalHoldTemperature",
+          "friendly_name": "Isothermal Hold Temperature",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "http://example.org/resource#isothermal.001",
+          "class": "mds:IsothermalTransformation",
+          "friendly_name": "this transformation experiment",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "cco:ont00001808",
+          "friendly_name": "is about"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?holdTemp ?value\nWHERE {\n  VALUES ?experiment { <http://example.org/resource#isothermal.001> }\n  ?experiment a mds:IsothermalTransformation .\n  ?directive cco:ont00001808 ?experiment .\n  ?directive cco:ont00001808 ?holdTemp .\n  ?holdTemp a mds:IsothermalHoldTemperature .\n  OPTIONAL { ?holdTemp cco:ont00001769 ?value }\n}"
+  },
+  {
+    "qid": 1000019,
+    "question": "What additive manufacturing processes are defined in the ontology and what solidification behavior do they promote?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:AdditiveManufacturingProcess",
+          "class": "mds:AdditiveManufacturingProcess",
+          "friendly_name": "Additive Manufacturing Process",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:Solidification",
+          "class": "mds:Solidification",
+          "friendly_name": "Solidification",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "rdfs:Class",
+          "class": "rdfs:Class",
+          "friendly_name": "AM subtype",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 2,
+          "end": 0,
+          "relation": "rdfs:subClassOf",
+          "friendly_name": "subclass of"
+        },
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "mds:has_increased_likelihood_of",
+          "friendly_name": "has increased likelihood of"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX owl: <http://www.w3.org/2002/07/owl#>\nSELECT ?amProcess ?amLabel ?solidification ?solidLabel\nWHERE {\n  ?amProcess rdfs:subClassOf mds:AdditiveManufacturingProcess .\n  ?amProcess rdfs:subClassOf [ a owl:Restriction ;\n                                owl:onProperty mds:has_increased_likelihood_of ;\n                                owl:someValuesFrom ?solidification ] .\n  ?solidification rdfs:subClassOf* mds:Solidification .\n  OPTIONAL { ?amProcess rdfs:label ?amLabel }\n  OPTIONAL { ?solidification rdfs:label ?solidLabel }\n}"
+  }
+]

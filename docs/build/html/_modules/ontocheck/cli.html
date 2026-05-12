@@ -49,13 +49,21 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#assessment-modes">Assessment Modes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../usage.html#command-line-interface">Command-Line Interface</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../usage.html#examples">Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#mode-1-task-agnostic-default">Mode 1: Task-Agnostic (default)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#mode-2-task-specific-web-ontology">Mode 2: Task-Specific Web Ontology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#mode-3-task-based-scientific">Mode 3: Task-Based Scientific</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#mode-4-cross-domain">Mode 4: Cross-Domain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#cli-arguments">CLI Arguments</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../usage.html#python-api">Python API</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../usage.html#task-agnostic-assessment">Task-Agnostic Assessment</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../usage.html#task-based-assessment">Task-Based Assessment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#mode-1-task-agnostic-assessment">Mode 1: Task-Agnostic Assessment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#mode-2-task-specific-web-ontology-assessment">Mode 2: Task-Specific Web Ontology Assessment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#mode-3-task-based-scientific-assessment">Mode 3: Task-Based Scientific Assessment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#mode-4-cross-domain-assessment">Mode 4: Cross-Domain Assessment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#underlying-task-based-metric">Underlying Task-Based Metric</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../usage.html#available-metric-names">Available Metric Names</a></li>
@@ -65,12 +73,14 @@
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../api.html#assessment-runner">Assessment Runner</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#assessment-runners">Assessment Runners</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../api.html#ontocheck.run_assessment.run_ontology_assessment"><code class="docutils literal notranslate"><span class="pre">run_ontology_assessment()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#ontocheck.run_assessment.run_web_ontology_assessment"><code class="docutils literal notranslate"><span class="pre">run_web_ontology_assessment()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#ontocheck.run_assessment.run_task_based_assessment"><code class="docutils literal notranslate"><span class="pre">run_task_based_assessment()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../api.html#task-based-assessment">Task-Based Assessment</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../api.html#ontocheck.task_based_metric.task_based_metric"><code class="docutils literal notranslate"><span class="pre">task_based_metric()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#task-based-metric">Task-Based Metric</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#ontocheck.task_based_metric.task_based_metric_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">task_based_metric_v_0_0_1()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../api.html#labeling-metrics">Labeling Metrics</a><ul>
@@ -195,67 +205,220 @@
            <div itemprop="articleBody">
              
   <h1>Source code for ontocheck.cli</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.run_assessment</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_ontology_assessment</span><span class="p">,</span> <span class="n">METRIC_DISPATCHER</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">OntoCheck Command-Line Interface</span>
 
-<div class="viewcode-block" id="main">
-<a class="viewcode-back" href="../../api.html#ontocheck.cli.main">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines and orchestrates the command-line interface for the assessment tool.</span>
+<span class="sd">Provides a unified CLI for all four OntoCheck assessment modes:</span>
 
-<span class="sd">    This function serves as the main entry point when the script is executed</span>
-<span class="sd">    from the command line. It uses `argparse` to define and parse command-line</span>
-<span class="sd">    arguments, provides help text to the user, and handles the special &#39;all&#39;</span>
+<span class="sd">    Mode 1 -- Task-agnostic (default)</span>
+<span class="sd">    Mode 2 -- Task-specific Web ontology</span>
+<span class="sd">    Mode 3 -- Task-based Scientific ontology</span>
+<span class="sd">    Mode 4 -- Cross-Domain ontology</span>
 
-<span class="sd">    keyword for running all available metrics. It then calls the primary</span>
-<span class="sd">    `run_ontology_assessment` function with the user-provided arguments.</span>
+<span class="sd">Author: Redad Mehdi</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">    Author = &quot;Redad Mehdi&quot;</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">.run_assessment</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">METRIC_DISPATCHER</span><span class="p">,</span>
+    <span class="n">run_ontology_assessment</span><span class="p">,</span>
+    <span class="n">run_task_based_assessment</span><span class="p">,</span>
+    <span class="n">run_web_ontology_assessment</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">_MODE_HELP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s2">Assessment mode (default: 1).</span>
+
+<span class="s2">  1  Task-agnostic     -- Run structural/labeling/accessibility metrics.</span>
+<span class="s2">                          Requires: --metrics</span>
+<span class="s2">  2  Task-specific Web -- Validate against KGQA benchmark queries over a</span>
+<span class="s2">                          knowledge graph (e.g., LC-QuAD / DBpedia).</span>
+<span class="s2">                          Requires: --questions, --domain-prefixes,</span>
+<span class="s2">                                    --knowledge-graph</span>
+<span class="s2">  3  Task-based        -- Assess a domain ontology against competency</span>
+<span class="s2">                          questions encoded as SPARQL queries.</span>
+<span class="s2">                          Requires: --questions, --domain-prefixes</span>
+<span class="s2">  4  Cross-Domain      -- Merge multiple ontologies and assess against</span>
+<span class="s2">                          cross-domain competency questions.</span>
+<span class="s2">                          Requires: multiple ttl_files, --questions,</span>
+<span class="s2">                                    --domain-prefixes</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_build_parser</span><span class="p">():</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Run ontology assessment metrics on a TTL file.&quot;</span><span class="p">,</span>
-        <span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">RawTextHelpFormatter</span> <span class="c1"># For better help text formatting</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;OntoCheck: Query-Driven Ontology Assessment.&quot;</span><span class="p">,</span>
+        <span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">RawTextHelpFormatter</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s2">&quot;ttl_file&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The full path to the input TTL ontology file.&quot;</span>
+        <span class="s2">&quot;ttl_files&quot;</span><span class="p">,</span>
+        <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path(s) to input Turtle (.ttl) ontology file(s).</span><span class="se">\n</span><span class="s2">&quot;</span>
+             <span class="s2">&quot;Mode 4 requires two or more files.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--mode&quot;</span><span class="p">,</span>
+        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">,</span> <span class="s2">&quot;4&quot;</span><span class="p">],</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="n">_MODE_HELP</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s2">&quot;--metrics&quot;</span><span class="p">,</span>
         <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;One or more metric names to run, or &#39;all&#39; to run every metric. </span><span class="se">\n</span><span class="s2">Available metrics: </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">METRIC_DISPATCHER</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Task-agnostic metric names to run, or &#39;all&#39;.</span><span class="se">\n</span><span class="s2">&quot;</span>
+             <span class="s2">&quot;Required for Mode 1. Optional for Modes 2-4.</span><span class="se">\n</span><span class="s2">&quot;</span>
+             <span class="s2">&quot;Available metrics:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">METRIC_DISPATCHER</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--questions&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to a competency-question file (.json or .md)</span><span class="se">\n</span><span class="s2">&quot;</span>
+             <span class="s2">&quot;containing SPARQL queries. Required for Modes 2, 3, 4.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--domain-prefixes&quot;</span><span class="p">,</span>
+        <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Namespace prefixes used in the SPARQL queries</span><span class="se">\n</span><span class="s2">&quot;</span>
+             <span class="s1">&#39;(e.g., --domain-prefixes mds). Required for Modes 2, 3, 4.&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--domain-ns-fragments&quot;</span><span class="p">,</span>
+        <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Namespace URI fragments to restrict domain-term filtering</span><span class="se">\n</span><span class="s2">&quot;</span>
+             <span class="s2">&quot;(e.g., --domain-ns-fragments cwrusdle.bitbucket.io/mds).</span><span class="se">\n</span><span class="s2">&quot;</span>
+             <span class="s2">&quot;Optional for Modes 2, 3, 4.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--knowledge-graph&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to a knowledge-graph file (Turtle/RDF).</span><span class="se">\n</span><span class="s2">&quot;</span>
+             <span class="s2">&quot;Required for Mode 2.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s2">&quot;--log-file&quot;</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;assessment.log&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to save the log file (default: assessment.log).&quot;</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to save the log file (default: assessment.log).&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s2">&quot;--csv-file&quot;</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;assessment_scores.csv&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to save the CSV results file (default: assessment_scores.csv).&quot;</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to save the CSV results file</span><span class="se">\n</span><span class="s2">&quot;</span>
+             <span class="s2">&quot;(default: assessment_scores.csv).&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
+    <span class="k">return</span> <span class="n">parser</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_validate_args</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate that required arguments are present for the selected mode.&quot;&quot;&quot;</span>
+    <span class="n">mode</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">mode</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;1&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">metrics</span><span class="p">:</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Mode 1 requires --metrics (metric names or &#39;all&#39;).&quot;</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;2&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">questions</span><span class="p">:</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Mode 2 requires --questions.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">domain_prefixes</span><span class="p">:</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Mode 2 requires --domain-prefixes.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">knowledge_graph</span><span class="p">:</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Mode 2 requires --knowledge-graph.&quot;</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;3&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">questions</span><span class="p">:</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Mode 3 requires --questions.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">domain_prefixes</span><span class="p">:</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Mode 3 requires --domain-prefixes.&quot;</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;4&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">ttl_files</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Mode 4 requires two or more ontology files.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">questions</span><span class="p">:</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Mode 4 requires --questions.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">domain_prefixes</span><span class="p">:</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Mode 4 requires --domain-prefixes.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error:&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">errors</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../api.html#ontocheck.cli.main">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Entry point for the ``ontocheck`` command.&quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">_build_parser</span><span class="p">()</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">_validate_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
-    <span class="c1"># Logic to handle the &#39;all&#39; keyword</span>
-    <span class="n">metrics_to_run</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">metrics</span>
-    <span class="k">if</span> <span class="s2">&quot;all&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_run</span><span class="p">:</span>
-        <span class="n">metrics_to_run</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">METRIC_DISPATCHER</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">mode</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">mode</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--- Running assessment via command line ---&quot;</span><span class="p">)</span>
-    <span class="n">run_ontology_assessment</span><span class="p">(</span>
-        <span class="n">ttl_file</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">ttl_file</span><span class="p">,</span>
-        <span class="n">metrics</span><span class="o">=</span><span class="n">metrics_to_run</span><span class="p">,</span>
-        <span class="n">output_log_file</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">log_file</span><span class="p">,</span>
-        <span class="n">output_csv_file</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">csv_file</span>
-    <span class="p">)</span></div>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;1&quot;</span><span class="p">:</span>
+        <span class="n">metrics_to_run</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">metrics</span>
+        <span class="k">if</span> <span class="s2">&quot;all&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_run</span><span class="p">:</span>
+            <span class="n">metrics_to_run</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">METRIC_DISPATCHER</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--- Mode 1: Task-agnostic Assessment ---&quot;</span><span class="p">)</span>
+        <span class="n">run_ontology_assessment</span><span class="p">(</span>
+            <span class="n">ttl_file</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">ttl_files</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">metrics</span><span class="o">=</span><span class="n">metrics_to_run</span><span class="p">,</span>
+            <span class="n">output_log_file</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">log_file</span><span class="p">,</span>
+            <span class="n">output_csv_file</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">csv_file</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;2&quot;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--- Mode 2: Task-specific Web Ontology Assessment ---&quot;</span><span class="p">)</span>
+        <span class="n">run_web_ontology_assessment</span><span class="p">(</span>
+            <span class="n">ttl_file</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">ttl_files</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">questions</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">questions</span><span class="p">,</span>
+            <span class="n">domain_prefixes</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">domain_prefixes</span><span class="p">,</span>
+            <span class="n">knowledge_graph</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">knowledge_graph</span><span class="p">,</span>
+            <span class="n">domain_ns_fragments</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">domain_ns_fragments</span><span class="p">,</span>
+            <span class="n">metrics</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">metrics</span><span class="p">,</span>
+            <span class="n">output_log_file</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">log_file</span><span class="p">,</span>
+            <span class="n">output_csv_file</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">csv_file</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;3&quot;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--- Mode 3: Task-based Scientific Ontology Assessment ---&quot;</span><span class="p">)</span>
+        <span class="n">run_task_based_assessment</span><span class="p">(</span>
+            <span class="n">ttl_files</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">ttl_files</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">questions</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">questions</span><span class="p">,</span>
+            <span class="n">domain_prefixes</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">domain_prefixes</span><span class="p">,</span>
+            <span class="n">domain_ns_fragments</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">domain_ns_fragments</span><span class="p">,</span>
+            <span class="n">metrics</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">metrics</span><span class="p">,</span>
+            <span class="n">output_log_file</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">log_file</span><span class="p">,</span>
+            <span class="n">output_csv_file</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">csv_file</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;4&quot;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--- Mode 4: Cross-Domain Ontology Assessment ---&quot;</span><span class="p">)</span>
+        <span class="n">run_task_based_assessment</span><span class="p">(</span>
+            <span class="n">ttl_files</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">ttl_files</span><span class="p">,</span>
+            <span class="n">questions</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">questions</span><span class="p">,</span>
+            <span class="n">domain_prefixes</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">domain_prefixes</span><span class="p">,</span>
+            <span class="n">domain_ns_fragments</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">domain_ns_fragments</span><span class="p">,</span>
+            <span class="n">metrics</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">metrics</span><span class="p">,</span>
+            <span class="n">output_log_file</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">log_file</span><span class="p">,</span>
+            <span class="n">output_csv_file</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">csv_file</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>

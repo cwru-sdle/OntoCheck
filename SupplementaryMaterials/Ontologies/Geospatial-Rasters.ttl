@@ -1,0 +1,530 @@
+@prefix cco: <https://www.commoncoreontologies.org/> .
+@prefix mds: <https://cwrusdle.bitbucket.io/mds/> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+qudt:hasUnit a owl:DatatypeProperty ;
+    rdfs:domain mds:SpatialResolution ;
+    rdfs:range xsd:string ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+qudt:numericValue a owl:DatatypeProperty ;
+    rdfs:domain mds:SpatialResolution ;
+    rdfs:range xsd:decimal ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:acquiredOn a owl:ObjectProperty ;
+    rdfs:domain mds:GeospatialRaster ;
+    rdfs:range mds:AcquisitionDate ;
+    skos:definition "Indicates the datetime that the data was acquired " ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:containsBand a owl:ObjectProperty ;
+    rdfs:domain mds:GeospatialRaster ;
+    rdfs:range mds:Band ;
+    skos:definition "Indicates the band contained by the raster." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:containsGeospatialProperty a owl:ObjectProperty ;
+    rdfs:domain mds:GeospatialRaster ;
+    rdfs:range mds:GeospatialProperty ;
+    skos:definition "Indicates which geospatial property is represented by the data." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:generatedBySatellite a owl:ObjectProperty ;
+    rdfs:domain mds:GeospatialRaster ;
+    rdfs:range mds:Satellite ;
+    skos:definition "Indicates the satellite that generated the data." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:generatedBySensor a owl:ObjectProperty ;
+    rdfs:domain mds:GeospatialRaster ;
+    rdfs:range mds:Sensor ;
+    skos:definition "Indicates which instrument or sensor on a satellite generated the data." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:hasFileFormat a owl:ObjectProperty ;
+    rdfs:domain mds:GeospatailRaster ;
+    rdfs:range mds:FileFormat ;
+    skos:definition "Indicates the file format of the data." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:hasGeospatialBoundingBox a owl:ObjectProperty ;
+    rdfs:domain mds:GeospatialRaster ;
+    rdfs:range mds:GeospatialRegionBoundingBox ;
+    skos:definition "Indicates the bounding box encapsulated by the geospatial data." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:hasMaximumLatitude a owl:DatatypeProperty ;
+    rdfs:domain mds:GeospatialRegionBoundingBox ;
+    rdfs:range xsd:decimal ;
+    skos:definition "Denotes the maximum latitudinal value of a geospatial region bounding box." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:hasMaximumLongitude a owl:DatatypeProperty ;
+    rdfs:domain mds:GeospatialRegionBoundingBox ;
+    rdfs:range xsd:decimal ;
+    skos:definition "Denotes the maximum longitudinal value of a geospatial region bounding box." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:hasMinimumLatitude a owl:DatatypeProperty ;
+    rdfs:domain mds:GeospatialRegionBoundingBox ;
+    rdfs:range xsd:decimal ;
+    skos:definition "Denotes the minimum latitudinal value of a geospatial region bounding box." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:hasMinimumLongitude a owl:DatatypeProperty ;
+    rdfs:domain mds:GeospatialRegionBoundingBox ;
+    rdfs:range xsd:decimal ;
+    skos:definition "Denotes the minimum longitudinal value of a geospatial region bounding box." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:hasOwner a owl:ObjectProperty ;
+    rdfs:domain mds:GeospatialRaster ;
+    rdfs:range mds:Owner ;
+    skos:definition "Indicates the original owner of the data." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:hasPixelHeight a owl:DatatypeProperty ;
+    rdfs:domain mds:PixelInformation ;
+    rdfs:range xsd:decimal ;
+    skos:definition "Indicates the number of pixels that represent the height of the raster" ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:hasPixelInformation a owl:ObjectProperty ;
+    rdfs:domain mds:GeospatialRaster ;
+    rdfs:range mds:PixelInformation ;
+    skos:definition "Specifies information about the raster pixels." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:hasPixelResolution a owl:DatatypeProperty ;
+    rdfs:domain mds:PixelInformation ;
+    rdfs:range xsd:decimal ;
+    skos:definition "Indicates the size of a pixel in terms of the units of the raster" ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:hasPixelWidth a owl:DatatypeProperty ;
+    rdfs:domain mds:PixelInformation ;
+    rdfs:range xsd:decimal ;
+    skos:definition "Indicates the number of pixels that represent the width of the raster" ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:hasProcessingLevel a owl:DatatypeProperty ;
+    rdfs:domain mds:ProcessingAlgorithm ;
+    rdfs:range xsd:string ;
+    skos:definition "Describes the level to which the data has been processed." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:hasProcessingQuality a owl:DatatypeProperty ;
+    rdfs:domain mds:ProcessingAlgorithm ;
+    rdfs:range xsd:string ;
+    skos:definition "Describes the quality of the processing done to the data." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:hasProcessingStatus a owl:DatatypeProperty ;
+    rdfs:domain mds:ProcessingAlgorithm ;
+    rdfs:range xsd:string ;
+    skos:definition "Indicates the status of the processing on the data." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:hasSpatialResolution a owl:ObjectProperty ;
+    rdfs:domain mds:GeospatialRaster ;
+    rdfs:range mds:SpatialResolution ;
+    skos:definition "Specifies the spatial resolution of the data." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:hasTemporalResolution a owl:ObjectProperty ;
+    rdfs:domain mds:GeospatialRaster ;
+    rdfs:range mds:TemporalResolution ;
+    skos:definition "Specifies the temporal resolution of the data." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:occupiesSpatialRegion a owl:ObjectProperty ;
+    rdfs:domain mds:GeospatialRaster ;
+    rdfs:range mds:Geohash ;
+    skos:definition "Indicates the geohash spatial region occupied by the data scope." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:processedUsing a owl:ObjectProperty ;
+    rdfs:domain mds:GeospatialRaster ;
+    rdfs:range mds:ProcessingAlgorithm ;
+    skos:definition "Specifies how the data was processed." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:usesCompressionMethod a owl:DatatypeProperty ;
+    rdfs:domain mds:GeospatialRaster ;
+    rdfs:range xsd:string ;
+    skos:definition "Indicates the compression method  for the data." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:usesLicense a owl:ObjectProperty ;
+    rdfs:domain mds:GeospatialRaster ;
+    rdfs:range mds:License ;
+    skos:definition "Designates the license by which the data was collected." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:usesSpatialReferenceSystem a owl:ObjectProperty ;
+    rdfs:domain mds:GeospatialRaster ;
+    rdfs:range mds:SpatialReferenceSystem ;
+    skos:definition "Indicates the spatial reference system or coordinate reference system used by the data" ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:AcquisitionDate a owl:Class ;
+    rdfs:label "AcquisitionDate" ;
+    rdfs:subClassOf cco:ont00000529 ;
+    skos:altLabel "CaptureDate",
+        "DataCollectionDate",
+        "ObservationDate" ;
+    skos:definition "Datetime when the sensing instrument collected the data used to create the raster image." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:Elevation a owl:Class ;
+    rdfs:label "Elevation" ;
+    rdfs:subClassOf mds:GeospatialProperty ;
+    skos:altLabel "DigitalElevationModel",
+        "HeightAboveSeaLevel" ;
+    skos:definition "Elevation above sea level.",
+        "Geospatial property describing the height of a land surface above sea level." ;
+    skos:exactMatch mds:Elevation ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:FileFormat a owl:Class ;
+    rdfs:label "FileFormat" ;
+    rdfs:subClassOf cco:ont00000686 ;
+    skos:altLabel "DataFormat",
+        "FileExtension",
+        "FileType" ;
+    skos:definition "Type of file storing the data ." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:GeospatiotemporalData a owl:Class .
+
+mds:Satellite a owl:Class ;
+    rdfs:label "Satellite" ;
+    rdfs:subClassOf cco:ont00000352 ;
+    skos:altLabel "EarthObservationSatellite",
+        "Spacecraft" ;
+    skos:definition "A spacecraft that serves as a platform for the remote sensing instruments to acquire the image data." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:SpatialReferenceSystem a owl:Class ;
+    rdfs:label "SpatialReferenceSystem" ;
+    rdfs:subClassOf cco:ont00000469 ;
+    skos:altLabel "CoordinateReferenceSystem",
+        "GeospatialCoordinateReferenceSystem" ;
+    skos:definition "Reference system that defines how a two-dimensional projected map relates to real places on the earth's three-dimensional surface." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+cco:ont00001908 a owl:NamedIndividual,
+        owl:ObjectProperty ;
+    rdfs:label "uses time zone identifier"@en ;
+    rdfs:domain mds:GeospatialRaster,
+        cco:ont00000253 ;
+    rdfs:range mds:TimeZone,
+        cco:ont00000829 ;
+    skos:definition "Indicates the time zone used by the data.",
+        "x uses_time_zone_identifier y iff x is an instance of Information Bearing Entity and y is an instance of Time Zone Identifier, such that y designates the spatial region associated with the time zone mentioned in x."@en ;
+    skos:exactMatch cco:ont00001908 ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+obo:BFO_0000019 a owl:Class ;
+    rdfs:label "quality"@en ;
+    skos:definition "(Elucidation) A quality is a specifically dependent continuant that, in contrast to roles and dispositions, does not require any further process in order to be realized"@en ;
+    skos:exactMatch obo:BFO_0000019 .
+
+mds:Band a owl:Class ;
+    rdfs:label "Band" ;
+    rdfs:subClassOf cco:ont00000702 ;
+    skos:altLabel "RasterBand",
+        "RasterLayer" ;
+    skos:definition " ",
+        "A single channel or range of the electromagnetic spectrum recorded by the sensor." ;
+    skos:exactMatch mds:Band .
+
+mds:Geohash a owl:Class ;
+    rdfs:label "Geohash" ;
+    rdfs:subClassOf cco:ont00000472 ;
+    skos:altLabel "GeoCode",
+        "GeographicHash",
+        "LocationHash" ;
+    skos:definition " ",
+        "String encoding of geographic location in EPSG:4326/WGS:84 coordinate reference system using base-32 system and Z-order curve." ;
+    skos:exactMatch mds:Geohash .
+
+mds:Image a owl:Class ;
+    rdfs:label "Image" ;
+    skos:definition " " ;
+    skos:exactMatch mds:Image .
+
+mds:License a owl:Class ;
+    rdfs:label "License" ;
+    rdfs:subClassOf cco:ont00000958 ;
+    skos:altLabel "Copyright",
+        "DataAccessConstraints",
+        "UsageRights" ;
+    skos:definition " ",
+        "The legal terms and conditions under which the raster image data can be used." ;
+    skos:exactMatch mds:License .
+
+mds:Owner a owl:Class ;
+    rdfs:label "Owner" ;
+    rdfs:subClassOf cco:ont00001017 ;
+    skos:altLabel "DataCustodian",
+        "DataOwner",
+        "Provider",
+        "Publisher" ;
+    skos:definition " ",
+        "The entity  responsible for or holding rights to the dataset." ;
+    skos:exactMatch mds:Owner .
+
+mds:Sensor a owl:Class ;
+    rdfs:label "Sensor" ;
+    rdfs:subClassOf cco:ont00000771 ;
+    skos:altLabel "Imager",
+        "ImagingInstrument",
+        "SensorInstrument" ;
+    skos:definition " ",
+        "The instrument on the satellite that collects the data." ;
+    skos:exactMatch mds:Sensor .
+
+mds:TemporalResolution a owl:Class ;
+    rdfs:label "TemporalResolution" ;
+    rdfs:subClassOf cco:ont00001357 ;
+    skos:altLabel "TimeInterval",
+        "TimeResolution" ;
+    skos:definition " ",
+        "The frequency of coverage of a geographic location by images or data." ;
+    skos:exactMatch mds:TemporalResolution .
+
+mds:TimeZone a owl:Class ;
+    rdfs:label "TimeZone" ;
+    rdfs:subClassOf cco:ont00000829 ;
+    skos:altLabel "LongitudinalDivision",
+        "TimeBelt",
+        "TimeRegion" ;
+    skos:definition " ",
+        "The timezone of the image datetime." ;
+    skos:exactMatch mds:TimeZone ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+cco:ont00000217 a owl:Class ;
+    rdfs:label "Measurement Unit of Area"@en ;
+    skos:definition "A Measurement Unit that is used as a standard for measurement of two-dimensional regions or Geospatial Regions."@en ;
+    skos:exactMatch cco:ont00000217 .
+
+cco:ont00000352 a owl:Class ;
+    rdfs:label "Satellite Artifact"@en ;
+    skos:definition "A Spacecraft that is designed to Orbit a Space Object (typically Earth)."@en ;
+    skos:exactMatch cco:ont00000352 .
+
+cco:ont00000358 a owl:Class ;
+    rdfs:label "Geospatial Region Bounding Box"@en ;
+    skos:definition "A Geospatial Polygon that has some Geospatial Region as a non-tangential proper part."@en ;
+    skos:exactMatch cco:ont00000358 .
+
+cco:ont00000469 a owl:Class ;
+    rdfs:label "Geospatial Coordinate Reference System"@en ;
+    skos:definition "A Spatial Reference System that is used to determine and identify the location of a point or object at or near the surface of the Earth."@en ;
+    skos:exactMatch cco:ont00000469 .
+
+cco:ont00000472 a owl:Class ;
+    rdfs:label "Geospatial Region"@en ;
+    skos:definition "A Site that is at or near the surface of the Earth."@en ;
+    skos:exactMatch cco:ont00000472 .
+
+cco:ont00000529 a owl:Class ;
+    rdfs:label "Date Identifier"@en ;
+    skos:definition "A Temporal Interval Identifier that designates some Day."@en ;
+    skos:exactMatch cco:ont00000529 .
+
+cco:ont00000686 a owl:Class ;
+    rdfs:label "Designative Information Content Entity"@en ;
+    skos:definition "An Information Content Entity that consists of a set of symbols that denote some Entity."@en ;
+    skos:exactMatch cco:ont00000686 .
+
+cco:ont00000702 a owl:Class ;
+    rdfs:label "Image"@en ;
+    skos:definition "An Information Bearing Artifact that is designed to carry an Information Content Entity that represents some entity owing to a visual isomorphism between the carrying artifact and the entity."@en ;
+    skos:exactMatch cco:ont00000702 .
+
+cco:ont00000771 a owl:Class ;
+    rdfs:label "Imaging Instrument"@en ;
+    skos:definition "A Material Artifact that is designed to produce images (visual representations) of an entity."@en ;
+    skos:exactMatch cco:ont00000771 .
+
+cco:ont00000958 a owl:Class ;
+    rdfs:label "Information Content Entity"@en ;
+    skos:definition "A Generically Dependent Continuant that generically depends on some Information Bearing Entity and stands in relation of aboutness to some Entity."@en ;
+    skos:exactMatch cco:ont00000958 .
+
+cco:ont00001017 a owl:Class ;
+    rdfs:label "Agent"@en ;
+    skos:definition "A Material Entity that bears an Agent Capability."@en ;
+    skos:exactMatch cco:ont00001017 .
+
+cco:ont00001158 a owl:Class ;
+    rdfs:label "Act of Data Transformation"@en ;
+    skos:definition "An Act of Information Processing in which an algorithm is executed to act upon one or more input Information Content Entities into one or more output Information Content Entities."@en ;
+    skos:exactMatch cco:ont00001158 .
+
+cco:ont00001163 a owl:Class ;
+    rdfs:label "Measurement Information Content Entity"@en ;
+    skos:definition "A Descriptive Information Content Entity that describes the extent, dimensions, quantity, or quality of an Entity relative to some standard."@en ;
+    skos:exactMatch cco:ont00001163 .
+
+cco:ont00001357 a owl:Class ;
+    rdfs:label "Measurement Unit of Time"@en ;
+    skos:definition "A Measurement Unit that is used as a standard for measurement of temporal regions."@en ;
+    skos:exactMatch cco:ont00001357 .
+
+mds:GeospatialProperty a owl:Class ;
+    rdfs:label "GeospatialProperty" ;
+    rdfs:subClassOf cco:ont00001163 ;
+    skos:altLabel "DataVariable",
+        "GeospatialAttribute",
+        "MeasurementType" ;
+    skos:definition " ",
+        "The attribute or variable represented by the raster image's pixel values at a given location ." ;
+    skos:exactMatch mds:GeospatialProperty ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+cco:ont00000829 a owl:Class ;
+    rdfs:label "Time Zone Identifier"@en ;
+    skos:definition "A Spatial Region Identifier that designates the region associated with some uniform standard time for legal, commercial, or social purposes."@en ;
+    skos:exactMatch cco:ont00000829 .
+
+mds:PixelInformation a owl:Class ;
+    rdfs:label "PixelInformation" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:altLabel "NumberOfPixels",
+        "PixelCount",
+        "PixelResolution",
+        "PixelSize" ;
+    skos:definition "Information about the pixels of the raster." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:ProcessingAlgorithm a owl:Class ;
+    rdfs:label "ProcessingAlgorithm" ;
+    rdfs:subClassOf cco:ont00001158 ;
+    skos:altLabel "AppliedAlgorithm",
+        "ProcessingMethod",
+        "ProcessingTechnique" ;
+    skos:definition "Processing algorithms applied to the raster" ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:SpatialResolution a owl:Class ;
+    rdfs:label "SpatialResolution" ;
+    rdfs:subClassOf cco:ont00000217 ;
+    skos:altLabel "CellResolution" ;
+    skos:definition " ",
+        "The dimension of the area covered on the ground and represented by a single cell in the image." ;
+    skos:exactMatch mds:SpatialResolution ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+
+mds:GeospatialRegionBoundingBox a owl:Class ;
+    rdfs:label "GeospatialRegionBoundingBox" ;
+    rdfs:subClassOf cco:ont00000358 ;
+    skos:altLabel "BoundingBox",
+        "SpatialBoundingBox" ;
+    skos:definition "Rectangular box defined by two points of a geographical area ." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain " " .
+
+xsd:string skos:exactMatch xsd:string .
+
+xsd:decimal skos:exactMatch xsd:decimal .
+
+mds:GeospatialRaster a owl:Class ;
+    rdfs:label "GeospatialRaster" ;
+    rdfs:subClassOf mds:GeospatiotemporalData,
+        mds:Image ;
+    skos:altLabel "GeospatialImage",
+        "SpatialImage" ;
+    skos:definition "Raster representing some geospatial property with location information." ;
+    mds:hasDomain "Geo" ;
+    mds:hasStudyStage " ";
+    mds:hasSubDomain "Raster" .
+

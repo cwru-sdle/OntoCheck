@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "OntoCheck"
-version = "0.0.4.0"
+version = "0.0.6.0"
 
 authors = [
   { name = "Rishabh Kundu, Van Tran, Redad Mehdi, Ethan Frakes, Abhishek Daundkar, Maliesha Sumudumalie, Vibha S. Mandayam, Jacob A. Lample, Mengjie Li, Laura S. Bruckman, Erika I. Barcelos, Alp Sehirlioglu, Yinghui Wu, Roger H. French", email = "rxf131@case.edu" },
@@ -20,7 +20,7 @@ requires-python = ">=3.8"
 license = { file="LICENSE" }
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
+    "License :: Other/Proprietary License",
     "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering",
 ]

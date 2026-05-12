@@ -1,0 +1,2437 @@
+[
+  {
+    "qid": 2000000,
+    "question": "What material samples are available in the dataset, and what is the material class (metal/ceramic/polymer, composite) of each?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "matsci:MaterialSample",
+          "class": "matsci:MaterialSample",
+          "friendly_name": "Material Sample",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:MaterialClass",
+          "class": "matsci:MaterialClass",
+          "friendly_name": "Material Class",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "rdf:type",
+          "friendly_name": "is classified as"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?sample ?materialClass ?label\nWHERE {\n  ?sample a matsci:MaterialSample .\n  ?sample a ?materialClass .\n  ?materialClass rdfs:subClassOf* matsci:MaterialClass .\n  OPTIONAL { ?materialClass rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 2000001,
+    "question": "What is the identifier/name assigned to each material specimen, and by whom was it assigned?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#specimen.001",
+          "class": "matsci:Specimen",
+          "friendly_name": "this specimen",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:Identifier",
+          "class": "matsci:Identifier",
+          "friendly_name": "Identifier",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "matsci:Agent",
+          "class": "matsci:Agent",
+          "friendly_name": "Agent",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "cco:ont00001879",
+          "friendly_name": "designated by"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "relation": "cco:ont00001803",
+          "friendly_name": "assigned by"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?specimen ?identifier ?agent ?label\nWHERE {\n  ?specimen a matsci:Specimen .\n  ?specimen cco:ont00001879 ?identifier .\n  ?identifier a matsci:Identifier .\n  OPTIONAL { ?identifier cco:ont00001803 ?agent .\n             ?agent a matsci:Agent }\n  OPTIONAL { ?identifier rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 2000002,
+    "question": "What is the physical state (solid/liquid/gas/powder) of each material sample at the time of processing or characterization?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#sample.001",
+          "class": "matsci:MaterialSample",
+          "friendly_name": "this sample",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:PhysicalState",
+          "class": "matsci:PhysicalState",
+          "friendly_name": "Physical State",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "obo:BFO_0000197",
+          "friendly_name": "inheres in"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?state ?label\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample a matsci:MaterialSample .\n  ?state a matsci:PhysicalState ;\n         obo:BFO_0000197 ?sample .\n  OPTIONAL { ?state rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 2000003,
+    "question": "What is the chemical composition of a given material specimen, including all constituent elements or compounds and their respective fractions?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#specimen.001",
+          "class": "matsci:Specimen",
+          "friendly_name": "this specimen",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:ChemicalComposition",
+          "class": "matsci:ChemicalComposition",
+          "friendly_name": "Chemical Composition",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "matsci:Constituent",
+          "class": "matsci:Constituent",
+          "friendly_name": "Constituent Element/Compound",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "cco:ont00001879",
+          "friendly_name": "designated by"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "relation": "obo:BFO_0000051",
+          "friendly_name": "has part"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?composition ?constituent ?fraction ?label\nWHERE {\n  VALUES ?specimen { <http://example.org/resource#specimen.001> }\n  ?specimen a matsci:Specimen .\n  ?specimen cco:ont00001879 ?composition .\n  ?composition a matsci:ChemicalComposition ;\n               obo:BFO_0000051 ?constituent .\n  ?constituent a matsci:Constituent .\n  OPTIONAL { ?constituent cco:ont00001769 ?fraction }\n  OPTIONAL { ?constituent rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 2000004,
+    "question": "What dimensional specifications (length, width, height, thickness) are recorded for a material specimen?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#specimen.001",
+          "class": "matsci:Specimen",
+          "friendly_name": "this specimen",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:DimensionalSpecification",
+          "class": "matsci:DimensionalSpecification",
+          "friendly_name": "Dimensional Specification",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "cco:ont00001904",
+          "friendly_name": "is measured by"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?dimension ?value ?label\nWHERE {\n  VALUES ?specimen { <http://example.org/resource#specimen.001> }\n  ?specimen a matsci:Specimen .\n  ?specimen cco:ont00001904 ?dimension .\n  ?dimension a matsci:DimensionalSpecification .\n  OPTIONAL { ?dimension cco:ont00001769 ?value }\n  OPTIONAL { ?dimension rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 2000005,
+    "question": "What is the mass or volume of a material specimen as recorded in the dataset?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#specimen.001",
+          "class": "matsci:Specimen",
+          "friendly_name": "this specimen",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:MassOrVolume",
+          "class": "matsci:MassOrVolume",
+          "friendly_name": "Mass or Volume",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "cco:ont00001904",
+          "friendly_name": "is measured by"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?quantity ?value ?label\nWHERE {\n  VALUES ?specimen { <http://example.org/resource#specimen.001> }\n  ?specimen a matsci:Specimen .\n  ?specimen cco:ont00001904 ?quantity .\n  { ?quantity a matsci:Mass } UNION { ?quantity a matsci:Volume }\n  OPTIONAL { ?quantity cco:ont00001769 ?value }\n  OPTIONAL { ?quantity rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 2000006,
+    "question": "What material samples share the same chemical composition but were produced by different manufacturing processes?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "matsci:MaterialSample",
+          "class": "matsci:MaterialSample",
+          "friendly_name": "Material Sample",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:ChemicalComposition",
+          "class": "matsci:ChemicalComposition",
+          "friendly_name": "Chemical Composition",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "matsci:ManufacturingProcess",
+          "class": "matsci:ManufacturingProcess",
+          "friendly_name": "Manufacturing Process",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "cco:ont00001879",
+          "friendly_name": "designated by"
+        },
+        {
+          "start": 2,
+          "end": 0,
+          "relation": "obo:BFO_0000057",
+          "friendly_name": "has participant"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?sample1 ?sample2 ?composition ?process1 ?process2\nWHERE {\n  ?sample1 a matsci:MaterialSample ;\n           cco:ont00001879 ?composition .\n  ?sample2 a matsci:MaterialSample ;\n           cco:ont00001879 ?composition .\n  ?process1 obo:BFO_0000057 ?sample1 ;\n            a matsci:ManufacturingProcess .\n  ?process2 obo:BFO_0000057 ?sample2 ;\n            a matsci:ManufacturingProcess .\n  FILTER(?sample1 != ?sample2 && STR(?process1) != STR(?process2))\n}"
+  },
+  {
+    "qid": 2000007,
+    "question": "What is the aggregate state or phase (crystalline, amorphous, multiphase) of a material at a given stage of its lifecycle?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#material.001",
+          "class": "matsci:MaterialSample",
+          "friendly_name": "this material",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:CrystallinePhase",
+          "class": "matsci:CrystallinePhase",
+          "friendly_name": "Phase / Aggregate State",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "matsci:LifecycleStage",
+          "class": "matsci:LifecycleStage",
+          "friendly_name": "Lifecycle Stage",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "obo:BFO_0000197",
+          "friendly_name": "inheres in"
+        },
+        {
+          "start": 0,
+          "end": 2,
+          "relation": "obo:BFO_0000056",
+          "friendly_name": "participates in"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?phase ?stage ?phaseLabel\nWHERE {\n  VALUES ?material { <http://example.org/resource#material.001> }\n  ?material a matsci:MaterialSample .\n  ?phase a matsci:CrystallinePhase ;\n         obo:BFO_0000197 ?material .\n  ?material obo:BFO_0000056 ?stage .\n  ?stage a matsci:LifecycleStage .\n  OPTIONAL { ?phase rdfs:label ?phaseLabel }\n}"
+  },
+  {
+    "qid": 2000008,
+    "question": "What manufacturing or synthesis process was used to produce each material specimen?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "matsci:ManufacturingProcess",
+          "class": "matsci:ManufacturingProcess",
+          "friendly_name": "Manufacturing Process",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "http://example.org/resource#specimen.001",
+          "class": "matsci:Specimen",
+          "friendly_name": "this specimen",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "obo:BFO_0000057",
+          "friendly_name": "has participant"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?process ?label\nWHERE {\n  VALUES ?specimen { <http://example.org/resource#specimen.001> }\n  ?specimen a matsci:Specimen .\n  ?process a matsci:ManufacturingProcess ;\n           obo:BFO_0000057 ?specimen .\n  OPTIONAL { ?process rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 2000009,
+    "question": "What process parameters were recorded during the manufacturing of a specimen, and what are their measured values and units?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#process.001",
+          "class": "matsci:ManufacturingProcess",
+          "friendly_name": "this manufacturing process",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:ProcessParameter",
+          "class": "matsci:ProcessParameter",
+          "friendly_name": "Process Parameter",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "matsci:MeasurementUnit",
+          "class": "matsci:MeasurementUnit",
+          "friendly_name": "Measurement Unit",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "cco:ont00001904",
+          "friendly_name": "is measured by"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "relation": "cco:ont00001690",
+          "friendly_name": "uses measurement unit"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?parameter ?value ?unit ?paramLabel\nWHERE {\n  VALUES ?process { <http://example.org/resource#process.001> }\n  ?process a matsci:ManufacturingProcess .\n  ?process cco:ont00001904 ?parameter .\n  ?parameter a matsci:ProcessParameter .\n  OPTIONAL { ?parameter cco:ont00001769 ?value }\n  OPTIONAL { ?parameter cco:ont00001690 ?unit }\n  OPTIONAL { ?parameter rdfs:label ?paramLabel }\n}"
+  },
+  {
+    "qid": 2000010,
+    "question": "What temperature was applied during a thermal processing step (sintering, annealing, quenching, curing), and for how long?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#thermalprocess.001",
+          "class": "matsci:ThermalProcess",
+          "friendly_name": "this thermal processing step",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:Temperature",
+          "class": "matsci:Temperature",
+          "friendly_name": "Temperature",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "matsci:Duration",
+          "class": "matsci:Duration",
+          "friendly_name": "Duration",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "obo:BFO_0000197",
+          "friendly_name": "inheres in"
+        },
+        {
+          "start": 2,
+          "end": 0,
+          "relation": "obo:BFO_0000197",
+          "friendly_name": "inheres in"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?temperature ?tempValue ?duration ?durValue\nWHERE {\n  VALUES ?process { <http://example.org/resource#thermalprocess.001> }\n  ?process a matsci:ThermalProcess .\n  ?temperature a matsci:Temperature ;\n               obo:BFO_0000197 ?process .\n  OPTIONAL { ?temperature cco:ont00001769 ?tempValue }\n  ?duration a matsci:Duration ;\n            obo:BFO_0000197 ?process .\n  OPTIONAL { ?duration cco:ont00001769 ?durValue }\n}"
+  },
+  {
+    "qid": 2000011,
+    "question": "What raw input materials or feedstocks were consumed during the manufacturing process, and in what quantities?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#process.001",
+          "class": "matsci:ManufacturingProcess",
+          "friendly_name": "this manufacturing process",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:InputMaterial",
+          "class": "matsci:InputMaterial",
+          "friendly_name": "Input Material / Feedstock",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "matsci:Quantity",
+          "class": "matsci:Quantity",
+          "friendly_name": "Quantity",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "cco:ont00001921",
+          "friendly_name": "has input"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "relation": "cco:ont00001904",
+          "friendly_name": "is measured by"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?inputMaterial ?quantity ?value ?label\nWHERE {\n  VALUES ?process { <http://example.org/resource#process.001> }\n  ?process a matsci:ManufacturingProcess ;\n           cco:ont00001921 ?inputMaterial .\n  ?inputMaterial a matsci:InputMaterial .\n  OPTIONAL { ?inputMaterial cco:ont00001904 ?quantity .\n             ?quantity cco:ont00001769 ?value }\n  OPTIONAL { ?inputMaterial rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 2000012,
+    "question": "What intermediate processing steps occurred between raw material acquisition and the final specimen, and in what sequence?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "matsci:ProcessStep",
+          "class": "matsci:ProcessStep",
+          "friendly_name": "Process Step",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:ProcessStep",
+          "class": "matsci:ProcessStep",
+          "friendly_name": "Next Process Step",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "entity",
+          "id": "http://example.org/resource#specimen.001",
+          "class": "matsci:Specimen",
+          "friendly_name": "this specimen",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "obo:BFO_0000063",
+          "friendly_name": "precedes"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "relation": "obo:BFO_0000057",
+          "friendly_name": "has participant"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?step ?label ?nextStep\nWHERE {\n  VALUES ?specimen { <http://example.org/resource#specimen.001> }\n  ?step a matsci:ProcessStep .\n  { ?step obo:BFO_0000057 ?specimen } UNION\n  { ?step obo:BFO_0000063 ?nextStep .\n    ?nextStep obo:BFO_0000057 ?specimen }\n  OPTIONAL { ?step rdfs:label ?label }\n}\nORDER BY ?step"
+  },
+  {
+    "qid": 2000013,
+    "question": "What tools or equipment were used during the manufacturing process, and what is the functional role of each?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#process.001",
+          "class": "matsci:ManufacturingProcess",
+          "friendly_name": "this manufacturing process",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:Equipment",
+          "class": "matsci:Equipment",
+          "friendly_name": "Equipment / Tool",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "matsci:FunctionalRole",
+          "class": "matsci:FunctionalRole",
+          "friendly_name": "Functional Role",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "obo:BFO_0000056",
+          "friendly_name": "participates in"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "relation": "obo:BFO_0000196",
+          "friendly_name": "bearer of"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?equipment ?role ?eqLabel ?roleLabel\nWHERE {\n  VALUES ?process { <http://example.org/resource#process.001> }\n  ?process a matsci:ManufacturingProcess .\n  ?equipment a matsci:Equipment ;\n             obo:BFO_0000056 ?process .\n  OPTIONAL { ?equipment obo:BFO_0000196 ?role .\n             ?role a matsci:FunctionalRole .\n             OPTIONAL { ?role rdfs:label ?roleLabel } }\n  OPTIONAL { ?equipment rdfs:label ?eqLabel }\n}"
+  },
+  {
+    "qid": 2000014,
+    "question": "What were the environmental conditions (inert atmosphere, vacuum, humidity level) maintained during manufacturing?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#process.001",
+          "class": "matsci:ManufacturingProcess",
+          "friendly_name": "this manufacturing process",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:EnvironmentalCondition",
+          "class": "matsci:EnvironmentalCondition",
+          "friendly_name": "Environmental Condition",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "obo:BFO_0000197",
+          "friendly_name": "inheres in"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?condition ?value ?label\nWHERE {\n  VALUES ?process { <http://example.org/resource#process.001> }\n  ?process a matsci:ManufacturingProcess .\n  ?condition a matsci:EnvironmentalCondition ;\n             obo:BFO_0000197 ?process .\n  OPTIONAL { ?condition cco:ont00001769 ?value }\n  OPTIONAL { ?condition rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 2000015,
+    "question": "What post-processing or surface treatment was applied to a specimen after primary manufacturing, and what parameters were recorded?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#specimen.001",
+          "class": "matsci:Specimen",
+          "friendly_name": "this specimen",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:PostProcessing",
+          "class": "matsci:PostProcessing",
+          "friendly_name": "Post-Processing / Surface Treatment",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "matsci:ProcessParameter",
+          "class": "matsci:ProcessParameter",
+          "friendly_name": "Process Parameter",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "obo:BFO_0000057",
+          "friendly_name": "has participant"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "relation": "cco:ont00001904",
+          "friendly_name": "is measured by"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?postProcess ?parameter ?value ?ppLabel\nWHERE {\n  VALUES ?specimen { <http://example.org/resource#specimen.001> }\n  ?postProcess a matsci:PostProcessing ;\n               obo:BFO_0000057 ?specimen .\n  OPTIONAL { ?postProcess cco:ont00001904 ?parameter .\n             ?parameter a matsci:ProcessParameter .\n             OPTIONAL { ?parameter cco:ont00001769 ?value } }\n  OPTIONAL { ?postProcess rdfs:label ?ppLabel }\n}"
+  },
+  {
+    "qid": 2000016,
+    "question": "What characterization techniques were applied to a given specimen, and in what order were they performed?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "matsci:CharacterizationTechnique",
+          "class": "matsci:CharacterizationTechnique",
+          "friendly_name": "Characterization Technique",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "http://example.org/resource#specimen.001",
+          "class": "matsci:Specimen",
+          "friendly_name": "this specimen",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "obo:BFO_0000057",
+          "friendly_name": "has participant"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?technique ?label\nWHERE {\n  VALUES ?specimen { <http://example.org/resource#specimen.001> }\n  ?specimen a matsci:Specimen .\n  ?technique a matsci:CharacterizationTechnique ;\n             obo:BFO_0000057 ?specimen .\n  OPTIONAL { ?technique rdfs:label ?label }\n}\nORDER BY ?technique"
+  },
+  {
+    "qid": 2000017,
+    "question": "What instrument or device was used for each characterization measurement, and what is its model or identifier?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#measurement.001",
+          "class": "matsci:CharacterizationMeasurement",
+          "friendly_name": "this measurement",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:Instrument",
+          "class": "matsci:Instrument",
+          "friendly_name": "Instrument / Device",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "matsci:Identifier",
+          "class": "matsci:Identifier",
+          "friendly_name": "Model / Identifier",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "obo:BFO_0000056",
+          "friendly_name": "participates in"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "relation": "cco:ont00001879",
+          "friendly_name": "designated by"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?instrument ?identifier ?instrLabel\nWHERE {\n  VALUES ?measurement { <http://example.org/resource#measurement.001> }\n  ?measurement a matsci:CharacterizationMeasurement .\n  ?instrument a matsci:Instrument ;\n              obo:BFO_0000056 ?measurement .\n  OPTIONAL { ?instrument cco:ont00001879 ?identifier }\n  OPTIONAL { ?instrument rdfs:label ?instrLabel }\n}"
+  },
+  {
+    "qid": 2000018,
+    "question": "What measurement parameters (voltage, current, scan rate, exposure time, wavelength) were set for a characterization experiment?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#experiment.001",
+          "class": "matsci:CharacterizationExperiment",
+          "friendly_name": "this experiment",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:MeasurementParameter",
+          "class": "matsci:MeasurementParameter",
+          "friendly_name": "Measurement Parameter",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "cco:ont00001904",
+          "friendly_name": "is measured by"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?parameter ?value ?label\nWHERE {\n  VALUES ?experiment { <http://example.org/resource#experiment.001> }\n  ?experiment a matsci:CharacterizationExperiment .\n  ?experiment cco:ont00001904 ?parameter .\n  ?parameter a matsci:MeasurementParameter .\n  OPTIONAL { ?parameter cco:ont00001769 ?value }\n  OPTIONAL { ?parameter rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 2000019,
+    "question": "What output or result was produced by each characterization measurement, and in what unit is it expressed?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#measurement.001",
+          "class": "matsci:CharacterizationMeasurement",
+          "friendly_name": "this measurement",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:MeasurementResult",
+          "class": "matsci:MeasurementResult",
+          "friendly_name": "Measurement Result",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "matsci:MeasurementUnit",
+          "class": "matsci:MeasurementUnit",
+          "friendly_name": "Measurement Unit",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "cco:ont00001986",
+          "friendly_name": "has output"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "relation": "cco:ont00001690",
+          "friendly_name": "uses measurement unit"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?result ?value ?unit ?label\nWHERE {\n  VALUES ?measurement { <http://example.org/resource#measurement.001> }\n  ?measurement a matsci:CharacterizationMeasurement ;\n               cco:ont00001986 ?result .\n  ?result a matsci:MeasurementResult .\n  OPTIONAL { ?result cco:ont00001769 ?value }\n  OPTIONAL { ?result cco:ont00001690 ?unit }\n  OPTIONAL { ?result rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 2000020,
+    "question": "What specimen preparation steps were carried out before a characterization measurement was performed?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "matsci:SpecimenPreparation",
+          "class": "matsci:SpecimenPreparation",
+          "friendly_name": "Specimen Preparation",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "http://example.org/resource#measurement.001",
+          "class": "matsci:CharacterizationMeasurement",
+          "friendly_name": "this measurement",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "entity",
+          "id": "http://example.org/resource#specimen.001",
+          "class": "matsci:Specimen",
+          "friendly_name": "this specimen",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "obo:BFO_0000063",
+          "friendly_name": "precedes"
+        },
+        {
+          "start": 0,
+          "end": 2,
+          "relation": "obo:BFO_0000057",
+          "friendly_name": "has participant"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?prepStep ?label\nWHERE {\n  VALUES ?measurement { <http://example.org/resource#measurement.001> }\n  ?prepStep a matsci:SpecimenPreparation ;\n            obo:BFO_0000063 ?measurement .\n  OPTIONAL { ?prepStep rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 2000021,
+    "question": "What calibration procedure was applied to the measurement instrument before data acquisition, and what reference standard was used?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "matsci:CalibrationProcedure",
+          "class": "matsci:CalibrationProcedure",
+          "friendly_name": "Calibration Procedure",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "http://example.org/resource#instrument.001",
+          "class": "matsci:Instrument",
+          "friendly_name": "this instrument",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "matsci:ReferenceStandard",
+          "class": "matsci:ReferenceStandard",
+          "friendly_name": "Reference Standard",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "obo:BFO_0000057",
+          "friendly_name": "has participant"
+        },
+        {
+          "start": 0,
+          "end": 2,
+          "relation": "cco:ont00001921",
+          "friendly_name": "has input"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?calibration ?standard ?calLabel ?stdLabel\nWHERE {\n  VALUES ?instrument { <http://example.org/resource#instrument.001> }\n  ?calibration a matsci:CalibrationProcedure ;\n               obo:BFO_0000057 ?instrument .\n  OPTIONAL { ?calibration cco:ont00001921 ?standard .\n             ?standard a matsci:ReferenceStandard .\n             OPTIONAL { ?standard rdfs:label ?stdLabel } }\n  OPTIONAL { ?calibration rdfs:label ?calLabel }\n}"
+  },
+  {
+    "qid": 2000022,
+    "question": "What is the measurement uncertainty or tolerance associated with a reported characterization result?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#result.001",
+          "class": "matsci:MeasurementResult",
+          "friendly_name": "this result",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:MeasurementUncertainty",
+          "class": "matsci:MeasurementUncertainty",
+          "friendly_name": "Measurement Uncertainty",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "obo:BFO_0000197",
+          "friendly_name": "inheres in"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?uncertainty ?value\nWHERE {\n  VALUES ?result { <http://example.org/resource#result.001> }\n  ?result a matsci:MeasurementResult .\n  ?uncertainty a matsci:MeasurementUncertainty ;\n               obo:BFO_0000197 ?result .\n  OPTIONAL { ?uncertainty cco:ont00001769 ?value }\n}"
+  },
+  {
+    "qid": 2000023,
+    "question": "What environmental conditions (temperature, humidity, pressure) were maintained during the characterization measurement?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#measurement.001",
+          "class": "matsci:CharacterizationMeasurement",
+          "friendly_name": "this measurement",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:EnvironmentalCondition",
+          "class": "matsci:EnvironmentalCondition",
+          "friendly_name": "Environmental Condition",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "obo:BFO_0000197",
+          "friendly_name": "inheres in"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?condition ?value ?label\nWHERE {\n  VALUES ?measurement { <http://example.org/resource#measurement.001> }\n  ?measurement a matsci:CharacterizationMeasurement .\n  ?condition a matsci:EnvironmentalCondition ;\n             obo:BFO_0000197 ?measurement .\n  OPTIONAL { ?condition cco:ont00001769 ?value }\n  OPTIONAL { ?condition rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 2000024,
+    "question": "What data format or file type was used to store the raw output of a characterization experiment?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#experiment.001",
+          "class": "matsci:CharacterizationExperiment",
+          "friendly_name": "this experiment",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:DataFormat",
+          "class": "matsci:DataFormat",
+          "friendly_name": "Data Format / File Type",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "cco:ont00001808",
+          "friendly_name": "is about"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?format ?label\nWHERE {\n  VALUES ?experiment { <http://example.org/resource#experiment.001> }\n  ?experiment a matsci:CharacterizationExperiment .\n  ?output cco:ont00001808 ?experiment .\n  ?output a matsci:DataFormat .\n  BIND(?output AS ?format)\n  OPTIONAL { ?format rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 2000025,
+    "question": "What analysis or data processing method was applied to raw characterization data to derive the final reported material property?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "matsci:DataProcessingMethod",
+          "class": "matsci:DataProcessingMethod",
+          "friendly_name": "Data Processing Method",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:RawData",
+          "class": "matsci:RawData",
+          "friendly_name": "Raw Characterization Data",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "matsci:MaterialProperty",
+          "class": "matsci:MaterialProperty",
+          "friendly_name": "Material Property",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "cco:ont00001921",
+          "friendly_name": "has input"
+        },
+        {
+          "start": 0,
+          "end": 2,
+          "relation": "cco:ont00001986",
+          "friendly_name": "has output"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?method ?rawData ?property ?methodLabel\nWHERE {\n  ?method a matsci:DataProcessingMethod ;\n          cco:ont00001921 ?rawData ;\n          cco:ont00001986 ?property .\n  ?rawData a matsci:RawData .\n  ?property a matsci:MaterialProperty .\n  OPTIONAL { ?method rdfs:label ?methodLabel }\n}"
+  },
+  {
+    "qid": 2000026,
+    "question": "What mechanical properties (tensile strength, yield strength, elastic modulus, hardness, fracture toughness) are reported for a given material?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#material.001",
+          "class": "matsci:MaterialSample",
+          "friendly_name": "this material",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:MechanicalProperty",
+          "class": "matsci:MechanicalProperty",
+          "friendly_name": "Mechanical Property",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "obo:BFO_0000197",
+          "friendly_name": "inheres in"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?property ?value ?label\nWHERE {\n  VALUES ?material { <http://example.org/resource#material.001> }\n  ?material a matsci:MaterialSample .\n  ?property a/rdfs:subClassOf* matsci:MechanicalProperty ;\n            obo:BFO_0000197 ?material .\n  OPTIONAL { ?property cco:ont00001769 ?value }\n  OPTIONAL { ?property rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 2000027,
+    "question": "What thermal properties (melting point, glass transition temperature, thermal conductivity, heat capacity) are recorded for a material specimen?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#specimen.001",
+          "class": "matsci:Specimen",
+          "friendly_name": "this specimen",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:ThermalProperty",
+          "class": "matsci:ThermalProperty",
+          "friendly_name": "Thermal Property",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "obo:BFO_0000197",
+          "friendly_name": "inheres in"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?property ?value ?label\nWHERE {\n  VALUES ?specimen { <http://example.org/resource#specimen.001> }\n  ?specimen a matsci:Specimen .\n  ?property a/rdfs:subClassOf* matsci:ThermalProperty ;\n            obo:BFO_0000197 ?specimen .\n  OPTIONAL { ?property cco:ont00001769 ?value }\n  OPTIONAL { ?property rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 2000028,
+    "question": "What electrical or dielectric properties (electrical conductivity, dielectric constant, permittivity) are reported for a material?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#material.001",
+          "class": "matsci:MaterialSample",
+          "friendly_name": "this material",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:ElectricalProperty",
+          "class": "matsci:ElectricalProperty",
+          "friendly_name": "Electrical / Dielectric Property",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "obo:BFO_0000197",
+          "friendly_name": "inheres in"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?property ?value ?label\nWHERE {\n  VALUES ?material { <http://example.org/resource#material.001> }\n  ?material a matsci:MaterialSample .\n  ?property a/rdfs:subClassOf* matsci:ElectricalProperty ;\n            obo:BFO_0000197 ?material .\n  OPTIONAL { ?property cco:ont00001769 ?value }\n  OPTIONAL { ?property rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 2000029,
+    "question": "What optical properties (absorbance, transmittance, reflectivity, refractive index) are recorded for a material specimen?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#specimen.001",
+          "class": "matsci:Specimen",
+          "friendly_name": "this specimen",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:OpticalProperty",
+          "class": "matsci:OpticalProperty",
+          "friendly_name": "Optical Property",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "obo:BFO_0000197",
+          "friendly_name": "inheres in"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?property ?value ?label\nWHERE {\n  VALUES ?specimen { <http://example.org/resource#specimen.001> }\n  ?specimen a matsci:Specimen .\n  ?property a/rdfs:subClassOf* matsci:OpticalProperty ;\n            obo:BFO_0000197 ?specimen .\n  OPTIONAL { ?property cco:ont00001769 ?value }\n  OPTIONAL { ?property rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 2000030,
+    "question": "What structural or microstructural properties (grain size, porosity, crystallographic texture, phase fraction) are reported for a material?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#material.001",
+          "class": "matsci:MaterialSample",
+          "friendly_name": "this material",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:MicrostructuralProperty",
+          "class": "matsci:MicrostructuralProperty",
+          "friendly_name": "Microstructural Property",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "obo:BFO_0000197",
+          "friendly_name": "inheres in"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?property ?value ?label\nWHERE {\n  VALUES ?material { <http://example.org/resource#material.001> }\n  ?material a matsci:MaterialSample .\n  ?property a/rdfs:subClassOf* matsci:MicrostructuralProperty ;\n            obo:BFO_0000197 ?material .\n  OPTIONAL { ?property cco:ont00001769 ?value }\n  OPTIONAL { ?property rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 2000031,
+    "question": "What property values exceed or fall below a specified threshold/limit defined by a standard (ASTM, ISO, etc) or specification?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "matsci:MaterialProperty",
+          "class": "matsci:MaterialProperty",
+          "friendly_name": "Material Property",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:Threshold",
+          "class": "matsci:Threshold",
+          "friendly_name": "Threshold / Limit",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "matsci:Standard",
+          "class": "matsci:Standard",
+          "friendly_name": "Standard (ASTM/ISO)",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "cco:ont00001808",
+          "friendly_name": "is about"
+        },
+        {
+          "start": 2,
+          "end": 1,
+          "relation": "cco:ont00001808",
+          "friendly_name": "is about"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?property ?value ?threshold ?threshValue ?standard ?stdLabel\nWHERE {\n  ?property a matsci:MaterialProperty .\n  ?threshold a matsci:Threshold ;\n             cco:ont00001808 ?property .\n  ?standard a matsci:Standard ;\n            cco:ont00001808 ?threshold .\n  OPTIONAL { ?property cco:ont00001769 ?value }\n  OPTIONAL { ?threshold cco:ont00001769 ?threshValue }\n  OPTIONAL { ?standard rdfs:label ?stdLabel }\n}"
+  },
+  {
+    "qid": 2000032,
+    "question": "What is the reported density of a material specimen, and by what method was it determined?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#specimen.001",
+          "class": "matsci:Specimen",
+          "friendly_name": "this specimen",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:Density",
+          "class": "matsci:Density",
+          "friendly_name": "Density",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "matsci:MeasurementMethod",
+          "class": "matsci:MeasurementMethod",
+          "friendly_name": "Measurement Method",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "obo:BFO_0000197",
+          "friendly_name": "inheres in"
+        },
+        {
+          "start": 2,
+          "end": 1,
+          "relation": "cco:ont00001986",
+          "friendly_name": "has output"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?density ?value ?method ?methodLabel\nWHERE {\n  VALUES ?specimen { <http://example.org/resource#specimen.001> }\n  ?specimen a matsci:Specimen .\n  ?density a matsci:Density ;\n           obo:BFO_0000197 ?specimen .\n  OPTIONAL { ?density cco:ont00001769 ?value }\n  OPTIONAL { ?method a matsci:MeasurementMethod ;\n                     cco:ont00001986 ?density .\n             OPTIONAL { ?method rdfs:label ?methodLabel } }\n}"
+  },
+  {
+    "qid": 2000033,
+    "question": "What is the surface roughness or surface area of a material specimen, and at what scale was it measured?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#specimen.001",
+          "class": "matsci:Specimen",
+          "friendly_name": "this specimen",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:SurfaceProperty",
+          "class": "matsci:SurfaceProperty",
+          "friendly_name": "Surface Roughness / Area",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "matsci:MeasurementScale",
+          "class": "matsci:MeasurementScale",
+          "friendly_name": "Measurement Scale",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "obo:BFO_0000197",
+          "friendly_name": "inheres in"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "relation": "cco:ont00001904",
+          "friendly_name": "is measured by"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?surfProp ?value ?scale ?label\nWHERE {\n  VALUES ?specimen { <http://example.org/resource#specimen.001> }\n  ?specimen a matsci:Specimen .\n  ?surfProp a matsci:SurfaceProperty ;\n            obo:BFO_0000197 ?specimen .\n  OPTIONAL { ?surfProp cco:ont00001769 ?value }\n  OPTIONAL { ?surfProp cco:ont00001904 ?scale }\n  OPTIONAL { ?surfProp rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 2000034,
+    "question": "Who performed the manufacturing or characterization process -- which person, organization, or automated system is identified as the responsible agent?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#process.001",
+          "class": "matsci:Process",
+          "friendly_name": "this process",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:Agent",
+          "class": "matsci:Agent",
+          "friendly_name": "Responsible Agent",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "obo:BFO_0000056",
+          "friendly_name": "participates in"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?agent ?label\nWHERE {\n  VALUES ?process { <http://example.org/resource#process.001> }\n  ?process a matsci:Process .\n  ?agent a matsci:Agent ;\n         obo:BFO_0000056 ?process .\n  OPTIONAL { ?agent rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 2000035,
+    "question": "What institution or facility owns or operates the equipment used in a characterization or manufacturing experiment?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#equipment.001",
+          "class": "matsci:Equipment",
+          "friendly_name": "this equipment",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:Organization",
+          "class": "matsci:Organization",
+          "friendly_name": "Institution / Facility",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "entity",
+          "id": "http://example.org/resource#experiment.001",
+          "class": "matsci:Experiment",
+          "friendly_name": "this experiment",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 2,
+          "relation": "obo:BFO_0000056",
+          "friendly_name": "participates in"
+        },
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "cco:ont00001857",
+          "friendly_name": "is part of process"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?equipment ?organization ?orgLabel\nWHERE {\n  VALUES ?experiment { <http://example.org/resource#experiment.001> }\n  ?equipment a matsci:Equipment ;\n             obo:BFO_0000056 ?experiment ;\n             cco:ont00001857 ?organization .\n  ?organization a matsci:Organization .\n  OPTIONAL { ?organization rdfs:label ?orgLabel }\n}"
+  },
+  {
+    "qid": 2000036,
+    "question": "What standard, specification, or norm does a given process or measurement comply with?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#process.001",
+          "class": "matsci:Process",
+          "friendly_name": "this process",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:Standard",
+          "class": "matsci:Standard",
+          "friendly_name": "Standard / Specification",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "cco:ont00001808",
+          "friendly_name": "is about"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?standard ?label\nWHERE {\n  VALUES ?process { <http://example.org/resource#process.001> }\n  ?process a matsci:Process .\n  ?standard a matsci:Standard ;\n            cco:ont00001808 ?process .\n  OPTIONAL { ?standard rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 2000037,
+    "question": "On what date or within what time period was a manufacturing or characterization process carried out?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#process.001",
+          "class": "matsci:Process",
+          "friendly_name": "this process",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:TemporalInterval",
+          "class": "matsci:TemporalInterval",
+          "friendly_name": "Date / Time Period",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "obo:BFO_0000199",
+          "friendly_name": "occupies temporal region"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?process ?date\nWHERE {\n  VALUES ?process { <http://example.org/resource#process.001> }\n  ?process a matsci:Process ;\n           obo:BFO_0000199 ?temporal .\n  ?temporal a matsci:TemporalInterval .\n  OPTIONAL { ?temporal cco:ont00001769 ?date }\n}"
+  },
+  {
+    "qid": 2000038,
+    "question": "What is the version or lot identifier of the material or reagent used in an experiment, and who supplied it?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#material.001",
+          "class": "matsci:InputMaterial",
+          "friendly_name": "this material/reagent",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:LotIdentifier",
+          "class": "matsci:LotIdentifier",
+          "friendly_name": "Lot / Version Identifier",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "matsci:Supplier",
+          "class": "matsci:Supplier",
+          "friendly_name": "Supplier",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "cco:ont00001879",
+          "friendly_name": "designated by"
+        },
+        {
+          "start": 2,
+          "end": 0,
+          "relation": "cco:ont00001803",
+          "friendly_name": "is provider of"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?material ?lotId ?supplier ?supLabel\nWHERE {\n  VALUES ?material { <http://example.org/resource#material.001> }\n  ?material a matsci:InputMaterial .\n  OPTIONAL { ?material cco:ont00001879 ?lotId .\n             ?lotId a matsci:LotIdentifier }\n  OPTIONAL { ?supplier a matsci:Supplier ;\n                       cco:ont00001803 ?material .\n             OPTIONAL { ?supplier rdfs:label ?supLabel } }\n}"
+  },
+  {
+    "qid": 2000039,
+    "question": "What is the purpose or objective of a given experiment or process -- what material property or behavior was it intended to investigate?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#experiment.001",
+          "class": "matsci:Experiment",
+          "friendly_name": "this experiment",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:Objective",
+          "class": "matsci:Objective",
+          "friendly_name": "Purpose / Objective",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "matsci:MaterialProperty",
+          "class": "matsci:MaterialProperty",
+          "friendly_name": "Material Property",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "cco:ont00001808",
+          "friendly_name": "is about"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "relation": "cco:ont00001808",
+          "friendly_name": "is about"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?objective ?property ?objLabel ?propLabel\nWHERE {\n  VALUES ?experiment { <http://example.org/resource#experiment.001> }\n  ?objective a matsci:Objective ;\n             cco:ont00001808 ?experiment .\n  OPTIONAL { ?objective cco:ont00001808 ?property .\n             ?property a matsci:MaterialProperty .\n             OPTIONAL { ?property rdfs:label ?propLabel } }\n  OPTIONAL { ?objective rdfs:label ?objLabel }\n}"
+  },
+  {
+    "qid": 2000040,
+    "question": "What simulation or computational modeling method was applied to a material or process, and what software or computing environment was used?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "matsci:SimulationMethod",
+          "class": "matsci:SimulationMethod",
+          "friendly_name": "Simulation Method",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "http://example.org/resource#material.001",
+          "class": "matsci:MaterialSample",
+          "friendly_name": "this material",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "matsci:Software",
+          "class": "matsci:Software",
+          "friendly_name": "Software / Computing Environment",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "obo:BFO_0000057",
+          "friendly_name": "has participant"
+        },
+        {
+          "start": 2,
+          "end": 0,
+          "relation": "obo:BFO_0000056",
+          "friendly_name": "participates in"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?simulation ?software ?simLabel ?swLabel\nWHERE {\n  VALUES ?material { <http://example.org/resource#material.001> }\n  ?simulation a matsci:SimulationMethod ;\n              obo:BFO_0000057 ?material .\n  OPTIONAL { ?software a matsci:Software ;\n                       obo:BFO_0000056 ?simulation .\n             OPTIONAL { ?software rdfs:label ?swLabel } }\n  OPTIONAL { ?simulation rdfs:label ?simLabel }\n}"
+  },
+  {
+    "qid": 2000041,
+    "question": "What input parameters were supplied to a simulation, and what output quantities did it produce?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#simulation.001",
+          "class": "matsci:SimulationMethod",
+          "friendly_name": "this simulation",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:SimulationInput",
+          "class": "matsci:SimulationInput",
+          "friendly_name": "Input Parameter",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "matsci:SimulationOutput",
+          "class": "matsci:SimulationOutput",
+          "friendly_name": "Output Quantity",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "cco:ont00001921",
+          "friendly_name": "has input"
+        },
+        {
+          "start": 0,
+          "end": 2,
+          "relation": "cco:ont00001986",
+          "friendly_name": "has output"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?input ?output ?inLabel ?outLabel\nWHERE {\n  VALUES ?simulation { <http://example.org/resource#simulation.001> }\n  ?simulation a matsci:SimulationMethod .\n  OPTIONAL { ?simulation cco:ont00001921 ?input .\n             ?input a matsci:SimulationInput .\n             OPTIONAL { ?input rdfs:label ?inLabel } }\n  OPTIONAL { ?simulation cco:ont00001986 ?output .\n             ?output a matsci:SimulationOutput .\n             OPTIONAL { ?output rdfs:label ?outLabel } }\n}"
+  },
+  {
+    "qid": 2000042,
+    "question": "What physical assumptions or simplifications were made in a computational model of a material or process?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#model.001",
+          "class": "matsci:ComputationalModel",
+          "friendly_name": "this computational model",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:Assumption",
+          "class": "matsci:Assumption",
+          "friendly_name": "Assumption / Simplification",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "cco:ont00001808",
+          "friendly_name": "is about"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?assumption ?label\nWHERE {\n  VALUES ?model { <http://example.org/resource#model.001> }\n  ?model a matsci:ComputationalModel .\n  ?assumption a matsci:Assumption ;\n              cco:ont00001808 ?model .\n  OPTIONAL { ?assumption rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 2000043,
+    "question": "At what spatial or temporal scale does a given simulation operate, and is it atomistic, mesoscale, or continuum?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#simulation.001",
+          "class": "matsci:SimulationMethod",
+          "friendly_name": "this simulation",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:SimulationScale",
+          "class": "matsci:SimulationScale",
+          "friendly_name": "Simulation Scale",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "obo:BFO_0000197",
+          "friendly_name": "inheres in"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?scale ?label\nWHERE {\n  VALUES ?simulation { <http://example.org/resource#simulation.001> }\n  ?simulation a matsci:SimulationMethod .\n  ?scale a matsci:SimulationScale ;\n         obo:BFO_0000197 ?simulation .\n  OPTIONAL { ?scale rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 2000044,
+    "question": "How does a simulated material property compare to the experimentally measured value reported in the same dataset?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "matsci:SimulatedProperty",
+          "class": "matsci:SimulatedProperty",
+          "friendly_name": "Simulated Property",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:MeasuredProperty",
+          "class": "matsci:MeasuredProperty",
+          "friendly_name": "Measured Property",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "entity",
+          "id": "http://example.org/resource#material.001",
+          "class": "matsci:MaterialSample",
+          "friendly_name": "this material",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 2,
+          "relation": "obo:BFO_0000197",
+          "friendly_name": "inheres in"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "relation": "obo:BFO_0000197",
+          "friendly_name": "inheres in"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?simProp ?simValue ?measProp ?measValue ?propLabel\nWHERE {\n  VALUES ?material { <http://example.org/resource#material.001> }\n  ?simProp a matsci:SimulatedProperty ;\n           obo:BFO_0000197 ?material .\n  ?measProp a matsci:MeasuredProperty ;\n            obo:BFO_0000197 ?material .\n  OPTIONAL { ?simProp cco:ont00001769 ?simValue }\n  OPTIONAL { ?measProp cco:ont00001769 ?measValue }\n  OPTIONAL { ?simProp rdfs:label ?propLabel }\n}"
+  },
+  {
+    "qid": 2000045,
+    "question": "What degradation or damage mechanisms (corrosion, fatigue, creep, oxidation, delamination) are represented for a material under service or test conditions?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#material.001",
+          "class": "matsci:MaterialSample",
+          "friendly_name": "this material",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:DegradationMechanism",
+          "class": "matsci:DegradationMechanism",
+          "friendly_name": "Degradation Mechanism",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "matsci:ServiceCondition",
+          "class": "matsci:ServiceCondition",
+          "friendly_name": "Service / Test Condition",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "obo:BFO_0000057",
+          "friendly_name": "has participant"
+        },
+        {
+          "start": 2,
+          "end": 1,
+          "relation": "obo:BFO_0000063",
+          "friendly_name": "precedes"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?mechanism ?condition ?mechLabel\nWHERE {\n  VALUES ?material { <http://example.org/resource#material.001> }\n  ?mechanism a/rdfs:subClassOf* matsci:DegradationMechanism ;\n             obo:BFO_0000057 ?material .\n  OPTIONAL { ?condition a matsci:ServiceCondition ;\n                        obo:BFO_0000063 ?mechanism }\n  OPTIONAL { ?mechanism rdfs:label ?mechLabel }\n}"
+  },
+  {
+    "qid": 2000046,
+    "question": "What stressor types (mechanical load, thermal cycling, UV radiation, humidity, chemical exposure) were applied to a material during a degradation or lifetime study?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#material.001",
+          "class": "matsci:MaterialSample",
+          "friendly_name": "this material",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:Stressor",
+          "class": "matsci:Stressor",
+          "friendly_name": "Stressor",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "matsci:DegradationStudy",
+          "class": "matsci:DegradationStudy",
+          "friendly_name": "Degradation / Lifetime Study",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "obo:BFO_0000057",
+          "friendly_name": "has participant"
+        },
+        {
+          "start": 2,
+          "end": 1,
+          "relation": "obo:BFO_0000051",
+          "friendly_name": "has part"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?stressor ?label\nWHERE {\n  VALUES ?material { <http://example.org/resource#material.001> }\n  ?study a matsci:DegradationStudy ;\n         obo:BFO_0000051 ?stressor .\n  ?stressor a/rdfs:subClassOf* matsci:Stressor ;\n            obo:BFO_0000057 ?material .\n  OPTIONAL { ?stressor rdfs:label ?label }\n}"
+  },
+  {
+    "qid": 2000047,
+    "question": "What measurable change in a material property (drop in tensile strength, increase in porosity, color shift) was recorded as a function of exposure time or number of cycles?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "matsci:PropertyChange",
+          "class": "matsci:PropertyChange",
+          "friendly_name": "Property Change",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:MaterialProperty",
+          "class": "matsci:MaterialProperty",
+          "friendly_name": "Material Property",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "matsci:ExposureTime",
+          "class": "matsci:ExposureTime",
+          "friendly_name": "Exposure Time / Cycles",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "cco:ont00001808",
+          "friendly_name": "is about"
+        },
+        {
+          "start": 0,
+          "end": 2,
+          "relation": "cco:ont00001904",
+          "friendly_name": "is measured by"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?change ?property ?time ?changeValue ?propLabel\nWHERE {\n  ?change a matsci:PropertyChange ;\n          cco:ont00001808 ?property .\n  ?property a matsci:MaterialProperty .\n  OPTIONAL { ?change cco:ont00001904 ?time .\n             ?time a matsci:ExposureTime }\n  OPTIONAL { ?change cco:ont00001769 ?changeValue }\n  OPTIONAL { ?property rdfs:label ?propLabel }\n}"
+  },
+  {
+    "qid": 2000048,
+    "question": "What is the estimated or measured service lifetime of a material or component under specified operating conditions?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#component.001",
+          "class": "matsci:Component",
+          "friendly_name": "this component",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:ServiceLifetime",
+          "class": "matsci:ServiceLifetime",
+          "friendly_name": "Service Lifetime",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "matsci:OperatingCondition",
+          "class": "matsci:OperatingCondition",
+          "friendly_name": "Operating Condition",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "obo:BFO_0000197",
+          "friendly_name": "inheres in"
+        },
+        {
+          "start": 2,
+          "end": 0,
+          "relation": "obo:BFO_0000197",
+          "friendly_name": "inheres in"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?lifetime ?value ?condition ?condLabel\nWHERE {\n  VALUES ?component { <http://example.org/resource#component.001> }\n  ?component a matsci:Component .\n  ?lifetime a matsci:ServiceLifetime ;\n            obo:BFO_0000197 ?component .\n  OPTIONAL { ?lifetime cco:ont00001769 ?value }\n  OPTIONAL { ?condition a matsci:OperatingCondition ;\n                        obo:BFO_0000197 ?component .\n             OPTIONAL { ?condition rdfs:label ?condLabel } }\n}"
+  },
+  {
+    "qid": 2000049,
+    "question": "What (primary) failure mode or end-of-life criterion was defined for a material/component, and was that criterion reached during the study period?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "entity",
+          "id": "http://example.org/resource#component.001",
+          "class": "matsci:Component",
+          "friendly_name": "this component",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "matsci:FailureMode",
+          "class": "matsci:FailureMode",
+          "friendly_name": "Failure Mode",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "matsci:EndOfLifeCriterion",
+          "class": "matsci:EndOfLifeCriterion",
+          "friendly_name": "End-of-Life Criterion",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "obo:BFO_0000057",
+          "friendly_name": "has participant"
+        },
+        {
+          "start": 2,
+          "end": 1,
+          "relation": "cco:ont00001808",
+          "friendly_name": "is about"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX matsci: <https://cwrusdle.bitbucket.io/matsci/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?failureMode ?criterion ?fmLabel ?crLabel ?reached\nWHERE {\n  VALUES ?component { <http://example.org/resource#component.001> }\n  ?failureMode a matsci:FailureMode ;\n               obo:BFO_0000057 ?component .\n  OPTIONAL { ?criterion a matsci:EndOfLifeCriterion ;\n                        cco:ont00001808 ?failureMode .\n             OPTIONAL { ?criterion rdfs:label ?crLabel } }\n  OPTIONAL { ?failureMode rdfs:label ?fmLabel }\n}"
+  }
+]

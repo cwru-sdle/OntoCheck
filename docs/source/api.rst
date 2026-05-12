@@ -5,23 +5,22 @@ This section documents the public API of OntoCheck, organized by assessment
 category. Each metric function takes a Turtle file path as input and returns
 a score or diagnostic report.
 
-Assessment Runner
------------------
+Assessment Runners
+------------------
 
-The central entry point for running one or more task-agnostic metrics.
+Functions for running each of the four assessment modes.
 
 .. automodule:: ontocheck.run_assessment
-   :members: run_ontology_assessment
+   :members: run_ontology_assessment, run_task_based_assessment, run_web_ontology_assessment
    :show-inheritance:
 
-Task-Based Assessment
----------------------
+Task-Based Metric
+-----------------
 
-Evaluates an ontology against competency questions encoded as SPARQL queries,
-computing Relevance and Accuracy metrics.
+The underlying Relevance/Accuracy computation used by Modes 2, 3, and 4.
 
 .. automodule:: ontocheck.task_based_metric
-   :members: task_based_metric
+   :members: task_based_metric_v_0_0_1
    :show-inheritance:
 
 Labeling Metrics

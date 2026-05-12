@@ -1,0 +1,615 @@
+@prefix cco: <https://www.commoncoreontologies.org/> .
+@prefix mds: <https://cwrusdle.bitbucket.io/mds/> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+skos:altLabel a owl:AnnotationProperty ;
+    skos:exactMatch skos:altLabel .
+
+skos:definition a owl:AnnotationProperty ;
+    skos:exactMatch skos:definition .
+
+mds:BatchNumber a owl:Class ;
+    rdfs:subClassOf mds:Identifier ;
+    skos:altLabel "Batch", "Powder Lot", "Material Batch", "Feedstock Batch" ;
+    skos:definition "The larger group of material from which the build originated" ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Sample" ;
+    mds:hasSubDomain " " .
+
+mds:BuildJobName a owl:Class ;
+    rdfs:subClassOf mds:Identifier ;
+    skos:altLabel "Build", "Print Job", "Build Number" ;
+    skos:definition "The specific additive manufacturing run or print job that produced the sample" ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Sample" ;
+    mds:hasSubDomain " " .
+
+mds:Depth a owl:Class,
+        owl:NamedIndividual ;
+    skos:altLabel "Y-dimension", "Length" ;
+    skos:definition "The linear dimension of the sample measured along the Y-axis, orthogonal to width and height" ;
+    skos:exactMatch cco:ont00000892 ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Sample" ;
+    mds:hasSubDomain " " .
+
+mds:ExposureTime a owl:Class ;
+    rdfs:subClassOf mds:TemporalRegion ;
+    skos:altLabel "Pulse duration" ;
+    skos:definition "A LPBF process parameter: Duration of laser irradiation at one point during scanning" ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Sample" ;
+    mds:hasSubDomain " " .
+
+mds:HatchDistance a owl:Class ;
+    rdfs:subClassOf mds:Distance ;
+    skos:altLabel "Hatch distance", "Track spacing" ;
+    skos:definition "A LPBF process parameter: Lateral spacing between adjacent scan tracks within a layer" ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Sample" ;
+    mds:hasSubDomain " " .
+
+mds:Height a owl:Class,
+        owl:NamedIndividual ;
+    skos:altLabel "Z-dimension", "Build direction height", "Thickness" ;
+    skos:definition "The vertical dimension of the sample measured along the build direction (Z-axis)" ;
+    skos:exactMatch cco:ont00000967 ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Sample" ;
+    mds:hasSubDomain " " .
+
+mds:InterFeatureCoolingTime a owl:Class ;
+    rdfs:subClassOf mds:TemporalRegion ;
+    skos:altLabel "Cooldown Time", "Neighbor Scan Interval", "Laser Path Delay" ;
+    skos:definition "Time interval between the completion of laser exposure on the previous sample and the start of laser exposure on next adjusant sample within the same layer during LPBF" ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Sample" ;
+    mds:hasSubDomain " " .
+
+mds:InterSampleGap a owl:Class ;
+    rdfs:subClassOf cco:ont00001367 ;
+    skos:altLabel "Inter-cube Gap", "Edge to Edge Gap" ;
+    skos:definition "Programmed gap to neighboring cubes" ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "SampleHolder" ;
+    mds:hasSubDomain " " .
+
+mds:LaserPower a owl:Class ;
+    rdfs:subClassOf mds:Power ;
+    skos:altLabel "Beam Power" ;
+    skos:definition "A LPBF process parameter: Laser optical power set during exposure" ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Sample" ;
+    mds:hasSubDomain " " .
+
+mds:ManufacturingMethod a owl:Class ;
+    rdfs:subClassOf mds:MaterialsProcessing ;
+    skos:altLabel mds:ProcessingMethod, "Manufacturing Process", "Fabrication Process", "Processing Method" ;
+    skos:definition "The process that produced the sample (e.g., LPBF, DIW, Casting etc)" ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Sample" ;
+    mds:hasSubDomain " " .
+
+mds:MaterialComposition a owl:Class ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:altLabel "Chemical Composition", "Alloy Composition" ;
+    skos:definition "The elemental or chemical make-up of the material" ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Sample" ;
+    mds:hasSubDomain " " .
+
+mds:MaterialName a owl:Class ;
+    rdfs:subClassOf cco:ont00000003 ;
+    skos:altLabel "Commercial Name", "Alloy Name" ;
+    skos:definition "Name of the material used to create the sample" ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Sample" ;
+    mds:hasSubDomain " " .
+
+mds:Orientation a owl:Class .
+
+mds:PointDistance a owl:Class ;
+    rdfs:subClassOf mds:Distance ;
+    skos:altLabel "Point Spacing", "Step Distance" ;
+    skos:definition "A LPBF process parameter: Distance between consecutive laser exposure points along a scan vector" ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Sample" ;
+    mds:hasSubDomain " " .
+
+mds:Power a owl:Class .
+
+mds:PreparedSurface a owl:Class ;
+    rdfs:subClassOf mds:SpatialRegion ;
+    skos:altLabel "EBSD Surface" ;
+    skos:definition "Which cube face was mechanically prepared for characterization (top, build direction)" ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Sample" ;
+    mds:hasSubDomain " " .
+
+mds:SampleHolderID a owl:Class ;
+    rdfs:subClassOf mds:Identifier ;
+    skos:altLabel "Bar identifier", "Bar ID" ;
+    skos:definition "Unique identifier for the bar (the physical bar that holds many cubes/ samples)" ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "SampleHolder" ;
+    mds:hasSubDomain " " .
+
+mds:SampleHolderOrientation a owl:Class ;
+    rdfs:subClassOf mds:Orientation ;
+    skos:altLabel "Orientation", "Sample Orientation", "Bar Orientation" ;
+    skos:definition "Orientation on the build plate (Horizontal / Vertical)" ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "SampleHolder" ;
+    mds:hasSubDomain " " .
+
+mds:SampleID a owl:Class ;
+    rdfs:subClassOf mds:Identifier ;
+    skos:altLabel "Sample Identifier", "Specimen ID", "Cube ID" ;
+    skos:definition "A unique code used to identify each sample in the dataset" ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Sample" ;
+    mds:hasSubDomain " " .
+
+mds:SampleIndexOnSampleHolder a owl:Class ;
+    rdfs:subClassOf cco:ont00001041 ;
+    skos:altLabel "Position Index", "Cube Index", "Sample Index", "Feature Index", "Sample Location", "Position on Bar" ;
+    skos:definition "Index of this cube along the bar (1…N)" ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Sample" ;
+    mds:hasSubDomain " " .
+
+mds:SpatialRegion a owl:Class .
+
+mds:StorageConditions a owl:Class ;
+    rdfs:subClassOf cco:ont00000853 ;
+    skos:altLabel "Storage Parameters", "Storage Environment" ;
+    skos:definition "Environmental conditions while stored (temperature, humidity, atmosphere)" ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Sample" ;
+    mds:hasSubDomain " " .
+
+mds:Weight a owl:Class,
+        owl:NamedIndividual ;
+    skos:altLabel " " ;
+    skos:definition "The amount of force with which the sample is pulled down by gravity" ;
+    skos:exactMatch cco:ont00000633 ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Sample" ;
+    mds:hasSubDomain " " .
+
+mds:Width a owl:Class,
+        owl:NamedIndividual ;
+    skos:altLabel "Width", "X-dimension", "Specimen Width" ;
+    skos:definition "The linear dimension of the sample measured along the X-axis" ;
+    skos:exactMatch cco:ont00000324 ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Sample" ;
+    mds:hasSubDomain " " .
+
+obo:BFO_0000019 a owl:Class ;
+    rdfs:label "quality"@en ;
+    skos:exactMatch obo:BFO_0000019 .
+
+mds:Distance a owl:Class .
+
+mds:TemporalRegion a owl:Class .
+
+cco:ont00000003 a owl:Class ;
+    rdfs:label "Designative Name"@en ;
+    skos:exactMatch cco:ont00000003 .
+
+cco:ont00000324 a owl:Class ;
+    rdfs:label "Width"@en ;
+    skos:exactMatch cco:ont00000324 .
+
+cco:ont00000633 a owl:Class ;
+    rdfs:label "Weight"@en ;
+    skos:exactMatch cco:ont00000633 .
+
+cco:ont00000853 a owl:Class ;
+    rdfs:label "Descriptive Information Content Entity"@en ;
+    skos:exactMatch cco:ont00000853 .
+
+cco:ont00000892 a owl:Class ;
+    rdfs:label "Depth"@en ;
+    skos:exactMatch cco:ont00000892 .
+
+cco:ont00000967 a owl:Class ;
+    rdfs:label "Height"@en ;
+    skos:exactMatch cco:ont00000967 .
+
+cco:ont00001041 a owl:Class ;
+    rdfs:label "Sequence Position Ordinality"@en ;
+    skos:exactMatch cco:ont00001041 .
+
+cco:ont00001367 a owl:Class ;
+    rdfs:label "One Dimensional Extent"@en ;
+    skos:exactMatch cco:ont00001367 .
+
+mds:Identifier a owl:Class .
+
+mds:hasIdentifier a owl:ObjectProperty ;
+    skos:definition "Relates an entity to an identifier that denotes it within some identification scheme or context."@en ;
+    rdfs:domain mds:SampleHolder,  mds:Sample;
+    rdfs:range mds:SampleHolderID, mds:SampleID .
+
+mds:hasName a owl:ObjectProperty ;
+    skos:definition "Relates an entity to a name or designation used to identify or refer to it."@en ;
+    rdfs:domain mds:Sample ;
+    rdfs:range mds:MaterialName .
+
+mds:holds a owl:ObjectProperty ;
+    skos:definition "Relates an entity to another entity that it physically supports, contains, or accommodates."@en ;
+    rdfs:domain mds:SampleHolder ;
+    rdfs:range mds:Sample .
+
+mds:hasIndex a owl:ObjectProperty ;
+    skos:definition "Relates an entity to an index designator that specifies its position within an ordered set or arrangement."@en ;
+    rdfs:domain mds:Sample ;
+    rdfs:range mds:SampleIndexOnSampleHolder .
+
+mds:hasOrientation a owl:ObjectProperty ;
+    skos:definition "Relates an entity to an orientation descriptor associated with it."@en ;
+    rdfs:domain mds:SampleHolder ;
+    rdfs:range mds:SampleHolderOrientation .
+
+mds:hasGapDistance a owl:ObjectProperty ;
+    skos:definition "Relates an entity to a distance that represents a gap or separation associated with it."@en ;
+    rdfs:domain mds:SampleHolder ;
+    rdfs:range mds:InterSampleGap .
+
+mds:hasManufacturingMethod a owl:ObjectProperty ;
+    skos:definition "Relates a manufactured entity to the method or process type by which it was produced."@en ;
+    rdfs:domain mds:Sample ;
+    rdfs:range mds:ManufacturingMethod .
+
+mds:hasBuildJobName a owl:ObjectProperty ;
+    skos:definition "Relates an entity to the name or designation of a build job associated with it."@en ;
+    rdfs:domain mds:Sample ;
+    rdfs:range mds:BuildJobName .
+
+mds:hasBatchNumber a owl:ObjectProperty ;
+    skos:definition "Relates an entity to a batch identifier associated with it."@en ;
+    rdfs:domain mds:Sample ;
+    rdfs:range mds:BatchNumber .
+
+mds:hasLaserPower a owl:ObjectProperty ;
+    skos:definition "Relates an entity to a laser power setting associated with a manufacturing or processing operation relevant to that entity."@en ;
+    rdfs:domain mds:Sample ;
+    rdfs:range mds:LaserPower .
+
+mds:hasExposureTime a owl:ObjectProperty ;
+    skos:definition "Relates an entity to a time interval describing the duration of an exposure setting associated with it."@en ;
+    rdfs:domain mds:Sample ;
+    rdfs:range mds:ExposureTime .
+
+mds:hasHatchDistance a owl:ObjectProperty ;
+    skos:definition "Relates an entity to a hatch distance setting associated with a manufacturing or scanning strategy relevant to it."@en ;
+    rdfs:domain mds:Sample ;
+    rdfs:range mds:HatchDistance .
+
+mds:hasPointDistance a owl:ObjectProperty ;
+    skos:definition "Relates an entity to a point distance setting associated with a manufacturing or scanning strategy relevant to it."@en ;
+    rdfs:domain mds:Sample ;
+    rdfs:range mds:PointDistance .
+
+mds:hasTimeInterval a owl:ObjectProperty ;
+    skos:definition "Relates an entity to a time interval associated with it."@en ;
+    rdfs:domain mds:Sample ;
+    rdfs:range mds:InterFeatureCoolingTime .
+
+mds:hasPreparedSurface a owl:ObjectProperty ;
+    skos:definition "Relates an entity to a descriptor identifying the surface that was prepared for subsequent use or characterization."@en ;
+    rdfs:domain mds:Sample ;
+    rdfs:range mds:PreparedSurface .
+
+mds:hasStorageCondition a owl:ObjectProperty ;
+    skos:definition "Relates an entity to a condition describing how it is stored or maintained."@en ;
+    rdfs:domain mds:Sample ;
+    rdfs:range mds:StorageConditions .
+
+mds:hasMaterialComposition a owl:ObjectProperty ;
+    skos:definition "Relates an entity to a description of the material composition associated with it."@en ;
+    rdfs:domain mds:Sample ;
+    rdfs:range mds:MaterialComposition .
+
+mds:hasWeight a owl:ObjectProperty ;
+    skos:definition "Relates an entity to a weight associated with it."@en ;
+    rdfs:domain mds:Sample ;
+    rdfs:range mds:Weight .
+
+mds:hasWidth a owl:ObjectProperty ;
+    skos:definition "Relates an entity to a width dimension associated with it."@en ;
+    rdfs:domain mds:Sample ;
+    rdfs:range mds:Width .
+
+mds:hasHeight a owl:ObjectProperty ;
+    skos:definition "Relates an entity to a height dimension associated with it."@en ;
+    rdfs:domain mds:Sample ;
+    rdfs:range mds:Height .
+
+mds:hasDepth a owl:ObjectProperty ;
+    skos:definition "Relates an entity to a depth dimension associated with it."@en ;
+    rdfs:domain mds:Sample ;
+    rdfs:range mds:Depth .
+
+mds:Grinding a owl:Class ;
+    rdfs:subClassOf mds:MaterialsProcessing ;
+    skos:definition "A mechanical surface preparation process in which a rotating abrasive wheel removes material from a specimen surface to achieve a flat, parallel finish." ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain " " .
+
+mds:MagneticPlate a owl:Class ;
+    rdfs:subClassOf mds:SamplePositionHolder ;
+    skos:altLabel "Magnetic Chuck" ;
+    skos:definition "Magnetic plate holding specimen during grinding."  ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain " " .
+
+skos:definition a owl:AnnotationProperty ;
+    skos:exactMatch skos:definition .
+
+mds:GrindingCoolant a owl:Class ;
+    rdfs:subClassOf cco:ont00000091 ;
+    skos:definition "The fluid applied during grinding to dissipate heat, reduce thermal damage, and flush debris." ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain " " .
+
+mds:Equipment a owl:Class .
+
+mds:PreparedSurface a owl:Class ;
+    rdfs:subClassOf mds:SpatialRegion ;
+    skos:definition "Which cube face was mechanically prepared for characterization (top, build direction)." ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Sample" ;
+    mds:hasSubDomain " " .
+
+mds:SamplePositionHolder a owl:Class .
+
+mds:SpatialRegion a owl:Class .
+
+mds:GrindingMachine a owl:Class ;
+    rdfs:subClassOf mds:Equipment ;
+    skos:altLabel "Grinder Machine", "Grinder" ;
+    skos:definition "A precision machine tool that moves a rotating abrasive wheel across the sample surface to achieve a flat, parallel surface finish." ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain " " .
+
+mds:hasDepthOfCutPerPass a owl:DatatypeProperty ;
+    skos:definition "Relates a grinding machine to the vertical depth of material removed from the sample surface in a single grinding pass."@en ;
+    rdfs:domain mds:GrindingMachine ;
+    rdfs:range xsd:decimal .
+
+mds:hasGrindingWheelSpeed a owl:DatatypeProperty ;
+    skos:definition "Relates a grinding machine to the rotational speed of its abrasive grinding wheel during the grinding operation."@en ;
+    rdfs:domain mds:GrindingMachine ;
+    rdfs:range xsd:decimal .
+
+mds:deliversCoolant a owl:ObjectProperty ;
+    skos:definition "Relates a grinding machine to the coolant material it supplies to the grinding zone during the grinding process."@en ;
+    rdfs:domain mds:GrindingMachine ;
+    rdfs:range mds:GrindingCoolant .
+
+mds:hasGrindingOperator a owl:DatatypeProperty ;
+    skos:definition "Relates a grinding process to the name of the person or technician responsible for performing the grinding operation." ;
+    rdfs:domain mds:Grinding ;
+    rdfs:range xsd:string .
+
+mds:hasPreparedDate a owl:DatatypeProperty ;
+    skos:definition "Relates a process to the date on which the operation was performed." ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf (mds:Grinding mds:DryElectropolishing)
+    ];
+    rdfs:range xsd:date .
+
+mds:hasGrindInducedDeformationLayerDepth a owl:DatatypeProperty ;
+    skos:definition "Relates an entity to the depth of its plastically deformed subsurface layer induced by the grinding process." ;
+    rdfs:domain mds:Sample ;
+    rdfs:range xsd:decimal .
+
+mds:hasPreparedSurface a owl:ObjectProperty ;
+    skos:definition "Relates an entity to a descriptor identifying the surface that was prepared for subsequent use or characterization."@en ;
+    rdfs:domain mds:Sample ;
+    rdfs:range mds:PreparedSurface .
+
+mds:hasTotalGrindingRemovalDepth a owl:DatatypeProperty ;
+    skos:definition "Relates a entity to the total thickness of material removed from its surface across all grinding passes." ;
+    rdfs:domain mds:Sample ;
+    rdfs:range xsd:decimal .
+
+mds:usesEquipment a owl:ObjectProperty ;
+    skos:definition "Relates a materials processing step to the equipment employed to carry out that process." ;
+    rdfs:range [
+        a owl:Class ;
+        owl:unionOf (mds:GrindingMachine mds:ElectropolishSystem)
+    ] ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf (mds:Grinding mds:DryElectropolishing)
+    ] .
+
+mds:isProcessStepOf a owl:ObjectProperty ;
+    skos:definition "Relates a materials processing step to the broader sample processing workflow of which it is a constituent part." ;
+    rdfs:range mds:MaterialsProcessing ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf (mds:Grinding mds:DryElectropolishing mds:SampleCleaning mds:SampleSurfaceQualityChecks)
+    ] .
+
+mds:isComponentOf a owl:ObjectProperty ;
+    skos:definition "Relates a physical component to the equipment of which it forms a functional part." ;
+    rdfs:range [
+        a owl:Class ;
+        owl:unionOf (mds:GrindingMachine mds:ElectropolishSystem)
+    ] ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf (mds:MagneticPlate mds:AnodeFixture mds:CathodeMaterial)
+    ] .
+
+cco:ont00000091 a owl:Class ;
+    rdfs:label "Portion of Coolant"@en ;
+    skos:exactMatch cco:ont00000091 .
+
+mds:DryElectropolishing a owl:Class ;
+    rdfs:subClassOf mds:MaterialsProcessing ;
+    skos:definition "An electrochemical surface preparation process in which material is selectively removed from a specimen surface using solid electrolyte media under an applied electrical potential" ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain " " .
+
+mds:hasDryElectropolishingOperator a owl:DatatypeProperty ;
+    skos:definition "Relates a polishing process to the name of the person or technician responsible for performing the polishing operation." ;
+    rdfs:domain mds:DryElectropolishing ;
+    rdfs:range xsd:string .
+
+mds:hasPolishingDuration a owl:DatatypeProperty ;
+    skos:definition "Relates a polishing process to the duration of each polishing step." ;
+    rdfs:domain mds:DryElectropolishing ;
+    rdfs:range xsd:decimal .
+
+mds:SampleCleaning a owl:Class ;
+    rdfs:subClassOf mds:MaterialsProcessing ;
+    skos:definition "A process in which residual contaminants are removed from a specimen surface using a solvent, followed by drying" ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain " " .
+
+mds:usesDryingGas a owl:DatatypeProperty ;
+    skos:definition "Relates a cleaning process to the gas used to dry a specimen surface." ;
+    rdfs:domain mds:SampleCleaning ;
+    rdfs:range xsd:string .
+
+mds:usesSolvent a owl:DatatypeProperty ;
+    skos:definition "Relates a cleaning process to the solvent used to remove residual contaminants from a specimen surface." ;
+    rdfs:domain mds:SampleCleaning ;
+    rdfs:range xsd:string .
+
+mds:SampleSurfaceQualityChecks a owl:Class ;
+    rdfs:subClassOf obo:BFO_0000015 ;
+    skos:definition "A process in which specimen dimensions and surface conditions are measured to verify the outcome of preparation steps" ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain " " .
+
+mds:hasDimensionAfterPreparation a owl:DatatypeProperty ;
+    skos:definition "Relates a quality check process to a measured size of a specimen recorded after a preparation process." ;
+    rdfs:domain mds:SampleSurfaceQualityChecks ;
+    rdfs:range xsd:decimal .
+
+mds:HeightVariationAcrossSampleBar a owl:DatatypeProperty ;
+    skos:definition "Relates a quality check process to the total variation in height measured across specimen positions along a sample bar." ;
+    rdfs:domain mds:SampleSurfaceQualityChecks ;
+    rdfs:range xsd:decimal .
+
+mds:hasMassAfterPreparation a owl:DatatypeProperty ;
+    skos:definition "Relates a quality check process to the specimen mass recorded after a preparation process." ;
+    rdfs:domain mds:SampleSurfaceQualityChecks ;
+    rdfs:range xsd:decimal .
+
+mds:hasMassChange a owl:DatatypeProperty ;
+    skos:definition "Relates a quality check process to the difference in specimen mass measured between two process stages." ;
+    rdfs:domain mds:SampleSurfaceQualityChecks ;
+    rdfs:range xsd:decimal .
+
+mds:hasTotalSurfaceRemovalDepth a owl:DatatypeProperty ;
+    skos:definition "Relates a quality check process to the total thickness of material removed from a surface of interest across processing steps." ;
+    rdfs:domain mds:SampleSurfaceQualityChecks ;
+    rdfs:range xsd:decimal .
+
+mds:isQualityCheckOf a owl:ObjectProperty ;
+    skos:definition "Relates a quality check process to the specimen being evaluated."@en ;
+    rdfs:domain mds:SampleSurfaceQualityChecks ;
+    rdfs:range mds:Sample .
+
+mds:AnodeFixture a owl:Class ;
+    rdfs:subClassOf mds:SamplePositionHolder ;
+    skos:altLabel "Anode Holder", "Anode Mount", "Anode Clamp" ;
+    skos:definition "Mechanical connection that attaches the specimen to the positive terminal (anode) of the electrical circuit" ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain " " .
+
+mds:CathodeMaterial a owl:Class ;
+    rdfs:subClassOf mds:Electrode ;
+    skos:altLabel "Counter Electrode Material" ;
+    skos:definition "The negative electrode in an electrochemical circuit" ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain " " .
+
+mds:ElectrolyteBeadMedia a owl:Class ;
+    rdfs:subClassOf cco:ont00000457 ;
+    skos:altLabel "Electrolyte Type", "Electrolyte Beads", "Polishing Media" ;
+    skos:definition "Solid polymer beads functionalized with acidic electrolyte groups that serve as the conductive polishing medium in dry electropolishing" ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain " " .
+
+mds:hasMediaRelativeHumidity a owl:DatatypeProperty ;
+    skos:definition "Relates a medium to its measured relative humidity." ;
+    rdfs:domain mds:ElectrolyteBeadMedia ;
+    rdfs:range xsd:decimal .
+
+mds:ElectropolishSystem a owl:Class ;
+    rdfs:subClassOf mds:Equipment ;
+    skos:altLabel "Electropolisher", "Electropolishing Machine" ;
+    skos:definition "Equipment used for polishing" ;
+    mds:hasDomain " " ;
+    mds:hasStudyStage "Materials Processing" ;
+    mds:hasSubDomain " " .
+
+mds:hasMotorSpeedSetting a owl:DatatypeProperty ;
+    skos:definition "Relates an equipment system to the rotational speed setting of its motor." ;
+    rdfs:domain mds:ElectropolishSystem ;
+    rdfs:range xsd:string .
+
+mds:hasPolishingFrequencyMode a owl:DatatypeProperty ;
+    skos:definition "Relates an electropolishing system to the frequency mode of the applied voltage (e.g., Low, High)." ;
+    rdfs:domain mds:ElectropolishSystem ;
+    rdfs:range xsd:string .
+
+mds:hasPolishingVoltage a owl:DatatypeProperty ;
+    skos:definition "Relates an electropolishing system to the electrical potential applied between anode and cathode during polishing." ;
+    rdfs:domain mds:ElectropolishSystem ;
+    rdfs:range xsd:decimal .
+
+mds:usesMedia a owl:ObjectProperty ;
+    skos:definition "Relates an equipment system to the medium it employs during operation."@en ;
+    rdfs:domain mds:ElectropolishSystem ;
+    rdfs:range mds:ElectrolyteBeadMedia .
+
+mds:hasElectropolishRateOfMassChange a owl:DatatypeProperty ;
+    skos:definition "Relates a specimen to the mass of material removed per unit time during electropolishing." ;
+    rdfs:domain mds:Sample ;
+    rdfs:range xsd:decimal .
+
+mds:hasElectropolishRateOfVolumeChange a owl:DatatypeProperty ;
+    skos:definition "Relates a specimen to the volume of material removed per unit time during electropolishing." ;
+    rdfs:domain mds:Sample ;
+    rdfs:range xsd:decimal .
+
+mds:undergoesProcessing a owl:ObjectProperty ;
+    skos:definition "Relates a specimen to a materials processing workflow it is subjected to."@en ;
+    rdfs:domain mds:Sample ;
+    rdfs:range mds:MaterialsProcessing .
+
+mds:SamplePositionHolder a owl:Class .
+
+obo:BFO_0000015 a owl:Class ;
+    rdfs:label "process"@en ;
+    skos:exactMatch obo:BFO_0000015 .
+
+cco:ont00000457 a owl:Class ;
+    rdfs:label "Portion of Material"@en ;
+    skos:exactMatch cco:ont00000457 .
+

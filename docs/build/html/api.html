@@ -52,13 +52,21 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#assessment-modes">Assessment Modes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#command-line-interface">Command-Line Interface</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="usage.html#examples">Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#mode-1-task-agnostic-default">Mode 1: Task-Agnostic (default)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#mode-2-task-specific-web-ontology">Mode 2: Task-Specific Web Ontology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#mode-3-task-based-scientific">Mode 3: Task-Based Scientific</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#mode-4-cross-domain">Mode 4: Cross-Domain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#cli-arguments">CLI Arguments</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#python-api">Python API</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="usage.html#task-agnostic-assessment">Task-Agnostic Assessment</a></li>
-<li class="toctree-l3"><a class="reference internal" href="usage.html#task-based-assessment">Task-Based Assessment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#mode-1-task-agnostic-assessment">Mode 1: Task-Agnostic Assessment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#mode-2-task-specific-web-ontology-assessment">Mode 2: Task-Specific Web Ontology Assessment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#mode-3-task-based-scientific-assessment">Mode 3: Task-Based Scientific Assessment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#mode-4-cross-domain-assessment">Mode 4: Cross-Domain Assessment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#underlying-task-based-metric">Underlying Task-Based Metric</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#available-metric-names">Available Metric Names</a></li>
@@ -68,12 +76,14 @@
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#assessment-runner">Assessment Runner</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#assessment-runners">Assessment Runners</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#ontocheck.run_assessment.run_ontology_assessment"><code class="docutils literal notranslate"><span class="pre">run_ontology_assessment()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ontocheck.run_assessment.run_web_ontology_assessment"><code class="docutils literal notranslate"><span class="pre">run_web_ontology_assessment()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ontocheck.run_assessment.run_task_based_assessment"><code class="docutils literal notranslate"><span class="pre">run_task_based_assessment()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#task-based-assessment">Task-Based Assessment</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#ontocheck.task_based_metric.task_based_metric"><code class="docutils literal notranslate"><span class="pre">task_based_metric()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#task-based-metric">Task-Based Metric</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ontocheck.task_based_metric.task_based_metric_v_0_0_1"><code class="docutils literal notranslate"><span class="pre">task_based_metric_v_0_0_1()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#labeling-metrics">Labeling Metrics</a><ul>
@@ -205,31 +215,104 @@
 <p>This section documents the public API of OntoCheck, organized by assessment
 category. Each metric function takes a Turtle file path as input and returns
 a score or diagnostic report.</p>
-<section id="assessment-runner">
-<h2>Assessment Runner<a class="headerlink" href="#assessment-runner" title="Link to this heading"></a></h2>
-<p>The central entry point for running one or more task-agnostic metrics.</p>
-<dl class="py function" id="module-ontocheck.run_assessment">
+<section id="assessment-runners">
+<h2>Assessment Runners<a class="headerlink" href="#assessment-runners" title="Link to this heading"></a></h2>
+<p>Functions for running each of the four assessment modes.</p>
+<p id="module-ontocheck.run_assessment">Ontology Assessment Runner</p>
+<p>Provides runner functions for the four OntoCheck assessment modes:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Mode 1 – Task-agnostic:  structural, labeling, accessibility, and</dt><dd><p>naming-convention metrics applied to a single ontology.</p>
+</dd>
+<dt>Mode 2 – Task-specific Web ontology:  task-based Relevance/Accuracy</dt><dd><p>validated against a knowledge graph (e.g., DBpedia via LC-QuAD).</p>
+</dd>
+<dt>Mode 3 – Task-based Scientific:  domain ontology assessed against</dt><dd><p>competency questions encoded as SPARQL queries.</p>
+</dd>
+<dt>Mode 4 – Cross-Domain:  multiple ontologies merged and assessed against</dt><dd><p>cross-domain competency questions.</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Author: Redad Mehdi</p>
+<dl class="py function">
 <dt class="sig sig-object py" id="ontocheck.run_assessment.run_ontology_assessment">
 <span class="sig-name descname"><span class="pre">run_ontology_assessment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ttl_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_log_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'assessment.log'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_csv_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'assessment_scores.csv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ontocheck/run_assessment.html#run_ontology_assessment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ontocheck.run_assessment.run_ontology_assessment" title="Link to this definition"></a></dt>
-<dd><p>Runs ontology assessment metrics on a given TTL file.</p>
+<dd><p>Run task-agnostic metrics on a single ontology (Mode 1).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ttl_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to the input Turtle (.ttl) ontology file.</p></li>
-<li><p><strong>metrics</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>] </em><em>| </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – List of metric names to execute, or “all”
-to run every available metric in METRIC_DISPATCHER.</p></li>
-<li><p><strong>output_log_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Output log file path. Defaults to “assessment.log”.</p></li>
-<li><p><strong>output_csv_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Output CSV file path. Defaults to “assessment_scores.csv”.</p></li>
+<li><p><strong>metrics</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Metric names to execute, or <code class="docutils literal notranslate"><span class="pre">&quot;all&quot;</span></code> to run every metric in
+<code class="docutils literal notranslate"><span class="pre">METRIC_DISPATCHER</span></code>.</p></li>
+<li><p><strong>output_log_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Output log file path.</p></li>
+<li><p><strong>output_csv_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Output CSV file path.</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="ontocheck.run_assessment.run_web_ontology_assessment">
+<span class="sig-name descname"><span class="pre">run_web_ontology_assessment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ttl_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">questions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_prefixes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">knowledge_graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_ns_fragments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_log_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'assessment.log'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_csv_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'assessment_scores.csv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ontocheck/run_assessment.html#run_web_ontology_assessment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ontocheck.run_assessment.run_web_ontology_assessment" title="Link to this definition"></a></dt>
+<dd><p>Assess a Web ontology against KGQA benchmark queries (Mode 2).</p>
+<p>Runs the task-based Relevance/Accuracy assessment using competency
+queries drawn from a knowledge-graph question-answering benchmark
+(e.g., LC-QuAD over DBpedia).  Optionally runs task-agnostic metrics
+as well.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ttl_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to the ontology Turtle file.</p></li>
+<li><p><strong>questions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to a JSON/Markdown file of SPARQL queries, or a list of raw
+SPARQL query strings.</p></li>
+<li><p><strong>domain_prefixes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Namespace prefixes used in the SPARQL queries (e.g., <code class="docutils literal notranslate"><span class="pre">[&quot;dbo&quot;]</span></code>).</p></li>
+<li><p><strong>knowledge_graph</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to the knowledge-graph file (Turtle/RDF) used for validation
+context.</p></li>
+<li><p><strong>domain_ns_fragments</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><em>None</em><em>, </em><em>optional</em>) – Namespace URI fragments to restrict domain-term filtering.</p></li>
+<li><p><strong>metrics</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><em>None</em><em>, </em><em>optional</em>) – Task-agnostic metric names to run alongside the task-based
+assessment.  Pass <code class="docutils literal notranslate"><span class="pre">&quot;all&quot;</span></code> for every available metric.</p></li>
+<li><p><strong>output_log_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Output log file path.</p></li>
+<li><p><strong>output_csv_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Output CSV file path.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ontocheck.run_assessment.run_task_based_assessment">
+<span class="sig-name descname"><span class="pre">run_task_based_assessment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ttl_files</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">questions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_prefixes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_ns_fragments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_log_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'assessment.log'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_csv_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'assessment_scores.csv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ontocheck/run_assessment.html#run_task_based_assessment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ontocheck.run_assessment.run_task_based_assessment" title="Link to this definition"></a></dt>
+<dd><p>Assess one or more ontologies against competency questions (Modes 3/4).</p>
+<p>When a single ontology is provided this corresponds to Mode 3
+(task-based scientific assessment).  When multiple ontologies are
+provided they are merged and evaluated jointly, corresponding to
+Mode 4 (cross-domain assessment).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ttl_files</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path(s) to Turtle (.ttl) ontology file(s).  A single path is
+accepted and will be wrapped in a list internally.</p></li>
+<li><p><strong>questions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to a JSON/Markdown file of SPARQL queries, or a list of raw
+SPARQL query strings.</p></li>
+<li><p><strong>domain_prefixes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Namespace prefixes used in the SPARQL queries (e.g., <code class="docutils literal notranslate"><span class="pre">[&quot;mds&quot;]</span></code>).</p></li>
+<li><p><strong>domain_ns_fragments</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><em>None</em><em>, </em><em>optional</em>) – Namespace URI fragments to restrict domain-term filtering.</p></li>
+<li><p><strong>metrics</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><em>None</em><em>, </em><em>optional</em>) – Task-agnostic metric names to run alongside the task-based
+assessment.  Pass <code class="docutils literal notranslate"><span class="pre">&quot;all&quot;</span></code> for every available metric.</p></li>
+<li><p><strong>output_log_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Output log file path.</p></li>
+<li><p><strong>output_csv_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Output CSV file path.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The result dictionary from <code class="docutils literal notranslate"><span class="pre">task_based_metric_v_0_0_1</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
-<section id="task-based-assessment">
-<h2>Task-Based Assessment<a class="headerlink" href="#task-based-assessment" title="Link to this heading"></a></h2>
-<p>Evaluates an ontology against competency questions encoded as SPARQL queries,
-computing Relevance and Accuracy metrics.</p>
+<section id="task-based-metric">
+<h2>Task-Based Metric<a class="headerlink" href="#task-based-metric" title="Link to this heading"></a></h2>
+<p>The underlying Relevance/Accuracy computation used by Modes 2, 3, and 4.</p>
 <p id="module-ontocheck.task_based_metric">Task-Based Ontology Assessment Metric</p>
 <p>Evaluates an ontology against a set of competency questions (encoded as SPARQL
 queries) by computing term-overlap metrics. For each question set, two scores
@@ -250,8 +333,8 @@ Accuracy  (Precision) = |T_a intersection T_o| / |T_o|</p>
 </dl>
 <p>Author: Redad Mehdi</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="ontocheck.task_based_metric.task_based_metric">
-<span class="sig-name descname"><span class="pre">task_based_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ttl_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">questions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_prefixes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_ns_fragments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ontocheck/task_based_metric.html#task_based_metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ontocheck.task_based_metric.task_based_metric" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="ontocheck.task_based_metric.task_based_metric_v_0_0_1">
+<span class="sig-name descname"><span class="pre">task_based_metric_v_0_0_1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ttl_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">questions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_prefixes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_ns_fragments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ontocheck/task_based_metric.html#task_based_metric_v_0_0_1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ontocheck.task_based_metric.task_based_metric_v_0_0_1" title="Link to this definition"></a></dt>
 <dd><p>Compute task-based Relevance and Accuracy for an ontology.</p>
 <p>Given an ontology (one or more Turtle files) and a set of competency
 questions expressed as SPARQL queries, this function computes two
@@ -310,7 +393,7 @@ by any task query.</p></li>
 </dl>
 <div class="admonition-examples admonition">
 <p class="admonition-title">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">task_based_metric</span><span class="p">(</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">task_based_metric_v_0_0_1</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">ttl_file</span><span class="o">=</span><span class="s2">&quot;my_ontology.ttl&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">questions</span><span class="o">=</span><span class="s2">&quot;competency_questions.json&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">domain_prefixes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mds&quot;</span><span class="p">],</span>
@@ -1445,16 +1528,19 @@ or rdfs:Class. It extracts the local name by splitting the URI at the last
 <h2>Other Modules<a class="headerlink" href="#other-modules" title="Link to this heading"></a></h2>
 <section id="module-ontocheck.cli">
 <span id="ontocheck-cli"></span><h3>ontocheck.cli<a class="headerlink" href="#module-ontocheck.cli" title="Link to this heading"></a></h3>
+<p>OntoCheck Command-Line Interface</p>
+<p>Provides a unified CLI for all four OntoCheck assessment modes:</p>
+<blockquote>
+<div><p>Mode 1 – Task-agnostic (default)
+Mode 2 – Task-specific Web ontology
+Mode 3 – Task-based Scientific ontology
+Mode 4 – Cross-Domain ontology</p>
+</div></blockquote>
+<p>Author: Redad Mehdi</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="ontocheck.cli.main">
 <span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ontocheck/cli.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ontocheck.cli.main" title="Link to this definition"></a></dt>
-<dd><p>Defines and orchestrates the command-line interface for the assessment tool.</p>
-<p>This function serves as the main entry point when the script is executed
-from the command line. It uses <cite>argparse</cite> to define and parse command-line
-arguments, provides help text to the user, and handles the special ‘all’</p>
-<p>keyword for running all available metrics. It then calls the primary
-<cite>run_ontology_assessment</cite> function with the user-provided arguments.</p>
-<p>Author = “Redad Mehdi”</p>
+<dd><p>Entry point for the <code class="docutils literal notranslate"><span class="pre">ontocheck</span></code> command.</p>
 </dd></dl>
 
 </section>
@@ -2504,15 +2590,15 @@ or rdfs:Class. It extracts the local name by splitting the URI at the last
 <dl class="py function">
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">run_ontology_assessment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ttl_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_log_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'assessment.log'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_csv_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'assessment_scores.csv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ontocheck/run_assessment.html#run_ontology_assessment"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Runs ontology assessment metrics on a given TTL file.</p>
+<dd><p>Run task-agnostic metrics on a single ontology (Mode 1).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ttl_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to the input Turtle (.ttl) ontology file.</p></li>
-<li><p><strong>metrics</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>] </em><em>| </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – List of metric names to execute, or “all”
-to run every available metric in METRIC_DISPATCHER.</p></li>
-<li><p><strong>output_log_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Output log file path. Defaults to “assessment.log”.</p></li>
-<li><p><strong>output_csv_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Output CSV file path. Defaults to “assessment_scores.csv”.</p></li>
+<li><p><strong>metrics</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Metric names to execute, or <code class="docutils literal notranslate"><span class="pre">&quot;all&quot;</span></code> to run every metric in
+<code class="docutils literal notranslate"><span class="pre">METRIC_DISPATCHER</span></code>.</p></li>
+<li><p><strong>output_log_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Output log file path.</p></li>
+<li><p><strong>output_csv_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Output CSV file path.</p></li>
 </ul>
 </dd>
 </dl>
@@ -2520,7 +2606,66 @@ to run every available metric in METRIC_DISPATCHER.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">task_based_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ttl_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">questions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_prefixes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_ns_fragments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ontocheck/task_based_metric.html#task_based_metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-name descname"><span class="pre">run_task_based_assessment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ttl_files</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">questions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_prefixes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_ns_fragments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_log_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'assessment.log'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_csv_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'assessment_scores.csv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ontocheck/run_assessment.html#run_task_based_assessment"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Assess one or more ontologies against competency questions (Modes 3/4).</p>
+<p>When a single ontology is provided this corresponds to Mode 3
+(task-based scientific assessment).  When multiple ontologies are
+provided they are merged and evaluated jointly, corresponding to
+Mode 4 (cross-domain assessment).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ttl_files</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path(s) to Turtle (.ttl) ontology file(s).  A single path is
+accepted and will be wrapped in a list internally.</p></li>
+<li><p><strong>questions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to a JSON/Markdown file of SPARQL queries, or a list of raw
+SPARQL query strings.</p></li>
+<li><p><strong>domain_prefixes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Namespace prefixes used in the SPARQL queries (e.g., <code class="docutils literal notranslate"><span class="pre">[&quot;mds&quot;]</span></code>).</p></li>
+<li><p><strong>domain_ns_fragments</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><em>None</em><em>, </em><em>optional</em>) – Namespace URI fragments to restrict domain-term filtering.</p></li>
+<li><p><strong>metrics</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><em>None</em><em>, </em><em>optional</em>) – Task-agnostic metric names to run alongside the task-based
+assessment.  Pass <code class="docutils literal notranslate"><span class="pre">&quot;all&quot;</span></code> for every available metric.</p></li>
+<li><p><strong>output_log_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Output log file path.</p></li>
+<li><p><strong>output_csv_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Output CSV file path.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The result dictionary from <code class="docutils literal notranslate"><span class="pre">task_based_metric_v_0_0_1</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">run_web_ontology_assessment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ttl_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">questions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_prefixes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">knowledge_graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_ns_fragments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_log_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'assessment.log'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_csv_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'assessment_scores.csv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ontocheck/run_assessment.html#run_web_ontology_assessment"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Assess a Web ontology against KGQA benchmark queries (Mode 2).</p>
+<p>Runs the task-based Relevance/Accuracy assessment using competency
+queries drawn from a knowledge-graph question-answering benchmark
+(e.g., LC-QuAD over DBpedia).  Optionally runs task-agnostic metrics
+as well.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ttl_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to the ontology Turtle file.</p></li>
+<li><p><strong>questions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to a JSON/Markdown file of SPARQL queries, or a list of raw
+SPARQL query strings.</p></li>
+<li><p><strong>domain_prefixes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Namespace prefixes used in the SPARQL queries (e.g., <code class="docutils literal notranslate"><span class="pre">[&quot;dbo&quot;]</span></code>).</p></li>
+<li><p><strong>knowledge_graph</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to the knowledge-graph file (Turtle/RDF) used for validation
+context.</p></li>
+<li><p><strong>domain_ns_fragments</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><em>None</em><em>, </em><em>optional</em>) – Namespace URI fragments to restrict domain-term filtering.</p></li>
+<li><p><strong>metrics</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><em>None</em><em>, </em><em>optional</em>) – Task-agnostic metric names to run alongside the task-based
+assessment.  Pass <code class="docutils literal notranslate"><span class="pre">&quot;all&quot;</span></code> for every available metric.</p></li>
+<li><p><strong>output_log_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Output log file path.</p></li>
+<li><p><strong>output_csv_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Output CSV file path.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">task_based_metric_v_0_0_1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ttl_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">questions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_prefixes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_ns_fragments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ontocheck/task_based_metric.html#task_based_metric_v_0_0_1"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compute task-based Relevance and Accuracy for an ontology.</p>
 <p>Given an ontology (one or more Turtle files) and a set of competency
 questions expressed as SPARQL queries, this function computes two
@@ -2579,7 +2724,7 @@ by any task query.</p></li>
 </dl>
 <div class="admonition-examples admonition">
 <p class="admonition-title">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">task_based_metric</span><span class="p">(</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">task_based_metric_v_0_0_1</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">ttl_file</span><span class="o">=</span><span class="s2">&quot;my_ontology.ttl&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">questions</span><span class="o">=</span><span class="s2">&quot;competency_questions.json&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">domain_prefixes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mds&quot;</span><span class="p">],</span>

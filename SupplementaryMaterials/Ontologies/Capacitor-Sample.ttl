@@ -1,0 +1,224 @@
+@prefix ElectronicComponents-Capacitor-Sample: <https://cwrusdle.bitbucket.io/mds/EC-Sample/> .
+@prefix cco: <https://www.commoncoreontologies.org/> .
+@prefix mds: <https://cwrusdle.bitbucket.io/mds/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcmi: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+ElectronicComponents-Capacitor-Sample:Ontology a owl:Ontology ;
+    rdfs:label "ElectronicComponents-Capacitor-Sample" ;
+    dcmi:creator "Rishabh Kundu, Jacob Anthony Lample, Van Tran, Quynh Tran, Ravi Lin, Roger French, Alp Sehirlioglu" ;
+    dcmi:description "Particularly, an ontology for capacitors undergoing HALT through aixHALT. The aim is to capture all the metadata associated with a capacitor so this ontology may be used universally. " ;
+    dcmi:title "ElectronicComponents-Capacitor-Sample" ;
+    owl:versionInfo "0.0.1" .
+
+mds:Capacitor a owl:Class ;
+    rdfs:label "Capacitor" ;
+    rdfs:subClassOf mds:ElectronicComponents ;
+    skos:altLabel "" ;
+    skos:definition "Electronic component that stores electrical energy" .
+
+mds:ActofOpening a owl:Class ;
+    rdfs:label "Act of Opening" ;
+    rdfs:subClassOf cco:ont00000228 ;
+    skos:altLabel "Opening Process" ;
+    skos:definition "Opening the supplier/manufacturer packaging to use the artifacts within." .
+
+mds:CapacitanceTolerance a owl:Class ;
+    rdfs:label "Capacitance Tolerance" ;
+    rdfs:subClassOf mds:Tolerance, mds:Capacitance ;
+    skos:altLabel "" ;
+    skos:definition "Tolerance of the capacitance for a given sample (ex. capacitor)" .
+
+mds:ExternalPackaging a owl:Class ;
+    rdfs:label "External Packaging" ;
+    rdfs:subClassOf cco:ont00000020 ;
+    skos:altLabel "Product Container, Protective Casing" ;
+    skos:definition "Container that components are manufactured, shipped and stored in" .
+
+mds:Tolerance a owl:Class ;
+    rdfs:label "Tolerance" ;
+    rdfs:subClassOf cco:ont00000592 ;
+    skos:altLabel "" ;
+    skos:definition "Class that represents the operational limit values and respective functional property variation of a sample (ex. for a capacitor, capacitance varies by X% capacative tolerance witnin a temperature tolerance of A to B)" .
+
+
+mds:ApplicationNorm a owl:Class ;
+    rdfs:label "Application Norm" ;
+    rdfs:subClassOf cco:ont00000127 ;
+    skos:altLabel "Application Rating, Recommended Use" ;
+    skos:definition "Application rating of a component given by manufacturer" ;
+    mds:value xsd:string .
+
+mds:Capacitance a owl:Class ;
+    rdfs:label "Capacitance" ;
+    rdfs:subClassOf cco:ont00000127 ;
+    skos:altLabel "" ;
+    skos:definition "Capacitance of an electric component (ex. capacitor)" ;
+    mds:value xsd:float .
+
+
+mds:CapacitorHeight a owl:Class ;
+    rdfs:label "Capacitor Height" ;
+    rdfs:subClassOf mds:SampleDimension ;
+    skos:altLabel "" ;
+    skos:definition "Manufacturer specified height of a capacitor" ;
+    mds:value xsd:float .
+
+mds:CapacitorLength a owl:Class ;
+    rdfs:label "Capacitor Length" ;
+    rdfs:subClassOf mds:SampleDimension ;
+    skos:altLabel "" ;
+    skos:definition "Manufacturer specified length of a capafcitor" ;
+    mds:value xsd:float .
+
+
+mds:LowerTemperatureLimit a owl:Class ;
+    rdfs:label "Lower Temperature Limit" ;
+    rdfs:subClassOf cco:ont00000441, cco:ont00000127 ;
+    skos:altLabel "" ;
+    skos:definition "Manufacturer specified lower operational temperature limit to maintain manufactuer specified functional tolerance (ex. if a capacitor has -55 degrees Celcius as its lower operational temperature, the manufactuer specifies that its envinronment temperature during usage does not drop below -55 degrees Celcius to maintain the capacitave tolerance)" ;
+    mds:value xsd:float .
+
+mds:Supplier a owl:Class ;
+    rdfs:label "Supplier" ;
+    rdfs:subClassOf cco:ont00000443 ;
+    skos:altLabel "" ;
+    skos:definition "Supplier of a given component or instrument" ;
+    mds:value xsd:string .
+
+mds:UpperTemperatureLimit a owl:Class ;
+    rdfs:label "Upper Temperature Limit" ;
+    rdfs:subClassOf cco:ont00000441, cco:ont00000127 ;
+    skos:altLabel "" ;
+    skos:definition "Manufacturer specified upper operational temperature limit to maintain manufactuer specified functional tolerance (ex. if a capacitor has 125 degrees Celcius as its upper operational temperature, the manufactuer specifies that its envinronment temperature during usage does not superceed 125 degrees Celcius to maintain the capacitave tolerance)" ;
+    mds:value xsd:float .
+
+mds:VoltageRating a owl:Class ;
+    rdfs:label "Voltage Rating" ;
+    rdfs:subClassOf cco:ont00000127 ;
+    skos:altLabel "" ;
+    skos:definition "Manufacturer specified operational voltage of an artifact (ex. if a capacitor has a voltage rating of 25V, the manufactuer specifies usage up to 25V)" ;
+    mds:value xsd:float .
+
+mds:CapacitorWidth a owl:Class ;
+    rdfs:label "Capacitor Width" ;
+    rdfs:subClassOf mds:SampleDimension ;
+    skos:altLabel "" ;
+    skos:definition "Manufacturer specified width of a capacitor" ;
+    mds:value xsd:float .
+
+cco:ont00000020 rdf:type owl:Class ;
+    rdfs:subClassOf cco:ont00000995 ;
+    rdfs:label "Container"@en ;
+    skos:definition "A Material Artifact that is designed to contain (wholly or partially) some material entity."@en ;
+    cco:ont00001760 "https://www.commoncoreontologies.org/ArtifactOntology"^^xsd:anyURI .
+
+cco:ont00000228 rdf:type owl:Class ;
+    rdfs:subClassOf cco:ont00000005 ;
+    rdfs:label "Planned Act"@en ;
+    skos:altLabel "Intentional Act"@en ;
+    skos:definition "An Act in which at least one Agent plays a causative role and which is prescribed by some Directive Information Content Entity held by at least one of the Agents."@en ;
+    cco:ont00001760 "https://www.commoncoreontologies.org/EventOntology"^^xsd:anyURI .
+
+cco:ont00000443 rdf:type owl:Class ;
+    owl:equivalentClass [ owl:intersectionOf ( cco:ont00001180
+                                            [ rdf:type owl:Restriction ;
+                                                owl:onProperty obo:BFO_0000196 ;
+                                                owl:someValuesFrom cco:ont00000485
+                                            ]
+                                            ) ;
+                        rdf:type owl:Class
+                        ] ;
+    rdfs:subClassOf cco:ont00001180 ;
+    rdfs:label "Commercial Organization"@en ;
+    skos:definition "An Organization that is the bearer of a Commercial Role and whose primary objective is to make a profit from the provision of goods or services."@en ;
+    cco:ont00001760 "https://www.commoncoreontologies.org/AgentOntology"^^xsd:anyURI .
+
+mds:LotCode a owl:Class ;
+    rdfs:label "Lot Code" ;
+    rdfs:subClassOf cco:ont00001309 ;
+    skos:altLabel "BatchCode" ;
+    skos:definition "Code provided by manufacturer about which lot or batch a sample is from" ;
+    mds:value xsd:string .
+
+cco:ont00001309 rdf:type owl:Class ;
+    rdfs:subClassOf cco:ont00000077 ;
+    rdfs:label "Lot Number"@en ;
+    skos:definition "A Code Identifier that designates a particular quantity or lot of material from a single manufacturer."@en ;
+    cco:ont00001754 "https://en.wikipedia.org/w/index.php?title=Lot_number&oldid=1061846325"^^xsd:anyURI ;
+    cco:ont00001760 "https://www.commoncoreontologies.org/InformationEntityOntology"^^xsd:anyURI .
+
+
+cco:ont00000127 rdf:type owl:Class ;
+    rdfs:subClassOf cco:ont00000965 ,
+                    [ rdf:type owl:Restriction ;
+                    owl:onProperty cco:ont00001980 ;
+                    owl:someValuesFrom obo:BFO_0000001
+                    ] ;
+    rdfs:label "Performance Specification"@en ;
+    skos:definition "A Directive Information Content Entity that prescribes some aspect of the behavior of a participant in a Process given one or more operating conditions."@en ;
+    skos:example "Maximum Speed at high altitude; Rate of Ascent at 10 degrees celsius with nominal payload." ;
+    cco:ont00001760 "https://www.commoncoreontologies.org/InformationEntityOntology"^^xsd:anyURI .
+
+
+mds:CapactiorTerminalElectrodeLength a owl:Class ;
+    rdfs:label "Capacitor Terminal Electrode Length" ;
+    rdfs:subClassOf mds:SampleDimension ;
+    skos:altLabel "Capacitor Electrode Length, Capacitor End Termination Length" ;
+    skos:definition "Manufacturer specified terminal electrode length of a capacitor" ;
+    mds:value xsd:float .
+
+mds:CapactiorTerminalElectrodeLengthTolerance a owl:Class ;
+    rdfs:label "Capacitor Terminal Electrode Length CapactiorLengthTolerance" ;
+    rdfs:subClassOf mds:Tolerance ;
+    skos:altLabel "Capacitor Electrode Length Tolerance, Capacitor End Termination Length Tolerance" ;
+    skos:definition "Manufacturer specified variation in terminal electrode length of a capacitor (±)" ;
+    mds:value xsd:float .
+
+mds:CapactiorLengthTolerance a owl:Class ;
+    rdfs:label "Capacitor Length Tolerance" ;
+    rdfs:subClassOf mds:Tolerance ;
+    skos:altLabel "" ;
+    skos:definition "Manufacturer specified length tolerance of a capacitor (±)" ;
+    mds:value xsd:float .
+
+mds:CapactiorWidthTolerance a owl:Class ;
+    rdfs:label "Capacitor Width Tolerance" ;
+    rdfs:subClassOf mds:Tolerance;
+    skos:altLabel "" ;
+    skos:definition "Manufacturer specified width tolerance of a capacitor (±)" ;
+    mds:value xsd:float .
+
+mds:PackagingMaterial a owl:Class ;
+    rdfs:label "Packaging Material" ;
+    rdfs:subClassOf mds:ExternalPackaging ;
+    skos:altLabel "" ;
+    skos:definition "Type of material that an artifact is packaged in (ex. for a capacitor: paper or embossed packaging)" .
+
+mds:ElectronicComponents a owl:Class ;
+    rdfs:label "Electronic Components" ;
+    rdfs:subClassOf mds:Sample ;
+    skos:altLabel "" ;
+    skos:definition "Any sample that has an electronic functionality associated with it (ex. capacitors or resistors)" .
+
+mds:MultiLayerCeramicCapacitor a owl:Class ;
+    rdfs:label "MultiLayer Ceramic Capacitor" ;
+    rdfs:subClassOf mds:Capacitor ;
+    skos:altLabel "MLCC" ;
+    skos:definition "A capacitor that is designed with multiple layers of dielectric and metal" .
+
+cco:ont00000592 rdf:type owl:Class ;
+                 rdfs:subClassOf cco:ont00001163 ;
+                 rdfs:comment "'Deviation Measurement Information Content Entity' and 'Veracity Measurement Information Content Entity' are complementary notions. Deviation is a measure of whether reality conforms to an ICE (e.g., a plan or prediction), whereas Veracity is a measure of whether a Descriptive ICE conforms to reality."@en ,
+                              "Note, the term 'accuracy' is avoided due to its ambiguity between: correctness-of-performance (see: 'Reliability Measurement Information Content Entity'), correctness-of-information ('Veracity Measurement Information Content Entity'), and adherance-to-expectations (see: 'Deviation Measurement Information Content Entity')."@en ;
+                 rdfs:label "Veracity Measurement Information Content Entity"@en ;
+                 skos:altLabel "Accuracy of Information"@en ,
+                               "Trueness Measurement"@en ,
+                               "Veracity Measurement"@en ;
+                 skos:definition "A Measurement Information Content Entity that is a measurement of the extent to which a description conforms to the reality it describes."@en ;
+                 cco:ont00001760 "https://www.commoncoreontologies.org/InformationEntityOntology"^^xsd:anyURI .

@@ -1,0 +1,2370 @@
+@prefix cco: <https://www.commoncoreontologies.org/> .
+@prefix mds: <https://cwrusdle.bitbucket.io/files/MDS_Onto/index-en.html#https://cwrusdle.bitbucket.io/mds/> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+mds: a owl:Ontology ;
+    rdfs:label "MDS Neural Network Modeling Ontology"@en ;
+    rdfs:comment "An ontology for neural network modeling and training processes based on Common Core Ontology"@en ;
+    owl:imports <http://www.ontologyrepository.com/CommonCoreOntologies/> .
+
+mds:APS_1ID a owl:Class ;
+    rdfs:label "APS 1-ID Beamline" ;
+    rdfs:subClassOf mds:Beamline ;
+    skos:definition "The 1-ID beamline at the Advanced Photon Source, specialized for high-energy X-ray diffraction and imaging." .
+
+mds:APS_5ID a owl:Class ;
+    rdfs:label "APS 5-ID Beamline" ;
+    rdfs:subClassOf mds:Beamline ;
+    skos:definition "The 5-ID beamline at the Advanced Photon Source, designed for dynamic compression experiments." .
+
+mds:AlphaLathWidth a owl:Class ;
+    rdfs:label "Alpha Lath Width"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000197 ;
+            owl:someValuesFrom obo:BFO_0000040 ],
+        obo:BFO_0000019 ;
+    skos:definition "The in-plane width of individual alpha-phase laths, a key microstructural length scale that decreases with lower isothermal hold temperature and greater continuous cooling rate. In as-built LPBF Ti-6Al-4V, the average lath width is approximately 2 micrometers, increasing with heat treatment temperature (Brown et al. 2021)."@en .
+
+mds:AlphaMicrostrain a owl:Class ;
+    rdfs:label "Alpha Phase Microstrain"@en ;
+    rdfs:subClassOf mds:Microstrain .
+
+mds:AlphaPhaseAspectRatio a owl:Class ;
+    rdfs:label "Alpha Phase Aspect Ratio"@en ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:definition "The ratio of length to width of alpha-phase laths or grains, which increases with increasing cooling rate in Ti-6Al-4V."@en .
+
+mds:BetaMicrostrain a owl:Class ;
+    rdfs:label "Beta Phase Microstrain"@en ;
+    rdfs:subClassOf mds:Microstrain .
+
+mds:BetaTitaniumTransusTemperature a owl:Class ;
+    rdfs:label "Beta Titanium Transus Temperature"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty cco:ont00001769 ;
+            owl:someValuesFrom [ a rdfs:Datatype ;
+                    owl:onDatatype xsd:decimal ;
+                    owl:withRestrictions ( [ xsd:minInclusive 975.0 ] [ xsd:maxInclusive 1005.0 ] ) ] ],
+        mds:TransusTemperature ;
+    skos:altLabel "β-Ti Transus Temperature"@en ;
+    skos:definition "The temperature above which titanium alloy exists entirely as beta phase, typically around 980°C for Ti-6Al-4V."@en .
+
+mds:CHESS_F2 a owl:Class ;
+    rdfs:label "CHESS F2 Beamline" ;
+    rdfs:subClassOf mds:Beamline ;
+    skos:definition "The F2 beamline at CHESS, optimized for high-energy X-ray scattering." .
+
+mds:CHESS_FAST a owl:Class ;
+    rdfs:label "CHESS FAST Beamline" ;
+    rdfs:subClassOf mds:Beamline ;
+    skos:definition "The FAST beamline at CHESS, designed for rapid data collection." .
+
+mds:CarbonFilter a owl:Class ;
+    rdfs:subClassOf cco:ont00000995 ;
+    skos:definition "A carbon-based filter positioned upstream of the monochromator to attenuate or condition the X-ray beam." .
+
+mds:CarbonFilterPosition a owl:Class ;
+    rdfs:label "Carbon filter position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "cfilt" ;
+    skos:definition "The positioning of a carbon filter along the beamline axis." .
+
+mds:ConcentrationContent a owl:Class ;
+    rdfs:label "Concentration Information Content"@en ;
+    rdfs:subClassOf cco:ont00000958 .
+
+mds:CrystalliteSize a owl:Class ;
+    rdfs:label "Crystallite Size"@en ;
+    rdfs:subClassOf cco:ont00000738 .
+
+mds:CrystalliteSizeContent a owl:Class ;
+    rdfs:label "Crystallite Size Information Content"@en ;
+    rdfs:subClassOf cco:ont00000958 .
+
+mds:CrystallographicIBE a owl:Class ;
+    rdfs:label "Crystallographic Value Bearer"@en ;
+    rdfs:subClassOf cco:ont00000253 ;
+    skos:definition "Entity that bears numerical crystallographic measurement values." .
+
+mds:DefectConcentration a owl:Class ;
+    rdfs:label "Defect Concentration"@en ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:definition "A quality representing the density of crystallographic point defects (vacancies, interstitials) in a material."@en .
+
+mds:DetectorCalibration a owl:Class ;
+    rdfs:subClassOf obo:BFO_0000015 ;
+    skos:definition "A process for adjusting and standardizing detector response to ensure accurate X-ray measurements." .
+
+mds:DiffractionPeak a owl:Class ;
+    rdfs:label "Diffraction Peak"@en ;
+    rdfs:subClassOf obo:BFO_0000141 ;
+    skos:definition "A feature in the diffraction pattern corresponding to a specific crystal plane reflection." .
+
+mds:EnergyCalibrationFoil a owl:Class ;
+    rdfs:subClassOf cco:ont00000995 ;
+    skos:definition "A thin metallic foil used to calibrate X-ray energy measurements by providing known absorption edges." .
+
+mds:EnergyCalibrationFoilXPosition a owl:Class ;
+    rdfs:label "Calibration foil x-position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "foilx" ;
+    skos:definition "The site that is the positioning of an energy calibration foil along the X-axis in the laboratory coordinate system." .
+
+mds:EnergyCalibrationFoilZPosition a owl:Class ;
+    rdfs:label "Calibration foil z-position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "foilz" ;
+    skos:definition "The site that is the positioning of an energy calibration foil along the Z-axis in the laboratory coordinate system." .
+
+mds:EpitaxialNucleation a owl:Class ;
+    rdfs:label "Epitaxial Nucleation"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000063 ;
+            owl:someValuesFrom mds:DiffusionalTransformation ],
+        mds:HeterogeneousNucleation ;
+    skos:definition "Nucleation of a new phase that grows coherently from an existing phase boundary, inheriting the crystallographic orientation relationship. In Ti-6Al-4V, Widmanstatten alpha laths nucleate epitaxially from grain boundary alpha (Whitney et al. 2024)."@en .
+
+mds:GPUComputeSystem a owl:Class ;
+    rdfs:label "GPU Compute System"@en ;
+    rdfs:comment "A computational hardware system utilizing graphics processing units for neural network training."@en ;
+    rdfs:subClassOf mds:ComputationalHardwareSystem .
+
+mds:GrainCoarsening a owl:Class ;
+    rdfs:label "Grain Coarsening"@en ;
+    rdfs:subClassOf mds:GrainGrowth ;
+    skos:altLabel "Abnormal Grain Growth"@en ;
+    skos:definition "Abnormal or exaggerated grain growth in which a subset of grains grows preferentially at the expense of neighboring grains."@en .
+
+mds:HeatingRate a owl:Class ;
+    rdfs:label "Heating Rate"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000197 ;
+            owl:someValuesFrom [ a owl:Class ;
+                    owl:unionOf ( mds:HeatingSegment mds:BetaTitaniumSolutionization ) ] ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001769 ;
+            owl:someValuesFrom [ a rdfs:Datatype ;
+                    owl:onDatatype xsd:decimal ;
+                    owl:withRestrictions ( [ xsd:minExclusive 0.0 ] ) ] ],
+        obo:BFO_0000144 ;
+    skos:definition "The rate at which temperature increases during heating."@en .
+
+mds:InterplanarSpacingContent a owl:Class ;
+    rdfs:label "Interplanar Spacing Information Content"@en ;
+    rdfs:subClassOf cco:ont00000958 .
+
+mds:LatticeParameterA a owl:Class ;
+    rdfs:label "Lattice Parameter a"@en ;
+    rdfs:subClassOf mds:LatticeParameter .
+
+mds:LatticeParameterC a owl:Class ;
+    rdfs:label "Lattice Parameter c"@en ;
+    rdfs:subClassOf mds:LatticeParameter .
+
+mds:LatticeParameterContent a owl:Class ;
+    rdfs:label "Lattice Parameter Information Content"@en ;
+    rdfs:subClassOf cco:ont00000958 .
+
+mds:MicrostrainContent a owl:Class ;
+    rdfs:label "Microstrain Information Content"@en ;
+    rdfs:subClassOf cco:ont00000958 .
+
+mds:ModelObject a owl:Class ;
+    rdfs:label "The trained model object file, whatever the format."@en ;
+    rdfs:subClassOf cco:ont00000798 .
+
+mds:ModelPerformanceMetric a owl:Class ;
+    rdfs:label "Model Performance Metric"@en ;
+    rdfs:comment "A measurement information content entity that quantifies neural network model performance."@en ;
+    rdfs:subClassOf cco:ont00001163 .
+
+mds:MonochromatorRotationValue cco:ont00001769 -69.0 ;
+    cco:ont00001863 qudt:RAD .
+
+mds:NeuralNetworkModelSpecification a owl:Class ;
+    rdfs:label "Neural Network Model Specification"@en ;
+    rdfs:comment "An algorithmic entity that prescribes how a neural network processes inputs to produce outputs."@en ;
+    rdfs:subClassOf cco:ont00000653 .
+
+mds:NumberOfPointsAzimuthValue cco:ont00001773 -69 .
+
+mds:OpenCLDevice a owl:Class ;
+    rdfs:label "OpenCLDevice" ;
+    rdfs:subClassOf cco:ont00000420 ;
+    skos:altLabel "opencl_device" ;
+    skos:definition "The computing device used for processing of the integration process." .
+
+mds:OpticalTableJackHorizontalPosition1 a owl:Class ;
+    rdfs:label "Optical table jack horizontal position 1" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "x1" ;
+    skos:definition "An alternate horizontal positioning measurement of an optical table jack." .
+
+mds:OpticalTableJackRightTransversePosition a owl:Class ;
+    rdfs:label "Optical table jack right transverse position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "yr" ;
+    skos:definition "The transverse positioning measurement of the right-side optical table jack." .
+
+mds:OpticalTableJackTransversePosition1 a owl:Class ;
+    rdfs:label "Optical table jack transverse position 1" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "y1" ;
+    skos:definition "An alternate transverse positioning measurement of an optical table jack." .
+
+mds:OpticalTableVerticalPosition a owl:Class ;
+    rdfs:label "Optical table vertical position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "tzt" ;
+    skos:definition "The vertical positioning of an optical table parallel to the gravitational axis." .
+
+mds:PeakIntensity a owl:Class ;
+    rdfs:label "Peak Intensity"@en ;
+    rdfs:subClassOf obo:BFO_0000019 .
+
+mds:PeakIntensityContent a owl:Class ;
+    rdfs:label "Peak Intensity Information Content"@en ;
+    rdfs:subClassOf cco:ont00000958 .
+
+mds:PeakPositionContent a owl:Class ;
+    rdfs:label "Peak Position Information Content"@en ;
+    rdfs:subClassOf cco:ont00000958 .
+
+mds:PriorBetaGrainSize a owl:Class ;
+    rdfs:label "Prior Beta Grain Size"@en ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:definition "The average size of prior beta grains as measured in the plane normal to their elongation direction. In LPBF Ti-6Al-4V, prior beta grains are columnar along the build direction with average diameters of approximately 84 micrometers in the XY plane (Whitney et al. 2024)."@en .
+
+mds:RecipeID a owl:Class ;
+    rdfs:subClassOf cco:ont00000649 .
+
+mds:RietveldRefinement a owl:Class ;
+    rdfs:label "Rietveld Refinement"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty cco:ont00001921 ;
+            owl:someValuesFrom mds:IntegratedDiffractionPattern ],
+        [ a owl:Restriction ;
+            owl:onProperty [ owl:inverseOf cco:ont00001808 ] ;
+            owl:someValuesFrom cco:DirectiveInformationContentEntity ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:PhaseFraction ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:LatticeParameter ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:CrystallographicTexture ],
+        cco:ont00000345 ;
+    skos:definition "Least-squares fitting of calculated to observed diffraction patterns." .
+
+mds:RwpContent a owl:Class ;
+    rdfs:label "Rwp Information Content"@en ;
+    rdfs:subClassOf cco:ont00000958 .
+
+mds:SafetyBrickHorizontalPosition a owl:Class ;
+    rdfs:label "Safety brick horizontal position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "safety_brick" ;
+    skos:definition "The horizontal positioning of a safety brick assembly along the beamline axis." .
+
+mds:SampleAlignment a owl:Class ;
+    rdfs:subClassOf obo:BFO_0000015 ;
+    skos:definition "A process for positioning and orienting an X-ray sample to achieve optimal beam interaction and measurement conditions." .
+
+mds:TestDataRole a owl:Class ;
+    rdfs:label "Test Data Role"@en ;
+    rdfs:comment "A role inhering in data that is used to test a trained neural network."@en ;
+    rdfs:subClassOf obo:0000023 .
+
+mds:Tool_1 obo:BFO_0000056 mds:XrayRecipe_1 .
+
+mds:Training a owl:Class ;
+    rdfs:label "Training" ;
+    rdfs:subClassOf obo:BFO_0000015 .
+
+mds:TrainingDataRole a owl:Class ;
+    rdfs:label "Training Data Role"@en ;
+    rdfs:comment "A role inhering in data that is used to train a neural network."@en ;
+    rdfs:subClassOf obo:0000023 .
+
+mds:Undercooling a owl:Class ;
+    rdfs:label "Undercooling"@en ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:altLabel "Supercooling"@en ;
+    skos:definition "A quality representing the difference between the equilibrium transformation temperature and the actual temperature at which a transformation occurs. Greater undercooling increases the thermodynamic driving force for transformation and influences the transformation mechanism and resulting morphology."@en .
+
+mds:ValidationDataRole a owl:Class ;
+    rdfs:label "Validation Data Role"@en ;
+    rdfs:comment "A role inhering in data that is used to validate a neural network during training."@en ;
+    rdfs:subClassOf obo:0000023 .
+
+mds:VanadiumConcentration a owl:Class ;
+    rdfs:label "Vanadium Concentration (Atomic %)"@en ;
+    rdfs:subClassOf mds:Concentration .
+
+mds:WeightedProfileRFactor a owl:Class ;
+    rdfs:label "Weighted Profile R-Factor (Rwp)"@en ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:definition "Goodness-of-fit metric for Rietveld refinement." .
+
+mds:XrayResult a owl:Class .
+
+mds:h_index a owl:DatatypeProperty ;
+    rdfs:label "h index"@en ;
+    rdfs:domain mds:MillerIndices ;
+    rdfs:range xsd:integer .
+
+mds:k_index a owl:DatatypeProperty ;
+    rdfs:label "k index"@en ;
+    rdfs:domain mds:MillerIndices ;
+    rdfs:range xsd:integer .
+
+mds:l_index a owl:DatatypeProperty ;
+    rdfs:label "l index"@en ;
+    rdfs:domain mds:MillerIndices ;
+    rdfs:range xsd:integer .
+
+obo:BFO_0000056 a owl:ObjectProperty ;
+    rdfs:label "participates in"@en ;
+    skos:exactMatch obo:BFO_0000056 .
+
+obo:BFO_0000063 a owl:ObjectProperty ;
+    rdfs:label "preceded by"@en ;
+    owl:inverseOf obo:BFO_0000062 ;
+    skos:definition "A temporal relation where one process begins after another ends."@en .
+
+obo:BFO_0000084 a owl:ObjectProperty ;
+    rdfs:label "generically depends on"@en ;
+    skos:exactMatch obo:BFO_0000084 .
+
+obo:BFO_0000141 a owl:Class ;
+    rdfs:label "immaterial entity"@en .
+
+mds:APS a owl:Class ;
+    rdfs:label "Advanced Photon Source" ;
+    rdfs:subClassOf mds:SynchrotronFacility ;
+    skos:definition "The Advanced Photon Source at Argonne National Laboratory." .
+
+mds:AlphaTiUnitCell a owl:Class ;
+    rdfs:label "Alpha-Ti Unit Cell"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000196 ;
+            owl:someValuesFrom mds:HexagonalClosePacked ],
+        mds:UnitCell .
+
+mds:AndorNeo a owl:Class ;
+    rdfs:label "DC-152Q-C00-F1 (Andor Neo)" ;
+    rdfs:subClassOf mds:XrayDetector .
+
+mds:AsFastAsPossibleCooling a owl:Class ;
+    rdfs:label "As Fast As Possible Cooling"@en ;
+    rdfs:subClassOf mds:CoolingRate ;
+    skos:altLabel "AFAP Cooling"@en ;
+    skos:definition "A cooling rate achieved by removing all active heating and allowing natural heat dissipation, typically resulting in variable cooling rates."@en .
+
+mds:AttenuatorWheels a owl:Class ;
+    rdfs:subClassOf cco:ont00000995 ;
+    skos:definition "A rotating wheel assembly containing multiple filter materials of varying thicknesses to attenuate X-ray beam intensity." .
+
+mds:AttenuatorWheelsPosition a owl:Class ;
+    rdfs:label "Attenuator wheel position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "att",
+        "attf" ;
+    skos:definition "The rotational positioning of attenuator wheels to select different filter materials or thicknesses." .
+
+mds:AvramiEquation a owl:Class ;
+    rdfs:label "Avrami Equation"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty cco:ont00001808 ;
+            owl:someValuesFrom mds:PhaseFraction ],
+        mds:GoverningLaw ;
+    skos:altLabel "JMAK Equation"@en ;
+    skos:definition "The Johnson-Mehl-Avrami-Kolmogorov equation describing the kinetics of phase transformation: f(t) = 1 - exp(-k*t^n), where f is transformed fraction, t is time, k is rate constant, and n is Avrami exponent."@en .
+
+mds:AzimuthalIntegration a owl:Class ;
+    rdfs:label "Integration",
+        "Azimuthal Integration"@en ;
+    rdfs:subClassOf cco:ont00000006,
+        cco:ont00001158 ;
+    skos:definition "A computational process class that performs the transformation of two-dimensional diffraction data into one-dimensional patterns by integrating intensity values along azimuthal angles at constant radial distances from the beam center.",
+        "Process of reducing 2D diffraction to 1D pattern by radial integration." .
+
+mds:AzimuthalRange a owl:Class ;
+    rdfs:label "AzimuthalRange" ;
+    rdfs:subClassOf cco:ont00000965 ;
+    skos:altLabel "azimuth_range" ;
+    skos:definition "The angular range in azimuthal direction to include in the integration." .
+
+mds:BackpropagationProcess a owl:Class ;
+    rdfs:label "Backpropagation Process"@en ;
+    rdfs:comment "A process of computing gradients and updating neural network weights."@en ;
+    rdfs:subClassOf cco:ActOfAlgorithmicProcessing .
+
+mds:BatchSizeSpecification a owl:Class ;
+    rdfs:label "Batch Size Specification"@en ;
+    rdfs:comment "An information content entity that specifies the number of samples processed before model update."@en ;
+    rdfs:subClassOf cco:ont00000958 .
+
+mds:BeamConvergence a owl:Class ;
+    rdfs:label "BeamConvergence" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:definition "The convergence of the incoming X-ray beam." .
+
+mds:BeamStop a owl:Class ;
+    rdfs:subClassOf cco:ont00000995 ;
+    skos:definition "A dense material component designed to absorb X-ray beams and protect downstream equipment in synchrotron beamlines." .
+
+mds:BeamStopRotation a owl:Class ;
+    rdfs:label "beam stop rotation" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:altLabel "bsr" ;
+    skos:definition "The rotational positioning capability of a beamstop around one or more axes." .
+
+mds:BeamStopTransversePosition a owl:Class ;
+    rdfs:label "Beam stop x-position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "bsx" ;
+    skos:definition "The horizontal positioning of a beamstop perpendicular to the beam direction." .
+
+mds:BeamStopVerticalPosition a owl:Class ;
+    rdfs:label "beam stop z-position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "bsz" ;
+    skos:definition "The vertical positioning of a beamstop parallel to the gravitational axis." .
+
+mds:BetaTiUnitCell a owl:Class ;
+    rdfs:label "Beta-Ti Unit Cell"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000196 ;
+            owl:someValuesFrom mds:BodyCenteredCubic ],
+        mds:UnitCell .
+
+mds:BitDepth a owl:Class ;
+    rdfs:label "Bit Depth" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:definition "Bit depth of the detector." .
+
+mds:BodyCenteredCubic a owl:Class ;
+    rdfs:label "Body Centered Cubic (BCC)"@en ;
+    rdfs:subClassOf mds:CrystalStructure .
+
+mds:BottomCaveSlitPosition a owl:Class ;
+    rdfs:label "Bottom cave slit" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "cslitb" ;
+    skos:definition "The positioning of the lower blade of a cave slit to control the vertical beam aperture from below." .
+
+mds:BraggsLaw a owl:Class ;
+    rdfs:label "Bragg's Law"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty cco:ont00001808 ;
+            owl:someValuesFrom mds:BeamWavelength ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001808 ;
+            owl:someValuesFrom mds:InterplanarSpacing ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001808 ;
+            owl:someValuesFrom mds:PeakPosition2Theta ],
+        mds:GoverningLaw ;
+    skos:definition "The law relating X-ray wavelength, interplanar spacing, and diffraction angle: n*lambda = 2*d*sin(theta)."@en .
+
+mds:CCTDiagram a owl:Class ;
+    rdfs:label "Continuous Cooling Transformation Diagram"@en ;
+    rdfs:subClassOf cco:ont00000958 ;
+    skos:altLabel "CCT Diagram"@en ;
+    skos:definition "An information content entity representing phase transformation behavior under continuous cooling conditions by plotting transformation start and end loci as functions of cooling rate and temperature."@en .
+
+mds:CHESS a owl:Class ;
+    rdfs:label "Cornell High Energy Synchrotron Source" ;
+    rdfs:subClassOf mds:SynchrotronFacility ;
+    skos:definition "Cornell High Energy Synchrotron Source at Cornell University." .
+
+mds:CaveSlit a owl:Class ;
+    rdfs:subClassOf cco:ont00000995 ;
+    skos:definition "A precision aperture device that defines and controls the cross-sectional area of an X-ray beam in a beamline hutch or cave." .
+
+mds:ChemicalFormula a owl:Class ;
+    rdfs:label "ChemicalFormula" ;
+    rdfs:subClassOf cco:ont00000686 ;
+    skos:definition "Chemical composition of the material." .
+
+mds:ChiDiscontinuity a owl:Class ;
+    rdfs:label "ChiDiscontinuity" ;
+    rdfs:subClassOf cco:ont00000965 ;
+    skos:altLabel "chi_discontinuity" ;
+    skos:definition "The position of the discontinuity of the chi axis between 0 and 2π." .
+
+mds:CoefficientOfThermalExpansion a owl:Class ;
+    rdfs:label "Coefficient of Thermal Expansion"@en ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:altLabel "CTE"@en ;
+    skos:definition "A quality representing the fractional change in lattice parameter or interplanar spacing per unit temperature change. May be crystallographic-orientation-dependent in non-cubic phases. In Ti-6Al-4V, the average alpha-phase CTE is approximately 9.7 x 10^-6 /K on heating and 11.2 x 10^-6 /K on cooling; the beta-phase CTE is approximately 9.3-9.5 x 10^-6 /K (Brown et al. 2021)."@en .
+
+mds:CoherentScatteringDomainSize a owl:Class ;
+    rdfs:label "Coherent Scattering Domain Size"@en ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:altLabel "Sub-grain Size"@en ;
+    skos:definition "The area-weighted average size of crystallographic domains that scatter X-rays coherently, determined from diffraction line profile analysis (DLPA). It represents the sub-grain size and is approximately 23 +/- 3 nm in as-built LPBF Ti-6Al-4V (Brown et al. 2021)."@en .
+
+mds:ColonyMorphology a owl:Class ;
+    rdfs:label "Colony Morphology"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000197 ;
+            owl:someValuesFrom obo:BFO_0000040 ],
+        mds:LamellarMorphology ;
+    skos:altLabel "Packeted Morphology"@en ;
+    skos:definition "A morphology in which groups of parallel alpha laths of the same crystallographic variant form colonies within a prior beta grain. In Ti-6Al-4V, colony (packeted) Widmanstatten alpha forms at isothermal transformation temperatures of 870-950 C or at continuous cooling rates below approximately 5 C/s (Whitney et al. 2024)."@en .
+
+mds:ComputationalHardwareSystem a owl:Class ;
+    rdfs:label "Computational Hardware System"@en ;
+    rdfs:comment "An artifact that provides computational resources for neural network training."@en ;
+    rdfs:subClassOf cco:Artifact .
+
+mds:ControlledCoolingRate a owl:Class ;
+    rdfs:label "Controlled Cooling Rate"@en ;
+    rdfs:subClassOf mds:CoolingRate ;
+    skos:definition "A cooling rate that is actively controlled to maintain a specific value."@en .
+
+mds:CrystallographicTexture a owl:Class ;
+    rdfs:label "Crystallographic Texture"@en ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:altLabel "Preferred Orientation"@en ;
+    skos:definition "A quality representing the statistical distribution of crystallographic orientations in a polycrystalline material. Described quantitatively by the Orientation Distribution Function (ODF) and represented visually by pole figures."@en .
+
+mds:DXR250RTPlus a owl:Class ;
+    rdfs:label "2304871 (DXR-250RT+)" ;
+    rdfs:subClassOf mds:XrayDetector .
+
+mds:DarkCorrection a owl:Class ;
+    rdfs:label "DarkCorrection" ;
+    rdfs:subClassOf cco:ont00001158 ;
+    skos:definition "A  calibration procedure where an offset map is subtracted from X-ray exposures." .
+
+mds:DataPreprocessingOutput a owl:Class ;
+    rdfs:label "Data Preprocessing Output"@en ;
+    rdfs:comment "An information content entity that is the output of the SyncXrayPreProcessing process and serves as input to modeling."@en ;
+    rdfs:subClassOf cco:ont00000958 .
+
+mds:DetectorLength a owl:Class ;
+    rdfs:label "Detector Length" ;
+    rdfs:subClassOf cco:ont00000738 ;
+    skos:definition "The length of the detector." .
+
+mds:DetectorManufacturer a owl:Class ;
+    rdfs:label "Detector Manufacturer" ;
+    rdfs:subClassOf cco:Organization ;
+    skos:definition "An organization that manufactures detectors." .
+
+mds:DetectorManufacturing a owl:Class ;
+    rdfs:label "Detector Manufacturing" ;
+    rdfs:subClassOf cco:ont00001359 ;
+    skos:definition "A manufacturing process that produces detectors." .
+
+mds:DetectorName a owl:Class ;
+    rdfs:label "Detector Name" ;
+    rdfs:subClassOf cco:ont00000292 ;
+    skos:definition "Name of the detector." .
+
+mds:DetectorWidth a owl:Class ;
+    rdfs:label "Detector Width" ;
+    rdfs:subClassOf cco:ont00000738 ;
+    skos:definition "The width of the detector." .
+
+mds:DetectorXOrientation a owl:Class ;
+    rdfs:label "Detector x-orientation" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:altLabel "detxr" ;
+    skos:definition "The angular orientation of a detector around the X-axis in the laboratory coordinate system." .
+
+mds:DetectorXPosition a owl:Class ;
+    rdfs:label "Detector x-position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "detx" ;
+    skos:definition "The positioning of a detector along the X-axis in the laboratory coordinate system." .
+
+mds:DetectorYOrientation a owl:Class ;
+    rdfs:label "Detector y-orientation" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:altLabel "detyr" ;
+    skos:definition "The angular orientation of a detector around the Y-axis in the laboratory coordinate system." .
+
+mds:DetectorYPosition a owl:Class ;
+    rdfs:label "Detector y-position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "dety" ;
+    skos:definition "The positioning of a detector along the Y-axis in the laboratory coordinate system." .
+
+mds:DetectorZOrientation a owl:Class ;
+    rdfs:label "Detector z-orientation" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:altLabel "detzr" ;
+    skos:definition "The angular orientation of a detector around the Z-axis in the laboratory coordinate system." .
+
+mds:DetectorZPosition a owl:Class ;
+    rdfs:label "Detector z-position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "detz" ;
+    skos:definition "The positioning of a detector along the Z-axis, typically controlling the sample-to-detector distance." .
+
+mds:Dexela2923 a owl:Class ;
+    rdfs:label "Dexela 2923" ;
+    rdfs:subClassOf mds:XrayDetector .
+
+mds:DiffractionLineProfileAnalysis a owl:Class ;
+    rdfs:label "Diffraction Line Profile Analysis"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty cco:ont00001921 ;
+            owl:someValuesFrom mds:IntegratedDiffractionPattern ],
+        [ a owl:Restriction ;
+            owl:onProperty [ owl:inverseOf cco:ont00001808 ] ;
+            owl:someValuesFrom cco:DirectiveInformationContentEntity ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:DislocationDensity ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:CoherentScatteringDomainSize ],
+        cco:ont00000345 ;
+    skos:altLabel "DLPA"@en ;
+    skos:definition "A quantitative analysis method that extracts microstructural information (dislocation density, sub-grain size, dislocation character) from the shape and breadth of diffraction peaks using convolutional methods such as eCMWP."@en .
+
+mds:DiffusionalDisplaciveTransformation a owl:Class ;
+    rdfs:label "Diffusional-Displacive Transformation"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:WidmanstattenMorphology ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:BasketweaveMorphology ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:ColonyMorphology ],
+        [ a owl:Restriction ;
+            owl:onProperty mds:has_decoupled_kinetics_from ;
+            owl:someValuesFrom mds:VanadiumPartitioning ],
+        mds:SolidStatePhaseTransformation ;
+    skos:altLabel "Mixed-Mode Transformation"@en ;
+    skos:definition "A mixed solid-state phase transformation mechanism involving thermally activated nucleation of alpha lath subunits followed by displacive (shear) growth. The structural transformation proceeds faster than solute redistribution, indicating that diffusional processes alone are not responsible. Observed in Ti-6Al-4V at isothermal hold temperatures below approximately 865 C and at all continuous cooling rates studied (Whitney et al. 2024)."@en .
+
+mds:DirectedEnergyDeposition a owl:Class ;
+    rdfs:label "Directed Energy Deposition"@en ;
+    rdfs:subClassOf mds:AdditiveManufacturingProcess ;
+    skos:altLabel "DED"@en,
+        "LENS"@en ;
+    skos:definition "An additive manufacturing process in which focused thermal energy is used to fuse material as it is deposited, encompassing wire-fed and powder-fed variants such as LENS."@en .
+
+mds:DislocationAnnihilation a owl:Class ;
+    rdfs:label "Dislocation Annihilation"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000057 ;
+            owl:someValuesFrom obo:BFO_0000040 ],
+        [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000062 ;
+            owl:someValuesFrom mds:Recovery ],
+        obo:BFO_0000015 ;
+    skos:definition "A process in which dislocations of opposite sign interact and cancel, reducing the total dislocation density."@en .
+
+mds:DislocationMultiplication a owl:Class ;
+    rdfs:label "Dislocation Multiplication"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000057 ;
+            owl:someValuesFrom obo:BFO_0000040 ],
+        [ a owl:Restriction ;
+            owl:onProperty mds:has_increased_likelihood_of ;
+            owl:someValuesFrom mds:Recovery ],
+        obo:BFO_0000015 ;
+    skos:definition "A process in which the dislocation density increases through mechanisms such as Frank-Read source operation during plastic deformation."@en .
+
+mds:Eiger1M a owl:Class ;
+    rdfs:label "Eiger 1M" ;
+    rdfs:subClassOf mds:XrayDetector .
+
+mds:ElectronBeamMelting a owl:Class ;
+    rdfs:label "Electron Beam Melting"@en ;
+    rdfs:subClassOf mds:AdditiveManufacturingProcess ;
+    skos:altLabel "EBM"@en ;
+    skos:definition "An additive manufacturing process using a focused electron beam to selectively melt powder feedstock under vacuum conditions."@en .
+
+mds:EnergyRange a owl:Class ;
+    rdfs:label "EnergyRange" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:definition "The energy range the particular beamline can cover." .
+
+mds:EpochCountSpecification a owl:Class ;
+    rdfs:label "Epoch Count Specification"@en ;
+    rdfs:comment "An information content entity that specifies the number of complete passes through the training dataset."@en ;
+    rdfs:subClassOf cco:ont00000958 .
+
+mds:EquilibriumPhaseDiagram a owl:Class ;
+    rdfs:label "Equilibrium Phase Diagram"@en ;
+    rdfs:subClassOf cco:ont00000958 ;
+    skos:definition "An information content entity representing the thermodynamically stable phase fields of a material system as a function of temperature and composition."@en .
+
+mds:ErrorModel a owl:Class ;
+    rdfs:label "Error model" ;
+    rdfs:subClassOf cco:ont00000965 ;
+    skos:altLabel "error_model" ;
+    skos:definition "Statistical model used for error propagation during integration." .
+
+mds:HardenabilityDisposition a owl:Class ;
+    rdfs:label "Hardenability Disposition"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000055 ;
+            owl:someValuesFrom mds:MartensisiticTransformation ],
+        obo:BFO_0000016 ;
+    skos:definition "A disposition of a material to form martensite during cooling, reflecting the ease with which diffusionless transformation occurs."@en .
+
+mds:HexagonalClosePacked a owl:Class ;
+    rdfs:label "Hexagonal Close Packed (HCP)"@en ;
+    rdfs:subClassOf mds:CrystalStructure .
+
+mds:HoldSegment a owl:Class ;
+    rdfs:label "Hold Segment"@en ;
+    rdfs:subClassOf mds:ThermalCycleSegment ;
+    skos:altLabel "Isothermal Hold Segment"@en,
+        "Soaking Segment"@en ;
+    skos:definition "A segment of a thermal cycle during which temperature is maintained constant."@en .
+
+mds:HomogeneousNucleation a owl:Class ;
+    rdfs:label "Homogeneous Nucleation"@en ;
+    rdfs:subClassOf mds:Nucleation ;
+    skos:definition "Nucleation that occurs uniformly throughout the bulk of the parent phase without preferential formation at crystallographic defects."@en .
+
+mds:HorizontalCaveSlitPosition a owl:Class ;
+    rdfs:label "Horizontal cave slit position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "cslitx" ;
+    skos:definition "The horizontal positioning of cave slit blades to control the lateral beam aperture." .
+
+mds:HorizontalCaveSlitWidth a owl:Class ;
+    rdfs:label "Horizontal cave slit width" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:altLabel "cslitw" ;
+    skos:definition "The width measurement of the horizontal aperture opening created by the cave slit blades." .
+
+mds:HuberSampleStage a owl:Class ;
+    rdfs:subClassOf cco:ont00000995 ;
+    skos:definition "A precision positioning system manufactured by Huber that provides fine sample positioning and rotation capabilities." .
+
+mds:HuberStageHorizontalPosition a owl:Class ;
+    rdfs:label "Huber stage horizontal position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "huberx" ;
+    skos:definition "The horizontal positioning of a Huber sample stage perpendicular to the beam direction." .
+
+mds:HuberStageRotation a owl:Class ;
+    rdfs:label "Huber stage rotation" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "hubero" ;
+    skos:definition "The rotational positioning of a Huber sample stage around its central axis." .
+
+mds:HuberStageTransversePosition a owl:Class ;
+    rdfs:label "Huber stage transverse position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "hubery" ;
+    skos:definition "The positioning of a Huber sample stage along the beam direction axis." .
+
+mds:HyperparameterConfiguration a owl:Class ;
+    rdfs:label "Hyperparameter Configuration"@en ;
+    rdfs:comment "An information content entity that specifies the hyperparameters for neural network training."@en ;
+    rdfs:subClassOf cco:ont00000958 .
+
+mds:ImageFile a owl:Class ;
+    rdfs:subClassOf cco:ont00000253 .
+
+mds:ImageStack a owl:Class ;
+    rdfs:subClassOf cco:ont00000958 .
+
+mds:ImageStackFile a owl:Class ;
+    rdfs:subClassOf cco:ont00000253 .
+
+mds:IntegrationID a owl:Class ;
+    rdfs:label "integrationID" ;
+    rdfs:subClassOf cco:ont00000077 ;
+    skos:definition " A unique identifier for a specific integration operation, allowing tracking and referencing of individual integration processes." .
+
+mds:IntegrationOptions a owl:Class ;
+    rdfs:label "Integration Configuration" ;
+    rdfs:subClassOf cco:ont00000958 ;
+    skos:definition "Configuration parameters that control the integration algorithm behavior." .
+
+mds:InterplanarSpacing a owl:Class ;
+    rdfs:label "Interplanar Spacing (d-spacing)"@en ;
+    rdfs:subClassOf cco:ont00000738 .
+
+mds:IsothermalTransformation a owl:Class ;
+    rdfs:label "Isothermal Transformation"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000057 ;
+            owl:someValuesFrom mds:XraySample ],
+        [ a owl:Restriction ;
+            owl:onProperty [ owl:inverseOf cco:ont00001808 ] ;
+            owl:someValuesFrom cco:DirectiveInformationContentEntity ],
+        [ a owl:Restriction ;
+            owl:onProperty [ owl:inverseOf cco:ont00001808 ] ;
+            owl:someValuesFrom [ a owl:Class ;
+                    owl:intersectionOf ( cco:DirectiveInformationContentEntity [ a owl:Restriction ;
+                                owl:onProperty cco:ont00001808 ;
+                                owl:someValuesFrom mds:IsothermalHoldTemperature ] ) ] ],
+        obo:BFO_0000015 ;
+    skos:definition "A heat treatment process where the material is rapidly cooled to a specific temperature and held at that temperature to allow phase transformation to occur."@en .
+
+mds:LaserPowderBedFusion a owl:Class ;
+    rdfs:label "Laser Powder Bed Fusion"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty mds:has_increased_likelihood_of ;
+            owl:someValuesFrom mds:RapidSolidification ],
+        mds:AdditiveManufacturingProcess ;
+    skos:altLabel "L-PBF"@en,
+        "LPBF"@en,
+        "SLM"@en,
+        "Selective Laser Melting"@en ;
+    skos:definition "An additive manufacturing process in which a focused laser beam selectively melts regions of a powder bed, producing parts with cooling rates typically on the order of 10^3 to 10^6 K/s."@en .
+
+mds:LearningRateSpecification a owl:Class ;
+    rdfs:label "Learning Rate Specification"@en ;
+    rdfs:comment "An information content entity that specifies the learning rate for gradient descent optimization."@en ;
+    rdfs:subClassOf cco:ont00000958 .
+
+mds:LeverRule a owl:Class ;
+    rdfs:label "Lever Rule"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty cco:ont00001808 ;
+            owl:someValuesFrom mds:PhaseFraction ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001808 ;
+            owl:someValuesFrom mds:Concentration ],
+        mds:GoverningLaw ;
+    skos:definition "A thermodynamic relation that determines the phase fractions of two coexisting phases from the overall composition and the phase boundary compositions in a binary or pseudo-binary system."@en .
+
+mds:MaiaDetector a owl:Class ;
+    rdfs:label "Maia" ;
+    rdfs:subClassOf mds:XrayDetector .
+
+mds:MassiveTransformation a owl:Class ;
+    rdfs:label "Massive Transformation"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:EquiaxedMorphology ],
+        mds:SolidStatePhaseTransformation ;
+    skos:definition "A composition-invariant, thermally activated phase transformation controlled by interface migration rather than long-range diffusion."@en .
+
+mds:MaxBeamSize a owl:Class ;
+    rdfs:label "maxBeamSize" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:definition "The maximum size of the incoming X-ray beam." .
+
+mds:MaxFrameRate a owl:Class ;
+    rdfs:label "Max Frame Rate" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:definition "The maximum number of frames the detector can capture per second." .
+
+mds:MethodOfIntegration a owl:Class ;
+    rdfs:label "MethodOfIntegration" ;
+    rdfs:subClassOf cco:ont00000965 ;
+    skos:altLabel "method" ;
+    skos:definition "The computational algorithm used for integration." .
+
+mds:ModelInferenceProcess a owl:Class ;
+    rdfs:label "Model Inference Process"@en ;
+    rdfs:comment "A process of using a trained neural network to make predictions on new data."@en ;
+    rdfs:subClassOf cco:ActOfAlgorithmicProcessing .
+
+mds:ModelTestingProcess a owl:Class ;
+    rdfs:label "Model Testing Process"@en ;
+    rdfs:comment "A process of evaluating a trained neural network model on test data."@en ;
+    rdfs:subClassOf cco:ActOfMeasuring .
+
+mds:ModelValidationProcess a owl:Class ;
+    rdfs:label "Model Validation Process"@en ;
+    rdfs:comment "A process of evaluating a neural network model on validation data during training."@en ;
+    rdfs:subClassOf cco:ActOfMeasuring .
+
+mds:ModelWeightsSpecification a owl:Class ;
+    rdfs:label "Model Weights Specification"@en ;
+    rdfs:comment "An information content entity that represents the learned parameters of a neural network."@en ;
+    rdfs:subClassOf cco:ont00000958 .
+
+mds:Monochromator a owl:Class ;
+    rdfs:subClassOf cco:ont00000995 ;
+    skos:definition "A crystal-based device that selects a specific wavelength or energy from a polychromatic X-ray beam using Bragg diffraction." .
+
+mds:MonochromatorAngleChi a owl:Class ;
+    rdfs:label "Monochromator angle chi" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:altLabel "mondchi",
+        "monuchi" ;
+    skos:definition "The chi angle positioning of a monochromator crystal, representing rotation around the axis perpendicular to both the beam and the crystal surface normal." .
+
+mds:MonochromatorAnglePhi a owl:Class ;
+    rdfs:label "Monochromator angle phi" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:altLabel "mondphi",
+        "monuphi" ;
+    skos:definition "The phi angle positioning of a monochromator crystal, representing rotation around the axis parallel to the crystal surface." .
+
+mds:MonochromatorCrystalSeparation a owl:Class ;
+    rdfs:label "Monochromator crystal separation" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:altLabel "monp" ;
+    skos:definition "The spatial separation distance between upstream and downstream monochromator crystals." .
+
+mds:MonochromatorOffset a owl:Class ;
+    rdfs:label "Mono offset" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "monoff" ;
+    skos:definition "The lateral displacement positioning of a monochromator crystal to maintain beam alignment during energy changes." .
+
+mds:MonochromatorPitch a owl:Class ;
+    rdfs:label "Monochromator pitch" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:altLabel "pitch" ;
+    skos:definition "The angular adjustment of the downstream monochromator crystal for fine energy tuning." .
+
+mds:MonochromatorRotation a owl:Class ;
+    rdfs:label "Mono rotation" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:definition "The rotational positioning of a monochromator crystal to select specific X-ray energies through Bragg angle adjustment." .
+
+mds:MonochromatorTransversePosition a owl:Class ;
+    rdfs:label "Mono transverse" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "mondx",
+        "monux" ;
+    skos:definition "The horizontal positioning of a monochromator crystal perpendicular to the beam direction." .
+
+mds:MonochromatorVerticalPosition a owl:Class ;
+    rdfs:label "Mono vertical" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "mondz",
+        "monuz" ;
+    skos:definition "The vertical positioning of a monochromator crystal parallel to the gravitational axis." .
+
+mds:Mythen1k a owl:Class ;
+    rdfs:label "Mythen 1k (450um Sensor)" ;
+    rdfs:subClassOf mds:XrayDetector .
+
+mds:NanoTerasu a owl:Class ;
+    rdfs:label "NanoTerasu" ;
+    rdfs:subClassOf mds:SynchrotronFacility ;
+    skos:definition "NanoTerasu synchrotron facility in Japan." .
+
+mds:NeuralNetworkArchitectureSpecification a owl:Class ;
+    rdfs:label "Neural Network Architecture Specification."@en ;
+    rdfs:comment "An information content entity that specifies the structure and configuration of a neural network model."@en ;
+    rdfs:subClassOf cco:ont00000958 .
+
+mds:NeuralNetworkModelingProcess a owl:Class ;
+    rdfs:label "Neural Network Modeling Process"@en ;
+    rdfs:comment "A process of designing, training, and evaluating a neural network model."@en ;
+    rdfs:subClassOf cco:ActOfAlgorithmicProcessing .
+
+mds:NeuralNetworkTrainingFramework a owl:Class ;
+    rdfs:label "Neural Network Training Framework."@en ;
+    rdfs:comment "A software artifact used to implement and train neural networks (e.g., TensorFlow, PyTorch)."@en ;
+    rdfs:subClassOf cco:ont00000958 .
+
+mds:NeuralNetworkTrainingProcess a owl:Class ;
+    rdfs:label "Neural Network Training Process"@en ;
+    rdfs:comment "A process of training a neural network by iteratively adjusting weights based on training data."@en ;
+    rdfs:subClassOf cco:ActOfAlgorithmicProcessing .
+
+mds:NumberOfPointsAzimuth a owl:Class ;
+    rdfs:label "Azimuthal points" ;
+    rdfs:subClassOf cco:ont00000965 ;
+    skos:altLabel "npt_azimuth" ;
+    skos:definition " Number of azimuthal sectors to use for 2D integration." .
+
+mds:NumberOfPointsRadial a owl:Class ;
+    rdfs:label "Radial Points" ;
+    rdfs:subClassOf cco:ont00000965 ;
+    skos:altLabel "npt_radial" ;
+    skos:definition "Number of points (bins) in the radial direction of the resulting 1D pattern." .
+
+mds:OpticalTable a owl:Class ;
+    rdfs:subClassOf cco:ont00000995 ;
+    skos:definition "A vibration-isolated platform that supports sample positioning equipment and maintains stable positioning during X-ray measurements." .
+
+mds:OpticalTableHorizontalOrientation a owl:Class ;
+    rdfs:label "Optical table horizontal orientation" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:altLabel "txr" ;
+    skos:definition "The angular orientation of an optical table around the horizontal axis perpendicular to the beam direction." .
+
+mds:OpticalTableHorizontalPosition a owl:Class ;
+    rdfs:label "Optical table horizontal position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "txt" ;
+    skos:definition "The horizontal positioning of an optical table perpendicular to the beam direction." .
+
+mds:OpticalTableJack a owl:Class ;
+    rdfs:subClassOf cco:ont00000995 ;
+    skos:definition "A mechanical jack device that supports and adjusts the height of an optical table." .
+
+mds:OpticalTableJackDownstreamRightPosition a owl:Class ;
+    rdfs:label "Optical table jack downstream right position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "zrd" ;
+    skos:definition "The vertical positioning of the downstream right jack supporting an optical table." .
+
+mds:OpticalTableJackLeftPosition a owl:Class ;
+    rdfs:label "Optical table jack left position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "zl" ;
+    skos:definition "The vertical positioning of the left jack supporting an optical table." .
+
+mds:OpticalTableJackUpstreamPosition a owl:Class ;
+    rdfs:label "Optical table jack upstream position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "zru" ;
+    skos:definition "The vertical positioning of the upstream jack supporting an optical table." .
+
+mds:OpticalTableTransverseOrientation a owl:Class ;
+    rdfs:label "Optical table transverse orientation" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:altLabel "tyr" ;
+    skos:definition "The angular orientation of an optical table around the axis parallel to the beam direction." .
+
+mds:OpticalTableTransversePosition a owl:Class ;
+    rdfs:label "Optical table transverse position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "tyt" ;
+    skos:definition "The positioning of an optical table along the beam direction axis." .
+
+mds:OpticalTableVerticalOrientation a owl:Class ;
+    rdfs:label "Optical table vertical orientation" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:altLabel "tzr" ;
+    skos:definition "The angular orientation of an optical table around the vertical gravitational axis." .
+
+mds:OrientationDistributionFunction a owl:Class ;
+    rdfs:label "Orientation Distribution Function"@en ;
+    rdfs:subClassOf cco:ont00000958 ;
+    skos:altLabel "ODF"@en ;
+    skos:definition "An information content entity that provides a complete quantitative description of the crystallographic texture of a polycrystalline material, giving the volume fraction of crystallites as a function of orientation in Euler angle space."@en .
+
+mds:PIXIRAD1 a owl:Class ;
+    rdfs:label "PIXIRAD-1" ;
+    rdfs:subClassOf mds:XrayDetector .
+
+mds:PONIFile a owl:Class ;
+    rdfs:label "PONIFile" ;
+    rdfs:subClassOf cco:ont00000958 ;
+    skos:definition "A text file containing the experimental geometry setup. This file stores all calibration parameters needed to convert from detector coordinates to scattering coordinates." .
+
+mds:PeakPosition2Theta a owl:Class ;
+    rdfs:label "Peak Position (2θ)"@en ;
+    rdfs:subClassOf obo:BFO_0000019 .
+
+mds:PiezoelectricActuator a owl:Class ;
+    rdfs:subClassOf cco:ont00000995 ;
+    skos:definition "A piezoelectric device that provides fine angular adjustment of the downstream monochromator crystal through voltage-controlled deformation." .
+
+mds:PiezoelectricVoltage a owl:Class ;
+    rdfs:label "Piezoelectric voltage" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:altLabel "mostab" ;
+    skos:definition "The electrical voltage applied to a piezoelectric actuator controlling monochromator crystal angle." .
+
+mds:Pilatus100K_S a owl:Class ;
+    rdfs:label "100K-S" ;
+    rdfs:subClassOf mds:XrayDetector .
+
+mds:Pilatus100K_S_1000um a owl:Class ;
+    rdfs:label "100K-S (1000um Sensor)" ;
+    rdfs:subClassOf mds:XrayDetector .
+
+mds:Pilatus200K a owl:Class ;
+    rdfs:label "200K" ;
+    rdfs:subClassOf mds:XrayDetector .
+
+mds:Pilatus300K a owl:Class ;
+    rdfs:label "300K" ;
+    rdfs:subClassOf mds:XrayDetector .
+
+mds:Pilatus3_6M a owl:Class ;
+    rdfs:label "Pilatus3 6M (1000um Sensor)" ;
+    rdfs:subClassOf mds:XrayDetector .
+
+mds:PixelHeight a owl:Class ;
+    rdfs:label "Pixel Height" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:definition "Number of pixels in height of the detector." .
+
+mds:PixelSizeHeight a owl:Class ;
+    rdfs:label "Pixel Size Height" ;
+    rdfs:subClassOf cco:ont00000738 ;
+    skos:definition "Physical height of individual pixels." .
+
+mds:PixelSizeWidth a owl:Class ;
+    rdfs:label "Pixel Size Width" ;
+    rdfs:subClassOf cco:ont00000738 ;
+    skos:definition "Physical width of individual pixels." .
+
+mds:PixelWidth a owl:Class ;
+    rdfs:label "Pixel Width" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:definition "Number of pixels in width of the detector." .
+
+mds:PointGreyFlea3 a owl:Class ;
+    rdfs:label "Point Grey Flea3 (13Y3M-C)" ;
+    rdfs:subClassOf mds:XrayDetector .
+
+mds:PolarizationCorrection a owl:Class ;
+    rdfs:label "PolarizationCorrection" ;
+    rdfs:subClassOf cco:ont00000965 ;
+    skos:altLabel "do_polarization_correction" ;
+    skos:definition "Boolean flag indicating whether to apply polarization correction to account for the polarization state." .
+
+mds:PolarizationFactor a owl:Class ;
+    rdfs:label "PolarizationFactor" ;
+    rdfs:subClassOf cco:ont00000965 ;
+    skos:altLabel "polarization_factor" ;
+    skos:definition "Numerical factor specifying the degree of polarization correction to apply." .
+
+mds:PredictionOutput a owl:Class ;
+    rdfs:label "Prediction Output"@en ;
+    rdfs:comment "An information content entity representing the output predictions from a neural network."@en ;
+    rdfs:subClassOf cco:ont00000958 .
+
+mds:PrincetonQuadro a owl:Class ;
+    rdfs:label "7541-0005 (Princeton Quadro)" ;
+    rdfs:subClassOf mds:XrayDetector .
+
+mds:PriorBetaGrain a owl:Class ;
+    rdfs:label "Prior Beta Grain"@en ;
+    rdfs:subClassOf obo:BFO_0000040 ;
+    skos:definition "A region of a polycrystalline material corresponding to a single beta-phase grain that existed at high temperature before solid-state transformation to alpha or alpha-prime. Prior beta grain boundaries persist as microstructural features after transformation and constrain the morphology and distribution of daughter alpha variants."@en .
+
+mds:RT41 a owl:Class ;
+    rdfs:label "2304879 (RT41)" ;
+    rdfs:subClassOf mds:XrayDetector .
+
+mds:RadialRange a owl:Class ;
+    rdfs:label "RadialRange" ;
+    rdfs:subClassOf cco:ont00000965 ;
+    skos:altLabel "radial_range" ;
+    skos:definition " The minimum and maximum radial values to include in the integration." .
+
+mds:ReadOutTime a owl:Class ;
+    rdfs:label "Read Out Time" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:definition "Read out time of the detector." .
+
+mds:RecrystallizationDisposition a owl:Class ;
+    rdfs:label "Recrystallization Disposition"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000055 ;
+            owl:someValuesFrom mds:Recrystallization ],
+        obo:BFO_0000016 ;
+    skos:definition "A disposition of a deformed material to undergo recrystallization when sufficient thermal energy is supplied, dependent on stored strain energy and temperature."@en .
+
+mds:RemoveNaN a owl:Class ;
+    rdfs:label "RemoveNaN" ;
+    rdfs:subClassOf cco:ont00000965 ;
+    skos:altLabel "do_remove_nan" ;
+    skos:definition "Boolean flag controlling whether to exclude NaN." .
+
+mds:Retiga4000DC a owl:Class ;
+    rdfs:label "Retiga 4000DC" ;
+    rdfs:subClassOf mds:XrayDetector .
+
+mds:SafetyBrickAssembly a owl:Class ;
+    rdfs:subClassOf cco:ont00000995 ;
+    skos:definition "A dense material assembly positioned upstream of the monochromator to provide radiation shielding for personnel safety." .
+
+mds:SampleID a owl:Class ;
+    rdfs:label "SampleID" ;
+    rdfs:subClassOf cco:ont00000292 ;
+    skos:definition "Unique ID of a sample." .
+
+mds:SampleVerticalOrientation a owl:Class ;
+    rdfs:label "Sample rotation vertical" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:altLabel "bome" ;
+    skos:definition "The vertical angular orientation of a sample relative to the gravitational axis." .
+
+mds:SampleXPosition a owl:Class ;
+    rdfs:label "Sample x-position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "bsampX" ;
+    skos:definition "The horizontal positioning of a sample along the X-axis in the laboratory coordinate system." .
+
+mds:SampleYPosition a owl:Class ;
+    rdfs:label "Sample y-position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "bsampY" ;
+    skos:definition "The horizontal positioning of a sample along the Y-axis in the laboratory coordinate system." .
+
+mds:SampleZPosition a owl:Class ;
+    rdfs:label "Sample z-position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "bsampZ" ;
+    skos:definition "The positioning of a sample along the Z-axis, typically parallel to the beam direction." .
+
+mds:SinglePeakFitting a owl:Class ;
+    rdfs:label "Single Peak Fitting"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty cco:ont00001921 ;
+            owl:someValuesFrom mds:IntegratedDiffractionPattern ],
+        [ a owl:Restriction ;
+            owl:onProperty [ owl:inverseOf cco:ont00001808 ] ;
+            owl:someValuesFrom cco:DirectiveInformationContentEntity ],
+        cco:ont00000345 ;
+    skos:definition "A quantitative analysis method that fits individual diffraction peaks to determine peak position (2-theta), intensity, and breadth (FWHM) as a function of azimuthal angle and time, enabling tracking of orientation-dependent lattice strain and peak width evolution during in-situ experiments."@en .
+
+mds:SlitAssembly a owl:Class ;
+    rdfs:subClassOf cco:ont00000995 ;
+    skos:definition "A multi-blade aperture system that precisely controls X-ray beam size and position through coordinated movement of multiple slit blades." .
+
+mds:SlitTransversePosition a owl:Class ;
+    rdfs:label "Slit x position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "s1x" ;
+    skos:definition "The horizontal positioning of a slit blade perpendicular to the beam direction." .
+
+mds:SlitVerticalBladesBottomPosition a owl:Class ;
+    rdfs:label "Slit blades bottom" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "s1b" ;
+    skos:definition "The positioning of the lower vertical blade in a slit assembly to control the bottom boundary of the beam aperture." .
+
+mds:SlitVerticalBladesLeftPosition a owl:Class ;
+    rdfs:label "Slit blades left" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "s1l" ;
+    skos:definition "The positioning of the left vertical blade in a slit assembly to control the left boundary of the beam aperture." .
+
+mds:SlitVerticalBladesRightPosition a owl:Class ;
+    rdfs:label "Slit blades right" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "s1r" ;
+    skos:definition "The positioning of the right vertical blade in a slit assembly to control the right boundary of the beam aperture." .
+
+mds:SlitVerticalBladesTopPosition a owl:Class ;
+    rdfs:label "Slit blades top" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "s1t" ;
+    skos:definition "The positioning of the upper vertical blade in a slit assembly to control the top boundary of the beam aperture." .
+
+mds:SlitVerticalPosition a owl:Class ;
+    rdfs:label "Slit z position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "s1z" ;
+    skos:definition "The vertical positioning of a slit blade parallel to the gravitational axis." .
+
+mds:SolidAngleCorrection a owl:Class ;
+    rdfs:label "SolidAngleCorrection" ;
+    rdfs:subClassOf cco:ont00000965 ;
+    skos:altLabel "do_solid_angle_correction" ;
+    skos:definition "Boolean parameter controlling whether to correct for solid angle effects." .
+
+mds:SolutePartitioning a owl:Class ;
+    rdfs:label "Solute Partitioning"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000057 ;
+            owl:someValuesFrom obo:BFO_0000040 ],
+        obo:BFO_0000015 ;
+    skos:definition "A diffusion-controlled process in which solute atoms redistribute between coexisting phases toward their respective equilibrium concentrations."@en .
+
+mds:SolutionizationTemperature a owl:Class ;
+    rdfs:label "Solutionization Temperature"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000197 ;
+            owl:someValuesFrom obo:BFO_0000040 ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001769 ;
+            owl:someValuesFrom [ a rdfs:Datatype ;
+                    owl:onDatatype xsd:decimal ;
+                    owl:withRestrictions ( [ xsd:minInclusive 900.0 ] ) ] ],
+        cco:ont00000441 ;
+    skos:definition "The temperature at which a material is held during solutionization treatment."@en .
+
+mds:Spring8 a owl:Class ;
+    rdfs:label "SPring-8" ;
+    rdfs:subClassOf mds:SynchrotronFacility ;
+    skos:definition "Super Photon ring-8 GeV synchrotron facility in Japan." .
+
+mds:StrainDecomposition a owl:Class ;
+    rdfs:label "Strain Decomposition"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty cco:ont00001921 ;
+            owl:someValuesFrom mds:IntegratedDiffractionPattern ],
+        [ a owl:Restriction ;
+            owl:onProperty [ owl:inverseOf cco:ont00001808 ] ;
+            owl:someValuesFrom cco:DirectiveInformationContentEntity ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:ChemicalStrain ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:ThermalStrain ],
+        cco:ont00000345 ;
+    skos:definition "An analysis process that separates the total observed lattice strain into thermal expansion and non-thermal-expansion (chemical + mechanical) components by subtracting the contribution of the coefficient of thermal expansion from the total strain."@en .
+
+mds:Supersaturation a owl:Class ;
+    rdfs:label "Supersaturation"@en ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:definition "A quality representing the excess of solute concentration in a phase beyond its equilibrium solubility at a given temperature."@en .
+
+mds:SyncXrayPreProcessing a owl:Class ;
+    rdfs:label "PreProcessing" ;
+    rdfs:subClassOf cco:ont00001158 ;
+    skos:definition "Preprocessing performed on the raw diffraction patterns obtained from the tool." .
+
+mds:SyncXrayResult a owl:Class ;
+    rdfs:subClassOf cco:ont00000958 .
+
+mds:SyncXrayTool a owl:Class ;
+    rdfs:label "XrayTool" ;
+    rdfs:subClassOf cco:ont00000995 ;
+    skos:definition "A tool or instrument that lets users perform x-ray based experiments." .
+
+mds:TTTDiagram a owl:Class ;
+    rdfs:label "Time-Temperature-Transformation Diagram"@en ;
+    rdfs:subClassOf cco:ont00000958 ;
+    skos:altLabel "TTT Diagram"@en ;
+    skos:definition "An information content entity representing the isothermal transformation kinetics of a material by plotting the time required for specified fractions of transformation at each temperature. In Ti-6Al-4V, separate TTT diagrams may be constructed for alpha phase fraction and beta-phase vanadium concentration, which may differ due to decoupled structural and compositional transformation (Whitney et al. 2024)."@en .
+
+mds:TestDatasetSpecification a owl:Class ;
+    rdfs:label "Test Dataset Specification"@en ;
+    rdfs:comment "An information content entity that specifies the data used for testing a trained neural network."@en ;
+    rdfs:subClassOf cco:ont00000958 .
+
+mds:ThermalContraction a owl:Class ;
+    rdfs:label "Thermal Contraction"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000057 ;
+            owl:someValuesFrom obo:BFO_0000040 ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:ResidualStressState ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:ThermalStrain ],
+        obo:BFO_0000015 ;
+    skos:definition "A process in which the dimensions of a material decrease due to a decrease in temperature."@en .
+
+mds:ThermalExpansion a owl:Class ;
+    rdfs:label "Thermal Expansion"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000057 ;
+            owl:someValuesFrom obo:BFO_0000040 ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:ResidualStressState ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:ThermalStrain ],
+        obo:BFO_0000015 ;
+    skos:definition "A process in which the dimensions of a material increase due to an increase in temperature, reflecting increased atomic vibrational amplitude."@en .
+
+mds:ThermalExpansionRelation a owl:Class ;
+    rdfs:label "Thermal Expansion Relation"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty cco:ont00001808 ;
+            owl:someValuesFrom cco:ont00000441 ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001808 ;
+            owl:someValuesFrom mds:LatticeParameter ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001808 ;
+            owl:someValuesFrom mds:CoefficientOfThermalExpansion ],
+        mds:GoverningLaw ;
+    skos:definition "The relation describing how lattice parameters change with temperature due to anharmonic atomic vibrations: a(T) = a_0 * (1 + alpha * delta_T)."@en .
+
+mds:ThermalProfile a owl:Class ;
+    rdfs:label "Thermal Profile"@en ;
+    rdfs:subClassOf cco:ont00000958 ;
+    skos:altLabel "Thermal Cycle"@en ;
+    skos:definition "An information content entity representing a prescribed or observed temperature-time history during a thermal process, including heating rate, hold temperature and duration, and cooling rate."@en .
+
+mds:ToolID a owl:Class ;
+    rdfs:label "ToolID" ;
+    rdfs:subClassOf cco:ont00000292 ;
+    skos:definition "Unique ID of the tool." .
+
+mds:TopCaveSlitPosition a owl:Class ;
+    rdfs:label "Top cave slit" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "cslitt" ;
+    skos:definition "The positioning of the upper blade of a cave slit to control the vertical beam aperture from above." .
+
+mds:TrainedNeuralNetworkModel a owl:Class ;
+    rdfs:label "Trained Neural Network Model"@en ;
+    rdfs:comment "An information content entity representing a trained neural network."@en ;
+    rdfs:subClassOf cco:ont00000958 .
+
+mds:TrainingDatasetSpecification a owl:Class ;
+    rdfs:label "Training Dataset Specification"@en ;
+    rdfs:comment "An information content entity that specifies the data used for training a neural network."@en ;
+    rdfs:subClassOf cco:ont00000958 .
+
+mds:TrainingEpoch a owl:Class ;
+    rdfs:label "Training Epoch"@en ;
+    rdfs:comment "A temporal part of training consisting of one complete pass through the training dataset."@en ;
+    rdfs:subClassOf obo:0000015 .
+
+mds:TrainingLossSpecification a owl:Class ;
+    rdfs:label "Training Loss Specification"@en ;
+    rdfs:comment "A measurement information content entity representing the loss function value during training."@en ;
+    rdfs:subClassOf cco:ont00001163 .
+
+mds:TransformationSusceptibility a owl:Class ;
+    rdfs:label "Transformation Susceptibility"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000055 ;
+            owl:someValuesFrom mds:PhaseTransformation ],
+        obo:BFO_0000016 ;
+    skos:definition "A disposition of a material to undergo a phase transformation under appropriate thermodynamic conditions (temperature, pressure, composition)."@en .
+
+mds:TransusTemperature a owl:Class ;
+    rdfs:label "Transus Temperature"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000197 ;
+            owl:someValuesFrom obo:BFO_0000040 ],
+        cco:ont00000441 ;
+    skos:definition "The temperature at which a phase transformation begins or is complete in an alloy."@en .
+
+mds:TungstenRadiationShield a owl:Class ;
+    rdfs:subClassOf cco:ont00000995 ;
+    skos:definition "A tungsten-based shield that absorbs scattered X-rays and protects equipment or personnel from radiation." .
+
+mds:TungstenShieldHorizontalPosition a owl:Class ;
+    rdfs:label "Tungsten shield horizontal position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "wx" ;
+    skos:definition "The horizontal positioning of a tungsten radiation shield perpendicular to the beam direction." .
+
+mds:TungstenShieldVerticalPosition a owl:Class ;
+    rdfs:label "Tungsten shield vertical position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "wz" ;
+    skos:definition "The vertical positioning of a tungsten radiation shield parallel to the gravitational axis." .
+
+mds:Undulator a owl:Class ;
+    rdfs:subClassOf cco:ont00000995 ;
+    skos:definition "A periodic magnetic structure that generates high-intensity X-ray radiation through electron beam oscillation in a synchrotron." .
+
+mds:UndulatorPosition a owl:Class ;
+    rdfs:label "Undulator position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "undulator" ;
+    skos:definition "The magnetic gap or positional setting of an undulator that controls the X-ray energy spectrum." .
+
+mds:UnitOfIntegration a owl:Class ;
+    rdfs:label "Unit" ;
+    rdfs:subClassOf cco:ont00000965 ;
+    skos:altLabel "unit" ;
+    skos:definition "Integration units, either 2-theta or d." .
+
+mds:ValidationAccuracySpecification a owl:Class ;
+    rdfs:label "Validation Accuracy Specification"@en ;
+    rdfs:comment "A measurement information content entity representing model accuracy on validation data."@en ;
+    rdfs:subClassOf cco:ont00001163 .
+
+mds:ValidationDatasetSpecification a owl:Class ;
+    rdfs:label "Validation Dataset Specification"@en ;
+    rdfs:comment "An information content entity that specifies the data used for validating a neural network during training."@en ;
+    rdfs:subClassOf cco:ont00000958 .
+
+mds:VegardsLaw a owl:Class ;
+    rdfs:label "Vegard's Law"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty cco:ont00001808 ;
+            owl:someValuesFrom mds:Concentration ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001808 ;
+            owl:someValuesFrom mds:LatticeParameter ],
+        mds:GoverningLaw ;
+    skos:definition "An empirical rule stating that the lattice parameter of a solid solution varies linearly with the atomic concentration of the solute. In Ti-6Al-4V, used to determine vanadium concentration in the beta phase from the lattice parameter: a([V]) = 3.278 A - 0.24*[V]_beta, where [V]_beta is vanadium concentration in weight percent (Brown et al. 2021)."@en .
+
+mds:Vortex90EX a owl:Class ;
+    rdfs:label "1348-VTX-90EX (Vortex)" ;
+    rdfs:subClassOf mds:XrayDetector .
+
+mds:WavelengthRange a owl:Class ;
+    rdfs:label "WavelengthRange" ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:definition "The wavelength range the particular beamline can cover." .
+
+mds:WroughtProcessing a owl:Class ;
+    rdfs:label "Wrought Processing"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000057 ;
+            owl:someValuesFrom obo:BFO_0000040 ],
+        [ a owl:Restriction ;
+            owl:onProperty mds:has_increased_likelihood_of ;
+            owl:someValuesFrom mds:EquilibriumSolidification ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:BimodalMorphology ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:EquiaxedMorphology ],
+        mds:ProcessingMethod ;
+    skos:altLabel "Conventional Processing"@en,
+        "Wrought"@en ;
+    skos:definition "A conventional thermomechanical manufacturing process involving bulk deformation (rolling, forging, extrusion) of cast ingot material, typically producing equiaxed or bimodal microstructures through repeated cycles of deformation and recrystallization."@en .
+
+mds:XFlashME4_1 a owl:Class ;
+    rdfs:label "XMAP (ME4-1) 267-VTX-ME4 (Vortex ME4-1)" ;
+    rdfs:subClassOf mds:XrayDetector .
+
+mds:XFlashME4_2 a owl:Class ;
+    rdfs:label "XMAP 267-VTX-ME4 (Vortex ME4-2)" ;
+    rdfs:subClassOf mds:XrayDetector .
+
+mds:XrayDarkFieldPattern a owl:Class ;
+    rdfs:label "DarkFile" ;
+    rdfs:subClassOf cco:ont00000958 ;
+    skos:definition "Capturing one or more images with the detector under identical conditions to the sample measurement but without X-ray exposure,  recording only the electronic baseline and thermal noise.",
+        "Capturing one or more images with the detector under identical conditions to the sample measurement but without X-ray exposure,  recording only the electronic baseline and thermal noise.." .
+
+mds:XrayDiffractionPattern a owl:Class ;
+    rdfs:subClassOf cco:ont00000958 .
+
+mds:XrayRecipe a owl:Class ;
+    rdfs:subClassOf obo:BFO_0000015 ;
+    skos:definition "A process recipe for X-ray experiments." .
+
+mds:XrayShutter a owl:Class ;
+    rdfs:subClassOf cco:ont00000995 ;
+    skos:definition "A mechanical device that controls X-ray beam passage by blocking or allowing beam transmission through the beamline." .
+
+mds:XrayShutterTransversePosition a owl:Class ;
+    rdfs:label "Shutter transverse position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "shutx" ;
+    skos:definition "The horizontal positioning of an X-ray shutter perpendicular to the beam direction." .
+
+mds:XrayShutterVerticalPosition a owl:Class ;
+    rdfs:label "Shutter vertical position" ;
+    rdfs:subClassOf cco:ont00000591 ;
+    skos:altLabel "shutz" ;
+    skos:definition "The vertical positioning of an X-ray shutter parallel to the gravitational axis." .
+
+mds:has_decoupled_kinetics_from a owl:ObjectProperty ;
+    rdfs:label "has decoupled kinetics from"@en ;
+    rdfs:comment "Indicates that the kinetics of one process (e.g., structural transformation) proceed at a different rate than another process (e.g., solute redistribution), such that the two processes do not reach completion simultaneously. Central finding: structural alpha formation precedes vanadium equilibration at isothermal hold temperatures at or below 865 C and all continuous cooling rates (Whitney et al. 2024)."@en ;
+    rdfs:domain obo:BFO_0000015 ;
+    rdfs:range obo:BFO_0000015 .
+
+cco:ont00000324 a owl:Class ;
+    rdfs:label "Width"@en ;
+    skos:exactMatch cco:ont00000324 .
+
+cco:ont00000472 a owl:Class ;
+    rdfs:label "Geospatial Region"@en ;
+    skos:exactMatch cco:ont00000472 .
+
+cco:ont00000604 a owl:Class ;
+    rdfs:label "Maximum Ordinal Measurement Information Content Entity"@en ;
+    skos:exactMatch cco:ont00000604 .
+
+cco:ont00000607 a owl:Class ;
+    rdfs:label "Thickness"@en ;
+    skos:exactMatch cco:ont00000607 .
+
+cco:ont00001022 a owl:Class ;
+    rdfs:label "Ratio Measurement Information Content Entity"@en ;
+    skos:exactMatch cco:ont00001022 .
+
+cco:ont00001149 a owl:Class ;
+    rdfs:label "Data Range Interval Estimate Information Content Entity"@en ;
+    skos:exactMatch cco:ont00001149 .
+
+cco:ont00001765 a owl:DatatypeProperty ;
+    rdfs:label "has text value"@en ;
+    skos:exactMatch cco:ont00001765 .
+
+cco:ont00001772 a owl:DatatypeProperty ;
+    rdfs:label "has boolean value"@en ;
+    skos:exactMatch cco:ont00001772 .
+
+cco:ont00001773 a owl:DatatypeProperty ;
+    rdfs:label "has integer value"@en ;
+    skos:exactMatch cco:ont00001773 .
+
+cco:ont00001841 a owl:ObjectProperty ;
+    rdfs:label "is input of"@en ;
+    skos:exactMatch cco:ont00001841 .
+
+cco:ont00001857 a owl:ObjectProperty ;
+    rdfs:label "is part of process"@en ;
+    skos:exactMatch cco:ont00001857 .
+
+cco:ont00001863 a owl:ObjectProperty ;
+    rdfs:label "uses measurement unit"@en ;
+    skos:exactMatch cco:ont00001863 .
+
+cco:ont00001879 a owl:ObjectProperty ;
+    rdfs:label "designated by"@en ;
+    skos:exactMatch cco:ont00001879 .
+
+cco:ont00001904 a owl:ObjectProperty ;
+    rdfs:label "is measured by"@en ;
+    skos:exactMatch cco:ont00001904 .
+
+cco:ont00001916 a owl:ObjectProperty ;
+    rdfs:label "designates"@en ;
+    skos:exactMatch cco:ont00001916 .
+
+cco:ont00001942 a owl:ObjectProperty ;
+    rdfs:label "prescribes"@en ;
+    skos:exactMatch cco:ont00001942 .
+
+cco:ont00001953 a owl:ObjectProperty ;
+    rdfs:label "has parent"@en ;
+    skos:exactMatch cco:ont00001953 .
+
+mds:BasketweaveMorphology a owl:Class ;
+    rdfs:label "Basketweave Morphology"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000197 ;
+            owl:someValuesFrom obo:BFO_0000040 ],
+        mds:GrainMorphology ;
+    skos:altLabel "Basketweave Widmanstatten"@en ;
+    skos:definition "A grain morphology in which alpha laths from multiple crystallographic variants interweave at various angles, forming a basket-like pattern. In Ti-6Al-4V, basketweave Widmanstatten alpha forms at isothermal hold temperatures of 700-870 C or continuous cooling rates above approximately 5 C/s (Whitney et al. 2024)."@en .
+
+mds:BetaTitaniumSolutionization a owl:Class ;
+    rdfs:label "Beta Titanium Solutionization"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000057 ;
+            owl:someValuesFrom mds:XraySample ],
+        [ a owl:Restriction ;
+            owl:onProperty [ owl:inverseOf cco:ont00001808 ] ;
+            owl:someValuesFrom cco:DirectiveInformationContentEntity ],
+        obo:BFO_0000015 ;
+    skos:altLabel "β-Ti Solutionization"@en ;
+    skos:definition "A heat treatment process where titanium alloy is heated above the beta transus temperature to convert the microstructure completely to the beta phase."@en .
+
+mds:BimodalMorphology a owl:Class ;
+    rdfs:label "Bimodal Morphology"@en ;
+    rdfs:subClassOf mds:GrainMorphology ;
+    skos:definition "A grain morphology consisting of a mixture of equiaxed primary alpha grains and lamellar alpha+beta regions, characteristic of wrought and annealed Ti-6Al-4V."@en .
+
+mds:ColumnarMorphology a owl:Class ;
+    rdfs:label "Columnar Morphology"@en ;
+    rdfs:subClassOf mds:GrainMorphology ;
+    skos:definition "A grain morphology in which grains are elongated along the direction of heat extraction, characteristic of directional solidification. In LPBF Ti-6Al-4V, prior beta grains are columnar along the build direction."@en .
+
+mds:ContinuousCoolingTransformation a owl:Class ;
+    rdfs:label "Continuous Cooling Transformation"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000057 ;
+            owl:someValuesFrom mds:XraySample ],
+        [ a owl:Restriction ;
+            owl:onProperty [ owl:inverseOf cco:ont00001808 ] ;
+            owl:someValuesFrom cco:DirectiveInformationContentEntity ],
+        [ a owl:Restriction ;
+            owl:onProperty [ owl:inverseOf cco:ont00001808 ] ;
+            owl:someValuesFrom [ a owl:Class ;
+                    owl:intersectionOf ( cco:DirectiveInformationContentEntity [ a owl:Restriction ;
+                                owl:onProperty cco:ont00001808 ;
+                                owl:someValuesFrom mds:CoolingRate ] ) ] ],
+        obo:BFO_0000015 ;
+    skos:definition "A heat treatment process where the material is cooled continuously at a controlled rate, allowing phase transformation during cooling."@en .
+
+mds:CoolingSegment a owl:Class ;
+    rdfs:label "Cooling Segment"@en ;
+    rdfs:subClassOf mds:ThermalCycleSegment ;
+    skos:definition "A segment of a thermal cycle during which temperature is decreased."@en .
+
+mds:CrystalStructure a owl:Class ;
+    rdfs:label "Crystal Structure"@en ;
+    rdfs:subClassOf obo:BFO_0000019 .
+
+mds:EquilibriumSolidification a owl:Class ;
+    rdfs:label "Equilibrium Solidification"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty mds:has_increased_likelihood_of ;
+            owl:someValuesFrom mds:DiffusionalTransformation ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:EquiaxedMorphology ],
+        mds:Solidification ;
+    skos:definition "Solidification occurring at sufficiently slow cooling rates to approximate thermodynamic equilibrium, characteristic of conventional casting and wrought processing."@en .
+
+mds:GrainBoundaryAlpha a owl:Class ;
+    rdfs:label "Grain Boundary Alpha"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000171 ;
+            owl:someValuesFrom mds:PriorBetaGrain ],
+        mds:CrystallinePhase ;
+    skos:altLabel "Allotriomorphic Alpha"@en ;
+    skos:definition "A continuous or semi-continuous layer of alpha phase that forms along prior beta grain boundaries by a diffusional mechanism. It is the first alpha morphology to form on cooling below the beta transus in Ti-6Al-4V, and its volume fraction decreases with increasing cooling rate, vanishing at approximately 10 C/s (Whitney et al. 2024)."@en .
+
+mds:HeatingSegment a owl:Class ;
+    rdfs:label "Heating Segment"@en ;
+    rdfs:subClassOf mds:ThermalCycleSegment ;
+    skos:definition "A segment of a thermal cycle during which temperature is increased."@en .
+
+mds:HeterogeneousNucleation a owl:Class ;
+    rdfs:label "Heterogeneous Nucleation"@en ;
+    rdfs:subClassOf mds:Nucleation ;
+    skos:definition "Nucleation that occurs preferentially at crystallographic defects such as grain boundaries, dislocations, or free surfaces, where the energy barrier for nucleation is reduced."@en .
+
+mds:IsothermalHoldTemperature a owl:Class ;
+    rdfs:label "Isothermal Hold Temperature"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty cco:ont00001769 ;
+            owl:someValuesFrom [ a rdfs:Datatype ;
+                    owl:onDatatype xsd:decimal ;
+                    owl:withRestrictions ( [ xsd:minInclusive 600.0 ] [ xsd:maxInclusive 1000.0 ] ) ] ],
+        cco:ont00000441 ;
+    skos:definition "The constant temperature maintained during an isothermal hold segment of heat treatment."@en .
+
+mds:Metadata a owl:Class ;
+    rdfs:subClassOf cco:ont00000853 .
+
+mds:Microstrain a owl:Class ;
+    rdfs:label "Lattice Microstrain"@en ;
+    rdfs:subClassOf obo:BFO_0000019 .
+
+mds:Nucleation a owl:Class ;
+    rdfs:label "Nucleation"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000057 ;
+            owl:someValuesFrom obo:BFO_0000040 ],
+        [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000062 ;
+            owl:someValuesFrom mds:GrainGrowth ],
+        obo:BFO_0000015 ;
+    skos:definition "A process in which a new thermodynamically stable phase or grain forms within an existing phase, initiating a phase transformation or recrystallization."@en .
+
+mds:PhaseTransformation a owl:Class ;
+    rdfs:label "Phase Transformation"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000057 ;
+            owl:someValuesFrom obo:BFO_0000040 ],
+        obo:BFO_0000015 ;
+    skos:definition "A process in which a material changes from one crystallographic phase to another."@en .
+
+mds:ResultID a owl:Class ;
+    rdfs:subClassOf cco:ont00000686 .
+
+mds:Solidification a owl:Class ;
+    rdfs:label "Solidification"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000057 ;
+            owl:someValuesFrom obo:BFO_0000040 ],
+        [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000062 ;
+            owl:someValuesFrom mds:SolidStatePhaseTransformation ],
+        obo:BFO_0000015 ;
+    skos:definition "A process in which a material transitions from the liquid phase to the solid phase."@en .
+
+mds:StressRelief a owl:Class ;
+    rdfs:label "Stress Relief"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000057 ;
+            owl:someValuesFrom obo:BFO_0000040 ],
+        [ a owl:Restriction ;
+            owl:onProperty mds:has_increased_likelihood_of ;
+            owl:someValuesFrom mds:Recovery ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:IntergranularResidualStress ],
+        obo:BFO_0000015 ;
+    skos:definition "A thermally activated process in which intergranular and macroscopic residual stresses are relaxed through localized plastic deformation and diffusion, without necessarily involving dislocation annihilation. In LPBF Ti-6Al-4V, stress relief initiates concurrently with recovery at approximately 770 K (497 C) (Brown et al. 2021)."@en .
+
+mds:UnitCell a owl:Class ;
+    rdfs:label "Unit Cell"@en ;
+    rdfs:subClassOf obo:BFO_0000040 ;
+    skos:definition "The smallest repeating unit of the crystal structure." .
+
+mds:VanadiumSupersaturation a owl:Class ;
+    rdfs:label "Vanadium Supersaturation"@en ;
+    rdfs:subClassOf mds:Supersaturation ;
+    skos:definition "The excess vanadium concentration retained in the alpha or alpha-prime phase beyond its equilibrium solubility. In as-built LPBF Ti-6Al-4V, vanadium supersaturation in alpha-prime results from the martensitic transformation, which is too rapid for diffusional V rejection. This supersaturation contracts the lattice parameters relative to equilibrium alpha."@en .
+
+mds:WidmanstattenMorphology a owl:Class ;
+    rdfs:label "Widmanstatten Morphology"@en ;
+    rdfs:subClassOf mds:GrainMorphology ;
+    skos:definition "A general morphological pattern of plate-like or lath-like precipitates forming with specific crystallographic orientation relationships to the parent phase. In Ti-6Al-4V, Widmanstatten alpha forms within prior beta grains and may be arranged as colony/packeted or basketweave, depending on undercooling."@en .
+
+mds:inhibits a owl:ObjectProperty ;
+    rdfs:label "inhibits"@en ;
+    rdfs:comment "A non-BFO convenience property indicating that one process suppresses or reduces the likelihood of another process occurring. The inverse of has_increased_likelihood_of."@en ;
+    rdfs:domain obo:BFO_0000015 ;
+    rdfs:range obo:BFO_0000015 .
+
+cco:ont00000077 a owl:Class ;
+    rdfs:label "Code Identifier"@en ;
+    skos:exactMatch cco:ont00000077 .
+
+cco:ont00000192 a owl:Class ;
+    rdfs:label "Facility"@en ;
+    skos:exactMatch cco:ont00000192 .
+
+cco:ont00000420 a owl:Class ;
+    rdfs:label "Computer"@en ;
+    skos:exactMatch cco:ont00000420 .
+
+cco:ont00000649 a owl:Class ;
+    rdfs:label "Non-Name Identifier"@en ;
+    skos:exactMatch cco:ont00000649 .
+
+cco:ont00000798 a owl:Class ;
+    rdfs:label "Information Bearing Artifact"@en ;
+    skos:exactMatch cco:ont00000798 .
+
+cco:ont00000908 a owl:Class ;
+    rdfs:label "Act of Artifact Processing"@en ;
+    skos:exactMatch cco:ont00000908 .
+
+cco:ont00001180 a owl:Class ;
+    rdfs:label "Organization"@en ;
+    skos:exactMatch cco:ont00001180 .
+
+obo:BFO_0000016 a owl:Class ;
+    rdfs:label "disposition"@en .
+
+obo:BFO_0000196 a owl:ObjectProperty ;
+    rdfs:label "bearer of"@en .
+
+mds:AcicularMorphology a owl:Class ;
+    rdfs:label "Acicular Morphology"@en ;
+    rdfs:subClassOf mds:GrainMorphology ;
+    skos:altLabel "Needle-like Morphology"@en ;
+    skos:definition "A grain morphology characterized by fine, needle-like features, typically associated with martensitic or Widmanstatten microstructures."@en .
+
+mds:AdditiveManufacturingProcess a owl:Class ;
+    rdfs:label "Additive Manufacturing Process"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000057 ;
+            owl:someValuesFrom obo:BFO_0000040 ],
+        [ a owl:Restriction ;
+            owl:onProperty [ owl:inverseOf cco:ont00001808 ] ;
+            owl:someValuesFrom cco:DirectiveInformationContentEntity ],
+        [ a owl:Restriction ;
+            owl:onProperty mds:has_increased_likelihood_of ;
+            owl:someValuesFrom mds:RapidSolidification ],
+        mds:ProcessingMethod ;
+    skos:altLabel "AM Process"@en ;
+    skos:definition "A manufacturing process that produces components by selective fusion of feedstock material on demand to build a specified geometry layer by layer, typically resulting in rapid solidification and quenching of deposited material."@en .
+
+mds:AlphaPrimeTiPhase a owl:Class ;
+    rdfs:label "Alpha-Prime Titanium Phase"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000196 ;
+            owl:someValuesFrom mds:VanadiumSupersaturation ],
+        [ a owl:Restriction ;
+            owl:onProperty mds:transforms_into ;
+            owl:someValuesFrom mds:BetaTiPhase ],
+        mds:CrystallinePhase ;
+    skos:altLabel "Martensite (Ti)"@en,
+        "a'-Ti"@en ;
+    skos:definition "A metastable hexagonal close-packed phase of titanium alloy formed by martensitic transformation from the beta phase during rapid cooling. Alpha-prime has the same HCP crystal structure as equilibrium alpha but with a distorted unit cell due to supersaturated vanadium content that contracts the crystal lattice. It cannot be distinguished from equilibrium alpha by powder diffraction alone; the distinguishing feature is the presence of a transformation habit plane."@en .
+
+mds:AlphaTiPhase a owl:Class ;
+    rdfs:label "Alpha-Titanium Phase (HCP)"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000171 ;
+            owl:someValuesFrom mds:AlphaTiUnitCell ],
+        [ a owl:Restriction ;
+            owl:onProperty mds:transforms_into ;
+            owl:someValuesFrom mds:BetaTiPhase ],
+        mds:CrystallinePhase ;
+    skos:altLabel "α-Ti"@en ;
+    skos:definition "Hexagonal close-packed phase of titanium alloy."@en .
+
+mds:BetaTiPhase a owl:Class ;
+    rdfs:label "Beta-Titanium Phase (BCC)"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000171 ;
+            owl:someValuesFrom mds:BetaTiUnitCell ],
+        [ a owl:Restriction ;
+            owl:onProperty mds:transforms_into ;
+            owl:someValuesFrom mds:AlphaTiPhase ],
+        [ a owl:Restriction ;
+            owl:onProperty mds:transforms_into ;
+            owl:someValuesFrom mds:AlphaPrimeTiPhase ],
+        mds:CrystallinePhase ;
+    skos:altLabel "β-Ti"@en ;
+    skos:definition "Body-centered cubic phase of titanium alloy."@en .
+
+mds:ChemicalStrain a owl:Class ;
+    rdfs:label "Chemical Strain"@en ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:definition "A quality representing the component of lattice strain attributable to changes in solute chemistry rather than temperature or mechanical load. In Ti-6Al-4V, chemical strain in the beta phase arises primarily from changes in vanadium concentration and is quantified by subtracting the thermal expansion contribution from the total observed lattice strain (Brown et al. 2021)."@en .
+
+mds:Concentration a owl:Class ;
+    rdfs:label "Chemical Concentration"@en ;
+    rdfs:subClassOf obo:BFO_0000019 .
+
+mds:CoolingRate a owl:Class ;
+    rdfs:label "Cooling Rate"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000197 ;
+            owl:someValuesFrom [ a owl:Class ;
+                    owl:unionOf ( mds:CoolingSegment mds:ContinuousCoolingTransformation ) ] ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001769 ;
+            owl:someValuesFrom [ a rdfs:Datatype ;
+                    owl:onDatatype xsd:decimal ;
+                    owl:withRestrictions ( [ xsd:minExclusive 0.0 ] ) ] ],
+        obo:BFO_0000144 ;
+    skos:definition "The rate at which temperature decreases during cooling."@en .
+
+mds:DislocationDensity a owl:Class ;
+    rdfs:label "Dislocation Density"@en ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:definition "A quality representing the total length of dislocation lines per unit volume of a crystalline material, typically expressed in m/m^3 or m^-2. In as-built LPBF Ti-6Al-4V, dislocation density is approximately 4.0 +/- 0.5 x 10^15 m^-2 (Brown et al. 2021)."@en .
+
+mds:GrainGrowth a owl:Class ;
+    rdfs:label "Grain Growth"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000057 ;
+            owl:someValuesFrom obo:BFO_0000040 ],
+        obo:BFO_0000015 ;
+    skos:definition "A process in which the average grain size of a polycrystalline material increases through the migration of grain boundaries driven by curvature reduction."@en .
+
+mds:IntergranularResidualStress a owl:Class ;
+    rdfs:label "Intergranular Residual Stress"@en ;
+    rdfs:subClassOf mds:ResidualStressState ;
+    skos:definition "A component of residual stress arising from the anisotropic response of differently oriented grains to plastic deformation or thermal gradients. Manifests as crystallographic-orientation-dependent interplanar spacing variations measurable by diffraction. In as-built LPBF Ti-6Al-4V, intergranular residual stresses develop during rapid cooling from solidification and anneal concurrently with recovery above 770 K (Brown et al. 2021)."@en .
+
+mds:LamellarMorphology a owl:Class ;
+    rdfs:label "Lamellar Morphology"@en ;
+    rdfs:subClassOf mds:GrainMorphology ;
+    skos:definition "A grain morphology consisting of alternating plates or lamellae of different phases, characteristic of colony alpha+beta microstructures formed by diffusional transformation."@en .
+
+mds:MartensisiticTransformation a owl:Class ;
+    rdfs:label "Martensitic Transformation"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:AcicularMorphology ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:AlphaPrimeTiPhase ],
+        mds:SolidStatePhaseTransformation ;
+    skos:altLabel "Displacive Transformation"@en ;
+    skos:definition "A displacive, diffusionless solid-state phase transformation characterized by a coordinated shear of the crystal lattice."@en .
+
+mds:MillerIndices a owl:Class ;
+    rdfs:label "Miller Indices (hkl)"@en ;
+    rdfs:subClassOf cco:ont00000958 ;
+    skos:definition "Crystallographic notation for crystal planes." .
+
+mds:PhaseFraction a owl:Class ;
+    rdfs:label "Phase Fraction"@en ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:definition "The volumetric or mass proportion of a crystalline phase in a material." .
+
+mds:ProcessingMethod a owl:Class ;
+    rdfs:label "ProcessingMethod" ;
+    rdfs:subClassOf cco:ont00000908 ;
+    skos:definition "The manufacturing method by which the sample was created." .
+
+mds:RapidSolidification a owl:Class ;
+    rdfs:label "Rapid Solidification"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty mds:has_increased_likelihood_of ;
+            owl:someValuesFrom mds:MartensisiticTransformation ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:ColumnarMorphology ],
+        [ a owl:Restriction ;
+            owl:onProperty mds:inhibits ;
+            owl:someValuesFrom mds:DiffusionalTransformation ],
+        [ a owl:Restriction ;
+            owl:onProperty mds:inhibits ;
+            owl:someValuesFrom mds:VanadiumPartitioning ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:DislocationDensity ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:IntergranularResidualStress ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:VanadiumSupersaturation ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:AcicularMorphology ],
+        mds:Solidification ;
+    skos:definition "Solidification occurring at high cooling rates, typically >10^3 K/s, characteristic of additive manufacturing processes such as LPBF, EBM, and LENS."@en .
+
+mds:ResidualStressState a owl:Class ;
+    rdfs:label "Residual Stress State"@en ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:definition "A quality representing the self-equilibrating internal stresses remaining in a material after the removal of external loads or thermal gradients."@en .
+
+mds:ThermalCycleSegment a owl:Class ;
+    rdfs:label "Thermal Cycle Segment"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onClass obo:BFO_0000038 ;
+            owl:onProperty obo:BFO_0000199 ;
+            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ],
+        obo:BFO_0000015 ;
+    skos:definition "A distinct temporal segment or stage within a heat treatment thermal cycle."@en .
+
+mds:VanadiumPartitioning a owl:Class ;
+    rdfs:label "Vanadium Partitioning"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:ChemicalStrain ],
+        mds:SolutePartitioning ;
+    skos:definition "The redistribution of vanadium between alpha and beta phases in Ti-6Al-4V driven by the thermodynamic preference of V for the beta phase. During heating, V diffuses from alpha to beta; during cooling, V is rejected from growing alpha grains into the remaining beta. The rate is controlled by bulk diffusion of V in the beta phase."@en .
+
+cco:ont00000686 a owl:Class ;
+    rdfs:label "Designative Information Content Entity"@en ;
+    skos:exactMatch cco:ont00000686 .
+
+obo:BFO_0000055 a owl:ObjectProperty ;
+    rdfs:label "realized in"@en,
+        "realizes"@en ;
+    skos:exactMatch obo:BFO_0000055 .
+
+obo:BFO_0000171 a owl:ObjectProperty ;
+    rdfs:label "located in"@en ;
+    skos:exactMatch obo:BFO_0000171 .
+
+mds:CrystallinePhase a owl:Class ;
+    rdfs:label "Crystalline Phase"@en ;
+    rdfs:subClassOf obo:BFO_0000040 .
+
+mds:DiffusionalTransformation a owl:Class ;
+    rdfs:label "Diffusional Transformation"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:LamellarMorphology ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:GrainBoundaryAlpha ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:AlphaTiPhase ],
+        [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000057 ;
+            owl:someValuesFrom mds:VanadiumPartitioning ],
+        mds:SolidStatePhaseTransformation ;
+    skos:altLabel "Diffusion-Controlled Transformation"@en ;
+    skos:definition "A solid-state phase transformation driven by thermally activated diffusion of atoms across the transformation interface."@en .
+
+mds:Recovery a owl:Class ;
+    rdfs:label "Recovery"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000057 ;
+            owl:someValuesFrom obo:BFO_0000040 ],
+        [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000062 ;
+            owl:someValuesFrom mds:Recrystallization ],
+        [ a owl:Restriction ;
+            owl:onProperty mds:has_increased_likelihood_of ;
+            owl:someValuesFrom mds:StressRelief ],
+        [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000062 ;
+            owl:someValuesFrom mds:SolidStatePhaseTransformation ],
+        [ a owl:Restriction ;
+            owl:onProperty mds:has_increased_likelihood_of ;
+            owl:someValuesFrom mds:Recrystallization ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:DislocationDensity ],
+        obo:BFO_0000015 ;
+    skos:definition "A thermally activated process in which stored strain energy is reduced through dislocation rearrangement and annihilation without the migration of high-angle grain boundaries."@en .
+
+mds:Recrystallization a owl:Class ;
+    rdfs:label "Recrystallization"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000057 ;
+            owl:someValuesFrom obo:BFO_0000040 ],
+        [ a owl:Restriction ;
+            owl:onProperty cco:ont00001986 ;
+            owl:someValuesFrom mds:EquiaxedMorphology ],
+        obo:BFO_0000015 ;
+    skos:definition "A process in which deformed grains are replaced by new, strain-free grains through the nucleation and growth of high-angle grain boundaries."@en .
+
+mds:ThermalStrain a owl:Class ;
+    rdfs:label "Thermal Strain"@en ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:definition "A quality representing the component of lattice strain attributable solely to thermal expansion or contraction, calculated as alpha_CTE * delta_T."@en .
+
+mds:transforms_into a owl:ObjectProperty ;
+    rdfs:label "transforms into"@en ;
+    rdfs:comment "Indicates that one crystalline phase or material entity undergoes transformation into another. Direction follows thermodynamic convention (e.g., beta to alpha on cooling for Ti-6Al-4V)."@en ;
+    rdfs:domain obo:BFO_0000040 ;
+    rdfs:range obo:BFO_0000040 .
+
+cco:ont00000253 a owl:Class ;
+    rdfs:label "Information Bearing Entity"@en ;
+    skos:exactMatch cco:ont00000253 .
+
+cco:ont00000292 a owl:Class ;
+    rdfs:label "Artifact Identifier"@en ;
+    skos:exactMatch cco:ont00000292 .
+
+cco:ont00000345 a owl:Class ;
+    rdfs:label "Act of Measuring"@en .
+
+cco:ont00000441 a owl:Class ;
+    rdfs:label "Temperature"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty obo:BFO_0000197 ;
+            owl:someValuesFrom obo:BFO_0000040 ] .
+
+cco:ont00001158 a owl:Class ;
+    rdfs:label "Act of Data Transformation"@en ;
+    skos:exactMatch cco:ont00001158 .
+
+mds:Beamline a owl:Class ;
+    rdfs:label "Beamline" ;
+    rdfs:subClassOf cco:ont00000192 ;
+    skos:definition "Individual tangential sections in a synchrotron ring where experiments can be performed." .
+
+mds:EquiaxedMorphology a owl:Class ;
+    rdfs:label "Equiaxed Morphology"@en ;
+    rdfs:subClassOf mds:GrainMorphology ;
+    skos:definition "A grain morphology in which grains have approximately equal dimensions in all directions."@en .
+
+mds:GoverningLaw a owl:Class ;
+    rdfs:label "Governing Law"@en ;
+    rdfs:subClassOf cco:ont00000958 ;
+    skos:definition "An information content entity representing a physical or empirical law that prescribes a quantitative relationship between measurable qualities. The actual computation is performed externally; this entity records which quantities are governed."@en .
+
+mds:LatticeParameter a owl:Class ;
+    rdfs:label "Lattice Parameter"@en ;
+    rdfs:subClassOf obo:BFO_0000019 .
+
+mds:SynchrotronFacility a owl:Class ;
+    rdfs:label "SynchrotronFacility" ;
+    rdfs:subClassOf cco:ont00001180 ;
+    skos:definition "A synchrotron facility that allows studying material properties using high energy X-rays." .
+
+mds:XraySample a owl:Class ;
+    rdfs:label "XraySample" ;
+    rdfs:subClassOf cco:ont00000995 ;
+    skos:altLabel "Sample" ;
+    skos:definition "A specimen used for X-ray based experiments." .
+
+cco:ont00001921 a owl:ObjectProperty ;
+    rdfs:label "has input"@en ;
+    skos:exactMatch cco:ont00001921 .
+
+obo:BFO_0000062 a owl:ObjectProperty ;
+    rdfs:label "precedes"@en ;
+    skos:definition "A temporal relation where one process ends before another begins."@en .
+
+mds:IntegratedDiffractionPattern a owl:Class ;
+    rdfs:label "1D pattern",
+        "Azimuthally Integrated Pattern"@en ;
+    rdfs:subClassOf cco:ont00000958 ;
+    skos:definition " A one-dimensional intensity profile derived from the azimuthal integration of a two-dimensional diffraction pattern.",
+        "1D diffraction pattern created by azimuthal integration of 2D detector data." .
+
+mds:SolidStatePhaseTransformation a owl:Class ;
+    rdfs:label "Solid State Phase Transformation"@en ;
+    rdfs:subClassOf mds:PhaseTransformation ;
+    skos:definition "A phase transformation that occurs entirely in the solid state, without melting."@en .
+
+cco:ont00001769 a owl:DatatypeProperty ;
+    rdfs:label "has decimal value"@en ;
+    skos:exactMatch cco:ont00001769 .
+
+mds:GrainMorphology a owl:Class ;
+    rdfs:label "Grain Morphology"@en ;
+    rdfs:subClassOf obo:BFO_0000019 ;
+    skos:definition "A quality describing the shape and spatial arrangement of grains in a polycrystalline material."@en .
+
+cco:ont00000738 a owl:Class ;
+    rdfs:label "Length"@en ;
+    skos:exactMatch cco:ont00000738 .
+
+obo:BFO_0000197 a owl:ObjectProperty ;
+    rdfs:label "inheres in"@en ;
+    skos:exactMatch obo:BFO_0000197 .
+
+mds:has_increased_likelihood_of a owl:ObjectProperty ;
+    rdfs:label "has increased likelihood of"@en ;
+    rdfs:comment "A non-BFO convenience property indicating that one process increases the probability of another process occurring. Weaker than formal causation; intended to support practical SPARQL traversal of process-structure-property chains."@en ;
+    rdfs:domain obo:BFO_0000015 ;
+    rdfs:range obo:BFO_0000015 .
+
+cco:DirectiveInformationContentEntity a owl:Class ;
+    rdfs:label "Directive Information Content Entity"@en .
+
+cco:ont00000965 a owl:Class ;
+    rdfs:label "Directive Information Content Entity"@en ;
+    skos:exactMatch cco:ont00000965 .
+
+cco:ont00000995 a owl:Class ;
+    rdfs:label "Material Artifact"@en ;
+    skos:exactMatch cco:ont00000995 .
+
+obo:BFO_0000057 a owl:ObjectProperty ;
+    rdfs:label "has participant"@en ;
+    skos:exactMatch obo:BFO_0000057 .
+
+mds:XrayDetector a owl:Class ;
+    rdfs:label "X-ray Detector" ;
+    rdfs:subClassOf cco:ont00000132 ;
+    skos:definition "A device that detects X-ray radiation." .
+
+cco:ont00001808 a owl:ObjectProperty ;
+    rdfs:label "is about"@en .
+
+obo:BFO_0000040 a owl:Class ;
+    rdfs:label "material entity"@en .
+
+obo:BFO_0000015 a owl:Class ;
+    rdfs:label "process"@en ;
+    skos:exactMatch obo:BFO_0000015 .
+
+cco:ont00001986 a owl:ObjectProperty ;
+    rdfs:label "has output"@en ;
+    skos:exactMatch cco:ont00001986 .
+
+cco:ont00000958 a owl:Class ;
+    rdfs:label "Information Content Entity"@en ;
+    skos:exactMatch cco:ont00000958 .
+
+obo:BFO_0000019 a owl:Class ;
+    rdfs:label "quality"@en ;
+    skos:exactMatch obo:BFO_0000019 .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( mds:ChemicalFormula mds:ProcessingMethod mds:SampleID mds:XrayRecipe mds:XraySample ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( mds:APS mds:CHESS mds:NanoTerasu mds:Spring8 ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( mds:XrayDarkFieldPattern mds:XrayDiffractionPattern ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( mds:ImageFile mds:ImageStackFile ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( mds:ImageStack mds:Metadata mds:ResultID ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( mds:SyncXrayResult mds:Metadata mds:ResultID ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( mds:AzimuthalIntegration mds:DarkCorrection mds:SyncXrayPreProcessing ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( mds:AzimuthalRange mds:ChiDiscontinuity mds:ErrorModel mds:MethodOfIntegration mds:NumberOfPointsAzimuth mds:NumberOfPointsRadial mds:PolarizationCorrection mds:PolarizationFactor mds:RadialRange mds:RemoveNaN mds:SolidAngleCorrection mds:UnitOfIntegration ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( mds:IntegrationID mds:IntegrationOptions mds:IntegratedDiffractionPattern ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( mds:PONIFile mds:IntegratedDiffractionPattern ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( mds:BackpropagationProcess mds:ModelInferenceProcess mds:ModelTestingProcess mds:ModelValidationProcess mds:NeuralNetworkModelingProcess mds:NeuralNetworkTrainingProcess mds:TrainingEpoch ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( mds:BatchSizeSpecification mds:EpochCountSpecification mds:HyperparameterConfiguration mds:LearningRateSpecification ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( mds:ToolID mds:SyncXrayTool mds:SynchrotronFacility mds:Beamline ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( mds:DataPreprocessingOutput mds:ModelWeightsSpecification mds:NeuralNetworkArchitectureSpecification mds:NeuralNetworkTrainingFramework mds:PredictionOutput mds:TestDatasetSpecification mds:TrainedNeuralNetworkModel mds:TrainingDatasetSpecification mds:ValidationDatasetSpecification ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( mds:TrainingLossSpecification mds:ValidationAccuracySpecification ) .
+
+[] a owl:AllDisjointClasses ;
+    rdfs:comment "Solid-state transformation mechanisms are mutually exclusive: a specific transformation event is governed by one mechanism."@en ;
+    owl:members ( mds:DiffusionalTransformation mds:MartensisiticTransformation mds:MassiveTransformation mds:DiffusionalDisplaciveTransformation ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( mds:DetectorManufacturer mds:DetectorManufacturing mds:XrayDetector ) .
+
+[] a owl:AllDisjointClasses ;
+    rdfs:comment "Solidification regimes are mutually exclusive."@en ;
+    owl:members ( mds:RapidSolidification mds:EquilibriumSolidification ) .
+
+[] a owl:AllDisjointClasses ;
+    rdfs:comment "Nucleation mechanisms are mutually exclusive. EpitaxialNucleation is a subclass of HeterogeneousNucleation and inherits this disjointness."@en ;
+    owl:members ( mds:HomogeneousNucleation mds:HeterogeneousNucleation ) .
+
+[] a owl:AllDisjointClasses ;
+    rdfs:comment "Grain morphology types are mutually exclusive as descriptions of the dominant morphological character."@en ;
+    owl:members ( mds:EquiaxedMorphology mds:ColumnarMorphology mds:AcicularMorphology mds:LamellarMorphology mds:BasketweaveMorphology mds:BimodalMorphology mds:WidmanstattenMorphology ) .
+
+[] a owl:AllDisjointClasses ;
+    rdfs:comment "Dislocation processes are mutually exclusive."@en ;
+    owl:members ( mds:DislocationAnnihilation mds:DislocationMultiplication ) .
+
+[] a owl:AllDisjointClasses ;
+    rdfs:comment "Thermal dimensional processes are mutually exclusive."@en ;
+    owl:members ( mds:ThermalExpansion mds:ThermalContraction ) .
+
+[] a owl:AllDisjointClasses ;
+    rdfs:comment "Disposition types are mutually exclusive."@en ;
+    owl:members ( mds:TransformationSusceptibility mds:HardenabilityDisposition mds:RecrystallizationDisposition ) .
+
+[] a owl:AllDisjointClasses ;
+    rdfs:comment "Manufacturing process types are mutually exclusive."@en ;
+    owl:members ( mds:LaserPowderBedFusion mds:ElectronBeamMelting mds:DirectedEnergyDeposition mds:WroughtProcessing ) .
+
+[] a owl:AllDisjointClasses ;
+    rdfs:comment "Strain/stress types are mutually exclusive as components of a decomposition."@en ;
+    owl:members ( mds:IntergranularResidualStress mds:ChemicalStrain mds:ThermalStrain ) .
+
+[] a owl:AllDisjointClasses ;
+    rdfs:comment "Information content entity types are mutually exclusive."@en ;
+    owl:members ( mds:TTTDiagram mds:CCTDiagram mds:OrientationDistributionFunction mds:EquilibriumPhaseDiagram mds:ThermalProfile ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( mds:AndorNeo mds:Dexela2923 mds:DXR250RTPlus mds:Eiger1M mds:MaiaDetector mds:Mythen1k mds:Pilatus100K_S mds:Pilatus100K_S_1000um mds:Pilatus200K mds:Pilatus300K mds:Pilatus3_6M mds:PIXIRAD1 mds:PointGreyFlea3 mds:PrincetonQuadro mds:Retiga4000DC mds:RT41 mds:Vortex90EX mds:XFlashME4_1 mds:XFlashME4_2 ) .
+
+[] a owl:AllDisjointClasses ;
+    rdfs:comment "Analysis method types are mutually exclusive."@en ;
+    owl:members ( mds:DiffractionLineProfileAnalysis mds:SinglePeakFitting mds:StrainDecomposition ) .
+
+[] a owl:AllDisjointClasses ;
+    rdfs:comment "Titanium phase types are mutually exclusive."@en ;
+    owl:members ( mds:AlphaPrimeTiPhase mds:AlphaTiPhase mds:BetaTiPhase mds:GrainBoundaryAlpha ) .
+
+[] a owl:AllDisjointClasses ;
+    rdfs:comment "Microstructural evolution processes are mutually exclusive as process types, though they may occur concurrently in time."@en ;
+    owl:members ( mds:Recovery mds:StressRelief mds:Recrystallization mds:GrainGrowth ) .
+
+[] a owl:AllDisjointClasses ;
+    rdfs:comment "Governing laws are mutually exclusive entities."@en ;
+    owl:members ( mds:BraggsLaw mds:AvramiEquation mds:ThermalExpansionRelation mds:VegardsLaw mds:LeverRule ) .
+
+[] a owl:AllDisjointClasses ;
+    rdfs:comment "Heat treatment processes are mutually exclusive - a process cannot be both isothermal and continuous cooling."@en ;
+    owl:members ( mds:IsothermalTransformation mds:ContinuousCoolingTransformation mds:BetaTitaniumSolutionization ) .
+
+[] a owl:AllDisjointClasses ;
+    rdfs:comment "Thermal cycle segments are mutually exclusive - a segment cannot be both heating and cooling."@en ;
+    owl:members ( mds:HeatingSegment mds:HoldSegment mds:CoolingSegment ) .
+
+[] a owl:AllDisjointClasses ;
+    rdfs:comment "Temperature types are mutually exclusive based on their functional role."@en ;
+    owl:members ( mds:IsothermalHoldTemperature mds:SolutionizationTemperature ) .
+
+[] a owl:AllDisjointClasses ;
+    rdfs:comment "Cooling rate types are mutually exclusive - cannot be both controlled and AFAP."@en ;
+    owl:members ( mds:ControlledCoolingRate mds:AsFastAsPossibleCooling ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( mds:BitDepth mds:DetectorLength mds:DetectorName mds:DetectorWidth mds:MaxFrameRate mds:PixelHeight mds:PixelSizeHeight mds:PixelSizeWidth mds:PixelWidth mds:ReadOutTime ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( mds:AttenuatorWheels mds:BeamStop mds:CaveSlit mds:HuberSampleStage mds:Monochromator mds:OpticalTable mds:OpticalTableJack mds:PiezoelectricActuator mds:SafetyBrickAssembly mds:SlitAssembly mds:TungstenRadiationShield mds:Undulator mds:XrayDetector mds:XraySample mds:XrayShutter ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( mds:BeamConvergence mds:EnergyRange mds:MaxBeamSize mds:WavelengthRange ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( mds:AttenuatorWheelsPosition mds:BeamStopRotation mds:BeamStopTransversePosition mds:BeamStopVerticalPosition mds:BottomCaveSlitPosition mds:DetectorXOrientation mds:DetectorXPosition mds:DetectorYOrientation mds:DetectorYPosition mds:DetectorZOrientation mds:DetectorZPosition mds:HorizontalCaveSlitPosition mds:HorizontalCaveSlitWidth mds:HuberStageHorizontalPosition mds:HuberStageRotation mds:HuberStageTransversePosition mds:MonochromatorAngleChi mds:MonochromatorAnglePhi mds:MonochromatorCrystalSeparation mds:MonochromatorOffset mds:MonochromatorPitch mds:MonochromatorRotation mds:MonochromatorTransversePosition mds:MonochromatorVerticalPosition mds:OpticalTableHorizontalOrientation mds:OpticalTableHorizontalPosition mds:OpticalTableJackDownstreamRightPosition mds:OpticalTableJackLeftPosition mds:OpticalTableJackUpstreamPosition mds:OpticalTableTransverseOrientation mds:OpticalTableTransversePosition mds:OpticalTableVerticalOrientation mds:PiezoelectricVoltage mds:SampleVerticalOrientation mds:SampleXPosition mds:SampleYPosition mds:SampleZPosition mds:SlitTransversePosition mds:SlitVerticalBladesBottomPosition mds:SlitVerticalBladesLeftPosition mds:SlitVerticalBladesRightPosition mds:SlitVerticalBladesTopPosition mds:SlitVerticalPosition mds:TopCaveSlitPosition mds:TungstenShieldHorizontalPosition mds:TungstenShieldVerticalPosition mds:UndulatorPosition mds:XrayShutterTransversePosition mds:XrayShutterVerticalPosition ) .
+

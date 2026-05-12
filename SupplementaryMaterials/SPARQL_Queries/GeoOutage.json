@@ -1,0 +1,922 @@
+[
+  {
+    "qid": 1000000,
+    "question": "Which counties have the highest number of outages?",
+    "answer": [],
+    "function": "max",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "dbo:AdministrativeRegion",
+          "class": "dbo:AdministrativeRegion",
+          "friendly_name": "County",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "goo:OutageRecord",
+          "class": "goo:OutageRecord",
+          "friendly_name": "Outage Record",
+          "question_node": 0,
+          "function": "max"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "goo:representsCounty",
+          "friendly_name": "represents county"
+        },
+        {
+          "start": 1,
+          "end": 1,
+          "relation": "goo:numberOfOutages",
+          "friendly_name": "number of outages"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?county ?maxOutages\nWHERE {\n  {\n    SELECT ?county (MAX(?num) AS ?maxOutages)\n    WHERE {\n      ?rec a goo:OutageRecord ;\n           goo:representsCounty ?county ;\n           goo:numberOfOutages ?num .\n    }\n    GROUP BY ?county\n  }\n}\nORDER BY DESC(?maxOutages)"
+  },
+  {
+    "qid": 1000001,
+    "question": "What are the top 100 outage records by number of outages?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 3,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "goo:OutageRecord",
+          "class": "goo:OutageRecord",
+          "friendly_name": "Outage Record",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "dbo:AdministrativeRegion",
+          "class": "dbo:AdministrativeRegion",
+          "friendly_name": "County",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "goo:representsCounty",
+          "friendly_name": "represents county"
+        },
+        {
+          "start": 0,
+          "end": 0,
+          "relation": "goo:numberOfOutages",
+          "friendly_name": "number of outages"
+        },
+        {
+          "start": 0,
+          "end": 0,
+          "relation": "goo:recordDateTime",
+          "friendly_name": "record date and time"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?rec ?county ?date ?num\nWHERE {\n  ?rec a goo:OutageRecord ;\n       goo:representsCounty ?county ;\n       goo:recordDateTime ?date ;\n       goo:numberOfOutages ?num .\n}\nORDER BY DESC(?num)\nLIMIT 100"
+  },
+  {
+    "qid": 1000002,
+    "question": "Which outage records were recorded in 2022?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 1,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "goo:OutageRecord",
+          "class": "goo:OutageRecord",
+          "friendly_name": "Outage Record",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 0,
+          "relation": "goo:recordDateTime",
+          "friendly_name": "record date and time"
+        },
+        {
+          "start": 0,
+          "end": 0,
+          "relation": "goo:numberOfOutages",
+          "friendly_name": "number of outages"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?rec ?recordDate ?numOutages\nWHERE {\n  ?rec a goo:OutageRecord ;\n       goo:recordDateTime ?recordDate ;\n       goo:numberOfOutages ?numOutages .\n  FILTER (YEAR(?recordDate) = 2022)\n}"
+  },
+  {
+    "qid": 1000003,
+    "question": "Which NTL images represent Orange County, Florida in 2025?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "goo:NTLImage",
+          "class": "goo:NTLImage",
+          "friendly_name": "NTL Image",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "dbr:Orange_County%2C_Florida",
+          "class": "dbo:AdministrativeRegion",
+          "friendly_name": "Orange County, Florida",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "goo:representsCounty",
+          "friendly_name": "represents county"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?ntl ?date ?locator\nWHERE {\n  ?ntl a goo:NTLImage ;\n       ma-ont:date ?date ;\n       goo:representsCounty dbr:Orange_County%2C_Florida ;\n       ma-ont:locator ?locator .\n  FILTER (YEAR(?date) = 2025)\n}"
+  },
+  {
+    "qid": 1000004,
+    "question": "Which county does this outage record represent?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "dbo:AdministrativeRegion",
+          "class": "dbo:AdministrativeRegion",
+          "friendly_name": "County",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "urn:outage-record",
+          "class": "goo:OutageRecord",
+          "friendly_name": "this outage record",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "goo:representsCounty",
+          "friendly_name": "represents county"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?county\nWHERE {\n  VALUES ?rec { <urn:outage-record> }\n  ?rec a goo:OutageRecord ;\n       goo:representsCounty ?county .\n}"
+  },
+  {
+    "qid": 1000005,
+    "question": "Which county does this NTL image represent?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "dbo:AdministrativeRegion",
+          "class": "dbo:AdministrativeRegion",
+          "friendly_name": "County",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "urn:ntl-image",
+          "class": "goo:NTLImage",
+          "friendly_name": "this NTL image",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "goo:representsCounty",
+          "friendly_name": "represents county"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?county\nWHERE {\n  VALUES ?ntl { <urn:ntl-image> }\n  ?ntl a goo:NTLImage ;\n       goo:representsCounty ?county .\n}"
+  },
+  {
+    "qid": 1000006,
+    "question": "Which county does this outage map represent?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "dbo:AdministrativeRegion",
+          "class": "dbo:AdministrativeRegion",
+          "friendly_name": "County",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "urn:outage-map",
+          "class": "goo:OutageMap",
+          "friendly_name": "this outage map",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "goo:representsCounty",
+          "friendly_name": "represents county"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?county\nWHERE {\n  VALUES ?map { <urn:outage-map> }\n  ?map a goo:OutageMap ;\n       goo:representsCounty ?county .\n}"
+  },
+  {
+    "qid": 1000007,
+    "question": "What is the record date and time of this outage record?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "literal",
+          "id": "xsd:dateTime",
+          "class": "xsd:dateTime",
+          "friendly_name": "record date and time",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "urn:outage-record",
+          "class": "goo:OutageRecord",
+          "friendly_name": "this outage record",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "goo:recordDateTime",
+          "friendly_name": "record date and time"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?date\nWHERE {\n  VALUES ?rec { <urn:outage-record> }\n  ?rec a goo:OutageRecord ;\n       goo:recordDateTime ?date .\n}"
+  },
+  {
+    "qid": 1000008,
+    "question": "How many outages were recorded in this outage record?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "literal",
+          "id": "xsd:integer",
+          "class": "xsd:integer",
+          "friendly_name": "number of outages",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "urn:outage-record",
+          "class": "goo:OutageRecord",
+          "friendly_name": "this outage record",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "goo:numberOfOutages",
+          "friendly_name": "number of outages"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?num\nWHERE {\n  VALUES ?rec { <urn:outage-record> }\n  ?rec a goo:OutageRecord ;\n       goo:numberOfOutages ?num .\n}"
+  },
+  {
+    "qid": 1000009,
+    "question": "Which NTL image is associated with this outage record?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "goo:NTLImage",
+          "class": "goo:NTLImage",
+          "friendly_name": "NTL Image",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "urn:outage-record",
+          "class": "goo:OutageRecord",
+          "friendly_name": "this outage record",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "goo:hasNTLImage",
+          "friendly_name": "has NTL image"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?ntl\nWHERE {\n  VALUES ?rec { <urn:outage-record> }\n  ?rec a goo:OutageRecord ;\n       goo:hasNTLImage ?ntl .\n}"
+  },
+  {
+    "qid": 1000010,
+    "question": "Which outage map is associated with this outage record?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "goo:OutageMap",
+          "class": "goo:OutageMap",
+          "friendly_name": "Outage Map",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "urn:outage-record",
+          "class": "goo:OutageRecord",
+          "friendly_name": "this outage record",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "goo:hasOutageMap",
+          "friendly_name": "has outage map"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?map\nWHERE {\n  VALUES ?rec { <urn:outage-record> }\n  ?rec a goo:OutageRecord ;\n       goo:hasOutageMap ?map .\n}"
+  },
+  {
+    "qid": 1000011,
+    "question": "Which outage map was generated from this NTL image?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "goo:OutageMap",
+          "class": "goo:OutageMap",
+          "friendly_name": "Outage Map",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "urn:ntl-image",
+          "class": "goo:NTLImage",
+          "friendly_name": "this NTL image",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "goo:hasOutageMap",
+          "friendly_name": "has outage map"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?map\nWHERE {\n  VALUES ?ntl { <urn:ntl-image> }\n  ?ntl a goo:NTLImage ;\n       goo:hasOutageMap ?map .\n}"
+  },
+  {
+    "qid": 1000012,
+    "question": "Which satellite captured this NTL image?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "eor:satellite.2011-061A",
+          "class": "eor:satellite.2011-061A",
+          "friendly_name": "Satellite",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "urn:ntl-image",
+          "class": "goo:NTLImage",
+          "friendly_name": "this NTL image",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "goo:fromSatellite",
+          "friendly_name": "from satellite"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?satellite\nWHERE {\n  VALUES ?ntl { <urn:ntl-image> }\n  ?ntl a goo:NTLImage ;\n       goo:fromSatellite ?satellite .\n}"
+  },
+  {
+    "qid": 1000013,
+    "question": "Which sensor captured this NTL image?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "eor:sensor.1c58ddb9-2b4c-4fe0-9970-f5fdc7242f6b",
+          "class": "eor:sensor.1c58ddb9-2b4c-4fe0-9970-f5fdc7242f6b",
+          "friendly_name": "Sensor",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "urn:ntl-image",
+          "class": "goo:NTLImage",
+          "friendly_name": "this NTL image",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "goo:fromSensor",
+          "friendly_name": "from sensor"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?sensor\nWHERE {\n  VALUES ?ntl { <urn:ntl-image> }\n  ?ntl a goo:NTLImage ;\n       goo:fromSensor ?sensor .\n}"
+  },
+  {
+    "qid": 1000014,
+    "question": "Which outage records in Lee County, Florida had more than 100 outages around Hurricane Ian?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 3,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "goo:OutageRecord",
+          "class": "goo:OutageRecord",
+          "friendly_name": "Outage Record",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "dbr:Lee_County%2C_Florida",
+          "class": "dbo:AdministrativeRegion",
+          "friendly_name": "Lee County, Florida",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "goo:representsCounty",
+          "friendly_name": "represents county"
+        },
+        {
+          "start": 0,
+          "end": 0,
+          "relation": "goo:recordDateTime",
+          "friendly_name": "record date and time"
+        },
+        {
+          "start": 0,
+          "end": 0,
+          "relation": "goo:numberOfOutages",
+          "friendly_name": "number of outages"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?rec ?date ?num\nWHERE {\n  ?rec a goo:OutageRecord ;\n       goo:representsCounty dbr:Lee_County%2C_Florida ;\n       goo:recordDateTime ?date ;\n       goo:numberOfOutages ?num .\n  FILTER (?num > 100)\n  FILTER(\n    ?date >= \"2022-08-28T00:00:00Z\"^^xsd:dateTime &&\n    ?date <  \"2022-10-28T00:00:00Z\"^^xsd:dateTime\n  )\n}\nORDER BY ?date"
+  },
+  {
+    "qid": 1000015,
+    "question": "Which NTL images are linked to outage records in Lee County, Florida around Hurricane Ian?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "goo:NTLImage",
+          "class": "goo:NTLImage",
+          "friendly_name": "NTL Image",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "goo:OutageRecord",
+          "class": "goo:OutageRecord",
+          "friendly_name": "Outage Record",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "entity",
+          "id": "dbr:Lee_County%2C_Florida",
+          "class": "dbo:AdministrativeRegion",
+          "friendly_name": "Lee County, Florida",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "goo:hasNTLImage",
+          "friendly_name": "has NTL image"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "relation": "goo:representsCounty",
+          "friendly_name": "represents county"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?ntl ?rec ?date ?num\nWHERE {\n  ?rec a goo:OutageRecord ;\n       goo:representsCounty dbr:Lee_County%2C_Florida ;\n       goo:hasNTLImage ?ntl ;\n       goo:recordDateTime ?date ;\n       goo:numberOfOutages ?num .\n  ?ntl a goo:NTLImage .\n  FILTER (?num > 100)\n  FILTER(\n    ?date >= \"2022-08-28T00:00:00Z\"^^xsd:dateTime &&\n    ?date <  \"2022-10-28T00:00:00Z\"^^xsd:dateTime\n  )\n}\nORDER BY ?date"
+  },
+  {
+    "qid": 1000016,
+    "question": "Which outage maps are linked to outage records in Lee County, Florida around Hurricane Ian?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "goo:OutageMap",
+          "class": "goo:OutageMap",
+          "friendly_name": "Outage Map",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "goo:OutageRecord",
+          "class": "goo:OutageRecord",
+          "friendly_name": "Outage Record",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "entity",
+          "id": "dbr:Lee_County%2C_Florida",
+          "class": "dbo:AdministrativeRegion",
+          "friendly_name": "Lee County, Florida",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "goo:hasOutageMap",
+          "friendly_name": "has outage map"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "relation": "goo:representsCounty",
+          "friendly_name": "represents county"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?map ?rec ?date ?num\nWHERE {\n  ?rec a goo:OutageRecord ;\n       goo:representsCounty dbr:Lee_County%2C_Florida ;\n       goo:hasOutageMap ?map ;\n       goo:recordDateTime ?date ;\n       goo:numberOfOutages ?num .\n  ?map a goo:OutageMap .\n  FILTER (?num > 100)\n  FILTER(\n    ?date >= \"2022-08-28T00:00:00Z\"^^xsd:dateTime &&\n    ?date <  \"2022-10-28T00:00:00Z\"^^xsd:dateTime\n  )\n}\nORDER BY ?date"
+  },
+  {
+    "qid": 1000017,
+    "question": "For each county, what is the maximum number of outages recorded?",
+    "answer": [],
+    "function": "max",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "dbo:AdministrativeRegion",
+          "class": "dbo:AdministrativeRegion",
+          "friendly_name": "County",
+          "question_node": 1,
+          "function": "max"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "goo:OutageRecord",
+          "class": "goo:OutageRecord",
+          "friendly_name": "Outage Record",
+          "question_node": 0,
+          "function": "max"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "goo:representsCounty",
+          "friendly_name": "represents county"
+        },
+        {
+          "start": 1,
+          "end": 1,
+          "relation": "goo:numberOfOutages",
+          "friendly_name": "number of outages"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?county (MAX(?num) AS ?maxOutages)\nWHERE {\n  ?rec a goo:OutageRecord ;\n       goo:representsCounty ?county ;\n       goo:numberOfOutages ?num .\n}\nGROUP BY ?county\nORDER BY DESC(?maxOutages)"
+  },
+  {
+    "qid": 1000018,
+    "question": "Which NTL image and outage map correspond to the highest-outage record for each county?",
+    "answer": [],
+    "function": "max",
+    "commonness": null,
+    "num_node": 4,
+    "num_edge": 4,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "dbo:AdministrativeRegion",
+          "class": "dbo:AdministrativeRegion",
+          "friendly_name": "County",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "goo:OutageRecord",
+          "class": "goo:OutageRecord",
+          "friendly_name": "Outage Record",
+          "question_node": 0,
+          "function": "max"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "goo:NTLImage",
+          "class": "goo:NTLImage",
+          "friendly_name": "NTL Image",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 3,
+          "node_type": "class",
+          "id": "goo:OutageMap",
+          "class": "goo:OutageMap",
+          "friendly_name": "Outage Map",
+          "question_node": 1,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "goo:representsCounty",
+          "friendly_name": "represents county"
+        },
+        {
+          "start": 1,
+          "end": 2,
+          "relation": "goo:hasNTLImage",
+          "friendly_name": "has NTL image"
+        },
+        {
+          "start": 1,
+          "end": 3,
+          "relation": "goo:hasOutageMap",
+          "friendly_name": "has outage map"
+        },
+        {
+          "start": 1,
+          "end": 1,
+          "relation": "goo:numberOfOutages",
+          "friendly_name": "number of outages"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?county ?maxOutages ?rec ?ntl ?map\nWHERE {\n  {\n    SELECT ?county (MAX(?num) AS ?maxOutages)\n    WHERE {\n      ?rec a goo:OutageRecord ;\n           goo:representsCounty ?county ;\n           goo:numberOfOutages ?num .\n    }\n    GROUP BY ?county\n  }\n  ?rec a goo:OutageRecord ;\n       goo:representsCounty ?county ;\n       goo:numberOfOutages ?maxOutages ;\n       goo:hasNTLImage ?ntl ;\n       goo:hasOutageMap ?map .\n}\nORDER BY DESC(?maxOutages)"
+  },
+  {
+    "qid": 1000019,
+    "question": "On what date and time did each county reach its maximum recorded number of outages?",
+    "answer": [],
+    "function": "max",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 3,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "dbo:AdministrativeRegion",
+          "class": "dbo:AdministrativeRegion",
+          "friendly_name": "County",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "literal",
+          "id": "xsd:dateTime",
+          "class": "xsd:dateTime",
+          "friendly_name": "date of maximum outages",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "goo:OutageRecord",
+          "class": "goo:OutageRecord",
+          "friendly_name": "Outage Record",
+          "question_node": 0,
+          "function": "max"
+        }
+      ],
+      "edges": [
+        {
+          "start": 2,
+          "end": 0,
+          "relation": "goo:representsCounty",
+          "friendly_name": "represents county"
+        },
+        {
+          "start": 2,
+          "end": 2,
+          "relation": "goo:numberOfOutages",
+          "friendly_name": "number of outages"
+        },
+        {
+          "start": 2,
+          "end": 1,
+          "relation": "goo:recordDateTime",
+          "friendly_name": "record date and time"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?county ?maxOutages ?dateOfMax\nWHERE {\n  {\n    SELECT ?county (MAX(?num) AS ?maxOutages)\n    WHERE {\n      ?rec a goo:OutageRecord ;\n           goo:representsCounty ?county ;\n           goo:numberOfOutages ?num .\n    }\n    GROUP BY ?county\n  }\n  ?rec a goo:OutageRecord ;\n       goo:representsCounty ?county ;\n       goo:numberOfOutages ?maxOutages ;\n       goo:recordDateTime ?dateOfMax .\n}\nORDER BY DESC(?maxOutages)"
+  }
+]

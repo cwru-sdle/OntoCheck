@@ -1,0 +1,152 @@
+[
+  {
+    "qid": 4000000,
+    "question": "What bands contain near infrared information from the ASTER sensor?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:Band",
+          "class": "mds:Band",
+          "friendly_name": "Band",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:Sensor",
+          "class": "mds:Sensor",
+          "friendly_name": "Sensor",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "class",
+          "id": "mds:BandDescription",
+          "class": "mds:BandDescription",
+          "friendly_name": "Band Description",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 0,
+          "end": 1,
+          "relation": "mds:producedBy",
+          "friendly_name": "produced by"
+        },
+        {
+          "start": 0,
+          "end": 2,
+          "relation": "mds:hasBandDescription",
+          "friendly_name": "has band description"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?band ?bandName WHERE {\n  ?sensor a mds:Sensor .\n  ?sensor mds:hasSensorCommonName \"ASTER\" .\n  ?sensor mds:containsBand ?band .\n  ?band mds:hasBandCategory ?category .\n  FILTER(CONTAINS(LCASE(?category), \"near infrared\"))\n  ?band mds:hasBandCommonName ?bandName .\n}"
+  },
+  {
+    "qid": 4000001,
+    "question": "What is the chemical formula of this sample?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 2,
+    "num_edge": 1,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:ChemicalFormula",
+          "class": "mds:ChemicalFormula",
+          "friendly_name": "Chemical Formula",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "entity",
+          "id": "http://example.org/resource#sample.001",
+          "class": "mds:XraySample",
+          "friendly_name": "this sample",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "cco:ont00001879",
+          "friendly_name": "designated by"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?formula\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample a mds:XraySample ;\n          cco:ont00001879 ?formula .\n  ?formula a mds:ChemicalFormula .\n}"
+  },
+  {
+    "qid": 4000002,
+    "question": "What are the lattice parameters determined by Rietveld refinement of this diffraction pattern?",
+    "answer": [],
+    "function": "none",
+    "commonness": null,
+    "num_node": 3,
+    "num_edge": 2,
+    "graph_query": {
+      "nodes": [
+        {
+          "nid": 0,
+          "node_type": "class",
+          "id": "mds:LatticeParameter",
+          "class": "mds:LatticeParameter",
+          "friendly_name": "Lattice Parameter",
+          "question_node": 1,
+          "function": "none"
+        },
+        {
+          "nid": 1,
+          "node_type": "class",
+          "id": "mds:RietveldRefinement",
+          "class": "mds:RietveldRefinement",
+          "friendly_name": "Rietveld Refinement",
+          "question_node": 0,
+          "function": "none"
+        },
+        {
+          "nid": 2,
+          "node_type": "entity",
+          "id": "http://example.org/resource#pattern.001",
+          "class": "mds:IntegratedDiffractionPattern",
+          "friendly_name": "this diffraction pattern",
+          "question_node": 0,
+          "function": "none"
+        }
+      ],
+      "edges": [
+        {
+          "start": 1,
+          "end": 2,
+          "relation": "cco:ont00001921",
+          "friendly_name": "has input"
+        },
+        {
+          "start": 1,
+          "end": 0,
+          "relation": "cco:ont00001986",
+          "friendly_name": "has output"
+        }
+      ]
+    },
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?latticeParam ?value\nWHERE {\n  VALUES ?pattern { <http://example.org/resource#pattern.001> }\n  ?refinement a mds:RietveldRefinement ;\n              cco:ont00001921 ?pattern ;\n              cco:ont00001986 ?latticeParam .\n  ?latticeParam a mds:LatticeParameter .\n  OPTIONAL { ?latticeParam cco:ont00001769 ?value }\n}"
+  }
+]
