@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description"
+        content="OntoCheck: Query-Driven Ontology Assessments for Scientific Domain Applications">
+    <meta property="og:title" content="OntoCheck" />
+    <meta property="og:description"
+        content="OntoCheck is an open-source tool unifying domain-agnostic structural metrics with a novel, query-driven assessment methodology for ontologies." />
+    <meta property="og:url" content="https://cwru-sdle.github.io/OntoCheck/" />
+    <meta name="twitter:title" content="OntoCheck: Query-Driven Ontology Assessments">
+    <meta name="twitter:description"
+        content="An open-source Python tool for automated, query-driven ontology quality assessment." />
+    <meta name="keywords"
+        content="ontology assessment, SPARQL, vocabulary coverage, ontology metrics, FAIR data, knowledge graphs, materials science">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>OntoCheck: Query-Driven Ontology Assessments</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link rel="stylesheet" href="static/css/index.css">
+</head>
+
+<body>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-body">
+            <div class="container is-max-desktop">
+                <div class="columns is-centered">
+                    <div class="column has-text-centered is-four-fifths">
+                        <h1 class="title is-1 publication-title">OntoCheck: Query-Driven Ontology Assessments for
+                            Scientific Domain Applications</h1>
+
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block">Rishabh Kundu<sup>1,*</sup>,</span>
+                            <span class="author-block">Redad Mehdi<sup>1,*</sup>,</span>
+                            <span class="author-block">Van D. Tran<sup>1,*</sup>,</span>
+                            <span class="author-block">Ethan Frakes<sup>2</sup>,</span>
+                            <span class="author-block">Abhishek Daundkar<sup>1</sup>,</span>
+                            <span class="author-block">Maliesha Sumudumalie<sup>1</sup>,</span>
+                            <span class="author-block">Vibha S. Mandayam<sup>1</sup>,</span><br>
+                            <span class="author-block">Jacob A. Lample<sup>1</sup>,</span>
+                            <span class="author-block">Mengjie Li<sup>2</sup>,</span>
+                            <span class="author-block">Laura S. Bruckman<sup>1</sup>,</span>
+                            <span class="author-block">Erika I. Barcelos<sup>1</sup>,</span>
+                            <span class="author-block">Alp Sehirlioglu<sup>1</sup>,</span>
+                            <span class="author-block">Roger H. French<sup>1</sup>,</span>
+                            <span class="author-block">Yinghui Wu<sup>1</sup></span>
+                        </div>
+
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block" style="font-size: 0.85em">
+                                <sup>1</sup> Case Western Reserve University
+                            </span>
+                            <span class="author-block" style="font-size: 0.85em">
+                                <sup>2</sup> University of Central Florida
+                            </span>
+                        </div>
+                        <p class="equal-contrib">* These authors contributed equally to this work.</p>
+
+                        <div class="column has-text-centered">
+                            <div class="publication-links">
+                                <span class="link-block">
+                                    <a href="#" class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon"><i class="ai ai-arxiv"></i></span>
+                                        <span>Paper</span>
+                                    </a>
+                                </span>
+
+                                <span class="link-block">
+                                    <a href="https://github.com/cwru-sdle/OntoCheck" target="_blank"
+                                        class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon"><i class="fa-brands fa-github"></i></span>
+                                        <span>Code</span>
+                                    </a>
+                                </span>
+
+                                <span class="link-block">
+                                    <a href="https://pypi.org/project/OntoCheck/" target="_blank"
+                                        class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon"><i class="fa-brands fa-python"></i></span>
+                                        <span>PyPI</span>
+                                    </a>
+                                </span>
+
+                                <span class="link-block">
+                                    <a href="https://ontocheck.readthedocs.io/en/latest/" target="_blank"
+                                        class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon"><i class="fa-solid fa-book"></i></span>
+                                        <span>Docs</span>
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Abstract -->
+    <section class="section hero is-light">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-full">
+                    <h2 class="title is-4">Abstract</h2>
+                    <div class="content has-text-justified">
+                        <p style="width: 76%; margin-left: auto; margin-right: auto;">
+                            As materials science and other fields increasingly adopt FAIR data principles, ontologies
+                            have become essential for encoding the semantics of scientific investigations. Yet,
+                            evaluating ontology quality remains a manual, technically demanding bottleneck. Current
+                            frameworks emphasize structural correctness but fail to assess practical utility against the
+                            real-world queries posed by domain scientists. To address this, we introduce OntoCheck, an
+                            open-source tool unifying domain-agnostic structural metrics with a novel, query-driven
+                            assessment methodology. By analyzing SPARQL queries derived from natural-language competency
+                            questions, OntoCheck compares the required query terms against an ontology's full vocabulary
+                            to yield complementary metrics for vocabulary coverage and utilization density. Crucially,
+                            this empowers domain scientists and data engineers to assert the practical usage and
+                            suitability of an ontology based on their specific application needs. We validate OntoCheck
+                            at scale against DBpedia via the KGQA dataset, and demonstrate its utility across several
+                            materials science and geospatial ontologies, automating quality assessment for the
+                            reproducible deployment of semantic infrastructure in FAIR workflows.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Motivating Example -->
+    <section class="section">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-full">
+                    <h2 class="title is-4">Why Task-Based Ontology Assessment?</h2>
+                </div>
+            </div>
+            <div class="content has-text-justified">
+                <p>
+                    Traditional ontology assessment focuses on structural correctness&mdash;valid URIs, no circular
+                    dependencies, no orphaned classes. But a structurally sound ontology can still fail a researcher's
+                    use case if it lacks the vocabulary needed for their queries.
+                </p>
+                <p>
+                    Consider a domain scientist who wants to know the maximum <strong>grain size</strong> across
+                    <strong>perovskite samples</strong>. Because the ontology contains terms relevant to the query
+                    (i.e., <code>mds:GrainSize</code>, <code>mds:Sample</code>, and
+                    <code>mds:PerovskiteStructure</code>), a query engine is able to retrieve the answer. However, a
+                    query for the average <strong>phase fraction</strong> of the <strong>alpha-titanium phase</strong>
+                    of <strong>Ti64 samples</strong> is unanswerable because the ontology does not contain terms
+                    relevant to the query. This example clearly demonstrates the importance of metrics that measure an
+                    ontology's task-based competency.
+                </p>
+            </div>
+            <figure class="has-text-centered">
+                <img src="static/images/KG_onto_query_ex.png" alt="Successful vs. unsuccessful query-answering case"
+                    style="width: 90%; max-width: 900px;">
+                <figcaption>
+                    <strong>Figure 1.</strong> A successful versus unsuccessful query-answering case caused by
+                    differences in an ontology's fitness for use. Green ovals, blue rounded boxes, and white rounded
+                    boxes denote classes, instances, and literals, respectively. Query 1 (Q1) returns the desired
+                    answers because the ontology contains the terms used in the query, whereas Query 2 (Q2) is
+                    unanswerable.
+                </figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <!-- Key Contributions -->
+    <section class="section hero is-light">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-full">
+                    <h2 class="title is-4">Key Contributions</h2>
+                </div>
+            </div>
+            <div class="content">
+                <ol>
+                    <li>
+                        <strong>Unified metric suite.</strong> OntoCheck implements 17 task-agnostic metrics spanning
+                        labeling, structural, accessibility, and naming convention categories, consolidating and
+                        extending prior assessment frameworks into a single open-source tool.
+                    </li>
+                    <li>
+                        <strong>Novel task-based assessment methodology.</strong> By ingesting competency questions
+                        expressed as SPARQL queries and systematically comparing the required vocabulary against the
+                        terms defined in a candidate ontology, OntoCheck derives two complementary metrics&mdash;
+                        <em>Relevance</em> and <em>Accuracy</em>&mdash;that quantify vocabulary coverage and
+                        utilization density.
+                    </li>
+                    <li>
+                        <strong>Validated at scale.</strong> We verify OntoCheck through large-scale evaluation on the
+                        DBpedia knowledge graph using the LC-QuAD benchmark (5,000 queries, 98.94% Relevance), and
+                        demonstrate applicability across materials science and geospatial ontologies across four
+                        configurable assessment modes.
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- Assessment Modes -->
+    <section class="section">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-full">
+                    <h2 class="title is-4">Assessment Modes</h2>
+                </div>
+            </div>
+            <div class="content has-text-justified">
+                <p>
+                    OntoCheck is configurable in four assessment modes, controlled by a declarative configuration
+                    <strong>C = (O, Q, M, G)</strong>, where <strong>O</strong> specifies ontologies to be assessed,
+                    <strong>Q</strong> is a set of competency queries, <strong>M</strong> refers to the evaluation
+                    metrics, and <strong>G</strong> is a ground-truth knowledge graph.
+                </p>
+            </div>
+            <div class="table-container">
+                <table class="table is-bordered is-striped is-hoverable is-fullwidth mode-table">
+                    <thead>
+                        <tr>
+                            <th>Mode</th>
+                            <th>Name</th>
+                            <th>Configuration</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Task-agnostic</td>
+                            <td><code>(O, -, M, -)</code></td>
+                            <td>Structural, labeling, accessibility, and naming metrics</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Task-specific Web</td>
+                            <td><code>(O, Q, M, G)</code></td>
+                            <td>Validation against KGQA benchmarks (e.g., LC-QuAD / DBpedia)</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Task-based Scientific</td>
+                            <td><code>(O, Q, M, -)</code></td>
+                            <td>Domain ontology vs. competency questions</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Cross-Domain</td>
+                            <td><code>(O[], Q, M, -)</code></td>
+                            <td>Merged ontologies vs. cross-domain questions</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Metrics Overview -->
+    <section class="section hero is-light">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-full">
+                    <h2 class="title is-4">Task-Based Metrics</h2>
+                </div>
+            </div>
+            <div class="content has-text-justified">
+                <p>
+                    Given an ontology <em>O</em> and a set of competency-question SPARQL queries
+                    <em>Q</em>, OntoCheck derives an <strong>ontology term set</strong>
+                    <em>T<sub>o</sub></em> (all domain-namespace classes and properties in <em>O</em>)
+                    and a <strong>task term set</strong> <em>T<sub>a</sub></em> (all domain-namespace
+                    terms referenced across the queries in <em>Q</em>). Two complementary metrics are computed:
+                </p>
+                <div class="formula">
+                    <strong>Relevance</strong> = |T<sub>a</sub> &cap; T<sub>o</sub>| / |T<sub>a</sub>|
+                    &emsp;&emsp;
+                    <strong>Accuracy</strong> = |T<sub>a</sub> &cap; T<sub>o</sub>| / |T<sub>o</sub>|
+                </div>
+                <ul>
+                    <li><strong>Relevance</strong> measures the fraction of task-required terms that the ontology
+                        defines&mdash;does the ontology <em>cover</em> the vocabulary needed for the intended
+                        workload?</li>
+                    <li><strong>Accuracy</strong> measures the fraction of ontology terms utilized by the task
+                        queries&mdash;how much of the ontology is actually <em>used</em> by the workload?</li>
+                </ul>
+            </div>
+
+            <div class="columns is-centered has-text-centered" style="margin-top: 1.5rem;">
+                <div class="column is-full">
+                    <h2 class="title is-5">Task-Agnostic Metrics (17 metrics)</h2>
+                </div>
+            </div>
+            <div class="content">
+                <div class="columns is-multiline">
+                    <div class="column is-half">
+                        <h6 class="title is-6 metric-category">Labeling</h6>
+                        <ul>
+                            <li><code>checkLabel</code> &mdash; Human-readable identifiers</li>
+                            <li><code>altLabelCheck</code> &mdash; Synonym coverage</li>
+                            <li><code>definitionCheck</code> &mdash; Formal definitions</li>
+                        </ul>
+                    </div>
+                    <div class="column is-half">
+                        <h6 class="title is-6 metric-category">Structural</h6>
+                        <ul>
+                            <li><code>isolatedElements</code> &mdash; Orphaned classes</li>
+                            <li><code>classConnections</code> &mdash; Disconnected subgraphs</li>
+                            <li><code>missingDomainRange</code> &mdash; Undeclared restrictions</li>
+                            <li><code>leafNodeCheck</code> &mdash; Leaf nodes</li>
+                            <li><code>semanticConnection</code> &mdash; Upper-ontology grounding</li>
+                        </ul>
+                    </div>
+                    <div class="column is-half">
+                        <h6 class="title is-6 metric-category">Accessibility</h6>
+                        <ul>
+                            <li><code>sparqlEndpoint</code> &mdash; Endpoint reachability</li>
+                            <li><code>rdfDump</code> &mdash; RDF dump availability</li>
+                            <li><code>humanLicense</code> &mdash; License information</li>
+                            <li><code>externalLinks</code> &mdash; External link validity</li>
+                        </ul>
+                    </div>
+                    <div class="column is-half">
+                        <h6 class="title is-6 metric-category">Naming Convention</h6>
+                        <ul>
+                            <li><code>classCapitalCheck</code> &mdash; Capitalization standards</li>
+                            <li><code>classSpaceCheck</code> &mdash; Spaces in identifiers</li>
+                            <li><code>spellCheck</code> &mdash; Spelling in labels/definitions</li>
+                            <li><code>duplicateLabels</code> &mdash; Duplicate label detection</li>
+                            <li><code>searchClass</code> &mdash; Class string search</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started -->
+    <section class="section">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-full">
+                    <h2 class="title is-4">Getting Started</h2>
+                </div>
+            </div>
+            <div class="content">
+                <h5 class="title is-5">Installation</h5>
+                <pre><code>pip install OntoCheck</code></pre>
+
+                <h5 class="title is-5">Command-Line Interface</h5>
+                <pre><code># Mode 1: Run task-agnostic metrics
+ontocheck path/to/ontology.ttl --metrics all
+
+# Mode 3: Task-based scientific assessment
+ontocheck path/to/ontology.ttl \
+    --mode 3 \
+    --questions competency_questions.json \
+    --domain-prefixes mds
+
+# Mode 4: Cross-domain assessment
+ontocheck xrd.ttl capacitors.ttl \
+    --mode 4 \
+    --questions cross_domain_questions.json \
+    --domain-prefixes mds</code></pre>
+
+                <h5 class="title is-5">Python API</h5>
+                <pre><code>from ontocheck import run_ontology_assessment, run_task_based_assessment
+
+# Mode 1: Task-agnostic assessment
+run_ontology_assessment(
+    ttl_file="path/to/ontology.ttl",
+    metrics="all",
+)
+
+# Mode 3: Task-based scientific assessment
+result = run_task_based_assessment(
+    ttl_files="path/to/ontology.ttl",
+    questions="competency_questions.json",
+    domain_prefixes=["mds"],
+)
+
+print(f"Relevance: {result['relevance']:.2%}")
+print(f"Accuracy:  {result['accuracy']:.2%}")</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- BibTeX -->
+    <section class="section" id="BibTeX">
+        <div class="container is-max-desktop content">
+            <h2 class="title">BibTeX</h2>
+            <pre><code>@article{kundu2025ontocheck,
+  title={OntoCheck: Query-Driven Ontology Assessments for Scientific Domain Applications},
+  author={Rishabh Kundu and Redad Mehdi and Van D. Tran and Ethan Frakes and
+          Abhishek Daundkar and Maliesha Sumudumalie and Vibha S. Mandayam and
+          Jacob A. Lample and Mengjie Li and Laura S. Bruckman and
+          Erika I. Barcelos and Alp Sehirlioglu and Roger H. French and Yinghui Wu},
+  year={2025},
+  url={https://github.com/cwru-sdle/OntoCheck}
+}</code></pre>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-8">
+                    <div class="content has-text-centered">
+                        <p>
+                            OntoCheck is developed and maintained by the
+                            <a href="https://engineering.case.edu/groups/french-research-group/" target="_blank">SDLE
+                                Research Center</a> at Case Western Reserve University.
+                        </p>
+                        <p>
+                            Released under the
+                            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"
+                                target="_blank">Creative Commons Attribution 4.0 International License</a>.
+                        </p>
+                        <p style="font-size: 0.85em; color: #888;">
+                            This project page is based on the
+                            <a href="https://github.com/eliahuhorwitz/Academic-project-page-template"
+                                target="_blank">Academic Project Page Template</a>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>
