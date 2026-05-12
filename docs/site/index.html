@@ -106,6 +106,26 @@
         </div>
     </section>
 
+    <!-- TL;DR -->
+    <section class="section">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-full">
+                    <h2 class="title is-4">TL;DR</h2>
+                    <div class="content has-text-justified">
+                        <p style="width: 76%; margin-left: auto; margin-right: auto; font-size: 1.05em;">
+                            <strong>OntoCheck</strong> is an open-source Python tool that automates ontology quality assessment.
+                            It combines 17 structural metrics with a novel query-driven methodology that measures how well an
+                            ontology supports your SPARQL queries&mdash;yielding <em>Relevance</em> (vocabulary coverage) and
+                            <em>Accuracy</em> (utilization density) scores. Install via <code>pip install OntoCheck</code>
+                            and evaluate any OWL/RDF ontology against your competency questions in minutes.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Abstract -->
     <section class="section hero is-light">
         <div class="container is-max-desktop">
@@ -192,9 +212,11 @@
                     <li>
                         <strong>Novel task-based assessment methodology.</strong> By ingesting competency questions
                         expressed as SPARQL queries and systematically comparing the required vocabulary against the
-                        terms defined in a candidate ontology, OntoCheck derives two complementary metrics&mdash;
-                        <em>Relevance</em> and <em>Accuracy</em>&mdash;that quantify vocabulary coverage and
-                        utilization density.
+                        terms defined in a candidate ontology, OntoCheck derives two complementary metrics:
+                        <ul style="margin-top: 0.5rem; margin-bottom: 0.25rem;">
+                            <li><em>Relevance</em> &mdash; quantifies vocabulary coverage (what fraction of task-required terms the ontology defines)</li>
+                            <li><em>Accuracy</em> &mdash; quantifies utilization density (what fraction of ontology terms the task queries actually use)</li>
+                        </ul>
                     </li>
                     <li>
                         <strong>Validated at scale.</strong> We verify OntoCheck through large-scale evaluation on the
@@ -250,13 +272,348 @@
                             <td>3</td>
                             <td>Task-based Scientific</td>
                             <td><code>(O, Q, M, -)</code></td>
-                            <td>Domain ontology vs. competency questions</td>
+                            <td>Domain ontology vs. competency questions<sup>&dagger;</sup></td>
                         </tr>
                         <tr>
                             <td>4</td>
                             <td>Cross-Domain</td>
                             <td><code>(O[], Q, M, -)</code></td>
-                            <td>Merged ontologies vs. cross-domain questions</td>
+                            <td>Merged ontologies vs. cross-domain questions<sup>&dagger;</sup></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="font-size: 0.85em; color: #666; margin-top: 0.5rem;">
+                    <sup>&dagger;</sup> Knowledge graphs backed by an ontology can also be evaluated in Modes 3 and 4.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Assessment Mode Examples -->
+    <section class="section hero is-light">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-full">
+                    <h2 class="title is-4">Assessment Examples</h2>
+                </div>
+            </div>
+
+            <!-- Mode 1 -->
+            <div class="content has-text-justified">
+                <h5 class="title is-5">Mode 1: Task-Agnostic Assessment</h5>
+                <p>
+                    The <code>semanticConnection</code> metric is applied to a subset (Equipment) of the built-in
+                    Capacitors ontology (54 classes, 8 root hierarchy chains). The assessment reveals that 6 of 8
+                    root classes are grounded in CCO or BFO, while two domain-specific roots &mdash;
+                    <code>mds:Thermocouple</code> and <code>mds:VoltageRating</code> &mdash; remain disconnected,
+                    directly flagging the portions of the ontology that require further alignment for integration
+                    with external knowledge graphs.
+                </p>
+            </div>
+
+            <!-- Mode 2 -->
+            <div class="content has-text-justified">
+                <h5 class="title is-5">Mode 2: Task-Specific Web Ontology (DBpedia / LC-QuAD)</h5>
+                <p>
+                    OntoCheck is validated at scale against the DBpedia ontology (3,814 domain classes and
+                    properties) using the LC-QuAD 1.0 benchmark (5,000 queries, 38 workloads). Across all queries,
+                    470 unique ontology terms appear in <em>T<sub>a</sub></em>, of which 465 are present in
+                    <em>T<sub>o</sub></em>, yielding an overall <strong>Relevance of 98.94%</strong> and an
+                    <strong>Accuracy of 12.19%</strong>. Per-workload analysis shows 28 of 38 workloads achieve
+                    100% Relevance.
+                </p>
+            </div>
+
+            <!-- Mode 3 -->
+            <div class="content has-text-justified">
+                <h5 class="title is-5">Mode 3: Task-Based Scientific Ontology Assessment</h5>
+                <p>
+                    OntoCheck is demonstrated across four materials science sub-domain ontologies and two geospatial
+                    ontologies, each evaluated against 20 competency questions. Representative results are shown below.
+                </p>
+            </div>
+
+            <h6 class="title is-6" style="margin-bottom: 0.75rem;">Materials Science Ontologies</h6>
+            <div class="table-container">
+                <table class="table is-bordered is-striped is-hoverable is-fullwidth" style="font-size: 0.9em;">
+                    <thead>
+                        <tr>
+                            <th>Ontology</th>
+                            <th>CQ</th>
+                            <th>Competency Question</th>
+                            <th>|T<sub>a</sub>|</th>
+                            <th>|T<sub>a</sub>&cap;T<sub>o</sub>|</th>
+                            <th>Rel.</th>
+                            <th>Acc.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="3">EBSD (89 terms)</td>
+                            <td>CQ1</td>
+                            <td>What is the material composition of this sample?</td>
+                            <td>2</td><td>1</td><td>50%</td><td>1.1%</td>
+                        </tr>
+                        <tr>
+                            <td>CQ16</td>
+                            <td>What are the polishing voltage, motor speed setting, and frequency mode of the electropolish system?</td>
+                            <td>8</td><td>8</td><td>100%</td><td>9.0%</td>
+                        </tr>
+                        <tr>
+                            <td>CQ20</td>
+                            <td>Which samples from the same batch manufactured by LPBF with laser power above 200W had total surface removal depth less than 100&thinsp;&mu;m?</td>
+                            <td>7</td><td>6</td><td>86%</td><td>6.7%</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">Capacitors (87 terms)</td>
+                            <td>CQ1</td>
+                            <td>What types of electrical connectors are available and what is the function of each?</td>
+                            <td>1</td><td>1</td><td>100%</td><td>1.1%</td>
+                        </tr>
+                        <tr>
+                            <td>CQ9</td>
+                            <td>What are the manufacturer-specified dimensions of the capacitor?</td>
+                            <td>4</td><td>4</td><td>100%</td><td>4.6%</td>
+                        </tr>
+                        <tr>
+                            <td>CQ19</td>
+                            <td>What solder process type, solder material, and iron temperature were used?</td>
+                            <td>4</td><td>4</td><td>100%</td><td>4.6%</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">MatProc (127 terms)</td>
+                            <td>CQ5</td>
+                            <td>What parameters are required for Laser Powder Bed Fusion?</td>
+                            <td>2</td><td>2</td><td>100%</td><td>1.6%</td>
+                        </tr>
+                        <tr>
+                            <td>CQ18</td>
+                            <td>Which process is known by the abbreviation &ldquo;SPS&rdquo;?</td>
+                            <td>0</td><td>0</td><td>0%</td><td>0.0%</td>
+                        </tr>
+                        <tr>
+                            <td>CQ20</td>
+                            <td>Which processes share both a temperature parameter and a pressure parameter?</td>
+                            <td>3</td><td>3</td><td>100%</td><td>2.4%</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">XRD (318 terms)</td>
+                            <td>CQ7</td>
+                            <td>What is the dislocation density obtained from diffraction line profile analysis?</td>
+                            <td>2</td><td>2</td><td>100%</td><td>0.6%</td>
+                        </tr>
+                        <tr>
+                            <td>CQ10</td>
+                            <td>What crystal structure does the alpha-titanium phase have?</td>
+                            <td>3</td><td>3</td><td>100%</td><td>0.9%</td>
+                        </tr>
+                        <tr>
+                            <td>CQ15</td>
+                            <td>What types of solid-state phase transformations are defined?</td>
+                            <td>1</td><td>1</td><td>100%</td><td>0.3%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h6 class="title is-6" style="margin-top: 1.5rem; margin-bottom: 0.75rem;">Geospatial Ontologies</h6>
+            <div class="table-container">
+                <table class="table is-bordered is-striped is-hoverable is-fullwidth" style="font-size: 0.9em;">
+                    <thead>
+                        <tr>
+                            <th>Ontology</th>
+                            <th>CQ</th>
+                            <th>Competency Question</th>
+                            <th>|T<sub>a</sub>|</th>
+                            <th>|T<sub>a</sub>&cap;T<sub>o</sub>|</th>
+                            <th>Rel.</th>
+                            <th>Acc.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="3">GeoOutage (10 terms)</td>
+                            <td>CQ10</td>
+                            <td>Which NTL image is associated with this outage record?</td>
+                            <td>2</td><td>2</td><td>100%</td><td>20.0%</td>
+                        </tr>
+                        <tr>
+                            <td>CQ15</td>
+                            <td>Which outage records in Lee County, Florida had more than 100 outages around Hurricane Ian?</td>
+                            <td>4</td><td>4</td><td>100%</td><td>40.0%</td>
+                        </tr>
+                        <tr>
+                            <td>CQ19</td>
+                            <td>Which NTL image and outage map correspond to the highest-outage record for each county?</td>
+                            <td>5</td><td>5</td><td>100%</td><td>50.0%</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">Geospatial (100 terms)</td>
+                            <td>CQ2</td>
+                            <td>What satellite is the ASTER sensor mounted on?</td>
+                            <td>4</td><td>4</td><td>100%</td><td>4.0%</td>
+                        </tr>
+                        <tr>
+                            <td>CQ10</td>
+                            <td>What satellites were launched in 2020?</td>
+                            <td>3</td><td>3</td><td>100%</td><td>3.0%</td>
+                        </tr>
+                        <tr>
+                            <td>CQ12</td>
+                            <td>What geospatial data exists in the neighborhood of geohash &ldquo;dpnq&rdquo;?</td>
+                            <td>11</td><td>11</td><td>100%</td><td>11.0%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Mode 4 -->
+            <div class="content has-text-justified" style="margin-top: 1.5rem;">
+                <h5 class="title is-5">Mode 4: Cross-Domain Ontology Assessment</h5>
+                <p>
+                    OntoCheck supports cross-domain assessment by merging multiple ontologies. Two case studies
+                    demonstrate this capability for scientists working at the intersection of multiple sub-domains.
+                </p>
+            </div>
+
+            <h6 class="title is-6" style="margin-bottom: 0.75rem;">Case Study 1: XRD + Capacitors (404 terms)</h6>
+            <div class="table-container">
+                <table class="table is-bordered is-striped is-hoverable is-fullwidth" style="font-size: 0.9em;">
+                    <thead>
+                        <tr>
+                            <th>CQ</th>
+                            <th>Competency Question</th>
+                            <th>Rel.</th>
+                            <th>Acc.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CQ2</td>
+                            <td>What X-ray detector was used in this experiment?</td>
+                            <td>100%</td><td>0.5%</td>
+                        </tr>
+                        <tr>
+                            <td>CQ6</td>
+                            <td>What are the lattice parameters determined by Rietveld refinement of this diffraction pattern?</td>
+                            <td>100%</td><td>0.5%</td>
+                        </tr>
+                        <tr>
+                            <td>CQ10</td>
+                            <td>What is the capacitance value and its tolerance for the capacitor being tested?</td>
+                            <td>100%</td><td>0.7%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h6 class="title is-6" style="margin-top: 1.5rem; margin-bottom: 0.75rem;">Case Study 2: XRD + Geospatial (417 terms)</h6>
+            <div class="table-container">
+                <table class="table is-bordered is-striped is-hoverable is-fullwidth" style="font-size: 0.9em;">
+                    <thead>
+                        <tr>
+                            <th>CQ</th>
+                            <th>Competency Question</th>
+                            <th>Rel.</th>
+                            <th>Acc.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CQ9</td>
+                            <td>What bands contain near infrared information from the ASTER sensor?</td>
+                            <td>100%</td><td>1.2%</td>
+                        </tr>
+                        <tr>
+                            <td>CQ5</td>
+                            <td>What is the chemical formula of this sample?</td>
+                            <td>100%</td><td>0.5%</td>
+                        </tr>
+                        <tr>
+                            <td>CQ6</td>
+                            <td>What are the lattice parameters determined by Rietveld refinement of this diffraction pattern?</td>
+                            <td>100%</td><td>0.5%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Comparative Assessment -->
+            <div class="content has-text-justified" style="margin-top: 1.5rem;">
+                <h5 class="title is-5">Comparative Assessment of Materials Science Ontologies</h5>
+                <p>
+                    OntoCheck enables direct comparison of competing ontologies against a shared 50-question benchmark
+                    spanning seven categories. Ten representative questions are shown below.
+                </p>
+            </div>
+            <div class="table-container">
+                <table class="table is-bordered is-striped is-hoverable is-fullwidth" style="font-size: 0.85em;">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Category</th>
+                            <th>Competency Question</th>
+                            <th>MDS-Onto</th>
+                            <th>PMDCo</th>
+                            <th>AM-Onto</th>
+                            <th>EMMO</th>
+                            <th>CHAMEO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Q02</td><td>Material Identity</td>
+                            <td>What is the identifier/name assigned to each material specimen, and by whom was it assigned?</td>
+                            <td>100</td><td>100</td><td>0</td><td>100</td><td>33</td>
+                        </tr>
+                        <tr>
+                            <td>Q13</td><td>Manufacturing</td>
+                            <td>What intermediate processing steps occurred between raw material acquisition and the final specimen, and in what sequence?</td>
+                            <td>100</td><td>67</td><td>67</td><td>100</td><td>100</td>
+                        </tr>
+                        <tr>
+                            <td>Q21</td><td>Characterization</td>
+                            <td>What specimen preparation steps were carried out before a characterization measurement?</td>
+                            <td>100</td><td>100</td><td>0</td><td>100</td><td>100</td>
+                        </tr>
+                        <tr>
+                            <td>Q23</td><td>Characterization</td>
+                            <td>What is the measurement uncertainty or tolerance associated with a reported characterization result?</td>
+                            <td>100</td><td>100</td><td>0</td><td>100</td><td>50</td>
+                        </tr>
+                        <tr>
+                            <td>Q35</td><td>Provenance</td>
+                            <td>Who performed the manufacturing or characterization process?</td>
+                            <td>67</td><td>100</td><td>33</td><td>100</td><td>67</td>
+                        </tr>
+                        <tr>
+                            <td>Q36</td><td>Provenance</td>
+                            <td>What institution or facility owns or operates the equipment used in a characterization or manufacturing experiment?</td>
+                            <td>100</td><td>67</td><td>33</td><td>67</td><td>100</td>
+                        </tr>
+                        <tr>
+                            <td>Q43</td><td>Simulation</td>
+                            <td>What physical assumptions or simplifications were made in a computational model of a material or process?</td>
+                            <td>67</td><td>67</td><td>100</td><td>67</td><td>67</td>
+                        </tr>
+                        <tr>
+                            <td>Q44</td><td>Simulation</td>
+                            <td>At what spatial or temporal scale does a given simulation operate?</td>
+                            <td>67</td><td>100</td><td>100</td><td>100</td><td>33</td>
+                        </tr>
+                        <tr>
+                            <td>Q46</td><td>Degradation</td>
+                            <td>What degradation or damage mechanisms are represented for a material under service or test conditions?</td>
+                            <td>67</td><td>100</td><td>33</td><td>100</td><td>67</td>
+                        </tr>
+                        <tr>
+                            <td>Q50</td><td>Degradation</td>
+                            <td>What failure mode or end-of-life criterion was defined, and was it reached during the study period?</td>
+                            <td>100</td><td>67</td><td>67</td><td>100</td><td>33</td>
+                        </tr>
+                        <tr style="font-weight: bold;">
+                            <td colspan="3">Overall Average (%)</td>
+                            <td>96.7</td><td>95.3</td><td>77.3</td><td>96.0</td><td>76.8</td>
                         </tr>
                     </tbody>
                 </table>
@@ -265,7 +622,7 @@
     </section>
 
     <!-- Metrics Overview -->
-    <section class="section hero is-light">
+    <section class="section">
         <div class="container is-max-desktop">
             <div class="columns is-centered has-text-centered">
                 <div class="column is-full">
@@ -316,7 +673,7 @@
                             <li><code>classConnections</code> &mdash; Disconnected subgraphs</li>
                             <li><code>missingDomainRange</code> &mdash; Undeclared restrictions</li>
                             <li><code>leafNodeCheck</code> &mdash; Leaf nodes</li>
-                            <li><code>semanticConnection</code> &mdash; Upper-ontology grounding</li>
+                            <li><code>semanticConnection</code> &mdash; Higher-level ontology grounding (e.g., CCO, BFO)</li>
                         </ul>
                     </div>
                     <div class="column is-half">
@@ -344,7 +701,7 @@
     </section>
 
     <!-- Getting Started -->
-    <section class="section">
+    <section class="section hero is-light">
         <div class="container is-max-desktop">
             <div class="columns is-centered has-text-centered">
                 <div class="column is-full">
@@ -389,6 +746,76 @@ result = run_task_based_assessment(
 
 print(f"Relevance: {result['relevance']:.2%}")
 print(f"Accuracy:  {result['accuracy']:.2%}")</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coming Soon -->
+    <section class="section">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-full">
+                    <h2 class="title is-4">Coming Soon</h2>
+                </div>
+            </div>
+            <div class="content has-text-justified">
+                <p>
+                    We are developing a <strong>web-based interface</strong> where users can evaluate ontologies against
+                    their own task term sets (<em>T<sub>a</sub></em>) or custom metrics &mdash; no coding required. Users
+                    will be able to configure evaluations, define custom metrics, and receive structured assessment reports
+                    directly in their browser.
+                </p>
+                <p>
+                    Additional planned capabilities include:
+                </p>
+                <ul>
+                    <li>Integration with LLMs for automated SPARQL generation from natural-language competency questions</li>
+                    <li>Community-submitted competency question sets and metric contributions incorporated into the standard suite</li>
+                    <li>User-defined feeders for pluggable ontology and knowledge graph sources</li>
+                </ul>
+            </div>
+
+            <div class="columns is-centered has-text-centered" style="margin-top: 1.5rem;">
+                <div class="column is-full">
+                    <h3 class="title is-5">Built for the Community</h3>
+                </div>
+            </div>
+            <div class="content has-text-justified">
+                <p>
+                    OntoCheck is conceived as a <strong>community resource</strong>. We actively encourage collaboration,
+                    contribution of new metrics, and submission of domain competency question sets, in the shared interest
+                    of building robust, reusable semantic infrastructure for FAIR scientific data. Whether you want to
+                    evaluate ontologies in your domain, propose new assessment metrics, or contribute competency question
+                    benchmarks &mdash; we would love to hear from you.
+                </p>
+                <p style="text-align: center; margin-top: 1rem;">
+                    <strong>Get in touch:</strong><br>
+                    <a href="mailto:roger.french@case.edu">Roger H. French</a> &bull;
+                    <a href="mailto:yinghui.wu2@case.edu">Yinghui Wu</a><br>
+                    <span style="font-size: 0.9em; color: #666;">Case Western Reserve University</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Acknowledgements -->
+    <section class="section hero is-light">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-full">
+                    <h2 class="title is-4">Acknowledgements</h2>
+                </div>
+            </div>
+            <div class="content has-text-justified">
+                <p>
+                    We are grateful to the MDS-Onto user community, who are also early users of OntoCheck, across several
+                    universities and organizations whose feedback and real-world use cases have directly shaped the tool's
+                    development. This material is based upon research in the Materials Data Science for Stockpile
+                    Stewardship Center of Excellence (MDS<sup>3</sup> COE), and supported by the Department of Energy's
+                    National Nuclear Security Administration under Award Number DE-NA0004104. All authors thank the CWRU
+                    University Technology Center and the UCF Advanced Research Computing Center for their High Performance
+                    Computing (HPC) resources, which were utilized in this work.
+                </p>
             </div>
         </div>
     </section>
