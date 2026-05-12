@@ -2,6 +2,7 @@
 
 **Query-Driven Ontology Assessment for Scientific Domain Applications**
 
+[![Project Page](https://img.shields.io/badge/Project-Page-blue)](https://cwru-sdle.github.io/OntoCheck/)
 [![PyPI](https://img.shields.io/pypi/v/OntoCheck)](https://pypi.org/project/OntoCheck/)
 [![Documentation](https://readthedocs.org/projects/ontocheck/badge/?version=latest)](https://ontocheck.readthedocs.io/en/latest/)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
