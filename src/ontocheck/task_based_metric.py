@@ -15,8 +15,6 @@ Questions can be supplied as:
     - A path to a JSON file where each item contains a ``sparql_query`` key.
     - A path to a Markdown file with SPARQL queries inside ``sparql`` blocks.
     - A plain list of SPARQL query strings.
-
-Author: Redad Mehdi
 """
 
 import re

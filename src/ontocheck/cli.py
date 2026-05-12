@@ -7,8 +7,6 @@ Provides a unified CLI for all four OntoCheck assessment modes:
     Mode 2 -- Task-specific Web ontology
     Mode 3 -- Task-based Scientific ontology
     Mode 4 -- Cross-Domain ontology
-
-Author: Redad Mehdi
 """
 
 import sys

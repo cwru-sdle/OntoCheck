@@ -11,8 +11,6 @@ Provides runner functions for the four OntoCheck assessment modes:
               competency questions encoded as SPARQL queries.
     Mode 4 -- Cross-Domain:  multiple ontologies merged and assessed against
               cross-domain competency questions.
-
-Author: Redad Mehdi
 """
 
 import logging
