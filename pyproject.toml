@@ -4,17 +4,17 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "OntoCheck"
-version = "0.0.6.0"
+version = "0.0.7.0"
 
 authors = [
-  { name = "Rishabh Kundu, Van Tran, Redad Mehdi, Ethan Frakes, Abhishek Daundkar, Maliesha Sumudumalie, Vibha S. Mandayam, Jacob A. Lample, Mengjie Li, Laura S. Bruckman, Erika I. Barcelos, Alp Sehirlioglu, Yinghui Wu, Roger H. French", email = "rxf131@case.edu" },
+  { name = "Rishabh Kundu, Van Tran, Redad Mehdi, Ethan Frakes, Abhishek Daundkar, Maliesha Sumudumalie, Vibha S. Mandayam, Jacob A. Lample, Mengjie Li, Laura S. Bruckman, Erika I. Barcelos, Alp Sehirlioglu, Roger H. French, Yinghui Wu", email = "yinghui.wu2@case.edu" },
 ]
 
 
 maintainers = [
   { name = "Redad Mehdi", email = "mxm1684@case.edu" },
 ]
-description = "A package for assessing the quality and structure of ontologies."
+description = "Task-based Ontology Assessment for Scientific Domain Applications."
 readme = "README.md"
 requires-python = ">=3.8"
 license = { file="LICENSE" }
