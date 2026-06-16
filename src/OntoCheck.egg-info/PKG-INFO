@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: OntoCheck
-Version: 0.0.7.0
+Version: 0.0.8.0
 Summary: Task-based Ontology Assessment for Scientific Domain Applications.
 Author-email: "Rishabh Kundu, Van Tran, Redad Mehdi, Ethan Frakes, Abhishek Daundkar, Maliesha Sumudumalie, Vibha S. Mandayam, Jacob A. Lample, Mengjie Li, Laura S. Bruckman, Erika I. Barcelos, Alp Sehirlioglu, Roger H. French, Yinghui Wu" <yinghui.wu2@case.edu>
 Maintainer-email: Redad Mehdi <mxm1684@case.edu>

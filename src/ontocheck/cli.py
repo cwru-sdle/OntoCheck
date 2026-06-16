@@ -90,6 +90,14 @@ def _build_parser():
     )
 
     parser.add_argument(
+        "--search-term",
+        default=None,
+        help="Search string for the 'searchClass' metric.\n"
+             "Required when --metrics includes 'searchClass' or 'all'.\n"
+             "If omitted, 'searchClass' is skipped with a warning.",
+    )
+
+    parser.add_argument(
         "--knowledge-graph",
         default=None,
         help="Path to a knowledge-graph file (Turtle/RDF).\n"
@@ -167,6 +175,7 @@ def main():
         run_ontology_assessment(
             ttl_file=args.ttl_files[0],
             metrics=metrics_to_run,
+            search_term=args.search_term,
             output_log_file=args.log_file,
             output_csv_file=args.csv_file,
         )
@@ -180,6 +189,7 @@ def main():
             knowledge_graph=args.knowledge_graph,
             domain_ns_fragments=args.domain_ns_fragments,
             metrics=args.metrics,
+            search_term=args.search_term,
             output_log_file=args.log_file,
             output_csv_file=args.csv_file,
         )
@@ -192,6 +202,7 @@ def main():
             domain_prefixes=args.domain_prefixes,
             domain_ns_fragments=args.domain_ns_fragments,
             metrics=args.metrics,
+            search_term=args.search_term,
             output_log_file=args.log_file,
             output_csv_file=args.csv_file,
         )
@@ -204,6 +215,7 @@ def main():
             domain_prefixes=args.domain_prefixes,
             domain_ns_fragments=args.domain_ns_fragments,
             metrics=args.metrics,
+            search_term=args.search_term,
             output_log_file=args.log_file,
             output_csv_file=args.csv_file,
         )

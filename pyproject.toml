@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "OntoCheck"
-version = "0.0.7.0"
+version = "0.0.8.0"
 
 authors = [
   { name = "Rishabh Kundu, Van Tran, Redad Mehdi, Ethan Frakes, Abhishek Daundkar, Maliesha Sumudumalie, Vibha S. Mandayam, Jacob A. Lample, Mengjie Li, Laura S. Bruckman, Erika I. Barcelos, Alp Sehirlioglu, Roger H. French, Yinghui Wu", email = "yinghui.wu2@case.edu" },

@@ -89,6 +89,7 @@ def _teardown_logging(console_handler):
 def run_ontology_assessment(
     ttl_file,
     metrics,
+    search_term=None,
     output_log_file="assessment.log",
     output_csv_file="assessment_scores.csv",
 ):
@@ -101,6 +102,9 @@ def run_ontology_assessment(
     metrics : list of str or str
         Metric names to execute, or ``"all"`` to run every metric in
         ``METRIC_DISPATCHER``.
+    search_term : str or None, optional
+        Search string for the ``searchClass`` metric.  When ``None`` and
+        ``searchClass`` is requested, the metric is skipped with a warning.
     output_log_file : str, optional
         Output log file path.
     output_csv_file : str, optional
@@ -128,11 +132,26 @@ def run_ontology_assessment(
             logging.warning(f"Metric '{metric_name}' not found. Skipping.")
             continue
 
+        if metric_name == "searchClass" and search_term is None:
+            logging.warning(
+                "Skipping 'searchClass': --search-term not provided. "
+                "Re-run with --search-term <term> to include this metric."
+            )
+            results.append({
+                "Metric": metric_name,
+                "Score": "N/A",
+                "Status": "Skipped (--search-term not provided)",
+            })
+            continue
+
         metric_function = METRIC_DISPATCHER[metric_name]
         logging.info(f"--- Running Metric: {metric_name} ---")
 
         try:
-            score = metric_function(ttl_file)
+            if metric_name == "searchClass":
+                score = metric_function(ttl_file, search_term)
+            else:
+                score = metric_function(ttl_file)
             logging.info(f"Metric '{metric_name}' completed successfully.")
             results.append({"Metric": metric_name, "Score": score, "Status": "Success"})
         except Exception as e:
@@ -156,6 +175,7 @@ def run_web_ontology_assessment(
     knowledge_graph,
     domain_ns_fragments=None,
     metrics=None,
+    search_term=None,
     output_log_file="assessment.log",
     output_csv_file="assessment_scores.csv",
 ):
@@ -207,7 +227,7 @@ def run_web_ontology_assessment(
 
     if metrics:
         logging.info("--- Running task-agnostic metrics ---")
-        results.extend(_run_agnostic_metrics(ttl_file, metrics))
+        results.extend(_run_agnostic_metrics(ttl_file, metrics, search_term))
 
     _write_csv(results, output_csv_file)
 
@@ -227,6 +247,7 @@ def run_task_based_assessment(
     domain_prefixes,
     domain_ns_fragments=None,
     metrics=None,
+    search_term=None,
     output_log_file="assessment.log",
     output_csv_file="assessment_scores.csv",
 ):
@@ -288,7 +309,7 @@ def run_task_based_assessment(
         logging.info("--- Running task-agnostic metrics ---")
         for f in ttl_files:
             logging.info(f"--- Task-agnostic metrics for: {f} ---")
-            results.extend(_run_agnostic_metrics(str(f), metrics))
+            results.extend(_run_agnostic_metrics(str(f), metrics, search_term))
 
     _write_csv(results, output_csv_file)
 
@@ -330,7 +351,7 @@ def _task_based_result_to_rows(result):
     ]
 
 
-def _run_agnostic_metrics(ttl_file, metrics):
+def _run_agnostic_metrics(ttl_file, metrics, search_term=None):
     """Run task-agnostic metrics and return a list of result row dicts."""
     if metrics == "all":
         metrics_to_run = list(METRIC_DISPATCHER.keys())
@@ -345,11 +366,26 @@ def _run_agnostic_metrics(ttl_file, metrics):
             logging.warning(f"Metric '{metric_name}' not found. Skipping.")
             continue
 
+        if metric_name == "searchClass" and search_term is None:
+            logging.warning(
+                "Skipping 'searchClass': --search-term not provided. "
+                "Re-run with --search-term <term> to include this metric."
+            )
+            rows.append({
+                "Metric": metric_name,
+                "Score": "N/A",
+                "Status": "Skipped (--search-term not provided)",
+            })
+            continue
+
         metric_function = METRIC_DISPATCHER[metric_name]
         logging.info(f"--- Running Metric: {metric_name} ---")
 
         try:
-            score = metric_function(ttl_file)
+            if metric_name == "searchClass":
+                score = metric_function(ttl_file, search_term)
+            else:
+                score = metric_function(ttl_file)
             logging.info(f"Metric '{metric_name}' completed successfully.")
             rows.append({"Metric": metric_name, "Score": score, "Status": "Success"})
         except Exception as e:

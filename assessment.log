@@ -1,0 +1,5 @@
+2026-06-16 18:26:13,765 - INFO - --- Starting ontology assessment for: SupplementaryMaterials/Ontologies/Capacitor-Equipment.ttl ---
+2026-06-16 18:26:13,765 - INFO - Metrics to run: searchClass
+2026-06-16 18:26:13,769 - WARNING - Skipping 'searchClass': --search-term not provided. Re-run with --search-term <term> to include this metric.
+2026-06-16 18:26:13,785 - INFO - --- Successfully wrote results to assessment_scores.csv ---
+2026-06-16 18:26:13,786 - INFO - --- Assessment Complete ---
