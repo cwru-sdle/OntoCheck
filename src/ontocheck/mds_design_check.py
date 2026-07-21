@@ -26,7 +26,7 @@ def mds_design_check_v_0_0_1(ttl_file):
     """
     MDS = Namespace("https://cwrusdle.bitbucket.io/mds/")
     preds = {
-        "inDomain": MDS.inDom,
+        "inDomain": MDS.inDomain,
         "hasStudyStage": MDS.hasStudyStage
     }
 
