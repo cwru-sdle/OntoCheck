@@ -4,6 +4,9 @@ mainLeafNodeCheck_v_0_0_1 metric implementation.
 
 from .helpers.helpers import _find_leaf_nodes
 from rdflib import Graph, RDFS, RDF, OWL, SKOS
+import logging
+
+logger = logging.getLogger(__name__)
 
 def mainLeafNodeCheck_v_0_0_1(ttl_file):
     """
@@ -73,23 +76,23 @@ def mainLeafNodeCheck_v_0_0_1(ttl_file):
 
     g = Graph()
     try:
-        print(f"Parsing file: {ttl_file}...")
+        logger.info(f"Parsing file: {ttl_file}...")
         g.parse(ttl_file, format="turtle")
     except FileNotFoundError:
-        print(f"Error: The file '{ttl_file}' was not found.")
+        logger.error(f"The file '{ttl_file}' was not found.")
         return
     except Exception as e:
-        print(f"Error: An error occurred while parsing the TTL file: {e}")
+        logger.error(f"An error occurred while parsing the TTL file: {e}")
         return
 
     leaf_nodes = _find_leaf_nodes(g)
 
     if not leaf_nodes:
-        print("No leaf nodes were found in the provided ontology.")
+        logger.info("No leaf nodes were found in the provided ontology.")
         return
 
-    print("\n--- Leaf Node Analysis Complete ---")
-    print("\n Leaf Nodes:")
+    logger.info("--- Leaf Node Analysis Complete ---")
+    logger.info("Leaf Nodes:")
     for leaf in sorted(leaf_nodes):
 
-        print(f"\n {leaf.n3(g.namespace_manager)}")
+        logger.info(f"{leaf.n3(g.namespace_manager)}")

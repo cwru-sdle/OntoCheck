@@ -1,5 +1,8 @@
 from rdflib import Graph, RDFS, SKOS
 from .helpers.helpers import _spell_checker
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 # spell.word_frequency.load_words(['piezoelectric', 'synchrotron'])
@@ -42,10 +45,10 @@ def spell_check_v_0_0_1(ttl_file):
 
     error_percentage = f"{error_rate * 100:.2f}%"
 
-    print(details)
-    print(f"Total number of words checked: {total_checked}")
-    print(f"Total number of errors found: {total_errors}")
-    print(f"Rate of error: {error_rate}")
-    print(f"Error rate in percentages: {error_percentage}")
+    logger.info(details)
+    logger.info(f"Total number of words checked: {total_checked}")
+    logger.info(f"Total number of errors found: {total_errors}")
+    logger.info(f"Rate of error: {error_rate}")
+    logger.info(f"Error rate in percentages: {error_percentage}")
             
     return error_rate

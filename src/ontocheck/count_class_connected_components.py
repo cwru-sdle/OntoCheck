@@ -1,6 +1,9 @@
 from rdflib import OWL, SKOS, RDF, RDFS, Graph, Namespace, DCAT, URIRef, BNode
 import networkx as nx
 import rdflib
+import logging
+
+logger = logging.getLogger(__name__)
 
 def count_class_connected_components(ttl_file_path: str) -> int:
     """
@@ -65,5 +68,5 @@ def count_class_connected_components(ttl_file_path: str) -> int:
                 if s in named_classes and o in named_classes:
                     class_graph.add_edge(s, o)
     
-    print(f"Number of connected components: {nx.number_connected_components(class_graph)}")
+    logger.info(f"Number of connected components: {nx.number_connected_components(class_graph)}")
     return nx.number_connected_components(class_graph)

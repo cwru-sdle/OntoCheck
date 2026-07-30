@@ -2,14 +2,14 @@
 Helper functions extracted from the codebase.
 """
 
-from collections import defaultdict
-from rdflib import Graph, RDFS, RDF, OWL, SKOS
-from rdflib import Graph, RDFS, RDF, OWL, URIRef
-from rdflib import Graph, RDFS, RDF, OWL, URIRef, Namespace, BNode
-import argparse
-from spellchecker import SpellChecker
-import re
 import csv
+import re
+from collections import defaultdict
+import logging
+from rdflib import OWL, RDF, RDFS, SKOS, BNode, URIRef
+from spellchecker import SpellChecker
+
+logger = logging.getLogger(__name__)
 
 spell = SpellChecker()
  
@@ -367,9 +367,9 @@ def _export_missing_altlabels_template(graph, classes_without_altlabel, output_f
                     f.write(f"# Current label: {preferred_label}\n")
                 f.write(f"{prefixed_name} skos:altLabel \"ADD_ALTERNATIVE_LABEL_HERE\" .\n\n")
         
-        print(f"\nTemplate file exported to: {output_file}")
+        logger.info(f"\nTemplate file exported to: {output_file}")
     except Exception as e:
-        print(f"Error exporting template: {e}")
+        logger.error(f"exporting template: {e}")
 
 # From: /mnt/vstor/CSE_MSE_RXF131/cradle-members/mds3/mxm1684/Git/ontologyassessment/Scripts/Rishabh/SemanticConnection.py
 def _find_all_named_classes(graph):
@@ -406,7 +406,7 @@ def _find_all_named_classes(graph):
     all_found = potential_classes.union(subclass_subjects).union(subclass_objects)
     named_classes = {c for c in all_found if isinstance(c, URIRef)}
     
-    print(f"Found {len(named_classes)} unique named classes.")
+    logger.info(f"Found {len(named_classes)} unique named classes.")
     return named_classes
 
 # From: /mnt/vstor/CSE_MSE_RXF131/cradle-members/mds3/mxm1684/Git/ontologyassessment/Scripts/Rishabh/LeafNodeCheck.py
@@ -443,7 +443,7 @@ def _find_leaf_nodes(graph):
     
     # Leaf nodes (are essentially) = all classes - super classes 
     leaf_nodes = all_classes - super_classes
-    print("\n Total number of leaf nodes:- ", len(leaf_nodes))
+    logger.info(f"\n Total number of leaf nodes:- {len(leaf_nodes)}")
     return leaf_nodes
 
 # From: /mnt/vstor/CSE_MSE_RXF131/cradle-members/mds3/mxm1684/Git/ontologyassessment/Scripts/Rishabh/DefCheck.py
@@ -502,10 +502,10 @@ def _print_classes_with_altlabels(graph, classes_with_altlabel):
     - Shows preferred labels when they differ from the prefixed name
     - Displays each alternative label
     """
-    print(f"\n--- Classes WITH altLabel ({len(classes_with_altlabel)}) ---")
+    logger.info(f"\n--- Classes WITH altLabel ({len(classes_with_altlabel)}) ---")
     
     if not classes_with_altlabel:
-        print("No classes found with altLabel properties.")
+        logger.info("No classes found with altLabel properties.")
         return
     
     # Sort classes for consistent output
@@ -517,12 +517,12 @@ def _print_classes_with_altlabels(graph, classes_with_altlabel):
         preferred_label = _get_preferred_label(graph, class_uri)
         altlabels = classes_with_altlabel[class_uri]
         
-        print(f"\nClass: {prefixed_name}")
+        logger.info(f"\nClass: {prefixed_name}")
         if preferred_label != prefixed_name:
-            print(f"  Preferred Label: {preferred_label}")
-        print(f"  Alternative Labels ({len(altlabels)}):")
+            logger.info(f"  Preferred Label: {preferred_label}")
+        logger.info(f"  Alternative Labels ({len(altlabels)}):")
         for altlabel in altlabels:
-            print(f"    - \"{altlabel}\"")
+            logger.info(f"    - \"{altlabel}\"")
 
 # From: /mnt/vstor/CSE_MSE_RXF131/cradle-members/mds3/mxm1684/Git/ontologyassessment/Scripts/Rishabh/DefCheck.py
 def _truncate_definition(definition, max_length=150):
@@ -569,10 +569,10 @@ def _print_classes_with_definitions(graph, classes_with_definition, show_full_de
     - Shows preferred labels when they differ from the prefixed name
     - Displays definition length information when definitions are truncated
     """
-    print(f"\n--- Classes WITH Definitions ({len(classes_with_definition)}) ---")
+    logger.info(f"\n--- Classes WITH Definitions ({len(classes_with_definition)}) ---")
     
     if not classes_with_definition:
-        print("No classes found with definition properties.")
+        logger.info("No classes found with definition properties.")
         return
     
     # Sort classes for consistent output
@@ -585,17 +585,17 @@ def _print_classes_with_definitions(graph, classes_with_definition, show_full_de
         definition = classes_with_definition[class_uri]
         altlabels = _get_additional_labels(graph, class_uri)
         
-        print(f"\nClass: {prefixed_name}")
+        logger.info(f"\nClass: {prefixed_name}")
         if preferred_label != prefixed_name:
-            print(f"  Preferred Label: \"{preferred_label}\"")
+            logger.info(f"  Preferred Label: \"{preferred_label}\"")
         
         if show_full_definitions:
-            print(f"  Definition: \"{definition}\"")
+            logger.info(f"  Definition: \"{definition}\"")
         else:
             truncated_def = _truncate_definition(definition)
-            print(f"  Definition: \"{truncated_def}\"")
+            logger.info(f"  Definition: \"{truncated_def}\"")
             if len(definition) > len(truncated_def):
-                print(f"    [Full definition: {len(definition)} characters]")
+                logger.info(f"    [Full definition: {len(definition)} characters]")
 
 # From: /mnt/vstor/CSE_MSE_RXF131/cradle-members/mds3/mxm1684/Git/ontologyassessment/Scripts/Rishabh/AltLabelCheck.py
 def _print_classes_without_altlabels(graph, classes_without_altlabel):
@@ -617,10 +617,10 @@ def _print_classes_without_altlabels(graph, classes_without_altlabel):
     - Shows preferred labels when they differ from the prefixed name
     - Useful for identifying classes that may benefit from alternative labels
     """
-    print(f"\n--- Classes WITHOUT altLabel ({len(classes_without_altlabel)}) ---")
+    logger.info(f"\n--- Classes WITHOUT altLabel ({len(classes_without_altlabel)}) ---")
     
     if not classes_without_altlabel:
-        print("All classes have altLabel properties!")
+        logger.info("All classes have altLabel properties!")
         return
     
     # Sort classes for consistent output
@@ -632,9 +632,9 @@ def _print_classes_without_altlabels(graph, classes_without_altlabel):
         preferred_label = _get_preferred_label(graph, class_uri)
         
         if preferred_label != prefixed_name:
-            print(f"{prefixed_name} (Label: \"{preferred_label}\")")
+            logger.info(f"{prefixed_name} (Label: \"{preferred_label}\")")
         else:
-            print(f"{prefixed_name}")
+            logger.info(f"{prefixed_name}")
 
 # From: /mnt/vstor/CSE_MSE_RXF131/cradle-members/mds3/mxm1684/Git/ontologyassessment/Scripts/Rishabh/DefCheck.py
 def _print_classes_without_definitions(graph, classes_without_definition):
@@ -656,10 +656,10 @@ def _print_classes_without_definitions(graph, classes_without_definition):
     - Shows preferred labels when they differ from the prefixed name for better identification
     - Useful for identifying classes that may benefit from definitions
     """
-    print(f"\n--- Classes WITHOUT Definitions ({len(classes_without_definition)}) ---")
+    logger.info(f"\n--- Classes WITHOUT Definitions ({len(classes_without_definition)}) ---")
     
     if not classes_without_definition:
-        print("All classes have definition properties!")
+        logger.info("All classes have definition properties!")
         return
     
     # Sort classes for consistent output
@@ -675,7 +675,7 @@ def _print_classes_without_definitions(graph, classes_without_definition):
         if preferred_label != prefixed_name:
             output += f" (Label: \"{preferred_label}\")"
         
-        print(output)
+        logger.info(output)
 
 # From: /mnt/vstor/CSE_MSE_RXF131/cradle-members/mds3/mxm1684/Git/ontologyassessment/Scripts/Rishabh/SemanticConnection.py
 def _print_hierarchy_with_connection(graph, class_uri, hierarchy, connection_status, level=0, visited=None):
@@ -719,9 +719,9 @@ def _print_hierarchy_with_connection(graph, class_uri, hierarchy, connection_sta
     # Add connection indicator for root classes
     if level == 0:
         status = "CONNECTED" if connection_status.get(class_uri, False) else "NOT CONNECTED"
-        print(f"{indent}{prefixed_name} [{status}]")
+        logger.info(f"{indent}{prefixed_name} [{status}]")
     else:
-        print(f"{indent}{prefixed_name}")
+        logger.info(f"{indent}{prefixed_name}")
     
     # Print all direct children
     children = sorted(hierarchy[class_uri], key=lambda x: x.n3(graph.namespace_manager))
@@ -763,10 +763,10 @@ def _print_summary_statistics(graph, classes_with_definition, classes_without_de
     if classes_with_definition:
         definition_lengths = [len(def_text) for def_text in classes_with_definition.values()]
     
-    print(f"\n--- SKOS Definition Coverage Summary ---")
-    print(f"Total classes analyzed: {total_classes}")
-    print(f"Classes with definitions: {with_definition} ({coverage_percentage:.1f}%)")
-    print(f"Classes without definitions: {without_definition} ({100-coverage_percentage:.1f}%)")
+    logger.info("\n--- SKOS Definition Coverage Summary ---")
+    logger.info(f"Total classes analyzed: {total_classes}")
+    logger.info(f"Classes with definitions: {with_definition} ({coverage_percentage:.1f}%)")
+    logger.info(f"Classes without definitions: {without_definition} ({100-coverage_percentage:.1f}%)")
     
     # Coverage assessment
     if coverage_percentage >= 90:
@@ -780,7 +780,7 @@ def _print_summary_statistics(graph, classes_with_definition, classes_without_de
     else:
         assessment = "Very low definition coverage - consider adding definitions for better semantic clarity"
     
-    print(f"\nAssessment: {assessment}")
+    logger.info(f"\nAssessment: {assessment}")
 
 def _parse_rdf_list(node, graph):
     """
@@ -934,17 +934,17 @@ def _print_classes_with_labels(g, classes_with_label):
     None
         Prints results to terminal/CLI
     """
-    print(f"\n{'='*60}")
-    print(f"CLASSES WITH rdfs:label ({len(classes_with_label)} total)")
-    print(f"{'='*60}")
+    logger.info(f"\n{'='*60}")
+    logger.info(f"CLASSES WITH rdfs:label ({len(classes_with_label)} total)")
+    logger.info(f"{'='*60}")
 
     for cls in sorted(classes_with_label, key=str):
         labels = list(g.objects(cls, RDFS.label))
         label_strs = [f'"{lbl}"' + (f"@{lbl.language}" if hasattr(lbl, "language") and lbl.language else "") for lbl in labels]
         prefixed = cls.n3(g.namespace_manager)
-        print(f"  Class name: {prefixed}")
-        print(f"  Class URI/IRI: {cls}")
-        print(f"  rdfs:label(s): {', '.join(label_strs)} \n")
+        logger.info(f"  Class name: {prefixed}")
+        logger.info(f"  Class URI/IRI: {cls}")
+        logger.info(f"  rdfs:label(s): {', '.join(label_strs)} \n")
 
 
 def _print_classes_without_labels(g, classes_without_label):
@@ -967,14 +967,14 @@ def _print_classes_without_labels(g, classes_without_label):
         Prints results to terminal/CLI
         Upon request template output is also available
     """
-    print(f"\n{'='*60}")
-    print(f"CLASSES WITHOUT rdfs:label ({len(classes_without_label)} total)")
-    print(f"{'='*60}")
+    logger.info(f"\n{'='*60}")
+    logger.info(f"CLASSES WITHOUT rdfs:label ({len(classes_without_label)} total)")
+    logger.info(f"{'='*60}")
 
     for cls in sorted(classes_without_label, key=str):
         prefixed = cls.n3(g.namespace_manager)
-        print(f"  Class name: {prefixed}")
-        print(f"  Class URI/IRI: {cls} \n")
+        logger.info(f"  Class name: {prefixed}")
+        logger.info(f"  Class URI/IRI: {cls} \n")
 
 def _print_label_summary_statistics(g, classes_with_label, classes_without_label, all_classes):
     """
@@ -1001,12 +1001,12 @@ def _print_label_summary_statistics(g, classes_with_label, classes_without_label
     without_label = len(classes_without_label)
     coverage = (with_label / total * 100) if total > 0 else 0
 
-    print(f"\n{'='*60}")
-    print("rdfs:label COVERAGE SUMMARY")
-    print(f"{'='*60}")
-    print(f"  Total named classes : {total}")
-    print(f"  With rdfs:label     : {with_label} ({coverage:.1f}%)")
-    print(f"  Without rdfs:label  : {without_label} ({100 - coverage:.1f}%)")
+    logger.info(f"\n{'='*60}")
+    logger.info("rdfs:label COVERAGE SUMMARY")
+    logger.info(f"{'='*60}")
+    logger.info(f"  Total named classes : {total}")
+    logger.info(f"  With rdfs:label     : {with_label} ({coverage:.1f}%)")
+    logger.info(f"  Without rdfs:label  : {without_label} ({100 - coverage:.1f}%)")
 
 
 def _export_missing_labels_template(g, classes_without_label, output_file):
@@ -1045,8 +1045,8 @@ def _export_missing_labels_template(g, classes_without_label, output_file):
             prefixed = cls.n3(g.namespace_manager)
             writer.writerow([str(cls), prefixed, "MISSING"])
 
-    print(f"\nTemplate exported to: {output_file}")
-    print(f"  {len(classes_without_label)} classes need rdfs:label entries.")
+    logger.info(f"\nTemplate exported to: {output_file}")
+    logger.info(f"  {len(classes_without_label)} classes need rdfs:label entries.")
 
 def _strip_comment(line):
     """
@@ -1194,18 +1194,18 @@ def _print_space_errors(errors):
         Prints results to terminal/CLI
             -   Users can also explicitly export a CSV output
     """
-    print(f"\n{'='*60}")
-    print(f"CLASSES WITH SPACES IN NAME ({len(errors)} total)")
-    print(f"{'='*60}")
+    logger.info(f"\n{'='*60}")
+    logger.info(f"CLASSES WITH SPACES IN NAME ({len(errors)} total)")
+    logger.info(f"{'='*60}")
 
     if not errors:
-        print("\n  No class names with spaces detected.")
+        logger.info("\n  No class names with spaces detected.")
         return
 
     for err in errors:
-        print(f"\n  Class name  : {err['local_name']}")
-        print(f"  Line number : {err['line_num']}")
-        print(f"  Line text   : {err['line_text']}")
+        logger.info(f"\n  Class name  : {err['local_name']}")
+        logger.info(f"  Line number : {err['line_num']}")
+        logger.info(f"  Line text   : {err['line_text']}")
 
 
 def _export_space_errors(errors, output_file):
@@ -1234,8 +1234,8 @@ def _export_space_errors(errors, output_file):
         for err in errors:
             writer.writerow([err["local_name"], err["line_num"], err["line_text"]])
 
-    print(f"\nReport exported to: {output_file}")
-    print(f"  {len(errors)} class(es) with spaces in their name.")
+    logger.info(f"\nReport exported to: {output_file}")
+    logger.info(f"  {len(errors)} class(es) with spaces in their name.")
 
 def _get_local_name(cls):
     """
@@ -1314,16 +1314,16 @@ def _print_classes_with_capital(g, classes_with_capital):
     None
         Prints results to terminal/CLI
     """
-    print(f"\n{'='*60}")
-    print(f"CLASSES WITH CAPITAL FIRST LETTER ({len(classes_with_capital)} total)")
-    print(f"{'='*60}")
+    logger.info(f"\n{'='*60}")
+    logger.info(f"CLASSES WITH CAPITAL FIRST LETTER ({len(classes_with_capital)} total)")
+    logger.info(f"{'='*60}")
 
     for cls in sorted(classes_with_capital, key=str):
         prefixed = cls.n3(g.namespace_manager)
         local_name = _get_local_name(cls)
-        print(f"  Class name    : {prefixed}")
-        print(f"  Class URI/IRI : {cls}")
-        print(f"  Local name    : {local_name}\n")
+        logger.info(f"  Class name    : {prefixed}")
+        logger.info(f"  Class URI/IRI : {cls}")
+        logger.info(f"  Local name    : {local_name}\n")
 
 
 def _print_classes_without_capital(g, classes_without_capital):
@@ -1345,16 +1345,16 @@ def _print_classes_without_capital(g, classes_without_capital):
     None
         Prints results to terminal/CLI
     """
-    print(f"\n{'='*60}")
-    print(f"CLASSES WITHOUT CAPITAL FIRST LETTER ({len(classes_without_capital)} total)")
-    print(f"{'='*60}")
+    logger.info(f"\n{'='*60}")
+    logger.info(f"CLASSES WITHOUT CAPITAL FIRST LETTER ({len(classes_without_capital)} total)")
+    logger.info(f"{'='*60}")
 
     for cls in sorted(classes_without_capital, key=str):
         prefixed = cls.n3(g.namespace_manager)
         local_name = _get_local_name(cls)
-        print(f"  Class name    : {prefixed}")
-        print(f"  Class URI/IRI : {cls}")
-        print(f"  Local name    : {local_name} ← does not start with a capital letter\n")
+        logger.info(f"  Class name    : {prefixed}")
+        logger.info(f"  Class URI/IRI : {cls}")
+        logger.info(f"  Local name    : {local_name} ← does not start with a capital letter\n")
 
 
 def _print_capital_summary_statistics(g, classes_with_capital, classes_without_capital, all_classes):
@@ -1382,12 +1382,12 @@ def _print_capital_summary_statistics(g, classes_with_capital, classes_without_c
     without_capital = len(classes_without_capital)
     coverage = (with_capital / total * 100) if total > 0 else 0
 
-    print(f"\n{'='*60}")
-    print("CLASS NAME CAPITAL LETTER CHECK SUMMARY")
-    print(f"{'='*60}")
-    print(f"  Total named classes             : {total}")
-    print(f"  Starts with capital letter      : {with_capital} ({coverage:.1f}%)")
-    print(f"  Does not start with capital     : {without_capital} ({100 - coverage:.1f}%)")
+    logger.info(f"\n{'='*60}")
+    logger.info("CLASS NAME CAPITAL LETTER CHECK SUMMARY")
+    logger.info(f"{'='*60}")
+    logger.info(f"  Total named classes             : {total}")
+    logger.info(f"  Starts with capital letter      : {with_capital} ({coverage:.1f}%)")
+    logger.info(f"  Does not start with capital     : {without_capital} ({100 - coverage:.1f}%)")
 
 
 def _export_non_capital_classes_template(g, classes_without_capital, output_file):
@@ -1425,5 +1425,5 @@ def _export_non_capital_classes_template(g, classes_without_capital, output_file
             local_name = _get_local_name(cls)
             writer.writerow([str(cls), prefixed, local_name])
 
-    print(f"\nTemplate exported to: {output_file}")
-    print(f"  {len(classes_without_capital)} classes do not start with a capital letter.")
+    logger.info(f"\nTemplate exported to: {output_file}")
+    logger.info(f"  {len(classes_without_capital)} classes do not start with a capital letter.")

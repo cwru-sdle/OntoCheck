@@ -1,4 +1,8 @@
+import logging
+
 from .helpers.helpers import _export_space_errors, _print_space_errors, _scan_file_for_space_errors
+
+logger = logging.getLogger(__name__)
 
 def mainClassNameSpaceCheck_v_0_0_1(ttl_file, export_template=None):
     """
@@ -63,7 +67,7 @@ def mainClassNameSpaceCheck_v_0_0_1(ttl_file, export_template=None):
     try:
         errors = _scan_file_for_space_errors(ttl_file)
     except FileNotFoundError:
-        print(f"Error: The file '{ttl_file}' was not found.")
+        logger.error(f"The file '{ttl_file}' was not found.")
         return
 
     _print_space_errors(errors)
@@ -71,4 +75,4 @@ def mainClassNameSpaceCheck_v_0_0_1(ttl_file, export_template=None):
     if export_template and errors:
         _export_space_errors(errors, export_template)
     elif export_template and not errors:
-        print("No class names with spaces detected — no report needed!")
+        logger.info("No class names with spaces detected — no report needed!")

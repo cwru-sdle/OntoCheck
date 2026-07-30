@@ -2,9 +2,13 @@
 mainDefCheck_v_0_0_1 metric implementation.
 """
 
+import logging
+
 from .helpers.helpers import _analyze_definition_coverage, _find_all_named_classes, _get_additional_labels, _get_preferred_label, _print_classes_with_definitions, _print_classes_without_definitions, _print_summary_statistics, _truncate_definition
 from collections import defaultdict
 from rdflib import Graph, RDFS, RDF, OWL, URIRef, Namespace
+
+logger = logging.getLogger(__name__)
 
 def mainDefCheck_v_0_0_1(ttl_file, show="all", full_definitions=False): # show and full_definitions set to default values
     """
@@ -94,12 +98,12 @@ def mainDefCheck_v_0_0_1(ttl_file, show="all", full_definitions=False): # show a
     # Validate show parameter
     valid_show_options = ["all", "with", "without", "summary"]
     if show not in valid_show_options:
-        print(f"Error: Invalid 'show' parameter. Must be one of {valid_show_options}")
+        logger.error(f"Invalid 'show' parameter. Must be one of {valid_show_options}")
         return
 
     g = Graph()
     try:
-        print(f"Parsing file: {ttl_file}...")
+        logger.info(f"Parsing file: {ttl_file}...")
         # Bind common prefixes for cleaner output (future users can add more here)
         g.bind("mds", "https://cwrusdle.bitbucket.io/mds/")
         g.bind("cco", "https://www.commoncoreontologies.org/")
@@ -109,16 +113,16 @@ def mainDefCheck_v_0_0_1(ttl_file, show="all", full_definitions=False): # show a
         g.bind("skos", "http://www.w3.org/2004/02/skos/core#")
         g.parse(ttl_file, format="turtle")
     except FileNotFoundError:
-        print(f"Error: The file '{ttl_file}' was not found.")
+        logger.error(f"The file '{ttl_file}' was not found.")
         return
     except Exception as e:
-        print(f"Error: An error occurred while parsing the TTL file: {e}")
+        logger.error(f"An error occurred while parsing the TTL file: {e}")
         return
 
     # Find all classes
     all_classes = _find_all_named_classes(g)
     if not all_classes:
-        print("No named classes found in the ontology.")
+        logger.info("No named classes found in the ontology.")
         return
 
     # Analyze definition coverage

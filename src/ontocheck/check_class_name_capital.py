@@ -1,5 +1,9 @@
+import logging
+
 from .helpers.helpers import _find_all_named_classes, _analyze_capital_coverage, _print_capital_summary_statistics, _print_classes_with_capital, _print_classes_without_capital, _export_non_capital_classes_template
 from rdflib import Graph
+
+logger = logging.getLogger(__name__)
 
 def mainClassNameCapitalCheck_v_0_0_1(ttl_file, show="all", export_template=None):
     """
@@ -102,12 +106,12 @@ def mainClassNameCapitalCheck_v_0_0_1(ttl_file, show="all", export_template=None
     """
     valid_show_options = ["all", "with", "without", "summary"]
     if show not in valid_show_options:
-        print(f"Error: Invalid 'show' parameter. Must be one of {valid_show_options}")
+        logger.error(f"Invalid 'show' parameter. Must be one of {valid_show_options}")
         return
 
     g = Graph()
     try:
-        print(f"Parsing file: {ttl_file}...")
+        logger.info(f"Parsing file: {ttl_file}...")
         # more can be added in the future as needed
         g.bind("mds",  "https://cwrusdle.bitbucket.io/mds/")
         g.bind("cco",  "https://www.commoncoreontologies.org/")
@@ -117,16 +121,16 @@ def mainClassNameCapitalCheck_v_0_0_1(ttl_file, show="all", export_template=None
         g.bind("skos", "http://www.w3.org/2004/02/skos/core#")
         g.parse(ttl_file, format="turtle")
     except FileNotFoundError:
-        print(f"Error: The file '{ttl_file}' was not found.")
+        logger.error(f"The file '{ttl_file}' was not found.")
         return
     except Exception as e:
-        print(f"Error: An error occurred while parsing the TTL file: {e}")
+        logger.error(f"An error occurred while parsing the TTL file: {e}")
         return
 
     # Find all named classes
     all_classes = _find_all_named_classes(g)
     if not all_classes:
-        print("No named classes found in the ontology.")
+        logger.info("No named classes found in the ontology.")
         return
 
     # Analyze capital letter compliance
@@ -144,4 +148,4 @@ def mainClassNameCapitalCheck_v_0_0_1(ttl_file, show="all", export_template=None
     if export_template and classes_without_capital:
         _export_non_capital_classes_template(g, classes_without_capital, export_template)
     elif export_template and not classes_without_capital:
-        print("All classes start with a capital letter — no report export needed!")
+        logger.info("All classes start with a capital letter — no report export needed!")

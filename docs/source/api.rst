@@ -8,16 +8,16 @@ a score or diagnostic report.
 Assessment Runners
 ------------------
 
-Functions for running each of the four assessment modes.
+Unified assessment runner.
 
 .. automodule:: ontocheck.run_assessment
-   :members: run_ontology_assessment, run_task_based_assessment, run_web_ontology_assessment
+   :members: run_assessment
    :show-inheritance:
 
 Task-Based Metric
 -----------------
 
-The underlying Relevance/Accuracy computation used by Modes 2, 3, and 4.
+The underlying Relevance/Accuracy computation used by the task-based assessment.
 
 .. automodule:: ontocheck.task_based_metric
    :members: task_based_metric_v_0_0_1

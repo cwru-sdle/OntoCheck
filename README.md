@@ -31,25 +31,15 @@ pip install OntoCheck
 
 ---
 
-## Assessment Modes
+## How It Works
 
-OntoCheck supports four assessment modes controlled by a declarative configuration `C = (O, Q, M, G)`, where:
+OntoCheck takes a declarative configuration `C = (O, Q, M)`, where:
 
-- **O** — Ontology: the target ontology file(s) under evaluation (e.g., a `.ttl` or `.owl` file).
-- **Q** — Questions: a set of competency questions or SPARQL queries representing the analytical tasks the ontology should support.
-- **M** — Metrics: the evaluation metrics to compute (structural, labeling, accessibility, naming, or task-based).
-- **G** — Ground-truth Knowledge Graph: a reference KG used for validation in web-based benchmarking scenarios.
+- **O** — Ontology: one or more ontology files under evaluation (`.ttl`).  Multiple files are merged automatically for cross-domain assessment.
+- **Q** — Questions: competency questions encoded as SPARQL queries (`.json` or `.md`).  When provided, task-based Relevance and Accuracy are computed automatically.
+- **M** — Metrics: the task-agnostic evaluation metrics to compute (structural, labeling, accessibility, naming).
 
-For cross-domain assessment (Mode 4), `O[]` denotes a union of multiple ontologies: `O[] = O[O₁ + O₂ + O₃ + ...]`, where each Oᵢ is an individual domain ontology merged into a single evaluation target.
-
-| Mode | Name | Configuration | Description |
-|------|------|---------------|-------------|
-| 1 | Task-agnostic | `(O, -, M, -)` | Structural, labeling, accessibility, and naming metrics |
-| 2 | Task-specific Web | `(O, Q, M, G)` | Validation against KGQA benchmarks (e.g., LC-QuAD / DBpedia) |
-| 3 | Task-based Scientific | `(O, Q, M, -)` | Domain ontology vs. competency questions¹ |
-| 4 | Cross-Domain | `(O[], Q, M, -)` | Merged ontologies vs. cross-domain questions¹ |
-
-¹ Knowledge graphs backed by an ontology can also be evaluated in Modes 3 and 4.
+Users select which metrics to run and, optionally, provide competency questions — there is no need to choose a "mode."
 
 ---
 
@@ -58,22 +48,28 @@ For cross-domain assessment (Mode 4), `O[]` denotes a union of multiple ontologi
 ### Command-Line Interface
 
 ```bash
-# Display available options and assessment modes
+# Display available options
 ontocheck -h
 
-# Mode 1: Run task-agnostic metrics
+# Run specific task-agnostic metrics
 ontocheck path/to/ontology.ttl --metrics altLabelCheck definitionCheck
+
+# Run all task-agnostic metrics
 ontocheck path/to/ontology.ttl --metrics all
 
-# Mode 3: Task-based scientific assessment
+# Task-based assessment (Relevance / Accuracy)
 ontocheck path/to/ontology.ttl \
-    --mode 3 \
     --questions competency_questions.json \
     --domain-prefixes mds
 
-# Mode 4: Cross-domain assessment (multiple ontologies)
+# Combined: task-based + all agnostic metrics
+ontocheck path/to/ontology.ttl \
+    --metrics all \
+    --questions competency_questions.json \
+    --domain-prefixes mds
+
+# Cross-domain: merge multiple ontologies
 ontocheck xrd.ttl capacitors.ttl \
-    --mode 4 \
     --questions cross_domain_questions.json \
     --domain-prefixes mds
 
@@ -83,57 +79,35 @@ ontocheck path/to/ontology.ttl --metrics all --log-file results.log --csv-file r
 
 ### Python API
 
-For user convenience, OntoCheck provides a Python API. The assessment modes can be operated as follows:
-
-#### Mode 1: Task-Agnostic Assessment
-
 ```python
-from ontocheck import run_ontology_assessment
+from ontocheck import run_assessment
 
 # Run specific task-agnostic metrics
-run_ontology_assessment(
-    ttl_file="path/to/ontology.ttl",
+run_assessment(
+    ttl_files="path/to/ontology.ttl",
     metrics=["altLabelCheck", "definitionCheck", "isolatedElements"],
 )
 
-# Run all task-agnostic metrics
-run_ontology_assessment(
-    ttl_file="path/to/ontology.ttl",
-    metrics="all",
-)
-```
-
-#### Mode 2: Web Ontology Assessment
-
-```python
-from ontocheck import run_web_ontology_assessment
-
-result = run_web_ontology_assessment(
-    ttl_file="dbpedia_ontology.ttl",
-    questions="lcquad_queries.json",
-    domain_prefixes=["dbo"],
-    knowledge_graph="dbpedia_kg.ttl",
-)
-```
-
-#### Modes 3 and 4: Task-Based and Cross-Domain Assessment
-
-```python
-from ontocheck import run_task_based_assessment
-
-# Mode 3: Single ontology vs. competency questions
-result = run_task_based_assessment(
+# Task-based assessment (Relevance / Accuracy)
+result = run_assessment(
     ttl_files="path/to/ontology.ttl",
     questions="competency_questions.json",
     domain_prefixes=["mds"],
     domain_ns_fragments=["cwrusdle.bitbucket.io/mds"],
 )
-
 print(f"Relevance: {result['relevance']:.2%}")
 print(f"Accuracy:  {result['accuracy']:.2%}")
 
-# Mode 4: Cross-domain -- merge multiple ontologies
-result = run_task_based_assessment(
+# Combined: task-based + all agnostic metrics
+result = run_assessment(
+    ttl_files="path/to/ontology.ttl",
+    metrics="all",
+    questions="competency_questions.json",
+    domain_prefixes=["mds"],
+)
+
+# Cross-domain: merge multiple ontologies
+result = run_assessment(
     ttl_files=["xrd.ttl", "capacitors.ttl"],
     questions="cross_domain_questions.json",
     domain_prefixes=["mds"],

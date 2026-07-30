@@ -222,75 +222,36 @@
                     <li>
                         <strong>Validated at scale.</strong> We verify OntoCheck through large-scale evaluation on the
                         DBpedia knowledge graph using the LC-QuAD benchmark (5,000 queries, 98.94% Relevance), and
-                        demonstrate applicability across materials science and geospatial ontologies across four
-                        configurable assessment modes.
+                        demonstrate applicability across materials science and geospatial ontologies.
                     </li>
                 </ol>
             </div>
         </div>
     </section>
 
-    <!-- Assessment Modes -->
+    <!-- How It Works -->
     <section class="section">
         <div class="container is-max-desktop">
             <div class="columns is-centered has-text-centered">
                 <div class="column is-full">
-                    <h2 class="title is-4">Assessment Modes</h2>
+                    <h2 class="title is-4">How It Works</h2>
                 </div>
             </div>
             <div class="content has-text-justified">
                 <p>
-                    OntoCheck is configurable in four assessment modes, controlled by a declarative configuration
-                    <strong>C = (O, Q, M, G)</strong>, where <strong>O</strong> specifies ontologies to be assessed,
-                    <strong>Q</strong> is a set of competency queries, <strong>M</strong> refers to the evaluation
-                    metrics, and <strong>G</strong> is a ground-truth knowledge graph.
-                </p>
-            </div>
-            <div class="table-container">
-                <table class="table is-bordered is-striped is-hoverable is-fullwidth mode-table">
-                    <thead>
-                        <tr>
-                            <th>Mode</th>
-                            <th>Name</th>
-                            <th>Configuration</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Task-agnostic</td>
-                            <td><code>(O, -, M, -)</code></td>
-                            <td>Structural, labeling, accessibility, and naming metrics</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Task-specific Web</td>
-                            <td><code>(O, Q, M, G)</code></td>
-                            <td>Validation against KGQA benchmarks (e.g., LC-QuAD / DBpedia)</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Task-based Scientific</td>
-                            <td><code>(O, Q, M, -)</code></td>
-                            <td>Domain ontology vs. competency questions<sup>&dagger;</sup></td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>Cross-Domain</td>
-                            <td><code>(O[], Q, M, -)</code></td>
-                            <td>Merged ontologies vs. cross-domain questions<sup>&dagger;</sup></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <p style="font-size: 0.85em; color: #666; margin-top: 0.5rem;">
-                    <sup>&dagger;</sup> Knowledge graphs backed by an ontology can also be evaluated in Modes 3 and 4.
+                    OntoCheck takes a declarative configuration <strong>C = (O, Q, M)</strong>, where
+                    <strong>O</strong> specifies one or more ontology files under evaluation,
+                    <strong>Q</strong> is a set of competency questions encoded as SPARQL queries, and
+                    <strong>M</strong> refers to the task-agnostic metrics to compute. Users select which
+                    metrics to run and, optionally, provide competency questions &mdash; when questions are
+                    provided, task-based Relevance and Accuracy are computed automatically. Multiple
+                    ontology files are merged automatically for cross-domain assessment.
                 </p>
             </div>
         </div>
     </section>
 
-    <!-- Assessment Mode Examples -->
+    <!-- Assessment Examples -->
     <section class="section hero is-light">
         <div class="container is-max-desktop">
             <div class="columns is-centered has-text-centered">
@@ -299,9 +260,8 @@
                 </div>
             </div>
 
-            <!-- Mode 1 -->
             <div class="content has-text-justified">
-                <h5 class="title is-5">Mode 1: Task-Agnostic Assessment</h5>
+                <h5 class="title is-5">Task-Agnostic Assessment</h5>
                 <p>
                     The <code>semanticConnection</code> metric is applied to a subset (Equipment) of the built-in
                     Capacitors ontology (54 classes, 8 root hierarchy chains). The assessment reveals that 6 of 8
@@ -312,9 +272,8 @@
                 </p>
             </div>
 
-            <!-- Mode 2 -->
             <div class="content has-text-justified">
-                <h5 class="title is-5">Mode 2: Task-Specific Web Ontology (DBpedia / LC-QuAD)</h5>
+                <h5 class="title is-5">Web-Scale Validation (DBpedia / LC-QuAD)</h5>
                 <p>
                     OntoCheck is validated at scale against the DBpedia ontology (3,814 domain classes and
                     properties) using the LC-QuAD 1.0 benchmark (5,000 queries, 38 workloads). Across all queries,
@@ -325,9 +284,8 @@
                 </p>
             </div>
 
-            <!-- Mode 3 -->
             <div class="content has-text-justified">
-                <h5 class="title is-5">Mode 3: Task-Based Scientific Ontology Assessment</h5>
+                <h5 class="title is-5">Task-Based Ontology Assessment</h5>
                 <p>
                     OntoCheck is demonstrated across four materials science sub-domain ontologies and two geospatial
                     ontologies, each evaluated against 20 competency questions. Representative results are shown below.
@@ -468,9 +426,8 @@
                 </table>
             </div>
 
-            <!-- Mode 4 -->
             <div class="content has-text-justified" style="margin-top: 1.5rem;">
-                <h5 class="title is-5">Mode 4: Cross-Domain Ontology Assessment</h5>
+                <h5 class="title is-5">Cross-Domain Ontology Assessment</h5>
                 <p>
                     OntoCheck supports cross-domain assessment by merging multiple ontologies. Two case studies
                     demonstrate this capability for scientists working at the intersection of multiple sub-domains.
@@ -714,32 +671,30 @@
                 <pre><code class="language-bash">pip install OntoCheck</code></pre>
 
                 <h5 class="title is-5">Command-Line Interface</h5>
-                <pre><code class="language-bash"># Mode 1: Run task-agnostic metrics
+                <pre><code class="language-bash"># Run task-agnostic metrics
 ontocheck path/to/ontology.ttl --metrics all
 
-# Mode 3: Task-based scientific assessment
+# Task-based assessment (Relevance / Accuracy)
 ontocheck path/to/ontology.ttl \
-    --mode 3 \
     --questions competency_questions.json \
     --domain-prefixes mds
 
-# Mode 4: Cross-domain assessment
+# Cross-domain: merge multiple ontologies
 ontocheck xrd.ttl capacitors.ttl \
-    --mode 4 \
     --questions cross_domain_questions.json \
     --domain-prefixes mds</code></pre>
 
                 <h5 class="title is-5">Python API</h5>
-                <pre><code class="language-python">from ontocheck import run_ontology_assessment, run_task_based_assessment
+                <pre><code class="language-python">from ontocheck import run_assessment
 
-# Mode 1: Task-agnostic assessment
-run_ontology_assessment(
-    ttl_file="path/to/ontology.ttl",
+# Task-agnostic assessment
+run_assessment(
+    ttl_files="path/to/ontology.ttl",
     metrics="all",
 )
 
-# Mode 3: Task-based scientific assessment
-result = run_task_based_assessment(
+# Task-based assessment (Relevance / Accuracy)
+result = run_assessment(
     ttl_files="path/to/ontology.ttl",
     questions="competency_questions.json",
     domain_prefixes=["mds"],

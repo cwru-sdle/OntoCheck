@@ -12,9 +12,7 @@ from .leafNodeCheck import mainLeafNodeCheck_v_0_0_1
 from .semanticConnection import mainSemanticConnection_v_0_0_1
 from .mds_design_check import mds_design_check_v_0_0_1
 from .spell_check import spell_check_v_0_0_1
-from .run_assessment import run_ontology_assessment
-from .run_assessment import run_task_based_assessment
-from .run_assessment import run_web_ontology_assessment
+from .run_assessment import run_assessment
 from .task_based_metric import task_based_metric_v_0_0_1
 from .check_class_name_capital import mainClassNameCapitalCheck_v_0_0_1
 from .check_class_name_space import mainClassNameSpaceCheck_v_0_0_1
@@ -40,8 +38,6 @@ __all__ = [
     "mainClassNameSpaceCheck_v_0_0_1",
     "mainLabelCheck_v_0_0_1",
     "mainClassSearch_v_0_0_1",
-    "run_ontology_assessment",
-    "run_task_based_assessment",
-    "run_web_ontology_assessment",
+    "run_assessment",
     "task_based_metric_v_0_0_1"
 ]

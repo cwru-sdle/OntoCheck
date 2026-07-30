@@ -1,5 +1,9 @@
+import logging
+
 from rdflib import Graph, URIRef
 from rdflib.namespace import RDF, RDFS, OWL
+
+logger = logging.getLogger(__name__)
 
 def mainClassSearch_v_0_0_1(ontology_graph_or_path, search_term: str) -> list:
     """
@@ -72,18 +76,18 @@ def mainClassSearch_v_0_0_1(ontology_graph_or_path, search_term: str) -> list:
                     "class_name": local_name,
                     "uri": uri_str
                 })
-    print("\n" + "="*40)
-    print(f"SEARCH RESULTS FOR: '{search_term}'")
-    print("="*40)
-    
+    logger.info("=" * 40)
+    logger.info(f"SEARCH RESULTS FOR: '{search_term}'")
+    logger.info("=" * 40)
+
     if matches:
-        print(f"Found {len(matches)} matching class(es):\n")
+        logger.info(f"Found {len(matches)} matching class(es):")
         for match in matches:
-            print(f"  * Class: {match['class_name']}")
-            print(f"    URI:   {match['uri']}\n")
+            logger.info(f"  * Class: {match['class_name']}")
+            logger.info(f"    URI:   {match['uri']}")
     else:
-        print(f"No classes found containing '{search_term}'.\n")
-        
-    print("="*40 + "\n")
+        logger.info(f"No classes found containing '{search_term}'.")
+
+    logger.info("=" * 40)
 
     return matches

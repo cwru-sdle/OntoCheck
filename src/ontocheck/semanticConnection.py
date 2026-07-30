@@ -5,6 +5,9 @@ mainSemanticConnection_v_0_0_1 metric implementation.
 from .helpers.helpers import _analyze_hierarchy_connections, _build_class_hierarchy, _find_all_named_classes, _find_root_classes, _is_connected_to_higher_ontology, _print_hierarchy_with_connection
 from collections import defaultdict
 from rdflib import Graph, RDFS, RDF, OWL, URIRef
+import logging
+
+logger = logging.getLogger(__name__)
 
 def mainSemanticConnection_v_0_0_1(ttl_file):
     """
@@ -77,7 +80,7 @@ def mainSemanticConnection_v_0_0_1(ttl_file):
 
     g = Graph()
     try:
-        print(f"Parsing file: {ttl_file}...")
+        logger.info(f"Parsing file: {ttl_file}...")
         # Bind common prefixes for cleaner output (future users can add more here)
         g.bind("mds", "https://cwrusdle.bitbucket.io/mds/")
         g.bind("cco", "https://www.commoncoreontologies.org/")
@@ -86,23 +89,23 @@ def mainSemanticConnection_v_0_0_1(ttl_file):
         g.bind("rdfs", "http://www.w3.org/2000/01/rdf-schema#")
         g.parse(ttl_file, format="turtle")
     except FileNotFoundError:
-        print(f"Error: The file '{ttl_file}' was not found.")
+        logger.error(f"The file '{ttl_file}' was not found.")
         return
     except Exception as e:
-        print(f"Error: An error occurred while parsing the TTL file: {e}")
+        logger.error(f"An error occurred while parsing the TTL file: {e}")
         return
 
     # Find all classes
     all_classes = _find_all_named_classes(g)
     if not all_classes:
-        print("No named classes found in the ontology.")
+        logger.info("No named classes found in the ontology.")
         return
 
     # Build hierarchy
     hierarchy, children_of = _build_class_hierarchy(g, all_classes)
     
     if not hierarchy:
-        print("No class hierarchy relationships found in the ontology.")
+        logger.info("No class hierarchy relationships found in the ontology.")
         return
 
     # Analyze connections to higher level ontologies
@@ -113,49 +116,49 @@ def mainSemanticConnection_v_0_0_1(ttl_file):
     total_relationships = sum(len(children) for children in hierarchy.values())
     connected_roots = sum(1 for status in connection_status.values() if status)
     
-    print(f"\nHierarchy Statistics:")
-    print(f"Total classes: {len(all_classes)}")
-    print(f"Classes with children: {classes_with_children}")
-    print(f"Total parent-child relationships: {total_relationships}")
-    print(f"Root classes: {len(root_classes)}")
-    print(f"Root classes connected to higher ontologies (CCO/BFO): {connected_roots}/{len(root_classes)}")
+    logger.info(f"Hierarchy Statistics:")
+    logger.info(f"Total classes: {len(all_classes)}")
+    logger.info(f"Classes with children: {classes_with_children}")
+    logger.info(f"Total parent-child relationships: {total_relationships}")
+    logger.info(f"Root classes: {len(root_classes)}")
+    logger.info(f"Root classes connected to higher ontologies (CCO/BFO): {connected_roots}/{len(root_classes)}")
 
     # Show connection summary (overview stats)
-    print(f"\n--- Connection Summary ---")
+    logger.info(f"--- Connection Summary ---")
     connected_chains = []
     disconnected_chains = []
-    
+
     for root in sorted(root_classes, key=lambda x: x.n3(g.namespace_manager)):
         root_name = root.n3(g.namespace_manager)
         if connection_status.get(root, False):
             connected_chains.append(root_name)
         else:
             disconnected_chains.append(root_name)
-    
+
     if connected_chains:
-        print(f"\nHierarchy chains CONNECTED to higher ontologies ({len(connected_chains)}):")
+        logger.info(f"Hierarchy chains CONNECTED to higher ontologies ({len(connected_chains)}):")
         for chain in connected_chains:
-            print(f"  {chain}")
-    
+            logger.info(f"  {chain}")
+
     if disconnected_chains:
-        print(f"\nHierarchy chains NOT CONNECTED to higher ontologies ({len(disconnected_chains)}):")
+        logger.info(f"Hierarchy chains NOT CONNECTED to higher ontologies ({len(disconnected_chains)}):")
         for chain in disconnected_chains:
-            print(f"  {chain}")
+            logger.info(f"  {chain}")
 
     # Display results in another format
     #Other output forms can be displayed together with this only one by adding something like "both"
     
-        print("\n--- Hierarchical Tree View with Connection Status ---")
-        
+        logger.info("--- Hierarchical Tree View with Connection Status ---")
+
         if root_classes:
-            print(f"\nDisplaying {len(root_classes)} root class hierarchies:")
+            logger.info(f"Displaying {len(root_classes)} root class hierarchies:")
             sorted_roots = sorted(root_classes, key=lambda x: x.n3(g.namespace_manager))
             for root in sorted_roots:
                 _print_hierarchy_with_connection(g, root, hierarchy, connection_status)
-                print()  # Add spacing between root hierarchies
+                logger.info("")  # Add spacing between root hierarchies
         else:
-            print("\nNo clear root classes found. Displaying all parent-child relationships:")
+            logger.info("No clear root classes found. Displaying all parent-child relationships:")
             for parent in sorted(hierarchy.keys(), key=lambda x: x.n3(g.namespace_manager)):
                 if hierarchy[parent]:  # Only show parents that have children
                     _print_hierarchy_with_connection(g, parent, hierarchy, connection_status)
-                    print()
+                    logger.info("")

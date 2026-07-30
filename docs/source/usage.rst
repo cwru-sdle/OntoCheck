@@ -5,48 +5,30 @@ OntoCheck provides two interfaces: a command-line tool for quick assessments
 and a Python API for programmatic use and integration into data pipelines.
 
 All assessments require an ontology serialized in Turtle (``.ttl``) format.
-The input file must be free of syntax errors. Some assessments (see Modes 3
-and 4 below) also require a set of SPARQL queries derived from competency
-questions.
+The input file must be free of syntax errors. Some assessments also require a
+set of SPARQL queries derived from competency questions.
 
-Assessment Modes
-----------------
+How It Works
+------------
 
-OntoCheck supports four assessment modes, controlled by a declarative
-configuration ``C = (O, Q, M, G)`` where *O* specifies ontologies, *Q* is a
-set of competency queries, *M* refers to the metrics, and *G* is a knowledge
-graph.
-
-**Mode 1 -- Task-agnostic** ``(O, empty, M, empty)``
-   Run structural, labeling, accessibility, and naming-convention metrics on a
-   single ontology.
-
-**Mode 2 -- Task-specific Web ontology** ``(O, Q, M, G)``
-   Validate an ontology against KGQA benchmark queries over a knowledge graph
-   (e.g., LC-QuAD / DBpedia).
-
-**Mode 3 -- Task-based Scientific** ``(O, Q, M, empty)``
-   Assess a domain ontology against competency questions encoded as SPARQL
-   queries.
-
-**Mode 4 -- Cross-Domain** ``(O[], Q, M, empty)``
-   Merge multiple ontologies and assess the combined vocabulary against
-   cross-domain competency questions.
+OntoCheck uses a unified interface: users select **task-agnostic metrics**
+with ``--metrics`` and/or supply **competency questions** with
+``--questions`` for task-based assessment. At least one of ``--metrics`` or
+``--questions`` is required. When multiple ``.ttl`` files are provided, they
+are automatically merged into a single graph before assessment.
 
 Command-Line Interface
 ----------------------
 
-The ``ontocheck`` command accepts a ``--mode`` flag (default: ``1``) that
-selects which assessment to run.
-
 .. code-block:: text
 
-   ontocheck <ttl_files...> --mode {1,2,3,4} [options]
+   ontocheck <ttl_files...> --metrics <names...> [options]
+   ontocheck <ttl_files...> --questions <file> --domain-prefixes <prefixes...> [options]
 
-Mode 1: Task-Agnostic (default)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Task-Agnostic Metrics
+^^^^^^^^^^^^^^^^^^^^^^
 
-Run one or more task-agnostic metrics on a single ontology.
+Run one or more task-agnostic metrics on an ontology.
 
 .. code-block:: bash
 
@@ -56,80 +38,77 @@ Run one or more task-agnostic metrics on a single ontology.
    # Run all available metrics with custom output paths
    ontocheck my_ontology.ttl --metrics all --log-file results.log --csv-file results.csv
 
-Mode 2: Task-Specific Web Ontology
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Task-Based Assessment
+^^^^^^^^^^^^^^^^^^^^^^
 
-Validate against a KGQA benchmark over a knowledge graph.
-
-.. code-block:: bash
-
-   ontocheck dbpedia_ontology.ttl \
-       --mode 2 \
-       --questions lcquad_queries.json \
-       --domain-prefixes dbo \
-       --knowledge-graph dbpedia_kg.ttl
-
-Mode 3: Task-Based Scientific
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Assess a domain ontology against competency questions.
+Assess a domain ontology against competency questions encoded as SPARQL
+queries.
 
 .. code-block:: bash
 
    ontocheck my_ontology.ttl \
-       --mode 3 \
        --questions competency_questions.json \
        --domain-prefixes mds \
        --domain-ns-fragments cwrusdle.bitbucket.io/mds
 
-Optionally run task-agnostic metrics alongside the task-based assessment:
+Combined
+^^^^^^^^^
+
+Run task-agnostic metrics alongside a task-based assessment in a single
+invocation.
 
 .. code-block:: bash
 
    ontocheck my_ontology.ttl \
-       --mode 3 \
        --questions competency_questions.json \
        --domain-prefixes mds \
        --metrics checkLabel definitionCheck
 
-Mode 4: Cross-Domain
-^^^^^^^^^^^^^^^^^^^^^^
+Cross-Domain
+^^^^^^^^^^^^^
 
 Merge multiple ontologies and evaluate against cross-domain queries.
+Multiple ``.ttl`` files are merged automatically.
 
 .. code-block:: bash
 
    ontocheck xrd_ontology.ttl capacitors_ontology.ttl \
-       --mode 4 \
        --questions cross_domain_questions.json \
        --domain-prefixes mds
+
+MDS Design Check
+^^^^^^^^^^^^^^^^^
+
+Run the MDS ontology design conformance check.
+
+.. code-block:: bash
+
+   ontocheck my_ontology.ttl --mds-ontodesigncheck
 
 CLI Arguments
 ^^^^^^^^^^^^^
 
 ``ttl_files``
-   One or more paths to Turtle ontology files. Mode 4 requires at least two.
-
-``--mode``
-   Assessment mode: ``1`` (default), ``2``, ``3``, or ``4``.
+   One or more paths to Turtle ontology files. When multiple files are
+   provided, they are merged into a single graph.
 
 ``--metrics``
-   Task-agnostic metric names, or ``all``. Required for Mode 1; optional for
-   Modes 2--4.
+   Task-agnostic metric names, or ``all``. At least one of ``--metrics`` or
+   ``--questions`` is required.
 
 ``--questions``
-   Path to a JSON or Markdown file containing SPARQL queries. Required for
-   Modes 2, 3, and 4.
+   Path to a JSON or Markdown file containing SPARQL queries for task-based
+   assessment. Requires ``--domain-prefixes``.
 
 ``--domain-prefixes``
    Namespace prefixes used in the SPARQL queries (e.g., ``mds``, ``dbo``).
-   Required for Modes 2, 3, and 4.
+   Required when ``--questions`` is provided.
 
 ``--domain-ns-fragments``
    Namespace URI fragments for filtering domain terms. Optional.
 
-``--knowledge-graph``
-   Path to a knowledge-graph file. Required for Mode 2.
+``--mds-ontodesigncheck``
+   Run the MDS ontology design conformance check.
 
 ``--log-file``
    Path for the output log file (default: ``assessment.log``).
@@ -140,18 +119,18 @@ CLI Arguments
 Python API
 ----------
 
-Mode 1: Task-Agnostic Assessment
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Task-Agnostic Assessment
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The :func:`~ontocheck.run_assessment.run_ontology_assessment` function runs one or
+The :func:`~ontocheck.run_assessment.run_assessment` function runs one or
 more task-agnostic metrics on a Turtle file.
 
 .. code-block:: python
 
-   from ontocheck import run_ontology_assessment
+   from ontocheck import run_assessment
 
    # Run selected metrics
-   run_ontology_assessment(
+   run_assessment(
        ttl_file="my_ontology.ttl",
        metrics=["altLabelCheck", "isolatedElements", "semanticConnection"],
        output_log_file="assessment.log",
@@ -159,42 +138,22 @@ more task-agnostic metrics on a Turtle file.
    )
 
    # Run all metrics
-   run_ontology_assessment(
+   run_assessment(
        ttl_file="my_ontology.ttl",
        metrics="all",
    )
 
-Mode 2: Task-Specific Web Ontology Assessment
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Task-Based Assessment
+^^^^^^^^^^^^^^^^^^^^^^
 
-The :func:`~ontocheck.run_assessment.run_web_ontology_assessment` function validates
-an ontology against KGQA benchmark queries over a knowledge graph.
-
-.. code-block:: python
-
-   from ontocheck import run_web_ontology_assessment
-
-   result = run_web_ontology_assessment(
-       ttl_file="dbpedia_ontology.ttl",
-       questions="lcquad_queries.json",
-       domain_prefixes=["dbo"],
-       knowledge_graph="dbpedia_kg.ttl",
-   )
-
-   print(f"Relevance: {result['relevance']:.2%}")
-   print(f"Accuracy:  {result['accuracy']:.2%}")
-
-Mode 3: Task-Based Scientific Assessment
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The :func:`~ontocheck.run_assessment.run_task_based_assessment` function evaluates a
-domain ontology against competency questions encoded as SPARQL queries.
+Supply competency questions to evaluate a domain ontology against SPARQL
+queries.
 
 .. code-block:: python
 
-   from ontocheck import run_task_based_assessment
+   from ontocheck import run_assessment
 
-   result = run_task_based_assessment(
+   result = run_assessment(
        ttl_files="my_ontology.ttl",
        questions="competency_questions.json",
        domain_prefixes=["mds"],
@@ -206,29 +165,33 @@ domain ontology against competency questions encoded as SPARQL queries.
    print(f"Ontology terms (T_o): {result['T_o_count']}")
    print(f"Task terms (T_a):     {result['T_a_count']}")
 
-To also run task-agnostic metrics alongside the task-based assessment:
+Combined Assessment
+^^^^^^^^^^^^^^^^^^^^
+
+Run task-agnostic metrics alongside the task-based assessment.
 
 .. code-block:: python
 
-   result = run_task_based_assessment(
+   from ontocheck import run_assessment
+
+   result = run_assessment(
        ttl_files="my_ontology.ttl",
        questions="competency_questions.json",
        domain_prefixes=["mds"],
        metrics=["checkLabel", "definitionCheck"],
    )
 
-Mode 4: Cross-Domain Assessment
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Cross-Domain Assessment
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-Pass multiple ontology files to
-:func:`~ontocheck.run_assessment.run_task_based_assessment` to merge them and
-evaluate cross-domain competency questions.
+Pass multiple ontology files to merge them and evaluate cross-domain
+competency questions.
 
 .. code-block:: python
 
-   from ontocheck import run_task_based_assessment
+   from ontocheck import run_assessment
 
-   result = run_task_based_assessment(
+   result = run_assessment(
        ttl_files=["xrd_ontology.ttl", "capacitors_ontology.ttl"],
        questions="cross_domain_questions.json",
        domain_prefixes=["mds"],
@@ -298,7 +261,7 @@ Available Metric Names
 ----------------------
 
 The following metric names can be passed to the ``--metrics`` CLI argument
-or the ``metrics`` parameter of ``run_ontology_assessment``:
+or the ``metrics`` parameter of ``run_assessment``:
 
 **Labeling:**
 ``checkLabel``, ``altLabelCheck``, ``definitionCheck``

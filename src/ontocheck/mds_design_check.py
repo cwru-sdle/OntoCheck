@@ -1,4 +1,7 @@
 from rdflib import Graph, Namespace, OWL, RDF, RDFS
+import logging
+
+logger = logging.getLogger(__name__)
 
 def mds_design_check_v_0_0_1(ttl_file):
     MDS = Namespace("https://cwrusdle.bitbucket.io/mds/")
@@ -39,8 +42,8 @@ def mds_design_check_v_0_0_1(ttl_file):
             "percentage": f"{round(percentage, 2)}%"
         }
 
-    print(missing_report)
-    print(f"Total number of classes checked: {total_class_count}")
+    logger.info(missing_report)
+    logger.info(f"Total number of classes checked: {total_class_count}")
 
     error_rate = valid_count / total_class_count
 

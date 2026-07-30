@@ -1,7 +1,10 @@
 from rdflib import OWL, SKOS, RDF, RDFS, Graph, Namespace, DCAT, URIRef, BNode
 import networkx as nx
 import rdflib
+import logging
 from .helpers.helpers import _parse_rdf_list, _constructed_class_has_atomic_class, _get_operands
+
+logger = logging.getLogger(__name__)
 
 def check_for_isolated_elements(ttl_file: str):
     """
@@ -72,16 +75,16 @@ def check_for_isolated_elements(ttl_file: str):
             for obj in g.objects(c, p):
                 if (obj, RDF.type, OWL.Restriction) in g:
                     has_restriction = True
-                    print(f"[DEBUG] {c} has restriction via {p} → {obj}")
+                    logger.debug(f"{c} has restriction via {p} → {obj}")
 
         if has_boolean:
-            print(f"[DEBUG] {c} excluded because it has a boolean expression")
+            logger.debug(f"{c} excluded because it has a boolean expression")
 
         if not has_boolean and not has_restriction:
             atomic_classes.add(c)
-            print(f"[INFO] Added atomic class: {c}")
+            logger.info(f"Added atomic class: {c}")
         else:
-            print(f"[INFO] Skipped non-atomic class: {c}")
+            logger.info(f"Skipped non-atomic class: {c}")
 
     properties = set(g.subjects(RDF.type, OWL.ObjectProperty)) | set(g.subjects(RDF.type, OWL.DatatypeProperty))
 
@@ -126,23 +129,23 @@ def check_for_isolated_elements(ttl_file: str):
 
     isolated_properties = properties - connected_properties
 
-    print("Isolated Atomic Classes:")
+    logger.info("Isolated Atomic Classes:")
     for cls in sorted(isolated_atomic_classes):
-        print(f"  {cls}")
+        logger.info(f"  {cls}")
 
     ratio_iso_to_total_class = len(isolated_atomic_classes)/len(atomic_classes)
 
-    print(f"Number of isolated classes: {len(isolated_atomic_classes)}")
-    print(f"/nProportion of isolated classes: {ratio_iso_to_total_class}")
+    logger.info(f"Number of isolated classes: {len(isolated_atomic_classes)}")
+    logger.info(f"/nProportion of isolated classes: {ratio_iso_to_total_class}")
 
-    print("\nIsolated Properties:")
+    logger.info("Isolated Properties:")
     for prop in sorted(isolated_properties):
-        print(f"  {prop}")
+        logger.info(f"  {prop}")
 
     ratio_iso_to_total_prop = len(isolated_properties)/len(properties)
-    
-    print(f"Number of isolated properties: {len(isolated_properties)}")
-    print(f"/nProportion of isolated properties: {ratio_iso_to_total_prop}")
+
+    logger.info(f"Number of isolated properties: {len(isolated_properties)}")
+    logger.info(f"/nProportion of isolated properties: {ratio_iso_to_total_prop}")
 
     return {
         "Number of isolated classes": {len(isolated_atomic_classes)},

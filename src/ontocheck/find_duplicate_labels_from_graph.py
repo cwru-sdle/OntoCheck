@@ -1,5 +1,8 @@
 from collections import defaultdict
 from rdflib import Graph, RDF, RDFS, OWL
+import logging
+
+logger = logging.getLogger(__name__)
 
 def find_duplicate_labels_from_graph(ttl_file):
     """
@@ -44,12 +47,12 @@ def find_duplicate_labels_from_graph(ttl_file):
     duplicates = {label: uris for label, uris in label_to_entities.items() if len(uris) > 1}
 
     if duplicates:
-        print("Duplicate rdfs:label values found (case-insensitive):")
+        logger.info("Duplicate rdfs:label values found (case-insensitive):")
         for label, entities in duplicates.items():
-            print(f"  Label: '{label}' used by:")
+            logger.info(f"  Label: '{label}' used by:")
             for entity in entities:
-                print(f"    - {entity}")
+                logger.info(f"    - {entity}")
     else:
-        print("No duplicate rdfs:label values found.")
+        logger.info("No duplicate rdfs:label values found.")
 
     return len(duplicates)
