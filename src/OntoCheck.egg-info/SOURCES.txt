@@ -25,6 +25,7 @@ src/ontocheck/find_duplicate_labels_from_graph.py
 src/ontocheck/get_properties_missing_domain_and_range.py
 src/ontocheck/leafNodeCheck.py
 src/ontocheck/mds_design_check.py
+src/ontocheck/nlp_json.py
 src/ontocheck/run_assessment.py
 src/ontocheck/semanticConnection.py
 src/ontocheck/spell_check.py

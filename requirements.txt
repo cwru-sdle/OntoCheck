@@ -4,3 +4,4 @@ rdflib
 networkx
 requests
 pyspellchecker
+nltk

@@ -8,6 +8,9 @@ from collections import defaultdict
 import logging
 from rdflib import OWL, RDF, RDFS, SKOS, BNode, URIRef
 from spellchecker import SpellChecker
+import re
+import nltk
+from nltk.corpus import stopwords
 
 logger = logging.getLogger(__name__)
 
@@ -1427,3 +1430,51 @@ def _export_non_capital_classes_template(g, classes_without_capital, output_file
 
     logger.info(f"\nTemplate exported to: {output_file}")
     logger.info(f"  {len(classes_without_capital)} classes do not start with a capital letter.")
+
+try:
+    nltk_stopwords = set(stopwords.words('english'))
+except LookupError:
+    nltk.download('stopwords')
+    nltk_stopwords = set(stopwords.words('english'))
+
+DOMAIN_FILLERS = {
+    "type", "types", "component", "components", "system", "setup", 
+    "test", "tested", "testing", "under", "used", "using", "available", 
+    "classified", "part", "specified", "value", "level", "number", "another"
+}
+
+ALL_STOPWORDS = nltk_stopwords.union(DOMAIN_FILLERS)
+
+
+def _clean_and_extract_phrases(text: str) -> list:
+    """
+    Cleans a natural language question using NLTK stopwords,
+    and returns isolated domain concept strings.
+    """
+    cleaned = re.sub(r"[?.,;:!—–\-\(\)]", " ", text.lower())
+    chunks = re.split(r"\band\b|\bor\b|\bwith\b|\bfor\b", cleaned)
+    
+    concepts = []
+    for chunk in chunks:
+        words = [w for w in chunk.strip().split() if w not in ALL_STOPWORDS and len(w) > 1]
+        if words:
+            concepts.append(" ".join(words))
+            
+    if not concepts:
+        words = [w for w in cleaned.split() if w not in ALL_STOPWORDS and len(w) > 1]
+        if words:
+            concepts.append(" ".join(words))
+
+    return concepts
+
+
+def _to_pascal_case(text: str) -> str:
+    """Converts 'electrical wire material' -> 'ElectricalWireMaterial'"""
+    words = re.sub(r"[^a-zA-Z0-9\s]", "", text).split()
+    return "".join(w.capitalize() for w in words)
+
+
+def _to_camel_case(text: str) -> str:
+    """Converts 'electrical wire material' -> 'electricalWireMaterial'"""
+    pascal = _to_pascal_case(text)
+    return pascal[0].lower() + pascal[1:] if pascal else "variable"
