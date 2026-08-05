@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from helpers import _clean_and_extract_phrases, _to_pascal_case, _to_camel_case
+from .helpers.helpers import _clean_and_extract_phrases, _to_pascal_case, _to_camel_case
 import logging
 
 logger = logging.getLogger(__name__)
