@@ -41,5 +41,5 @@ __all__ = [
     "mainClassSearch_v_0_0_1",
     "run_assessment",
     "task_based_metric_v_0_0_1",
-    "build_quesion_json"
+    "build_question_json"
 ]
