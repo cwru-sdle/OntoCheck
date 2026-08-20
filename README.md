@@ -36,7 +36,7 @@ pip install OntoCheck
 OntoCheck takes a declarative configuration `C = (O, Q, M)`, where:
 
 - **O** — Ontology: one or more ontology files under evaluation (`.ttl`).  Multiple files are merged automatically for cross-domain assessment.
-- **Q** — Questions: competency questions encoded as SPARQL queries (`.json` or `.md`).  When provided, task-based Relevance and Accuracy are computed automatically.
+- **Q** — Questions: competency questions encoded as SPARQL queries (`.json` or `.md`).  When provided, task-based Recall and Precision are computed automatically.
 - **M** — Metrics: the task-agnostic evaluation metrics to compute (structural, labeling, accessibility, naming).
 
 Users select which metrics to run and, optionally, provide competency questions — there is no need to choose a "mode."
@@ -57,7 +57,7 @@ ontocheck path/to/ontology.ttl --metrics altLabelCheck definitionCheck
 # Run all task-agnostic metrics
 ontocheck path/to/ontology.ttl --metrics all
 
-# Task-based assessment (Relevance / Accuracy)
+# Task-based assessment (Recall / Precision)
 ontocheck path/to/ontology.ttl \
     --questions competency_questions.json \
     --domain-prefixes mds
@@ -88,15 +88,15 @@ run_assessment(
     metrics=["altLabelCheck", "definitionCheck", "isolatedElements"],
 )
 
-# Task-based assessment (Relevance / Accuracy)
+# Task-based assessment (Recall / Precision)
 result = run_assessment(
     ttl_files="path/to/ontology.ttl",
     questions="competency_questions.json",
     domain_prefixes=["mds"],
     domain_ns_fragments=["cwrusdle.bitbucket.io/mds"],
 )
-print(f"Relevance: {result['relevance']:.2%}")
-print(f"Accuracy:  {result['accuracy']:.2%}")
+print(f"Recall: {result['recall']:.2%}")
+print(f"Precision:  {result['precision']:.2%}")
 
 # Combined: task-based + all agnostic metrics
 result = run_assessment(
@@ -161,8 +161,8 @@ OntoCheck provides **17 task-agnostic metrics** organized into four categories, 
 
 The task-based methodology measures how well an ontology supports analytical queries by computing two complementary metrics from SPARQL competency questions:
 
-- **Relevance** = |T_a intersection T_o| / |T_a| -- the fraction of task-required terms that the ontology defines
-- **Accuracy** = |T_a intersection T_o| / |T_o| -- the fraction of ontology terms utilized by the task queries
+- **Recall** = |T_a intersection T_o| / |T_a| -- the fraction of task-required terms that the ontology defines
+- **Precision** = |T_a intersection T_o| / |T_o| -- the fraction of ontology terms utilized by the task queries
 
 where T_a is the set of domain terms extracted from the SPARQL queries and T_o is the set of domain terms defined in the ontology.
 

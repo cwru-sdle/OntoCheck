@@ -18,8 +18,8 @@ Key Capabilities
 
 - **17 task-agnostic metrics** spanning labeling quality, structural integrity,
   accessibility compliance, and naming conventions.
-- **Task-based assessment** that measures vocabulary coverage (Relevance) and
-  utilization density (Accuracy) against SPARQL competency questions.
+- **Task-based assessment** that measures vocabulary coverage (Recall) and
+  utilization density (Precision) against SPARQL competency questions.
 - **Command-line and Python interfaces** for integration into automated
   workflows.
 - **Extensible architecture** that supports user-defined metrics and

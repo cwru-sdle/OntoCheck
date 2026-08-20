@@ -2,7 +2,7 @@
 Ontology Assessment Runner
 
 Provides a unified ``run_assessment`` entry point that runs any combination
-of task-agnostic structural metrics and task-based Relevance/Accuracy
+of task-agnostic structural metrics and task-based Recall/Precision
 metrics on one or more ontologies.
 """
 
@@ -120,7 +120,7 @@ def run_assessment(
         Competency questions for the task-based assessment.  Accepted
         forms: path to a ``.json`` or ``.md`` file of SPARQL queries,
         or a list of raw SPARQL query strings.  When provided,
-        Relevance and Accuracy are computed automatically.
+        Recall and Precision are computed automatically.
     domain_prefixes : list of str or None
         Namespace prefixes used in the SPARQL queries (e.g.,
         ``["mds"]``).  Required when *questions* is provided.
@@ -161,7 +161,7 @@ def run_assessment(
     task_result = None
 
     if questions is not None:
-        logging.info("--- Running task-based assessment (Relevance / Accuracy) ---")
+        logging.info("--- Running task-based assessment (Recall / Precision) ---")
         task_result = task_based_metric_v_0_0_1(
             ttl_file=ttl_files,
             questions=questions,
@@ -194,9 +194,9 @@ def run_assessment(
 # ---------------------------------------------------------------------------
 
 def _log_task_based_result(result):
-    """Log the task-based Relevance/Accuracy results."""
-    logging.info(f"Relevance (Recall):    {result['relevance']:.4f}")
-    logging.info(f"Accuracy  (Precision): {result['accuracy']:.4f}")
+    """Log the task-based Recall/Precision results."""
+    logging.info(f"Recall:    {result['recall']:.4f}")
+    logging.info(f"Precision : {result['precision']:.4f}")
     logging.info(f"Ontology terms  (T_o): {result['T_o_count']}")
     logging.info(f"Task terms      (T_a): {result['T_a_count']}")
     logging.info(f"Intersection:          {result['intersection']}")
@@ -213,8 +213,8 @@ def _log_task_based_result(result):
 def _task_based_result_to_rows(result):
     """Convert a task-based result dict to CSV-compatible row dicts."""
     return [
-        {"Metric": "Relevance", "Score": f"{result['relevance']:.4f}", "Status": "Success"},
-        {"Metric": "Accuracy", "Score": f"{result['accuracy']:.4f}", "Status": "Success"},
+        {"Metric": "Recall", "Score": f"{result['recall']:.4f}", "Status": "Success"},
+        {"Metric": "Precision", "Score": f"{result['precision']:.4f}", "Status": "Success"},
         {"Metric": "T_o_count", "Score": result["T_o_count"], "Status": "Success"},
         {"Metric": "T_a_count", "Score": result["T_a_count"], "Status": "Success"},
         {"Metric": "Intersection", "Score": result["intersection"], "Status": "Success"},

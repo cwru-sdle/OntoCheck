@@ -5,8 +5,8 @@ Evaluates an ontology against a set of competency questions (encoded as SPARQL
 queries) by computing term-overlap metrics. For each question set, two scores
 are produced:
 
-    Relevance (Recall)    = \|T_a intersection T_o\| / \|T_a\|
-    Accuracy  (Precision) = \|T_a intersection T_o\| / \|T_o\|
+    Recall   = \|T_a intersection T_o\| / \|T_a\|
+    Precision = \|T_a intersection T_o\| / \|T_o\|
 
 where T_a is the set of domain terms referenced in the SPARQL queries (the
 "task vocabulary") and T_o is the set of domain terms defined in the ontology.
@@ -270,14 +270,14 @@ def _extract_sparql_from_markdown(md_path):
 def task_based_metric_v_0_0_1(ttl_file, questions, domain_prefixes,
                       domain_ns_fragments=None):
     """
-    Compute task-based Relevance and Accuracy for an ontology.
+    Compute task-based Recall and Precision for an ontology.
 
     Given an ontology (one or more Turtle files) and a set of competency
     questions expressed as SPARQL queries, this function computes two
     term-overlap metrics:
 
-        Relevance (Recall)    = \|T_a intersection T_o\| / \|T_a\|
-        Accuracy  (Precision) = \|T_a intersection T_o\| / \|T_o\|
+        Recall    = \|T_a intersection T_o\| / \|T_a\|
+        Precision  = \|T_a intersection T_o\| / \|T_o\|
 
     where *T_a* is the union of domain terms extracted from all SPARQL
     queries and *T_o* is the set of domain terms defined in the ontology.
@@ -308,9 +308,9 @@ def task_based_metric_v_0_0_1(ttl_file, questions, domain_prefixes,
     dict
         A dictionary with the following keys:
 
-        - ``relevance`` (float): Recall -- fraction of task terms present
+        - ``recall`` (float): Recall -- fraction of task terms present
           in the ontology.
-        - ``accuracy`` (float): Precision -- fraction of ontology terms
+        - ``precision`` (float): Precision -- fraction of ontology terms
           referenced by the tasks.
         - ``T_o_count`` (int): Number of ontology domain terms.
         - ``T_a_count`` (int): Number of unique task terms.
@@ -334,8 +334,8 @@ def task_based_metric_v_0_0_1(ttl_file, questions, domain_prefixes,
     ...     domain_prefixes=["mds"],
     ...     domain_ns_fragments=["cwrusdle.bitbucket.io/mds"],
     ... )
-    >>> print(f"Relevance: {result['relevance']:.2%}")
-    >>> print(f"Accuracy:  {result['accuracy']:.2%}")
+    >>> print(f"Recall: {result['recall']:.2%}")
+    >>> print(f"Precision:  {result['precision']:.2%}")
     """
     # Normalise ttl_file to a list
     if isinstance(ttl_file, (str, Path)):
@@ -374,12 +374,12 @@ def task_based_metric_v_0_0_1(ttl_file, questions, domain_prefixes,
     intersection = T_a & T_o
     i_count = len(intersection)
 
-    relevance = (i_count / len(T_a)) if len(T_a) > 0 else 0.0
-    accuracy = (i_count / len(T_o)) if len(T_o) > 0 else 0.0
+    recall = (i_count / len(T_a)) if len(T_a) > 0 else 0.0
+    precision = (i_count / len(T_o)) if len(T_o) > 0 else 0.0
 
     return {
-        "relevance": relevance,
-        "accuracy": accuracy,
+        "recall": recall,
+        "precision": precision,
         "T_o_count": len(T_o),
         "T_a_count": len(T_a),
         "intersection": i_count,

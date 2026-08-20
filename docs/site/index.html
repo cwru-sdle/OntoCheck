@@ -117,8 +117,8 @@
                         <p style="width: 76%; margin-left: auto; margin-right: auto; font-size: 1.05em;">
                             <strong>OntoCheck</strong> is an open-source Python tool that automates ontology quality assessment.
                             It combines 17 structural metrics with a novel query-driven methodology that measures how well an
-                            ontology supports your SPARQL queries&mdash;yielding <em>Relevance</em> (vocabulary coverage) and
-                            <em>Accuracy</em> (utilization density) scores. Install via <code>pip install OntoCheck</code>
+                            ontology supports your SPARQL queries&mdash;yielding <em>Recall</em> (vocabulary coverage) and
+                            <em>Precision</em> (utilization density) scores. Install via <code>pip install OntoCheck</code>
                             and evaluate any OWL/RDF ontology against your competency questions in minutes.
                         </p>
                     </div>
@@ -215,13 +215,13 @@
                         expressed as SPARQL queries and systematically comparing the required vocabulary against the
                         terms defined in a candidate ontology, OntoCheck derives two complementary metrics:
                         <ul style="margin-top: 0.5rem; margin-bottom: 0.25rem;">
-                            <li><em>Relevance</em> &mdash; quantifies vocabulary coverage (what fraction of task-required terms the ontology defines)</li>
-                            <li><em>Accuracy</em> &mdash; quantifies utilization density (what fraction of ontology terms the task queries actually use)</li>
+                            <li><em>Recall</em> &mdash; quantifies vocabulary coverage (what fraction of task-required terms the ontology defines)</li>
+                            <li><em>Precision</em> &mdash; quantifies utilization density (what fraction of ontology terms the task queries actually use)</li>
                         </ul>
                     </li>
                     <li>
                         <strong>Validated at scale.</strong> We verify OntoCheck through large-scale evaluation on the
-                        DBpedia knowledge graph using the LC-QuAD benchmark (5,000 queries, 98.94% Relevance), and
+                        DBpedia knowledge graph using the LC-QuAD benchmark (5,000 queries, 98.94% Recall), and
                         demonstrate applicability across materials science and geospatial ontologies.
                     </li>
                 </ol>
@@ -244,7 +244,7 @@
                     <strong>Q</strong> is a set of competency questions encoded as SPARQL queries, and
                     <strong>M</strong> refers to the task-agnostic metrics to compute. Users select which
                     metrics to run and, optionally, provide competency questions &mdash; when questions are
-                    provided, task-based Relevance and Accuracy are computed automatically. Multiple
+                    provided, task-based Recall and Precision are computed automatically. Multiple
                     ontology files are merged automatically for cross-domain assessment.
                 </p>
             </div>
@@ -278,9 +278,9 @@
                     OntoCheck is validated at scale against the DBpedia ontology (3,814 domain classes and
                     properties) using the LC-QuAD 1.0 benchmark (5,000 queries, 38 workloads). Across all queries,
                     470 unique ontology terms appear in <em>T<sub>a</sub></em>, of which 465 are present in
-                    <em>T<sub>o</sub></em>, yielding an overall <strong>Relevance of 98.94%</strong> and an
-                    <strong>Accuracy of 12.19%</strong>. Per-workload analysis shows 28 of 38 workloads achieve
-                    100% Relevance.
+                    <em>T<sub>o</sub></em>, yielding an overall <strong>Recall of 98.94%</strong> and an
+                    <strong>Precision of 12.19%</strong>. Per-workload analysis shows 28 of 38 workloads achieve
+                    100% Recall.
                 </p>
             </div>
 
@@ -596,15 +596,15 @@
                     terms referenced across the queries in <em>Q</em>). Two complementary metrics are computed:
                 </p>
                 <div class="formula">
-                    <strong>Relevance</strong> = |T<sub>a</sub> &cap; T<sub>o</sub>| / |T<sub>a</sub>|
+                    <strong>Recall</strong> = |T<sub>a</sub> &cap; T<sub>o</sub>| / |T<sub>a</sub>|
                     &emsp;&emsp;
-                    <strong>Accuracy</strong> = |T<sub>a</sub> &cap; T<sub>o</sub>| / |T<sub>o</sub>|
+                    <strong>Precision</strong> = |T<sub>a</sub> &cap; T<sub>o</sub>| / |T<sub>o</sub>|
                 </div>
                 <ul>
-                    <li><strong>Relevance</strong> measures the fraction of task-required terms that the ontology
+                    <li><strong>Recall</strong> measures the fraction of task-required terms that the ontology
                         defines&mdash;does the ontology <em>cover</em> the vocabulary needed for the intended
                         workload?</li>
-                    <li><strong>Accuracy</strong> measures the fraction of ontology terms utilized by the task
+                    <li><strong>Precision</strong> measures the fraction of ontology terms utilized by the task
                         queries&mdash;how much of the ontology is actually <em>used</em> by the workload?</li>
                 </ul>
             </div>
@@ -674,7 +674,7 @@
                 <pre><code class="language-bash"># Run task-agnostic metrics
 ontocheck path/to/ontology.ttl --metrics all
 
-# Task-based assessment (Relevance / Accuracy)
+# Task-based assessment (Recall / Precision)
 ontocheck path/to/ontology.ttl \
     --questions competency_questions.json \
     --domain-prefixes mds
@@ -693,15 +693,15 @@ run_assessment(
     metrics="all",
 )
 
-# Task-based assessment (Relevance / Accuracy)
+# Task-based assessment (Recall / Precision)
 result = run_assessment(
     ttl_files="path/to/ontology.ttl",
     questions="competency_questions.json",
     domain_prefixes=["mds"],
 )
 
-print(f"Relevance: {result['relevance']:.2%}")
-print(f"Accuracy:  {result['accuracy']:.2%}")</code></pre>
+print(f"Recall: {result['recall']:.2%}")
+print(f"Precision:  {result['precision']:.2%}")</code></pre>
             </div>
         </div>
     </section>
