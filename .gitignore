@@ -1,0 +1,11 @@
+.venv/
+.revu/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+build/
+
+# OntoCheck's default generated reports
+assessment.log
+assessment_scores.csv
+benchmark_results.json

@@ -10,6 +10,7 @@ import argparse
 import logging
 import sys
 
+from .benchmark import run_suite, write_result
 from .run_assessment import METRIC_DISPATCHER, run_assessment
 
 logger = logging.getLogger(__name__)
@@ -76,6 +77,19 @@ def _build_parser():
     )
 
     parser.add_argument(
+        "--benchmark",
+        help="Path to a versioned executable benchmark suite (.json).\n"
+             "May be combined with existing assessment options.",
+    )
+
+    parser.add_argument(
+        "--benchmark-output",
+        default="benchmark_results.json",
+        help="Path to save benchmark JSON results\n"
+             "(default: benchmark_results.json).",
+    )
+
+    parser.add_argument(
         "--log-file",
         default="assessment.log",
         help="Path to save the log file (default: assessment.log).",
@@ -95,8 +109,16 @@ def _validate_args(args):
     """Validate argument combinations."""
     errors = []
 
-    if not args.metrics and not args.questions and not args.mds_ontodesigncheck:
-        errors.append("At least one of --metrics, --questions, or --mds-ontodesigncheck is required.")
+    if (
+        not args.metrics
+        and not args.questions
+        and not args.mds_ontodesigncheck
+        and not args.benchmark
+    ):
+        errors.append(
+            "At least one of --metrics, --questions, "
+            "--mds-ontodesigncheck, or --benchmark is required."
+        )
 
     if args.questions and not args.domain_prefixes:
         errors.append("--domain-prefixes is required when --questions is provided.")
@@ -106,6 +128,29 @@ def _validate_args(args):
         for e in errors:
             print(f"  {e}", file=sys.stderr)
         sys.exit(1)
+
+
+def _run_benchmark(args):
+    """Run a benchmark suite, write its report, and return an exit code."""
+
+    try:
+        result = run_suite(args.benchmark, args.ttl_files)
+        write_result(result, args.benchmark_output)
+    except Exception as error:
+        print("Benchmark failed: {}".format(error), file=sys.stderr)
+        return 1
+
+    print(
+        "Benchmark {!r}: {:.4f}".format(result.suite_id, result.score)
+    )
+    for case in result.results:
+        print(
+            "  {}: {} ({:.4f})".format(
+                case.case_id, case.status, case.score
+            )
+        )
+    print("Results: {}".format(args.benchmark_output))
+    return 1 if any(case.status == "error" for case in result.results) else 0
 
 
 def main():
@@ -118,20 +163,22 @@ def main():
     if metrics and "all" in metrics:
         metrics = list(METRIC_DISPATCHER.keys())
 
-    logger.info("--- OntoCheck Assessment ---")
+    if metrics or args.questions or args.mds_ontodesigncheck:
+        logger.info("--- OntoCheck Assessment ---")
+        run_assessment(
+            ttl_files=args.ttl_files,
+            metrics=metrics,
+            questions=args.questions,
+            domain_prefixes=args.domain_prefixes,
+            domain_ns_fragments=args.domain_ns_fragments,
+            search_term=args.search_term,
+            mds_design_check=args.mds_ontodesigncheck,
+            output_log_file=args.log_file,
+            output_csv_file=args.csv_file,
+        )
 
-    run_assessment(
-        ttl_files=args.ttl_files,
-        metrics=metrics,
-        questions=args.questions,
-        domain_prefixes=args.domain_prefixes,
-        domain_ns_fragments=args.domain_ns_fragments,
-        search_term=args.search_term,
-        mds_design_check=args.mds_ontodesigncheck,
-        output_log_file=args.log_file,
-        output_csv_file=args.csv_file,
-    )
+    return _run_benchmark(args) if args.benchmark else 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

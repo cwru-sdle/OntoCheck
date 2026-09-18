@@ -1,0 +1,109 @@
+{
+  "schema_version": "1.0",
+  "suite_id": "xrd-graph-path-v1",
+  "domain": "materials-science/xrd",
+  "namespaces": {
+    "mds": "https://cwrusdle.bitbucket.io/files/MDS_Onto/index-en.html#https://cwrusdle.bitbucket.io/mds/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "inference": {
+    "profile": "graph_path"
+  },
+  "cases": [
+    {
+      "id": "xrd-deduction-001",
+      "level": "complex_reasoning",
+      "task_type": "deduction",
+      "prompt": "By following the class hierarchy, which class is two levels above Laser Powder Bed Fusion?",
+      "query": {
+        "language": "graph_path",
+        "source": "mds:LaserPowderBedFusion",
+        "predicate": "rdfs:subClassOf",
+        "min_hops": 2,
+        "max_hops": 2
+      },
+      "expected": {
+        "kind": "result_set",
+        "values": [
+          "mds:ProcessingMethod"
+        ]
+      },
+      "evidence": {
+        "required_paths": [
+          [
+            "mds:LaserPowderBedFusion",
+            "rdfs:subClassOf",
+            "mds:AdditiveManufacturingProcess",
+            "rdfs:subClassOf",
+            "mds:ProcessingMethod"
+          ]
+        ]
+      },
+      "scoring": {
+        "answer_weight": 0.7,
+        "evidence_weight": 0.3
+      },
+      "tags": [
+        "subclass",
+        "transitivity",
+        "two-hop",
+        "proof"
+      ]
+    },
+    {
+      "id": "xrd-summary-001",
+      "level": "contextual_summarization",
+      "task_type": "contextual_summary",
+      "prompt": "Provide a structured ontology-grounded summary of Laser Powder Bed Fusion.",
+      "query": {
+        "language": "sparql_summary",
+        "sections": [
+          {
+            "id": "identity",
+            "query": "SELECT ?label WHERE { mds:LaserPowderBedFusion rdfs:label ?label . }"
+          },
+          {
+            "id": "aliases",
+            "query": "SELECT ?alias WHERE { mds:LaserPowderBedFusion skos:altLabel ?alias . }"
+          },
+          {
+            "id": "classification",
+            "query": "SELECT ?parent WHERE { mds:LaserPowderBedFusion rdfs:subClassOf ?parent . FILTER(isIRI(?parent)) }"
+          },
+          {
+            "id": "promoted_behavior",
+            "query": "SELECT ?behavior WHERE { mds:LaserPowderBedFusion rdfs:subClassOf ?restriction . ?restriction owl:onProperty mds:has_increased_likelihood_of ; owl:someValuesFrom ?behavior . FILTER(isIRI(?behavior)) }"
+          }
+        ]
+      },
+      "expected": {
+        "kind": "structured_summary",
+        "values": {
+          "identity": [
+            "\"Laser Powder Bed Fusion\"@en"
+          ],
+          "aliases": [
+            "\"L-PBF\"@en",
+            "\"LPBF\"@en",
+            "\"SLM\"@en",
+            "\"Selective Laser Melting\"@en"
+          ],
+          "classification": [
+            "mds:AdditiveManufacturingProcess"
+          ],
+          "promoted_behavior": [
+            "mds:RapidSolidification"
+          ]
+        }
+      },
+      "tags": [
+        "structured-summary",
+        "identity",
+        "classification",
+        "process-behavior"
+      ]
+    }
+  ]
+}

@@ -57,6 +57,11 @@ ontocheck path/to/ontology.ttl --metrics altLabelCheck definitionCheck
 # Run all task-agnostic metrics
 ontocheck path/to/ontology.ttl --metrics all
 
+# Run an executable benchmark suite
+ontocheck path/to/ontology.ttl \
+    --benchmark path/to/benchmark.json \
+    --benchmark-output benchmark_results.json
+
 # Task-based assessment (Recall / Precision)
 ontocheck path/to/ontology.ttl \
     --questions competency_questions.json \
