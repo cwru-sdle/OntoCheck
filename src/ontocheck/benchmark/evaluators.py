@@ -5,8 +5,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Dict, Hashable, List, Mapping, Protocol
 
-from rdflib import Graph
+from rdflib import BNode, Graph
+from rdflib.plugins.sparql.algebra import translateQuery
+from rdflib.plugins.sparql.parser import parseQuery
 from rdflib.query import Result
+from rdflib.paths import Path as RdfPath
 from rdflib.term import Identifier
 
 from .models import BenchmarkCase, CaseResult
@@ -70,6 +73,10 @@ def _normalize_term(term: Any, graph: Graph) -> Any:
         return None
     if not isinstance(term, Identifier):
         raise TypeError("SPARQL result contains an unsupported RDF value")
+    if isinstance(term, BNode):
+        raise TypeError(
+            "SPARQL results must not expose unstable blank-node identifiers"
+        )
     return term.n3(namespace_manager=graph.namespace_manager)
 
 
@@ -78,6 +85,7 @@ def _normalize_select(result: Result, graph: Graph) -> List[Any]:
     for row in result:
         values = [_normalize_term(value, graph) for value in row]
         rows.append(values[0] if len(values) == 1 else values)
+    rows.sort(key=repr)
     return rows
 
 
@@ -112,6 +120,29 @@ def _result_set_metrics(expected: Any, actual: List[Any]) -> Dict[str, float]:
 
 def _result_set_score(expected: Any, actual: List[Any]) -> float:
     return _result_set_metrics(expected, actual)["f1"]
+
+
+def _validate_positive_ask(query_text: str, graph: Graph, check_id: str) -> None:
+    """Require an ASK whose algebra is one positive basic graph pattern."""
+
+    translated = translateQuery(
+        parseQuery(query_text),
+        initNs=dict(graph.namespaces()),
+    ).algebra
+    project = getattr(translated, "p", None)
+    pattern = getattr(project, "p", None)
+    triples = getattr(pattern, "triples", ())
+    if not (
+        getattr(translated, "name", None) == "AskQuery"
+        and getattr(project, "name", None) == "Project"
+        and getattr(pattern, "name", None) == "BGP"
+        and translated.get("datasetClause") is None
+        and all(not isinstance(predicate, RdfPath) for _, predicate, _ in triples)
+    ):
+        raise ValueError(
+            "constraint check {!r} must be a positive basic graph pattern "
+            "ASK query".format(check_id)
+        )
 
 
 class RetrievalEvaluator:
@@ -287,6 +318,151 @@ class ContextualSummaryEvaluator:
         )
 
 
+class ConstrainedPlanEvaluator:
+    """Evaluate explicit ontology checks for a scientific plan or hypothesis."""
+
+    name = "constrained-plan-v1"
+
+    def evaluate(
+        self, case: BenchmarkCase, context: EvaluationContext
+    ) -> CaseResult:
+        if case.query.language != "sparql_constraints":
+            raise ValueError(
+                "constrained_plan requires query language "
+                "'sparql_constraints'"
+            )
+        if case.expected.kind != "constraint_checks":
+            raise ValueError(
+                "constrained_plan requires a constraint_checks expectation"
+            )
+        if not isinstance(case.expected.values, Mapping):
+            raise ValueError("constraint_checks values must be an object")
+        if case.scoring.answer_weight or case.scoring.evidence_weight:
+            raise ValueError(
+                "constrained_plan supports constraint scoring only"
+            )
+        if case.scoring.constraint_weight <= 0:
+            raise ValueError(
+                "constrained_plan requires a positive constraint_weight"
+            )
+
+        checks = case.query.parameters.get("checks")
+        if not isinstance(checks, list) or not checks:
+            raise ValueError(
+                "sparql_constraints checks must be a non-empty array"
+            )
+
+        allowed_states = {"entailed", "not_entailed"}
+        query_graph = context.reasoners.materialize(
+            context.inference_profile, context.graph
+        )
+        actual: Dict[str, str] = {}
+        violations = []
+        unsupported_claims = []
+        for index, check in enumerate(checks):
+            if not isinstance(check, Mapping):
+                raise ValueError(
+                    "constraint check {} must be an object".format(index)
+                )
+            check_id = check.get("id")
+            query_text = check.get("query")
+            if not isinstance(check_id, str) or not check_id:
+                raise ValueError(
+                    "constraint check {} requires a non-empty id".format(
+                        index
+                    )
+                )
+            if check_id in actual:
+                raise ValueError(
+                    "duplicate constraint check {!r}".format(check_id)
+                )
+            if not isinstance(query_text, str) or not query_text:
+                raise ValueError(
+                    "constraint check {!r} requires a SPARQL ASK query".format(
+                        check_id
+                    )
+                )
+            _validate_positive_ask(query_text, query_graph, check_id)
+            if check_id not in case.expected.values:
+                raise ValueError(
+                    "constraint check {!r} has no expected state".format(
+                        check_id
+                    )
+                )
+            expected_state = case.expected.values[check_id]
+            if expected_state not in allowed_states:
+                raise ValueError(
+                    "constraint check {!r} must expect one of: {}".format(
+                        check_id, ", ".join(sorted(allowed_states))
+                    )
+                )
+
+            result = query_graph.query(query_text)
+            if result.type != "ASK":
+                raise ValueError(
+                    "constraint check {!r} must use ASK".format(check_id)
+                )
+            state = "entailed" if bool(result.askAnswer) else "not_entailed"
+            actual[check_id] = state
+            if state != expected_state:
+                violations.append(
+                    "{}: expected {}, observed {}".format(
+                        check_id, expected_state, state
+                    )
+                )
+                if expected_state == "entailed":
+                    unsupported_claims.append(check_id)
+
+        unexpected = sorted(set(case.expected.values) - set(actual))
+        if unexpected:
+            raise ValueError(
+                "expected constraint checks were not executed: {}".format(
+                    ", ".join(unexpected)
+                )
+            )
+
+        constraint_score = (
+            (len(actual) - len(violations)) / len(actual) if actual else 0.0
+        )
+        metrics = {
+            "constraint_satisfaction": constraint_score,
+            "unsupported_claim_rate": (
+                len(unsupported_claims)
+                / sum(
+                    state == "entailed"
+                    for state in case.expected.values.values()
+                )
+                if any(
+                    state == "entailed"
+                    for state in case.expected.values.values()
+                )
+                else 0.0
+            ),
+        }
+        return CaseResult(
+            case_id=case.id,
+            level=case.level.value,
+            task_type=case.task_type,
+            status="success",
+            score=constraint_score,
+            answer_score=0.0,
+            constraint_score=constraint_score,
+            metrics=metrics,
+            actual={
+                "checks": actual,
+                "assumptions": list(case.assumptions),
+            },
+            diagnostics=(
+                ["One or more plan constraints were not satisfied"]
+                if violations
+                else []
+            ),
+            violations=violations,
+            unsupported_claims=unsupported_claims,
+            evaluator=self.name,
+        )
+
+
 def _normalize_proof(answer: ReasonerAnswer, graph: Graph) -> List[str]:
     proof = answer.proof
     if not proof:
@@ -398,6 +574,7 @@ def default_registry() -> EvaluatorRegistry:
     registry.register("fact_retrieval", RetrievalEvaluator())
     registry.register("deduction", DeductionEvaluator())
     registry.register("contextual_summary", ContextualSummaryEvaluator())
+    registry.register("constrained_plan", ConstrainedPlanEvaluator())
     return registry
 
 

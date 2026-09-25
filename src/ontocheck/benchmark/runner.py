@@ -94,6 +94,7 @@ class BenchmarkRunner:
             results=results,
             scores_by_level=_averages(results, "level"),
             scores_by_task_type=_averages(results, "task_type"),
+            context=suite.context,
         )
 
 

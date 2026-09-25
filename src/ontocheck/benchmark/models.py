@@ -34,10 +34,32 @@ class ExpectedResult:
 
 
 @dataclass(frozen=True)
+class BenchmarkContext:
+    """Version pins that make a benchmark run scientifically reproducible."""
+
+    ontology_version: str = ""
+    ontology_commit: str = ""
+    data_version: str = ""
+    data_commit: str = ""
+    metric_version: str = ""
+
+
+@dataclass(frozen=True)
+class ProvenanceSpec:
+    """Sources and reviewers responsible for one benchmark case."""
+
+    sources: Tuple[str, ...] = ()
+    curator: Optional[str] = None
+    reviewers: Tuple[str, ...] = ()
+
+
+@dataclass(frozen=True)
 class EvidenceSpec:
-    """Optional evidence paths required in addition to the answer."""
+    """Evidence paths, claims, and source records supporting an answer."""
 
     required_paths: Tuple[Tuple[str, ...], ...] = ()
+    required_claims: Tuple[str, ...] = ()
+    source_ids: Tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -62,6 +84,12 @@ class BenchmarkCase:
     evidence: EvidenceSpec = field(default_factory=EvidenceSpec)
     scoring: ScoringSpec = field(default_factory=ScoringSpec)
     tags: Tuple[str, ...] = ()
+    family_id: Optional[str] = None
+    provenance: ProvenanceSpec = field(default_factory=ProvenanceSpec)
+    assumptions: Tuple[str, ...] = ()
+    constraints: Tuple[str, ...] = ()
+    split: str = "unspecified"
+    leakage_group: Optional[str] = None
 
 
 @dataclass(frozen=True)
@@ -74,6 +102,7 @@ class BenchmarkSuite:
     namespaces: Dict[str, str]
     inference_profile: str
     cases: Tuple[BenchmarkCase, ...]
+    context: BenchmarkContext = field(default_factory=BenchmarkContext)
 
 
 @dataclass
@@ -91,6 +120,8 @@ class CaseResult:
     metrics: Dict[str, float] = field(default_factory=dict)
     actual: Any = None
     diagnostics: List[str] = field(default_factory=list)
+    violations: List[str] = field(default_factory=list)
+    unsupported_claims: List[str] = field(default_factory=list)
     evaluator: str = ""
     inference_profile: str = "none"
     runtime_ms: float = 0.0
@@ -105,3 +136,4 @@ class SuiteResult:
     results: List[CaseResult]
     scores_by_level: Dict[str, float]
     scores_by_task_type: Dict[str, float]
+    context: BenchmarkContext = field(default_factory=BenchmarkContext)

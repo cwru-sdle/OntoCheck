@@ -9,10 +9,12 @@ from typing import Any, Dict, Mapping, Sequence, Tuple
 
 from .models import (
     BenchmarkCase,
+    BenchmarkContext,
     BenchmarkLevel,
     BenchmarkSuite,
     EvidenceSpec,
     ExpectedResult,
+    ProvenanceSpec,
     QuerySpec,
     ScoringSpec,
     SuiteResult,
@@ -35,6 +37,23 @@ def _string(value: Any, location: str) -> str:
             "{} must be a non-empty string".format(location)
         )
     return value
+
+
+def _optional_string(value: Any, location: str) -> Any:
+    if value is None:
+        return None
+    return _string(value, location)
+
+
+def _strings(value: Any, location: str) -> Tuple[str, ...]:
+    if value is None:
+        return ()
+    if not isinstance(value, Sequence) or isinstance(value, (str, bytes)):
+        raise BenchmarkValidationError("{} must be an array".format(location))
+    return tuple(
+        _string(item, "{}[{}]".format(location, index))
+        for index, item in enumerate(value)
+    )
 
 
 def _paths(value: Any, location: str) -> Tuple[Tuple[str, ...], ...]:
@@ -68,7 +87,33 @@ def _weight(value: Any, location: str) -> float:
     return float(value)
 
 
-def _parse_case(data: Any, index: int) -> BenchmarkCase:
+def _parse_context(root: Mapping[str, Any], schema_version: str) -> BenchmarkContext:
+    if schema_version == "1.0":
+        return BenchmarkContext()
+
+    context_data = _mapping(root.get("context", {}), "context")
+    return BenchmarkContext(
+        ontology_version=_string(
+            context_data.get("ontology_version"), "context.ontology_version"
+        ),
+        ontology_commit=_string(
+            context_data.get("ontology_commit"), "context.ontology_commit"
+        ),
+        data_version=_string(
+            context_data.get("data_version"), "context.data_version"
+        ),
+        data_commit=_string(
+            context_data.get("data_commit"), "context.data_commit"
+        ),
+        metric_version=_string(
+            context_data.get("metric_version"), "context.metric_version"
+        ),
+    )
+
+
+def _parse_case(
+    data: Any, index: int, schema_version: str
+) -> BenchmarkCase:
     location = "cases[{}]".format(index)
     item = _mapping(data, location)
     case_id = _string(item.get("id"), "{}.id".format(location))
@@ -82,6 +127,9 @@ def _parse_case(data: Any, index: int) -> BenchmarkCase:
         raise BenchmarkValidationError(
             "{}.level must be one of: {}".format(case_id, values)
         ) from error
+    task_type = _string(
+        item.get("task_type"), "{}.task_type".format(case_id)
+    )
 
     query_data = _mapping(item.get("query"), "{}.query".format(case_id))
     query_language = _string(
@@ -123,7 +171,23 @@ def _parse_case(data: Any, index: int) -> BenchmarkCase:
         required_paths=_paths(
             evidence_data.get("required_paths", ()),
             "{}.evidence.required_paths".format(case_id),
-        )
+        ),
+        required_claims=(
+            _strings(
+                evidence_data.get("required_claims", ()),
+                "{}.evidence.required_claims".format(case_id),
+            )
+            if schema_version == "2.0"
+            else ()
+        ),
+        source_ids=(
+            _strings(
+                evidence_data.get("source_ids", ()),
+                "{}.evidence.source_ids".format(case_id),
+            )
+            if schema_version == "2.0"
+            else ()
+        ),
     )
 
     scoring_data = _mapping(
@@ -153,24 +217,157 @@ def _parse_case(data: Any, index: int) -> BenchmarkCase:
             "{}.scoring must have at least one positive weight".format(case_id)
         )
 
-    tags = item.get("tags", ())
-    if not isinstance(tags, Sequence) or isinstance(tags, (str, bytes)):
-        raise BenchmarkValidationError("{}.tags must be an array".format(case_id))
+    provenance = ProvenanceSpec()
+    family_id = None
+    split = "unspecified"
+    leakage_group = None
+    assumptions = ()
+    constraints = ()
+    if schema_version == "2.0":
+        provenance_data = _mapping(
+            item.get("provenance", {}), "{}.provenance".format(case_id)
+        )
+        provenance = ProvenanceSpec(
+            sources=_strings(
+                provenance_data.get("sources", ()),
+                "{}.provenance.sources".format(case_id),
+            ),
+            curator=_optional_string(
+                provenance_data.get("curator"),
+                "{}.provenance.curator".format(case_id),
+            ),
+            reviewers=_strings(
+                provenance_data.get("reviewers", ()),
+                "{}.provenance.reviewers".format(case_id),
+            ),
+        )
+        family_id = _optional_string(
+            item.get("family_id"), "{}.family_id".format(case_id)
+        )
+        split = _string(
+            item.get("split", "unspecified"), "{}.split".format(case_id)
+        )
+        leakage_group = _optional_string(
+            item.get("leakage_group"), "{}.leakage_group".format(case_id)
+        )
+        assumptions = _strings(
+            item.get("assumptions", ()), "{}.assumptions".format(case_id)
+        )
+        constraints = _strings(
+            item.get("constraints", ()), "{}.constraints".format(case_id)
+        )
+        if family_id is None:
+            raise BenchmarkValidationError(
+                "{}.family_id is required for schema 2.0".format(case_id)
+            )
+        if not provenance.sources:
+            raise BenchmarkValidationError(
+                "{}.provenance.sources must not be empty for schema 2.0".format(
+                    case_id
+                )
+            )
+        if split == "unspecified":
+            raise BenchmarkValidationError(
+                "{}.split is required for schema 2.0".format(case_id)
+            )
+        if leakage_group is None:
+            raise BenchmarkValidationError(
+                "{}.leakage_group is required for schema 2.0".format(case_id)
+            )
+        if level == BenchmarkLevel.CONSTRAINED_GENERATION:
+            if not assumptions:
+                raise BenchmarkValidationError(
+                    "{}.assumptions must not be empty for constrained "
+                    "generation".format(case_id)
+                )
+            if not constraints:
+                raise BenchmarkValidationError(
+                    "{}.constraints must not be empty for constrained "
+                    "generation".format(case_id)
+                )
+        if task_type == "constrained_plan":
+            if level != BenchmarkLevel.CONSTRAINED_GENERATION:
+                raise BenchmarkValidationError(
+                    "{}.task_type constrained_plan requires level "
+                    "constrained_generation".format(case_id)
+                )
+            if query.language != "sparql_constraints":
+                raise BenchmarkValidationError(
+                    "{}.query.language must be sparql_constraints".format(
+                        case_id
+                    )
+                )
+            if expected.kind != "constraint_checks":
+                raise BenchmarkValidationError(
+                    "{}.expected.kind must be constraint_checks".format(case_id)
+                )
+            expected_values = _mapping(
+                expected.values, "{}.expected.values".format(case_id)
+            )
+            checks = query.parameters.get("checks")
+            if not isinstance(checks, list) or not checks:
+                raise BenchmarkValidationError(
+                    "{}.query.checks must be a non-empty array".format(case_id)
+                )
+            check_ids = []
+            for check_index, raw_check in enumerate(checks):
+                check = _mapping(
+                    raw_check,
+                    "{}.query.checks[{}]".format(case_id, check_index),
+                )
+                check_id = _string(
+                    check.get("id"),
+                    "{}.query.checks[{}].id".format(case_id, check_index),
+                )
+                _string(
+                    check.get("query"),
+                    "{}.query.checks[{}].query".format(case_id, check_index),
+                )
+                check_ids.append(check_id)
+            if len(check_ids) != len(set(check_ids)):
+                raise BenchmarkValidationError(
+                    "{}.query.checks contains duplicate IDs".format(case_id)
+                )
+            if set(check_ids) != set(expected_values):
+                raise BenchmarkValidationError(
+                    "{}.expected.values keys must exactly match check IDs".format(
+                        case_id
+                    )
+                )
+            allowed_states = {"entailed", "not_entailed"}
+            if any(
+                state not in allowed_states for state in expected_values.values()
+            ):
+                raise BenchmarkValidationError(
+                    "{}.expected.values states must be entailed or "
+                    "not_entailed".format(case_id)
+                )
+            if (
+                scoring.answer_weight
+                or scoring.evidence_weight
+                or scoring.constraint_weight <= 0
+            ):
+                raise BenchmarkValidationError(
+                    "{}.scoring for constrained_plan must use only a positive "
+                    "constraint_weight".format(case_id)
+                )
 
     return BenchmarkCase(
         id=case_id,
         level=level,
-        task_type=_string(
-            item.get("task_type"), "{}.task_type".format(case_id)
-        ),
+        task_type=task_type,
         prompt=_string(item.get("prompt"), "{}.prompt".format(case_id)),
         query=query,
         expected=expected,
         evidence=evidence,
         scoring=scoring,
-        tags=tuple(
-            _string(tag, "{}.tags".format(case_id)) for tag in tags
-        ),
+        tags=_strings(item.get("tags", ()), "{}.tags".format(case_id)),
+        family_id=family_id,
+        provenance=provenance,
+        assumptions=assumptions,
+        constraints=constraints,
+        split=split,
+        leakage_group=leakage_group,
     )
 
 
@@ -179,10 +376,11 @@ def parse_suite(data: Any) -> BenchmarkSuite:
 
     root = _mapping(data, "suite")
     schema_version = _string(root.get("schema_version"), "schema_version")
-    if schema_version != "1.0":
+    supported_versions = {"1.0", "2.0"}
+    if schema_version not in supported_versions:
         raise BenchmarkValidationError(
-            "Unsupported schema_version {!r}; expected '1.0'".format(
-                schema_version
+            "Unsupported schema_version {!r}; expected one of: {}".format(
+                schema_version, ", ".join(sorted(supported_versions))
             )
         )
 
@@ -197,7 +395,10 @@ def parse_suite(data: Any) -> BenchmarkSuite:
     raw_cases = root.get("cases")
     if not isinstance(raw_cases, list) or not raw_cases:
         raise BenchmarkValidationError("cases must be a non-empty array")
-    cases = tuple(_parse_case(item, index) for index, item in enumerate(raw_cases))
+    cases = tuple(
+        _parse_case(item, index, schema_version)
+        for index, item in enumerate(raw_cases)
+    )
 
     case_ids = [case.id for case in cases]
     duplicates = sorted(
@@ -215,6 +416,7 @@ def parse_suite(data: Any) -> BenchmarkSuite:
         namespaces=namespaces,
         inference_profile=_string(inference.get("profile", "none"), "inference.profile"),
         cases=cases,
+        context=_parse_context(root, schema_version),
     )
 
 

@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from rdflib import RDFS, URIRef
+from rdflib import Graph, RDFS, URIRef
 
 from ontocheck.benchmark import (
     ReasonerAnswer,
@@ -277,6 +277,222 @@ class BenchmarkRunnerTests(unittest.TestCase):
         self.assertEqual(result.results[0].status, "error")
         self.assertIn("duplicate summary section", result.results[0].diagnostics[0])
 
+    def test_constrained_plan_scores_explicit_entailment_states(self):
+        data = suite_data()
+        data["cases"] = [
+            {
+                "id": "plan-001",
+                "level": "constrained_generation",
+                "task_type": "constrained_plan",
+                "prompt": "Check whether the proposed material plan is supported.",
+                "query": {
+                    "language": "sparql_constraints",
+                    "checks": [
+                        {
+                            "id": "sample-is-material",
+                            "query": "ASK { ex:SampleA a ex:Material . }",
+                        },
+                        {
+                            "id": "sample-is-not-root",
+                            "query": "ASK { ex:SampleA a ex:Root . }",
+                        },
+                    ],
+                },
+                "expected": {
+                    "kind": "constraint_checks",
+                    "values": {
+                        "sample-is-material": "entailed",
+                        "sample-is-not-root": "not_entailed",
+                    },
+                },
+                "scoring": {
+                    "answer_weight": 0,
+                    "constraint_weight": 1,
+                },
+                "assumptions": ["The fixture is the complete plan context."],
+                "constraints": ["The sample must be a material."],
+            }
+        ]
+
+        with tempfile.TemporaryDirectory() as directory:
+            ontology_path = Path(directory) / "tiny.ttl"
+            ontology_path.write_text(ONTOLOGY, encoding="utf-8")
+            result = run_suite(parse_suite(data), ontology_path)
+
+        case_result = result.results[0]
+        self.assertEqual(case_result.status, "success")
+        self.assertEqual(case_result.score, 1.0)
+        self.assertEqual(case_result.constraint_score, 1.0)
+        self.assertFalse(case_result.violations)
+        self.assertEqual(
+            case_result.actual["checks"]["sample-is-not-root"],
+            "not_entailed",
+        )
+
+    def test_constrained_plan_reports_unsupported_claim(self):
+        data = suite_data()
+        data["cases"] = [
+            {
+                "id": "plan-mismatch",
+                "level": "constrained_generation",
+                "task_type": "constrained_plan",
+                "prompt": "Check an unsupported plan claim.",
+                "query": {
+                    "language": "sparql_constraints",
+                    "checks": [
+                        {
+                            "id": "sample-is-root",
+                            "query": "ASK { ex:SampleA a ex:Root . }",
+                        }
+                    ],
+                },
+                "expected": {
+                    "kind": "constraint_checks",
+                    "values": {"sample-is-root": "entailed"},
+                },
+                "scoring": {
+                    "answer_weight": 0,
+                    "constraint_weight": 1,
+                },
+            }
+        ]
+
+        with tempfile.TemporaryDirectory() as directory:
+            ontology_path = Path(directory) / "tiny.ttl"
+            ontology_path.write_text(ONTOLOGY, encoding="utf-8")
+            result = run_suite(parse_suite(data), ontology_path)
+
+        case_result = result.results[0]
+        self.assertEqual(case_result.status, "success")
+        self.assertEqual(case_result.score, 0.0)
+        self.assertEqual(case_result.unsupported_claims, ["sample-is-root"])
+        self.assertTrue(case_result.violations)
+
+    def test_constrained_plan_uses_graph_path_entailments(self):
+        data = suite_data()
+        data["inference"]["profile"] = "graph_path"
+        data["cases"] = [
+            {
+                "id": "plan-inferred",
+                "level": "constrained_generation",
+                "task_type": "constrained_plan",
+                "prompt": "Check a transitive class entailment.",
+                "query": {
+                    "language": "sparql_constraints",
+                    "checks": [
+                        {
+                            "id": "leaf-is-root",
+                            "query": (
+                                "ASK { ex:Leaf rdfs:subClassOf ex:Root . }"
+                            ),
+                        }
+                    ],
+                },
+                "expected": {
+                    "kind": "constraint_checks",
+                    "values": {"leaf-is-root": "entailed"},
+                },
+                "scoring": {
+                    "answer_weight": 0,
+                    "constraint_weight": 1,
+                },
+            }
+        ]
+
+        with tempfile.TemporaryDirectory() as directory:
+            ontology_path = Path(directory) / "tiny.ttl"
+            ontology_path.write_text(ONTOLOGY, encoding="utf-8")
+            result = run_suite(parse_suite(data), ontology_path)
+
+        case_result = result.results[0]
+        self.assertEqual(case_result.status, "success")
+        self.assertEqual(case_result.score, 1.0)
+        self.assertEqual(
+            case_result.actual["checks"]["leaf-is-root"], "entailed"
+        )
+
+    def test_constrained_plan_rejects_closed_world_ask(self):
+        data = suite_data()
+        data["cases"] = [
+            {
+                "id": "plan-closed-world",
+                "level": "constrained_generation",
+                "task_type": "constrained_plan",
+                "prompt": "Do not treat missing triples as negation.",
+                "query": {
+                    "language": "sparql_constraints",
+                    "checks": [
+                        {
+                            "id": "missing-root",
+                            "query": (
+                                "ASK { { SELECT (COUNT(*) AS ?count) WHERE "
+                                "{ ex:SampleA a ex:Root . } } "
+                                "FILTER(?count = 0) }"
+                            ),
+                        }
+                    ],
+                },
+                "expected": {
+                    "kind": "constraint_checks",
+                    "values": {"missing-root": "entailed"},
+                },
+                "scoring": {
+                    "answer_weight": 0,
+                    "constraint_weight": 1,
+                },
+            }
+        ]
+
+        with tempfile.TemporaryDirectory() as directory:
+            ontology_path = Path(directory) / "tiny.ttl"
+            ontology_path.write_text(ONTOLOGY, encoding="utf-8")
+            result = run_suite(parse_suite(data), ontology_path)
+
+        self.assertEqual(result.results[0].status, "error")
+        self.assertIn(
+            "positive basic graph pattern", result.results[0].diagnostics[0]
+        )
+
+    def test_constrained_plan_rejects_property_path_reasoning(self):
+        data = suite_data()
+        data["cases"] = [
+            {
+                "id": "plan-property-path",
+                "level": "constrained_generation",
+                "task_type": "constrained_plan",
+                "prompt": "Do not bypass the declared inference profile.",
+                "query": {
+                    "language": "sparql_constraints",
+                    "checks": [
+                        {
+                            "id": "leaf-is-root",
+                            "query": (
+                                "ASK { ex:Leaf rdfs:subClassOf+ ex:Root . }"
+                            ),
+                        }
+                    ],
+                },
+                "expected": {
+                    "kind": "constraint_checks",
+                    "values": {"leaf-is-root": "entailed"},
+                },
+                "scoring": {
+                    "answer_weight": 0,
+                    "constraint_weight": 1,
+                },
+            }
+        ]
+
+        with tempfile.TemporaryDirectory() as directory:
+            ontology_path = Path(directory) / "tiny.ttl"
+            ontology_path.write_text(ONTOLOGY, encoding="utf-8")
+            result = run_suite(parse_suite(data), ontology_path)
+
+        self.assertEqual(result.results[0].status, "error")
+        self.assertIn(
+            "positive basic graph pattern", result.results[0].diagnostics[0]
+        )
+
     def test_graph_path_rejects_non_transitive_predicate(self):
         data = suite_data()
         data["inference"]["profile"] = "graph_path"
@@ -333,6 +549,70 @@ class BenchmarkRunnerTests(unittest.TestCase):
 
         self.assertEqual(result.score, 1.0)
         self.assertEqual(result.results[0].evaluator, "deduction-v1+static-test")
+
+    def test_external_reasoner_can_materialize_plan_entailments(self):
+        class StaticMaterializingReasoner:
+            name = "static-materializing-test"
+
+            def reason(self, case, graph):
+                return []
+
+            def materialize(self, graph):
+                materialized = Graph()
+                for prefix, namespace in graph.namespaces():
+                    materialized.bind(prefix, namespace)
+                for triple in graph:
+                    materialized.add(triple)
+                materialized.add(
+                    (
+                        URIRef("https://example.org/Leaf"),
+                        RDFS.subClassOf,
+                        URIRef("https://example.org/Root"),
+                    )
+                )
+                return materialized
+
+        data = suite_data()
+        data["inference"]["profile"] = "external"
+        data["cases"] = [
+            {
+                "id": "external-plan",
+                "level": "constrained_generation",
+                "task_type": "constrained_plan",
+                "prompt": "Check an externally materialized entailment.",
+                "query": {
+                    "language": "sparql_constraints",
+                    "checks": [
+                        {
+                            "id": "leaf-is-root",
+                            "query": (
+                                "ASK { ex:Leaf rdfs:subClassOf ex:Root . }"
+                            ),
+                        }
+                    ],
+                },
+                "expected": {
+                    "kind": "constraint_checks",
+                    "values": {"leaf-is-root": "entailed"},
+                },
+                "scoring": {
+                    "answer_weight": 0,
+                    "constraint_weight": 1,
+                },
+            }
+        ]
+        reasoners = ReasonerRegistry()
+        reasoners.register("external", StaticMaterializingReasoner())
+
+        with tempfile.TemporaryDirectory() as directory:
+            ontology_path = Path(directory) / "tiny.ttl"
+            ontology_path.write_text(ONTOLOGY, encoding="utf-8")
+            result = run_suite(
+                parse_suite(data), ontology_path, reasoners=reasoners
+            )
+
+        self.assertEqual(result.results[0].status, "success")
+        self.assertEqual(result.results[0].score, 1.0)
 
     def test_writes_machine_readable_result(self):
         with tempfile.TemporaryDirectory() as directory:

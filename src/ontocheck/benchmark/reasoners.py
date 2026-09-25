@@ -32,6 +32,13 @@ class Reasoner(Protocol):
         """Return RDF answers and optional proofs for one reasoning case."""
 
 
+class MaterializingReasoner(Reasoner, Protocol):
+    """Optional reasoner capability required by constrained plan checks."""
+
+    def materialize(self, graph: Graph) -> Graph:
+        """Return a graph containing the profile's supported entailments."""
+
+
 class ReasonerRegistry:
     """Map inference-profile names to replaceable reasoner adapters."""
 
@@ -58,6 +65,20 @@ class ReasonerRegistry:
             raise UnsupportedReasoner(
                 "No reasoner registered for inference profile {!r}".format(profile)
             ) from error
+
+    def materialize(self, profile: str, graph: Graph) -> Graph:
+        """Return a graph containing entailments supported by a profile."""
+
+        if profile == "none":
+            return graph
+        reasoner = self.get(profile)
+        materialize = getattr(reasoner, "materialize", None)
+        if not callable(materialize):
+            raise UnsupportedReasoner(
+                "Reasoner for inference profile {!r} does not support "
+                "graph materialization".format(profile)
+            )
+        return materialize(graph)
 
 
 def _resolve_identifier(value: Any, graph: Graph, location: str) -> URIRef:
@@ -87,6 +108,38 @@ class GraphPathReasoner:
     """Derive reachable named resources along a transitive RDF predicate."""
 
     name = "graph-path-v1"
+
+    def materialize(self, graph: Graph) -> Graph:
+        """Materialize closure for declared and built-in transitive predicates."""
+
+        materialized = Graph()
+        for prefix, namespace in graph.namespaces():
+            materialized.bind(prefix, namespace)
+        for triple in graph:
+            materialized.add(triple)
+
+        predicates = {
+            RDFS.subClassOf,
+            RDFS.subPropertyOf,
+            *graph.subjects(RDF.type, OWL.TransitiveProperty),
+        }
+        for predicate in predicates:
+            adjacency: Dict[Any, List[Any]] = {}
+            for source, target in graph.subject_objects(predicate):
+                adjacency.setdefault(source, []).append(target)
+
+            for source in adjacency:
+                queue = deque(adjacency[source])
+                visited = set()
+                while queue:
+                    target = queue.popleft()
+                    if target in visited:
+                        continue
+                    visited.add(target)
+                    materialized.add((source, predicate, target))
+                    queue.extend(adjacency.get(target, ()))
+
+        return materialized
 
     def reason(self, case: BenchmarkCase, graph: Graph) -> List[ReasonerAnswer]:
         if case.query.language != "graph_path":

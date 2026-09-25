@@ -13,6 +13,9 @@ Implemented baseline:
 - SPARQL `SELECT` and `ASK` fact-retrieval scoring;
 - explicit transitive graph-path deduction with machine-checkable proofs;
 - structured contextual summaries assembled from grounded SPARQL sections;
+- explicit SPARQL constraint checks for ontology-grounded scientific plans;
+- schema 2.0 context, provenance, leakage, assumption, and constraint fields;
+- linked four-level XRD and Materials Processing pilot families;
 - case-level and grouped suite results with JSON output;
 - deterministic loader and end-to-end tests.
 
@@ -22,8 +25,9 @@ reasoner adapters are not implemented yet.
 Validation includes unit tests for schema parsing, duplicate IDs, invalid
 weights, retrieval, expected-answer mismatches, malformed summary sections,
 non-transitive graph paths, proof scoring, result serialization, and reasoner
-replacement. A separate regression test runs the real XRD pilot and asserts
-its expected deduction, proof, summary sections, and scores.
+replacement. Regression tests run the real XRD and Materials Processing
+pilots and assert retrieval, deduction, proof, summary, constraint, and
+context results.
 
 ## Goals
 
@@ -83,9 +87,16 @@ adapted incrementally; they do not need an immediate destructive migration.
 
 ```json
 {
-  "schema_version": "1.0",
+  "schema_version": "2.0",
   "suite_id": "materials-xrd-v1",
   "domain": "materials-science",
+  "context": {
+    "ontology_version": "xrd-v1",
+    "ontology_commit": "ontology-commit-sha",
+    "data_version": "xrd-pilot-v1",
+    "data_commit": "data-commit-sha",
+    "metric_version": "ontocheck-benchmark-v2"
+  },
   "namespaces": {
     "mds": "https://cwrusdle.bitbucket.io/mds/"
   },
@@ -95,6 +106,7 @@ adapted incrementally; they do not need an immediate destructive migration.
   "cases": [
     {
       "id": "xrd-reason-001",
+      "family_id": "xrd-lpbf-process",
       "level": "complex_reasoning",
       "task_type": "deduction",
       "prompt": "Which class is two subclass levels above LPBF?",
@@ -120,6 +132,13 @@ adapted incrementally; they do not need an immediate destructive migration.
           ]
         ]
       },
+      "provenance": {
+        "sources": ["SupplementaryMaterials/Ontologies/XRD.ttl"],
+        "curator": "benchmark-team",
+        "reviewers": ["domain-reviewer"]
+      },
+      "split": "test",
+      "leakage_group": "xrd-lpbf-process",
       "scoring": {
         "answer_weight": 0.7,
         "evidence_weight": 0.3
@@ -131,8 +150,11 @@ adapted incrementally; they do not need an immediate destructive migration.
 ```
 
 Validation rejects duplicate IDs, unknown levels, missing expectations, and
-invalid weights. The runner reports an unregistered task type as an explicit
-case failure, allowing separately registered future task types.
+invalid weights. Schema 2.0 additionally requires version pins, a question
+family, source provenance, an explicit split, and a leakage group. Constrained
+generation cases must declare assumptions and constraints. Schema 1.0 remains
+readable for compatibility. The runner reports an unregistered task type as
+an explicit case failure, allowing separately registered future task types.
 
 ## Evaluation Semantics
 
@@ -224,6 +246,17 @@ Each adapter implements:
 reason(case, graph) -> list[ReasonerAnswer]
 ```
 
+Adapters used by `constrained_plan` cases must also implement the
+`MaterializingReasoner` capability:
+
+```python
+materialize(graph) -> Graph
+```
+
+This makes the graph used by ASK checks reflect the suite's declared
+inference profile. Profiles used only for deduction do not need this optional
+capability.
+
 This keeps graph traversal, HermiT, and future reasoners behind the same
 boundary. A future HermiT adapter may translate the RDF graph to its Java/API
 representation, execute OWL 2 DL entailment or consistency checks, and convert
@@ -305,10 +338,26 @@ must continue to work without an external model or network access.
 
 ### Constrained generation
 
-A case supplies a scenario, assumptions, required goals, and forbidden
-constraints. The evaluator checks whether the proposed RDF changes or
-structured plan are grounded and constraint-satisfying. Novelty is reported
-only as an optional descriptive measure.
+Status: deterministic constraint-check baseline implemented.
+
+A `constrained_plan` case supplies explicit assumptions, scientific
+constraints, and named SPARQL `ASK` checks. The evaluator reports each check
+as `entailed` or `not_entailed`, a constraint-satisfaction score, violations,
+and unsupported required claims. `not_entailed` is deliberately not called
+false or contradicted under the open-world assumption.
+
+Checks are restricted to positive basic-graph-pattern `ASK` queries;
+aggregation, subqueries, filters, and closed-world constructs are rejected.
+Under the `graph_path` profile, ASK queries run against a materialized closure
+of `rdfs:subClassOf`,
+`rdfs:subPropertyOf`, and explicitly declared transitive properties. The
+`required_claims` and `source_ids` fields are provenance metadata for review;
+the named executable checks, rather than the prose, determine the score.
+
+The baseline evaluates whether an ontology supports a structured candidate
+plan; it does not generate prose or claim empirical causality. Future agent
+adapters may propose plans, but they must emit the same explicit checks and
+may not replace deterministic scoring.
 
 ## Result Model
 
@@ -335,8 +384,8 @@ score. A strong fact-retrieval score must not hide weak reasoning performance.
    HermiT adapter when its runtime is available.
 5. **Summarization:** structured claim targets, coverage, faithfulness, and
    evidence scoring.
-6. **Constrained generation:** hypothetical graph/plan outputs and constraint
-   satisfaction.
+6. **Constrained generation:** implemented deterministic plan checks followed
+   later by optional hypothetical graph/plan adapters.
 7. **Domain expansion:** balanced benchmark suites for materials, geospatial,
    outage, EBSD, capacitors, and cross-domain cases.
 

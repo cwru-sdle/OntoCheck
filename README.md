@@ -183,6 +183,11 @@ OntoCheck is conceived as a community resource: we actively encourage collaborat
 
 Full documentation is available at [ontocheck.readthedocs.io](https://ontocheck.readthedocs.io/en/latest/).
 
+Benchmark design documents:
+
+- [Executable competency benchmark architecture](docs/benchmark-framework.md)
+- [Scientific ontology benchmark research plan](docs/scientific-benchmark-plan.md)
+
 ---
 
 ## Authors

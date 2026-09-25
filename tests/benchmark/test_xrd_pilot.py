@@ -17,7 +17,22 @@ class XrdPilotTests(unittest.TestCase):
         cases = {case.case_id: case for case in result.results}
 
         self.assertEqual(result.score, 1.0)
-        self.assertEqual(set(cases), {"xrd-deduction-001", "xrd-summary-001"})
+        self.assertEqual(
+            set(cases),
+            {
+                "xrd-retrieval-001",
+                "xrd-deduction-001",
+                "xrd-summary-001",
+                "xrd-plan-001",
+            },
+        )
+        self.assertEqual(result.context.metric_version, "ontocheck-benchmark-v2")
+
+        retrieval = cases["xrd-retrieval-001"]
+        self.assertEqual(retrieval.status, "success")
+        self.assertEqual(
+            retrieval.actual, ["mds:AdditiveManufacturingProcess"]
+        )
 
         deduction = cases["xrd-deduction-001"]
         self.assertEqual(deduction.status, "success")
@@ -42,6 +57,15 @@ class XrdPilotTests(unittest.TestCase):
         self.assertEqual(
             summary.actual["sections"]["promoted_behavior"],
             ["mds:RapidSolidification"],
+        )
+
+        plan = cases["xrd-plan-001"]
+        self.assertEqual(plan.status, "success")
+        self.assertEqual(plan.constraint_score, 1.0)
+        self.assertFalse(plan.violations)
+        self.assertEqual(
+            plan.actual["checks"]["rapid-solidification-behavior"],
+            "entailed",
         )
 
 
