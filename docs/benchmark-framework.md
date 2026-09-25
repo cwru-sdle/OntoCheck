@@ -1,10 +1,10 @@
-# Competency Benchmark Framework
+# Scientific Competency Benchmark Framework
 
 ## Status
 
-This document is the implementation plan for extending OntoCheck beyond
-vocabulary coverage. The existing `task_based_metric.py` remains supported
-while the benchmark runner is introduced as a separate API.
+This is the canonical architecture and research roadmap for extending
+OntoCheck beyond vocabulary coverage. The existing `task_based_metric.py`
+remains supported while the benchmark runner is provided as a separate API.
 
 Implemented baseline:
 
@@ -28,6 +28,34 @@ non-transitive graph paths, proof scoring, result serialization, and reasoner
 replacement. Regression tests run the real XRD and Materials Processing
 pilots and assert retrieval, deduction, proof, summary, constraint, and
 context results.
+
+## Scientific Motivation
+
+OntoCheck evaluates whether a scientific ontology is useful in a specific,
+evolving context:
+
+```text
+(ontology version, data snapshot, scientific task, measure, inference profile)
+```
+
+It does not reduce ontology quality to a static, purpose-independent score.
+The benchmark provides evidence and design guardrails for scientific
+knowledge representation, hypothesis work, AI science agents, validation,
+explanation, and discovery.
+
+The design is informed by, but does not copy or vendor code from:
+
+- [GraphRAG-Bench](https://arxiv.org/abs/2506.05690), for evidence-structured
+  competency levels and stage-specific evaluation;
+- [BRINK](https://aclanthology.org/2026.eacl-long.114/), for paired complete
+  and incomplete graphs that distinguish retrieval from reasoning; and
+- [KGrEaT](https://arxiv.org/abs/2308.10537), for controlled downstream-task
+  comparisons where the knowledge graph is the experimental variable.
+
+The deterministic, offline runner remains authoritative. Future optional
+third-party packages must be version-pinned and license-documented. GraphRAG
+or LLM systems may integrate through adapters, but may not replace
+deterministic benchmark scores.
 
 ## Goals
 
@@ -372,25 +400,79 @@ Each case result records:
 Suite reports aggregate by level and task type before computing an overall
 score. A strong fact-retrieval score must not hide weak reasoning performance.
 
-## Implementation Phases
+## Ontology-Aware and Downstream Evaluation
 
-1. **Foundation:** four-module package, models, JSON validation, evaluator
-   registry, result serialization, and synthetic fixtures.
-2. **Executable baseline:** retrieval, exact/set scoring, CLI integration, and
-   conversion of a small existing XRD subset.
-3. **Reasoning:** multi-hop deduction, transitivity, multiple choice, and proof
-   evidence using explicit SPARQL semantics.
-4. **Consistency:** entailment/non-entailment cases followed by the optional
-   HermiT adapter when its runtime is available.
-5. **Summarization:** structured claim targets, coverage, faithfulness, and
-   evidence scoring.
-6. **Constrained generation:** implemented deterministic plan checks followed
-   later by optional hypothetical graph/plan adapters.
-7. **Domain expansion:** balanced benchmark suites for materials, geospatial,
-   outage, EBSD, capacitors, and cross-domain cases.
+Strict IRI, literal, answer-set, and proof matching remains authoritative.
+Ontology-aware closeness is a planned secondary diagnostic and must report
+the path or matching witness that produced partial credit. Candidate measures
+include declared equivalence, lowest-common-subsumer and information-content
+similarity, allowlisted weighted paths, and maximum-weight matching between
+predicted and reference claim sets. Relation weights, corpora, thresholds,
+and normalization rules must be versioned. Learned ontology embeddings may
+be reported as an ablation, but not as the sole quality measure.
 
-The first implementation slice should complete phases 1 and 2 with one small
-fixture for each supported result kind. It should not add an LLM dependency.
+Three downstream task families are planned:
+
+1. **Evidence retrieval:** rank entities, triples, and proof paths. Report
+   strict precision/recall/F1, MRR, nDCG, path recall, ontology-aware soft
+   precision/recall/F1, latency, and unmapped-entity rate.
+2. **Hierarchical scientific classification:** classify samples, processes,
+   measurements, or claims. Report exact and hierarchical macro-F1, balanced
+   accuracy, MCC, abstention coverage-risk, and distance to the correct class.
+3. **Claim and hypothesis validation:** classify claims as entailed,
+   contradicted, or unknown and return evidence. Report per-class and
+   macro-F1, MCC, calibration, proof precision/recall, unsupported-claim rate,
+   and constraint violations.
+
+To isolate ontology contribution, hold data, splits, models, mappings, random
+seeds, and resource budgets constant while comparing:
+
+1. no ontology;
+2. labels and synonyms only;
+3. class inventory without hierarchy;
+4. the full asserted ontology;
+5. the ontology plus declared inference;
+6. the previous ontology version; and
+7. a degree-preserving edge-shuffled negative control.
+
+Report paired score deltas with confidence intervals. Report mapped-known and
+all-entity results separately so poor coverage cannot be hidden by discarding
+unmapped examples.
+
+## Roadmap and Release Guardrails
+
+Completed:
+
+1. Versioned benchmark models, schema validation, registries, result
+   serialization, and CLI integration.
+2. Reproducibility context, provenance, evidence, leakage, assumption, and
+   constraint fields.
+3. Linked XRD and Materials Processing pilots covering retrieval, reasoning,
+   structured summary, and constrained planning.
+4. Deterministic graph-path proofs, summary scoring, materialized entailment,
+   and positive constraint checks.
+
+Next:
+
+1. Add ontology-aware scoring and the three downstream task adapters.
+2. Add complete/incomplete graph pairs, label masking, ontology ablations,
+   and version regressions.
+3. Add optional OWL consistency and SHACL constraint adapters with clearly
+   separated semantics.
+4. Publish multidimensional result artifacts to the leaderboard.
+5. Expand to Capacitors, EBSD, Geospatial, GeoOutage, and cross-domain agent
+   scenarios after domain review.
+
+Each change must include accepted/rejected schema tests, deterministic
+evaluator tests, malformed and empty cases, proof and open-world edge cases,
+CLI coverage, and representative domain fixtures. Larger downstream adapters
+should be delivered as reviewable follow-up changes.
+
+No benchmark result is release-ready until its prompts, answers, evidence,
+assumptions, constraints, and forbidden inferences have been reviewed by a
+domain expert. The current pilot reviewer marker `domain-review-required`
+therefore identifies executable research fixtures, not expert-approved gold
+standards.
 
 ## Open Design Decisions
 
