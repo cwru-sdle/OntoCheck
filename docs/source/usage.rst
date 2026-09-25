@@ -13,9 +13,10 @@ How It Works
 
 OntoCheck uses a unified interface: users select **task-agnostic metrics**
 with ``--metrics`` and/or supply **competency questions** with
-``--questions`` for task-based assessment. At least one of ``--metrics`` or
-``--questions`` is required. When multiple ``.ttl`` files are provided, they
-are automatically merged into a single graph before assessment.
+``--questions`` for vocabulary assessment, or run an executable suite with
+``--benchmark``. At least one assessment option is required. When multiple
+``.ttl`` files are provided, they are automatically merged into a single graph
+before assessment.
 
 Command-Line Interface
 ----------------------
@@ -24,6 +25,7 @@ Command-Line Interface
 
    ontocheck <ttl_files...> --metrics <names...> [options]
    ontocheck <ttl_files...> --questions <file> --domain-prefixes <prefixes...> [options]
+   ontocheck <ttl_files...> --benchmark <suite.json> [options]
 
 Task-Agnostic Metrics
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -50,6 +52,22 @@ queries.
        --questions competency_questions.json \
        --domain-prefixes mds \
        --domain-ns-fragments cwrusdle.bitbucket.io/mds
+
+Executable Benchmark
+^^^^^^^^^^^^^^^^^^^^
+
+Run fact-retrieval, reasoning, or structured-summary cases from a versioned
+benchmark suite.
+
+.. code-block:: bash
+
+   ontocheck my_ontology.ttl \
+       --benchmark benchmark.json \
+       --benchmark-output benchmark_results.json
+
+The command exits nonzero if the suite cannot be loaded or any case has an
+``error`` status. Answer mismatches remain valid completed evaluations and are
+reported through their scores.
 
 Combined
 ^^^^^^^^^
@@ -106,6 +124,12 @@ CLI Arguments
 
 ``--domain-ns-fragments``
    Namespace URI fragments for filtering domain terms. Optional.
+
+``--benchmark``
+   Path to a versioned executable benchmark suite in JSON format.
+
+``--benchmark-output``
+   Path for benchmark JSON results (default: ``benchmark_results.json``).
 
 ``--mds-ontodesigncheck``
    Run the MDS ontology design conformance check.

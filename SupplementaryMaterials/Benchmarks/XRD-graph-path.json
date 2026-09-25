@@ -1,0 +1,268 @@
+{
+  "schema_version": "2.0",
+  "suite_id": "xrd-graph-path-v1",
+  "domain": "materials-science/xrd",
+  "context": {
+    "ontology_version": "xrd-supplementary-2026-09",
+    "ontology_commit": "e05f8f2",
+    "data_version": "xrd-competency-pilot-v1",
+    "data_commit": "e05f8f2",
+    "metric_version": "ontocheck-benchmark-v2"
+  },
+  "namespaces": {
+    "mds": "https://cwrusdle.bitbucket.io/files/MDS_Onto/index-en.html#https://cwrusdle.bitbucket.io/mds/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "inference": {
+    "profile": "graph_path"
+  },
+  "cases": [
+    {
+      "id": "xrd-retrieval-001",
+      "family_id": "xrd-lpbf-process",
+      "level": "fact_retrieval",
+      "task_type": "fact_retrieval",
+      "prompt": "What named process class directly contains Laser Powder Bed Fusion?",
+      "query": {
+        "language": "sparql",
+        "text": "SELECT ?parent WHERE { mds:LaserPowderBedFusion rdfs:subClassOf ?parent . FILTER(isIRI(?parent)) }"
+      },
+      "expected": {
+        "kind": "result_set",
+        "values": [
+          "mds:AdditiveManufacturingProcess"
+        ]
+      },
+      "evidence": {
+        "required_claims": [
+          "Laser Powder Bed Fusion is directly classified as an Additive Manufacturing Process."
+        ],
+        "source_ids": [
+          "XRD.ttl#LaserPowderBedFusion"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "SupplementaryMaterials/Ontologies/XRD.ttl",
+          "SupplementaryMaterials/SPARQL_Queries/XRD.json"
+        ],
+        "curator": "OntoCheck benchmark team",
+        "reviewers": [
+          "domain-review-required"
+        ]
+      },
+      "split": "test",
+      "leakage_group": "xrd-lpbf-process",
+      "tags": [
+        "direct-classification",
+        "fact-retrieval"
+      ]
+    },
+    {
+      "id": "xrd-deduction-001",
+      "family_id": "xrd-lpbf-process",
+      "level": "complex_reasoning",
+      "task_type": "deduction",
+      "prompt": "By following the class hierarchy, which class is two levels above Laser Powder Bed Fusion?",
+      "query": {
+        "language": "graph_path",
+        "source": "mds:LaserPowderBedFusion",
+        "predicate": "rdfs:subClassOf",
+        "min_hops": 2,
+        "max_hops": 2
+      },
+      "expected": {
+        "kind": "result_set",
+        "values": [
+          "mds:ProcessingMethod"
+        ]
+      },
+      "evidence": {
+        "required_paths": [
+          [
+            "mds:LaserPowderBedFusion",
+            "rdfs:subClassOf",
+            "mds:AdditiveManufacturingProcess",
+            "rdfs:subClassOf",
+            "mds:ProcessingMethod"
+          ]
+        ],
+        "required_claims": [
+          "Laser Powder Bed Fusion is an Additive Manufacturing Process.",
+          "Additive Manufacturing Process is a Processing Method."
+        ],
+        "source_ids": [
+          "XRD.ttl#LaserPowderBedFusion",
+          "XRD.ttl#AdditiveManufacturingProcess"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "SupplementaryMaterials/Ontologies/XRD.ttl"
+        ],
+        "curator": "OntoCheck benchmark team",
+        "reviewers": [
+          "domain-review-required"
+        ]
+      },
+      "split": "test",
+      "leakage_group": "xrd-lpbf-process",
+      "scoring": {
+        "answer_weight": 0.7,
+        "evidence_weight": 0.3
+      },
+      "tags": [
+        "subclass",
+        "transitivity",
+        "two-hop",
+        "proof"
+      ]
+    },
+    {
+      "id": "xrd-summary-001",
+      "family_id": "xrd-lpbf-process",
+      "level": "contextual_summarization",
+      "task_type": "contextual_summary",
+      "prompt": "Provide a structured ontology-grounded summary of Laser Powder Bed Fusion.",
+      "query": {
+        "language": "sparql_summary",
+        "sections": [
+          {
+            "id": "identity",
+            "query": "SELECT ?label WHERE { mds:LaserPowderBedFusion rdfs:label ?label . }"
+          },
+          {
+            "id": "aliases",
+            "query": "SELECT ?alias WHERE { mds:LaserPowderBedFusion skos:altLabel ?alias . }"
+          },
+          {
+            "id": "classification",
+            "query": "SELECT ?parent WHERE { mds:LaserPowderBedFusion rdfs:subClassOf ?parent . FILTER(isIRI(?parent)) }"
+          },
+          {
+            "id": "promoted_behavior",
+            "query": "SELECT ?behavior WHERE { mds:LaserPowderBedFusion rdfs:subClassOf ?restriction . ?restriction owl:onProperty mds:has_increased_likelihood_of ; owl:someValuesFrom ?behavior . FILTER(isIRI(?behavior)) }"
+          }
+        ]
+      },
+      "expected": {
+        "kind": "structured_summary",
+        "values": {
+          "identity": [
+            "\"Laser Powder Bed Fusion\"@en"
+          ],
+          "aliases": [
+            "\"L-PBF\"@en",
+            "\"LPBF\"@en",
+            "\"SLM\"@en",
+            "\"Selective Laser Melting\"@en"
+          ],
+          "classification": [
+            "mds:AdditiveManufacturingProcess"
+          ],
+          "promoted_behavior": [
+            "mds:RapidSolidification"
+          ]
+        }
+      },
+      "evidence": {
+        "required_claims": [
+          "Identity, aliases, direct classification, and promoted behavior must be grounded in XRD.ttl."
+        ],
+        "source_ids": [
+          "XRD.ttl#LaserPowderBedFusion"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "SupplementaryMaterials/Ontologies/XRD.ttl",
+          "SupplementaryMaterials/SPARQL_Queries/XRD.json#qid=1000010"
+        ],
+        "curator": "OntoCheck benchmark team",
+        "reviewers": [
+          "domain-review-required"
+        ]
+      },
+      "split": "test",
+      "leakage_group": "xrd-lpbf-process",
+      "tags": [
+        "structured-summary",
+        "identity",
+        "classification",
+        "process-behavior"
+      ]
+    },
+    {
+      "id": "xrd-plan-001",
+      "family_id": "xrd-lpbf-process",
+      "level": "constrained_generation",
+      "task_type": "constrained_plan",
+      "prompt": "Can an ontology-grounded plan select Laser Powder Bed Fusion as an additive manufacturing process associated with rapid solidification?",
+      "query": {
+        "language": "sparql_constraints",
+        "checks": [
+          {
+            "id": "declared-process-class",
+            "query": "ASK { mds:LaserPowderBedFusion a owl:Class . }"
+          },
+          {
+            "id": "additive-manufacturing-classification",
+            "query": "ASK { mds:LaserPowderBedFusion rdfs:subClassOf mds:AdditiveManufacturingProcess . }"
+          },
+          {
+            "id": "rapid-solidification-behavior",
+            "query": "ASK { mds:LaserPowderBedFusion rdfs:subClassOf ?restriction . ?restriction owl:onProperty mds:has_increased_likelihood_of ; owl:someValuesFrom mds:RapidSolidification . }"
+          }
+        ]
+      },
+      "expected": {
+        "kind": "constraint_checks",
+        "values": {
+          "declared-process-class": "entailed",
+          "additive-manufacturing-classification": "entailed",
+          "rapid-solidification-behavior": "entailed"
+        }
+      },
+      "evidence": {
+        "required_claims": [
+          "The ontology declares LPBF as an additive manufacturing process.",
+          "The ontology associates LPBF with an increased likelihood of rapid solidification."
+        ],
+        "source_ids": [
+          "XRD.ttl#LaserPowderBedFusion",
+          "XRD.ttl#RapidSolidification"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "SupplementaryMaterials/Ontologies/XRD.ttl",
+          "SupplementaryMaterials/SPARQL_Queries/XRD.json#qid=1000019"
+        ],
+        "curator": "OntoCheck benchmark team",
+        "reviewers": [
+          "domain-review-required"
+        ]
+      },
+      "assumptions": [
+        "Ontology assertions constrain the plan but do not by themselves establish empirical causality."
+      ],
+      "constraints": [
+        "The selected process must be classified as additive manufacturing.",
+        "The selected process must have an ontology-grounded association with rapid solidification."
+      ],
+      "split": "test",
+      "leakage_group": "xrd-lpbf-process",
+      "scoring": {
+        "answer_weight": 0.0,
+        "constraint_weight": 1.0
+      },
+      "tags": [
+        "constrained-plan",
+        "scientific-guardrail",
+        "process-behavior"
+      ]
+    }
+  ]
+}

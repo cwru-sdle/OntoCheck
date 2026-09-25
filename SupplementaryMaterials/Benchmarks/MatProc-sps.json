@@ -1,0 +1,284 @@
+{
+  "schema_version": "2.0",
+  "suite_id": "matproc-sps-v1",
+  "domain": "materials-science/materials-processing",
+  "context": {
+    "ontology_version": "matproc-0.3.2.0",
+    "ontology_commit": "e05f8f2",
+    "data_version": "matproc-competency-pilot-v1",
+    "data_commit": "e05f8f2",
+    "metric_version": "ontocheck-benchmark-v2"
+  },
+  "namespaces": {
+    "dcterms": "http://purl.org/dc/terms/",
+    "mds": "https://cwrusdle.bitbucket.io/mds/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "inference": {
+    "profile": "graph_path"
+  },
+  "cases": [
+    {
+      "id": "matproc-retrieval-001",
+      "family_id": "matproc-spark-plasma-sintering",
+      "level": "fact_retrieval",
+      "task_type": "fact_retrieval",
+      "prompt": "What processing parameters are explicitly required for Spark Plasma Sintering?",
+      "query": {
+        "language": "sparql",
+        "text": "SELECT ?parameter WHERE { mds:SparkPlasmaSintering rdfs:subClassOf ?restriction . ?restriction owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom ?parameter . }"
+      },
+      "expected": {
+        "kind": "result_set",
+        "values": [
+          "mds:PulsedCurrent",
+          "mds:SinteringPressure",
+          "mds:SinteringTemperature"
+        ]
+      },
+      "evidence": {
+        "required_claims": [
+          "Spark Plasma Sintering declares temperature, pressure, and pulsed current processing parameters."
+        ],
+        "source_ids": [
+          "MatProc.ttl#SparkPlasmaSintering"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "SupplementaryMaterials/Ontologies/MatProc.ttl",
+          "SupplementaryMaterials/SPARQL_Queries/MatProc.md#CQ6"
+        ],
+        "curator": "OntoCheck benchmark team",
+        "reviewers": [
+          "domain-review-required"
+        ]
+      },
+      "split": "test",
+      "leakage_group": "matproc-spark-plasma-sintering",
+      "tags": [
+        "fact-retrieval",
+        "processing-parameters"
+      ]
+    },
+    {
+      "id": "matproc-deduction-001",
+      "family_id": "matproc-spark-plasma-sintering",
+      "level": "complex_reasoning",
+      "task_type": "deduction",
+      "prompt": "By following the class hierarchy, which process class is two levels above Spark Plasma Sintering?",
+      "query": {
+        "language": "graph_path",
+        "source": "mds:SparkPlasmaSintering",
+        "predicate": "rdfs:subClassOf",
+        "min_hops": 2,
+        "max_hops": 2
+      },
+      "expected": {
+        "kind": "result_set",
+        "values": [
+          "mds:MaterialsProcessing"
+        ]
+      },
+      "evidence": {
+        "required_paths": [
+          [
+            "mds:SparkPlasmaSintering",
+            "rdfs:subClassOf",
+            "mds:Sintering",
+            "rdfs:subClassOf",
+            "mds:MaterialsProcessing"
+          ]
+        ],
+        "required_claims": [
+          "Spark Plasma Sintering is a Sintering process.",
+          "Sintering is a Materials Processing process."
+        ],
+        "source_ids": [
+          "MatProc.ttl#SparkPlasmaSintering",
+          "MatProc.ttl#Sintering"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "SupplementaryMaterials/Ontologies/MatProc.ttl"
+        ],
+        "curator": "OntoCheck benchmark team",
+        "reviewers": [
+          "domain-review-required"
+        ]
+      },
+      "split": "test",
+      "leakage_group": "matproc-spark-plasma-sintering",
+      "scoring": {
+        "answer_weight": 0.7,
+        "evidence_weight": 0.3
+      },
+      "tags": [
+        "hierarchy",
+        "two-hop",
+        "proof"
+      ]
+    },
+    {
+      "id": "matproc-summary-001",
+      "family_id": "matproc-spark-plasma-sintering",
+      "level": "contextual_summarization",
+      "task_type": "contextual_summary",
+      "prompt": "Provide a structured ontology-grounded summary of Spark Plasma Sintering.",
+      "query": {
+        "language": "sparql_summary",
+        "sections": [
+          {
+            "id": "identity",
+            "query": "SELECT ?label WHERE { mds:SparkPlasmaSintering rdfs:label ?label . }"
+          },
+          {
+            "id": "aliases",
+            "query": "SELECT ?alias WHERE { mds:SparkPlasmaSintering skos:altLabel ?alias . }"
+          },
+          {
+            "id": "classification",
+            "query": "SELECT ?parent WHERE { mds:SparkPlasmaSintering rdfs:subClassOf ?parent . FILTER(isIRI(?parent)) }"
+          },
+          {
+            "id": "parameters",
+            "query": "SELECT ?parameter WHERE { mds:SparkPlasmaSintering rdfs:subClassOf ?restriction . ?restriction owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom ?parameter . }"
+          },
+          {
+            "id": "standards",
+            "query": "SELECT ?source WHERE { mds:SparkPlasmaSintering dcterms:source ?source . }"
+          }
+        ]
+      },
+      "expected": {
+        "kind": "structured_summary",
+        "values": {
+          "identity": [
+            "\"Spark Plasma Sintering\"@en"
+          ],
+          "aliases": [
+            "\"FAST\"",
+            "\"Field Assisted Sintering\"",
+            "\"PECS\"",
+            "\"Pulsed Electric Current Sintering\"",
+            "\"SPS\""
+          ],
+          "classification": [
+            "mds:Sintering"
+          ],
+          "parameters": [
+            "mds:PulsedCurrent",
+            "mds:SinteringPressure",
+            "mds:SinteringTemperature"
+          ],
+          "standards": [
+            "\"ISO 18755:2020\""
+          ]
+        }
+      },
+      "evidence": {
+        "required_claims": [
+          "Identity, aliases, classification, processing parameters, and source standard must be grounded in MatProc.ttl."
+        ],
+        "source_ids": [
+          "MatProc.ttl#SparkPlasmaSintering"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "SupplementaryMaterials/Ontologies/MatProc.ttl",
+          "SupplementaryMaterials/SPARQL_Queries/MatProc.md#CQ6",
+          "ISO 18755:2020"
+        ],
+        "curator": "OntoCheck benchmark team",
+        "reviewers": [
+          "domain-review-required"
+        ]
+      },
+      "split": "test",
+      "leakage_group": "matproc-spark-plasma-sintering",
+      "tags": [
+        "structured-summary",
+        "parameters",
+        "standards"
+      ]
+    },
+    {
+      "id": "matproc-plan-001",
+      "family_id": "matproc-spark-plasma-sintering",
+      "level": "constrained_generation",
+      "task_type": "constrained_plan",
+      "prompt": "Can an ontology-grounded plan select Spark Plasma Sintering when temperature, pressure, and pulsed current controls are required?",
+      "query": {
+        "language": "sparql_constraints",
+        "checks": [
+          {
+            "id": "sintering-classification",
+            "query": "ASK { mds:SparkPlasmaSintering rdfs:subClassOf mds:Sintering . }"
+          },
+          {
+            "id": "temperature-parameter",
+            "query": "ASK { mds:SparkPlasmaSintering rdfs:subClassOf ?restriction . ?restriction owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:SinteringTemperature . }"
+          },
+          {
+            "id": "pressure-parameter",
+            "query": "ASK { mds:SparkPlasmaSintering rdfs:subClassOf ?restriction . ?restriction owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:SinteringPressure . }"
+          },
+          {
+            "id": "pulsed-current-parameter",
+            "query": "ASK { mds:SparkPlasmaSintering rdfs:subClassOf ?restriction . ?restriction owl:onProperty mds:hasProcessingParameter ; owl:someValuesFrom mds:PulsedCurrent . }"
+          }
+        ]
+      },
+      "expected": {
+        "kind": "constraint_checks",
+        "values": {
+          "sintering-classification": "entailed",
+          "temperature-parameter": "entailed",
+          "pressure-parameter": "entailed",
+          "pulsed-current-parameter": "entailed"
+        }
+      },
+      "evidence": {
+        "required_claims": [
+          "Spark Plasma Sintering is classified as sintering and declares all three required controls."
+        ],
+        "source_ids": [
+          "MatProc.ttl#SparkPlasmaSintering"
+        ]
+      },
+      "provenance": {
+        "sources": [
+          "SupplementaryMaterials/Ontologies/MatProc.ttl",
+          "SupplementaryMaterials/SPARQL_Queries/MatProc.md#CQ6",
+          "ISO 18755:2020"
+        ],
+        "curator": "OntoCheck benchmark team",
+        "reviewers": [
+          "domain-review-required"
+        ]
+      },
+      "assumptions": [
+        "Ontology parameter declarations are capability requirements, not measured operating values."
+      ],
+      "constraints": [
+        "The selected process must be a sintering process.",
+        "Temperature, pressure, and pulsed current controls must all be represented."
+      ],
+      "split": "test",
+      "leakage_group": "matproc-spark-plasma-sintering",
+      "scoring": {
+        "answer_weight": 0.0,
+        "constraint_weight": 1.0
+      },
+      "tags": [
+        "constrained-plan",
+        "scientific-guardrail",
+        "processing-parameters"
+      ]
+    }
+  ]
+}
