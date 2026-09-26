@@ -1,3 +1,19 @@
+"""
+mainLabelCheck_v_0_0_1 metric implementation.
+
+Changelog (v0.0.2)
+------------------
+- FIXED: the function returned ``None`` on every path, so ``run_assessment``
+  wrote an empty ``Score`` column for this metric. It now returns a result
+  dictionary whose ``coverage`` key is the headline score; the printing and
+  export behaviour is unchanged.
+- FIXED: the early-return paths (invalid ``show``, missing file, parse error,
+  no classes) also returned ``None`` indistinguishably from a successful run.
+  They now return ``None`` only for genuine failure, and the successful
+  "no classes found" case returns a result with ``coverage`` of 0.0 and a
+  ``status`` key explaining why.
+"""
+
 import logging
 
 from .helpers.helpers import _find_all_named_classes, _export_missing_labels_template,  _print_classes_without_labels, _print_classes_with_labels,  _print_label_summary_statistics, _analyze_label_coverage
@@ -25,10 +41,10 @@ def mainLabelCheck_v_0_0_1(ttl_file, show="all", export_template=None):
       trimming. Empty strings and whitespace-only labels are not counted as valid labels
 
     - Coverage percentage: The proportion of named classes that have at least one
-      valid rdfs:label
+      valid rdfs:label. This is the value returned as the metric score.
 
     Author: Rishabh Kundu
-    Version: 0.0.1
+    Version: 0.0.2
 
     Parameters
     ----------
@@ -49,10 +65,25 @@ def mainLabelCheck_v_0_0_1(ttl_file, show="all", export_template=None):
 
     Returns
     -------
-    None
-        This function does not directly return values. It prints analysis results
-        to your terminal/CLI and optionally exports a CSV template file. The function
-        may exit early on errors (file not found, parsing errors, or no classes found)
+    dict or None
+        On success, a dictionary with the following keys:
+
+        - ``coverage`` (float): proportion of named classes carrying a valid
+          ``rdfs:label``, in [0, 1].  This is the headline score.
+        - ``total_classes`` (int)
+        - ``classes_with_label`` (int)
+        - ``classes_without_label`` (int)
+        - ``missing`` (list of str): URIs of classes lacking a label
+        - ``status`` (str): ``"Success"``, or an explanation when no classes
+          were found
+        - ``exported_template`` (str or None): path written, if any
+
+        ``None`` is returned only on genuine failure: an invalid ``show``
+        value, a missing file, or a Turtle parse error.
+
+        In version 0.0.1 this function returned ``None`` on every path,
+        including success, which left the ``Score`` column of
+        ``assessment_scores.csv`` empty for this metric.
 
     Output Information
     ------------------
@@ -76,6 +107,9 @@ def mainLabelCheck_v_0_0_1(ttl_file, show="all", export_template=None):
     - Classes are displayed with both their prefixed name and full URI/IRI
     - show and export_template parameters are set to default values ("all" and None)
         - thus, CSV export request must be explicitly mentioned
+    - This metric covers named classes only.  FOOPS! VOC3-T requires label
+      coverage across *all* terms, including properties and individuals; see
+      ``foops_metadata_checks.foops_voc3_all_terms_labelled_v_0_0_1``.
 
     .. note::
 
@@ -95,15 +129,15 @@ def mainLabelCheck_v_0_0_1(ttl_file, show="all", export_template=None):
     Export CSV template for missing labels:
         mainLabelCheck_v_0_0_1("ontology.ttl", export_template="missing_labels.csv")
 
-    Export template while showing summary only:
-        mainLabelCheck_v_0_0_1("ontology.ttl", show="summary", export_template="missing_labels.csv")
-            - in the afore a desired export path can also be inserted
+    Read the score:
+        result = mainLabelCheck_v_0_0_1("ontology.ttl", show="summary")
+        print(f"Label coverage: {result['coverage']:.1%}")
     """
     # Validate "show" parameter of main function
     valid_show_options = ["all", "with", "without", "summary"]
     if show not in valid_show_options:
         logger.error(f"Invalid 'show' parameter. Must be one of {valid_show_options}")
-        return
+        return None
 
     g = Graph()
     try:
@@ -118,16 +152,24 @@ def mainLabelCheck_v_0_0_1(ttl_file, show="all", export_template=None):
         g.parse(ttl_file, format="turtle")
     except FileNotFoundError:
         logger.error(f"The file '{ttl_file}' was not found.")
-        return
+        return None
     except Exception as e:
         logger.error(f"An error occurred while parsing the TTL file: {e}")
-        return
+        return None
 
     # Find all named classes
     all_classes = _find_all_named_classes(g)
     if not all_classes:
         logger.info("No named classes found in the ontology.")
-        return
+        return {
+            "coverage": 0.0,
+            "total_classes": 0,
+            "classes_with_label": 0,
+            "classes_without_label": 0,
+            "missing": [],
+            "status": "No named classes found in the ontology",
+            "exported_template": None,
+        }
 
     # Analyze rdfs:label coverage
     classes_with_label, classes_without_label = _analyze_label_coverage(g, all_classes)
@@ -141,7 +183,23 @@ def mainLabelCheck_v_0_0_1(ttl_file, show="all", export_template=None):
         _print_classes_without_labels(g, classes_without_label)
 
     # Export template if requested explicitly by user
+    exported = None
     if export_template and classes_without_label:
         _export_missing_labels_template(g, classes_without_label, export_template)
+        exported = export_template
     elif export_template and not classes_without_label:
         logger.info("All classes have rdfs:label — no template needed!")
+
+    total = len(all_classes)
+    with_count = len(classes_with_label)
+    coverage = (with_count / total) if total else 0.0
+
+    return {
+        "coverage": coverage,
+        "total_classes": total,
+        "classes_with_label": with_count,
+        "classes_without_label": len(classes_without_label),
+        "missing": sorted(str(c) for c in classes_without_label),
+        "status": "Success",
+        "exported_template": exported,
+    }

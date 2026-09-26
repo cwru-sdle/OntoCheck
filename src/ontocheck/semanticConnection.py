@@ -1,5 +1,17 @@
 """
 mainSemanticConnection_v_0_0_1 metric implementation.
+
+Changelog (v0.0.2)
+------------------
+- FIXED: the hierarchical tree view was indented inside ``if
+  disconnected_chains:``, so it was never printed for an ontology in which
+  every root chain is grounded in CCO/BFO -- that is, for the passing case.
+  The block is now dedented to function scope and always runs.
+- FIXED: ``show`` parameter added so the tree view can be suppressed on large
+  ontologies without losing the statistics.
+- FIXED: the function now returns a result dictionary instead of ``None``, so
+  ``run_assessment`` writes a value into the ``Score`` column rather than a
+  blank.
 """
 
 from .helpers.helpers import _analyze_hierarchy_connections, _build_class_hierarchy, _find_all_named_classes, _find_root_classes, _is_connected_to_higher_ontology, _print_hierarchy_with_connection
@@ -9,7 +21,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def mainSemanticConnection_v_0_0_1(ttl_file):
+def mainSemanticConnection_v_0_0_1(ttl_file, show="all"):
     """
     Ontology Semantic Connection Analysis
 
@@ -20,7 +32,7 @@ def mainSemanticConnection_v_0_0_1(ttl_file):
     Definitions
     -----------
     - Named classes: Classes with URIRef identifiers that are explicitly declared as owl:Class or rdfs:Class, or participate in rdfs:subClassOf relations
-    
+
     - Class hierarchy: The tree structure of classes connected via rdfs:subClassOf relationships
 
     - Root classes: Classes that have no parent classes, representing the top level of independent hierarchy trees
@@ -29,18 +41,41 @@ def mainSemanticConnection_v_0_0_1(ttl_file):
 
     - Hierarchy chains: Complete trees of classes rooted at root classes, inheriting the connection status of their root
 
+    - Connection ratio: The proportion of root classes that are semantically grounded in a higher-level ontology. This is the value returned as the metric score.
+
     Author: Rishabh Kundu
-    Version: 0.0.1
+    Version: 0.0.2
 
     Parameters
     ----------
     ttl_file : str
         Path to the ontology Turtle (.ttl) file to analyze
 
+    show : str, optional
+        Display option controlling what information to show:
+        - "all" (default): Shows statistics, the connection summary, and the full hierarchical tree view
+        - "summary": Shows statistics and the connection summary only, suppressing the tree view
+        - "tree": Shows statistics and the tree view, suppressing the per-chain summary
+
+        On large ontologies the tree view dominates the log file; use
+        ``show="summary"`` to keep the log readable.
+
     Returns
     -------
-    None
-        This function does not (directly) return values. It prints comprehensive hierarchy analysis to terminal/CLI. The function may exit early on errors (file not found, parsing errors, no classes found, or no hierarchy relationships found)
+    dict or None
+        A dictionary with the following keys, or ``None`` when the ontology
+        could not be loaded or contains no hierarchy:
+
+        - ``connection_ratio`` (float): connected root classes divided by total
+          root classes. This is the headline score.
+        - ``total_classes`` (int)
+        - ``root_classes`` (int)
+        - ``connected_roots`` (int)
+        - ``disconnected_roots`` (int)
+        - ``classes_with_children`` (int)
+        - ``total_relationships`` (int)
+        - ``connected_chains`` (list of str)
+        - ``disconnected_chains`` (list of str)
 
     Output Information
     -----------------
@@ -61,6 +96,9 @@ def mainSemanticConnection_v_0_0_1(ttl_file):
     - Empty ontology: When no named classes are found
     - Missing hierarchy: When no rdfs:subClassOf relationships are found
 
+    In every one of these cases the function logs the condition and returns
+    ``None`` rather than raising.
+
     Notes
     -----
     - Only considers explicitly declared classes and rdfs:subClassOf relationships
@@ -75,8 +113,20 @@ def mainSemanticConnection_v_0_0_1(ttl_file):
     Examples
     --------
     Basic usage:
-        python script.py ontology.ttl
+        mainSemanticConnection_v_0_0_1("ontology.ttl")
+
+    Suppress the tree view on a large ontology:
+        mainSemanticConnection_v_0_0_1("ontology.ttl", show="summary")
+
+    Read the score:
+        result = mainSemanticConnection_v_0_0_1("ontology.ttl")
+        print(f"Grounded chains: {result['connection_ratio']:.1%}")
     """
+
+    valid_show_options = ["all", "summary", "tree"]
+    if show not in valid_show_options:
+        logger.error(f"Invalid 'show' parameter. Must be one of {valid_show_options}")
+        return None
 
     g = Graph()
     try:
@@ -90,23 +140,23 @@ def mainSemanticConnection_v_0_0_1(ttl_file):
         g.parse(ttl_file, format="turtle")
     except FileNotFoundError:
         logger.error(f"The file '{ttl_file}' was not found.")
-        return
+        return None
     except Exception as e:
         logger.error(f"An error occurred while parsing the TTL file: {e}")
-        return
+        return None
 
     # Find all classes
     all_classes = _find_all_named_classes(g)
     if not all_classes:
         logger.info("No named classes found in the ontology.")
-        return
+        return None
 
     # Build hierarchy
     hierarchy, children_of = _build_class_hierarchy(g, all_classes)
-    
+
     if not hierarchy:
         logger.info("No class hierarchy relationships found in the ontology.")
-        return
+        return None
 
     # Analyze connections to higher level ontologies
     connection_status, root_classes = _analyze_hierarchy_connections(g, hierarchy, all_classes, children_of)
@@ -115,16 +165,19 @@ def mainSemanticConnection_v_0_0_1(ttl_file):
     classes_with_children = len([p for p in hierarchy.keys() if hierarchy[p]])
     total_relationships = sum(len(children) for children in hierarchy.values())
     connected_roots = sum(1 for status in connection_status.values() if status)
-    
+
+    # Guard against division by zero on an ontology with no root classes
+    connection_ratio = (connected_roots / len(root_classes)) if root_classes else 0.0
+
     logger.info(f"Hierarchy Statistics:")
     logger.info(f"Total classes: {len(all_classes)}")
     logger.info(f"Classes with children: {classes_with_children}")
     logger.info(f"Total parent-child relationships: {total_relationships}")
     logger.info(f"Root classes: {len(root_classes)}")
     logger.info(f"Root classes connected to higher ontologies (CCO/BFO): {connected_roots}/{len(root_classes)}")
+    logger.info(f"Connection ratio: {connection_ratio:.2%}")
 
-    # Show connection summary (overview stats)
-    logger.info(f"--- Connection Summary ---")
+    # Partition chains by connection status
     connected_chains = []
     disconnected_chains = []
 
@@ -135,19 +188,28 @@ def mainSemanticConnection_v_0_0_1(ttl_file):
         else:
             disconnected_chains.append(root_name)
 
-    if connected_chains:
-        logger.info(f"Hierarchy chains CONNECTED to higher ontologies ({len(connected_chains)}):")
-        for chain in connected_chains:
-            logger.info(f"  {chain}")
+    # Show connection summary (overview stats)
+    if show in ["summary", "all"]:
+        logger.info(f"--- Connection Summary ---")
 
-    if disconnected_chains:
-        logger.info(f"Hierarchy chains NOT CONNECTED to higher ontologies ({len(disconnected_chains)}):")
-        for chain in disconnected_chains:
-            logger.info(f"  {chain}")
+        if connected_chains:
+            logger.info(f"Hierarchy chains CONNECTED to higher ontologies ({len(connected_chains)}):")
+            for chain in connected_chains:
+                logger.info(f"  {chain}")
+
+        if disconnected_chains:
+            logger.info(f"Hierarchy chains NOT CONNECTED to higher ontologies ({len(disconnected_chains)}):")
+            for chain in disconnected_chains:
+                logger.info(f"  {chain}")
 
     # Display results in another format
-    #Other output forms can be displayed together with this only one by adding something like "both"
-    
+    #
+    # NOTE (v0.0.2): this block was previously indented inside the
+    # "if disconnected_chains:" branch above, which meant the tree view was
+    # only ever printed for an ontology that had at least one DISCONNECTED
+    # chain. A fully grounded ontology -- the passing case -- printed no tree
+    # at all. It is now at function scope and runs whenever requested.
+    if show in ["tree", "all"]:
         logger.info("--- Hierarchical Tree View with Connection Status ---")
 
         if root_classes:
@@ -162,3 +224,15 @@ def mainSemanticConnection_v_0_0_1(ttl_file):
                 if hierarchy[parent]:  # Only show parents that have children
                     _print_hierarchy_with_connection(g, parent, hierarchy, connection_status)
                     logger.info("")
+
+    return {
+        "connection_ratio": connection_ratio,
+        "total_classes": len(all_classes),
+        "root_classes": len(root_classes),
+        "connected_roots": connected_roots,
+        "disconnected_roots": len(root_classes) - connected_roots,
+        "classes_with_children": classes_with_children,
+        "total_relationships": total_relationships,
+        "connected_chains": connected_chains,
+        "disconnected_chains": disconnected_chains,
+    }
