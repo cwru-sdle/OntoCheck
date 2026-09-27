@@ -32,6 +32,9 @@ dependencies = [
   "nltk"
 ]
 
+[project.optional-dependencies]
+hermit = ["hermitpy"]
+
 [project.urls]
 "Homepage" = "https://github.com/cwru-sdle/OntoCheck"
 "Documentation" = "https://ontocheck.readthedocs.io/en/latest/"

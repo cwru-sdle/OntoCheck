@@ -29,6 +29,22 @@ pip install OntoCheck
 
 **Requirements:** Python 3.8 or later.
 
+### Optional OWL reasoning
+
+Benchmarks can classify a class hierarchy with [hermitpy](https://github.com/lamng3/hermitpy), a Python reasoner for a documented OWL fragment. Its [API reference](https://github.com/lamng3/hermitpy/blob/main/docs/index.html) lists `Reasoner`, the exceptions, and the supported OWL fragment. Install that package from a checkout next to this repository, then select the `hermit` inference profile:
+
+```bash
+pip install -e ../hermitpy
+```
+
+hermitpy is not published on PyPI yet. Install the local checkout above; the `hermit` extra in `pyproject.toml` only records that dependency name.
+
+```json
+"inference": { "profile": "hermit" }
+```
+
+Suites that use `none` or `graph_path` do not load hermitpy. The fragment covers subclass, equivalence, disjointness, complement, intersection, union, existential and universal restrictions, inverses, and transitive or symmetric object properties. Datatypes, cardinality, property chains, nominals, and SWRL raise an error instead of being ignored.
+
 ---
 
 ## How It Works

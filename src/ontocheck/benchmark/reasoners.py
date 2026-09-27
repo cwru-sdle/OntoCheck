@@ -201,9 +201,55 @@ class GraphPathReasoner:
         return answers
 
 
+class HermiTReasoner:
+    """Classify an ontology with the in-process hermitpy reasoner.
+
+    ``materialize`` copies the input graph and adds the direct
+    ``rdfs:subClassOf`` links from hermitpy. ``reason`` answers ``graph_path``
+    queries on that classified graph. Suites that do not select the ``hermit``
+    profile never import hermitpy.
+    """
+
+    name = "hermitpy-v1"
+
+    def materialize(self, graph: Graph) -> Graph:
+        """Return the graph plus the classified direct subclass hierarchy."""
+
+        pairs = self._reasoner(graph).direct_subclasses()
+        materialized = Graph()
+        for prefix, namespace in graph.namespaces():
+            materialized.bind(prefix, namespace)
+        for triple in graph:
+            materialized.add(triple)
+        for child, parent in pairs:
+            materialized.add((URIRef(child), RDFS.subClassOf, URIRef(parent)))
+        return materialized
+
+    def reason(self, case: BenchmarkCase, graph: Graph) -> List[ReasonerAnswer]:
+        """Answer a graph-path query against the classified hierarchy."""
+
+        if case.query.language != "graph_path":
+            raise ValueError(
+                "hermit reasoner currently answers graph_path queries "
+                "on the classified hierarchy"
+            )
+        return GraphPathReasoner().reason(case, self.materialize(graph))
+
+    def _reasoner(self, graph: Graph):
+        try:
+            from hermitpy import Reasoner as HermitPyReasoner
+        except ImportError as error:
+            raise UnsupportedReasoner(
+                "The hermit profile requires the hermitpy package. "
+                "Install the sibling project with pip install -e ../hermitpy."
+            ) from error
+        return HermitPyReasoner(graph)
+
+
 def default_reasoners() -> ReasonerRegistry:
     """Create the built-in reasoner registry."""
 
     registry = ReasonerRegistry()
     registry.register("graph_path", GraphPathReasoner())
+    registry.register("hermit", HermiTReasoner())
     return registry
