@@ -5,6 +5,7 @@ __pycache__/
 .pytest_cache/
 build/
 /src/ontocheck/tests.ipynb
+/src/ontocheck/__pycache__
 # Local contributor guidance and design notes
 /AGENTS.md
 /docs/designs/
