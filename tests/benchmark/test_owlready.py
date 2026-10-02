@@ -5,7 +5,12 @@ import unittest
 
 from rdflib import Graph, RDFS, URIRef
 
-from ontocheck.benchmark import OwlreadyReasoner, default_reasoners
+from ontocheck.benchmark import HermiTReasoner, OwlreadyReasoner, default_reasoners
+
+try:
+    import hermitpy
+except ImportError:  # pragma: no cover - optional dependency
+    hermitpy = None
 
 try:
     import owlready2
@@ -97,6 +102,58 @@ class OwlreadyReasonerTests(unittest.TestCase):
         )
         materialized = OwlreadyReasoner().materialize(graph)
         self.assertTrue(any(subj == URIRef(EX + "Adult") for subj, _, _ in materialized))
+
+    @unittest.skipUnless(hermitpy, "hermitpy")
+    def test_datatype_hierarchy_matches_hermitpy(self):
+        graphs = [
+            """
+            ex:Dog rdfs:subClassOf ex:Animal .
+            ex:Animal rdfs:subClassOf ex:Organism .
+            """,
+            """
+            ex:age a owl:DatatypeProperty .
+            ex:Adult rdfs:subClassOf [
+                a owl:Restriction ;
+                owl:onProperty ex:age ;
+                owl:someValuesFrom [
+                    a rdfs:Datatype ;
+                    owl:onDatatype xsd:integer ;
+                    owl:withRestrictions ( [ xsd:minInclusive 18 ] )
+                ]
+            ] .
+            """,
+            """
+            ex:age a owl:DatatypeProperty .
+            ex:Adult rdfs:subClassOf [
+                a owl:Restriction ;
+                owl:onProperty ex:age ;
+                owl:someValuesFrom [
+                    a rdfs:Datatype ;
+                    owl:onDatatype xsd:integer ;
+                    owl:withRestrictions ( [ xsd:minInclusive 18 ] )
+                ]
+            ] , [
+                a owl:Restriction ;
+                owl:onProperty ex:age ;
+                owl:allValuesFrom [
+                    a rdfs:Datatype ;
+                    owl:onDatatype xsd:integer ;
+                    owl:withRestrictions ( [ xsd:maxInclusive 10 ] )
+                ]
+            ] .
+            """,
+        ]
+        for turtle in graphs:
+            graph = graph_from(turtle)
+            self.assertEqual(_named_pairs(HermiTReasoner().materialize(graph)), _named_pairs(OwlreadyReasoner().materialize(graph)))
+
+
+def _named_pairs(graph: Graph):
+    return {
+        (str(subj), str(obj))
+        for subj, pred, obj in graph
+        if pred == RDFS.subClassOf and isinstance(subj, URIRef) and isinstance(obj, URIRef)
+    }
 
 
 if __name__ == "__main__":

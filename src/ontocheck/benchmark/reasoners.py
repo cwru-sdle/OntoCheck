@@ -377,7 +377,14 @@ def _pairs_from_world(world) -> List[Tuple[str, str]]:
             parent_iri = _named_class_iri(parent)
             if parent_iri:
                 pairs.add((child, parent_iri))
-    return sorted(pairs)
+    nothing = str(OWL.Nothing)
+    thing = str(OWL.Thing)
+    unsatisfiable = {child for child, parent in pairs if parent == nothing}
+    return sorted(
+        pair
+        for pair in pairs
+        if not (pair[0] in unsatisfiable and pair[1] == thing)
+    )
 
 
 def _named_class_iri(entity) -> Optional[str]:
