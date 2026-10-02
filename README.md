@@ -29,6 +29,17 @@ pip install OntoCheck
 
 **Requirements:** Python 3.8 or later.
 
+### Optional OWL reasoning
+
+```bash
+git clone https://github.com/lamng3/hermitpy.git ../hermitpy
+pip install -e ../hermitpy
+```
+
+```json
+"inference": { "profile": "hermit" }
+```
+
 ---
 
 ## How It Works
