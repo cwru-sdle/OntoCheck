@@ -401,10 +401,21 @@ def _individuals(g):
         Mapping from individual to the set of its asserted named types.
         An individual is any subject typed ``owl:NamedIndividual`` or typed
         with a class declared in the graph.
+
+    Notes
+    -----
+    Punned IRIs -- declared as a class or property *and* as an individual
+    (OOPS! P01) -- are excluded.  They are schema terms, not instance data,
+    and counting them made a TBox-only file look like it carried an ABox.
     """
     classes = {s for t in (OWL.Class, RDFS.Class) for s in g.subjects(RDF.type, t)}
+    schema = classes | {s for t in (OWL.ObjectProperty, OWL.DatatypeProperty,
+                                    OWL.AnnotationProperty, RDF.Property)
+                        for s in g.subjects(RDF.type, t)}
     out = {}
     for s, t in g.subject_objects(RDF.type):
+        if s in schema:
+            continue
         if t == OWL.NamedIndividual or t in classes:
             out.setdefault(s, set())
             if t in classes:
@@ -604,6 +615,100 @@ def _reasoner_available():
     return shutil.which("java") is not None
 
 
+# Datatypes in the OWL 2 datatype map (OWL 2 Structural Specification, 4).
+# HermiT rejects any other datatype, e.g. xsd:date or xsd:gYear.
+_XSD_NS = "http://www.w3.org/2001/XMLSchema#"
+OWL2_DATATYPES = {URIRef(_XSD_NS + n) for n in (
+    "decimal", "integer", "nonNegativeInteger", "nonPositiveInteger",
+    "positiveInteger", "negativeInteger", "long", "int", "short", "byte",
+    "unsignedLong", "unsignedInt", "unsignedShort", "unsignedByte", "double",
+    "float", "string", "normalizedString", "token", "language", "Name",
+    "NCName", "NMTOKEN", "boolean", "hexBinary", "base64Binary", "anyURI",
+    "dateTime", "dateTimeStamp")} | {
+    URIRef("http://www.w3.org/2002/07/owl#real"),
+    URIRef("http://www.w3.org/2002/07/owl#rational"),
+    RDF.PlainLiteral, RDF.XMLLiteral, RDF.langString, RDFS.Literal}
+
+
+def _relax_datatypes(g):
+    """
+    Replace datatypes outside the OWL 2 datatype map by ``rdfs:Literal``.
+
+    Parameters
+    ----------
+    g : rdflib.Graph
+        Graph to modify in place.
+
+    Returns
+    -------
+    list of str
+        The datatype IRIs that were relaxed, sorted.
+
+    Notes
+    -----
+    Affects XSD types such as ``xsd:date``, ``xsd:time`` and ``xsd:gYear``,
+    undeclared datatypes used as the range of a datatype property (e.g. a
+    mistyped XSD namespace), and typed literals of either.  Only datatype
+    reasoning is weakened; class and property reasoning, which P31 relies
+    on, is unaffected.
+    """
+    data_props = set(g.subjects(RDF.type, OWL.DatatypeProperty))
+    declared = set(g.subjects(RDF.type, RDFS.Datatype))
+    relaxed = set()
+    for s, p, o in list(g):
+        if isinstance(o, Literal) and o.datatype is not None \
+                and o.datatype not in OWL2_DATATYPES and o.datatype not in declared:
+            relaxed.add(str(o.datatype))
+            g.remove((s, p, o))
+            g.add((s, p, Literal(str(o))))
+        elif isinstance(o, URIRef) and o not in OWL2_DATATYPES and o not in declared and (
+                str(o).startswith(_XSD_NS)
+                or (p == RDFS.range and s in data_props)):
+            relaxed.add(str(o))
+            g.remove((s, p, o))
+            g.add((s, p, RDFS.Literal))
+    return sorted(relaxed)
+
+
+def _declare_untyped_classes(g):
+    """
+    Declare as ``owl:Class`` the untyped IRIs that are used as classes.
+
+    Parameters
+    ----------
+    g : rdflib.Graph
+        Graph to modify in place.
+
+    Returns
+    -------
+    list of str
+        The IRIs that were declared, sorted.
+
+    Notes
+    -----
+    An IRI used as an ``rdfs:domain``, an ``rdfs:subClassOf`` term, or the
+    range or restriction filler of an object property, but never typed (OOPS!
+    P34), is ambiguous to the OWL API: in a data-property axiom it can be
+    read as a datatype, which HermiT then rejects.  Declaring it as a class
+    is the repair P34 recommends and leaves the ontology's meaning intact.
+    """
+    typed = set(g.subjects(RDF.type, None))
+    obj_props = set(g.subjects(RDF.type, OWL.ObjectProperty))
+    used = set(g.objects(None, RDFS.domain)) | set(g.objects(None, RDFS.subClassOf)) \
+        | set(g.subjects(RDFS.subClassOf, None))
+    used |= {o for s, o in g.subject_objects(RDFS.range) if s in obj_props}
+    for r in g.subjects(RDF.type, OWL.Restriction):
+        if g.value(r, OWL.onProperty) in obj_props:
+            used |= {g.value(r, p) for p in (OWL.someValuesFrom, OWL.allValuesFrom,
+                                              OWL.onClass)}
+    declared = sorted(str(u) for u in used
+                      if isinstance(u, URIRef) and u not in typed
+                      and not str(u).startswith((str(OWL), str(RDFS), str(RDF), _XSD_NS)))
+    for u in declared:
+        g.add((URIRef(u), RDF.type, OWL.Class))
+    return declared
+
+
 @lru_cache(maxsize=16)
 def _run_reasoner(ttl_file):
     """
@@ -621,12 +726,16 @@ def _run_reasoner(ttl_file):
         Otherwise a dict with ``consistent`` (bool), ``unsatisfiable``
         (sorted list of class IRIs) and ``equivalent_sets`` (list of sorted
         lists of named class IRIs that the reasoner places in one
-        equivalence set, including asserted equivalences).
+        equivalence set, including asserted equivalences),
+        ``relaxed_datatypes`` (see :func:`_relax_datatypes`) and
+        ``declared_untyped_classes`` (see :func:`_declare_untyped_classes`).
 
     Notes
     -----
     The Turtle file is re-serialised to N-Triples because ``owlready2`` does
-    not parse Turtle.  Results are cached per path.
+    not parse Turtle.  Datatypes HermiT cannot handle are relaxed to
+    ``rdfs:Literal`` and untyped IRIs used as classes are declared first.
+    Results are cached per path.
     """
     if not _reasoner_available():
         return None
@@ -638,6 +747,12 @@ def _run_reasoner(ttl_file):
     except Exception as e:
         logger.error(f"Reasoner input could not be parsed: {e}")
         return None
+    relaxed = _relax_datatypes(g)
+    if relaxed:
+        logger.info(f"Datatypes relaxed for HermiT: {relaxed}")
+    untyped = _declare_untyped_classes(g)
+    if untyped:
+        logger.info(f"Untyped classes declared for HermiT: {untyped}")
     fd, path = tempfile.mkstemp(suffix=".nt")
     os.close(fd)
     try:
@@ -651,7 +766,8 @@ def _run_reasoner(ttl_file):
                 )
         except owlready2.OwlReadyInconsistentOntologyError:
             return {"consistent": False, "unsatisfiable": [],
-                    "equivalent_sets": []}
+                    "equivalent_sets": [], "relaxed_datatypes": relaxed,
+                    "declared_untyped_classes": untyped}
         unsat = sorted(c.iri for c in world.inconsistent_classes()
                        if hasattr(c, "iri"))
         eq_sets = set()
@@ -661,9 +777,13 @@ def _run_reasoner(ttl_file):
             if equivs:
                 eq_sets.add(tuple(sorted(equivs | {c.iri})))
         return {"consistent": True, "unsatisfiable": unsat,
-                "equivalent_sets": sorted(list(s) for s in eq_sets)}
+                "equivalent_sets": sorted(list(s) for s in eq_sets),
+                "relaxed_datatypes": relaxed,
+                "declared_untyped_classes": untyped}
     except Exception as e:
-        logger.error(f"Reasoning failed: {type(e).__name__}: {e}")
+        lines = [ln for ln in str(e).splitlines() if ln.strip()]
+        reason = next((ln for ln in lines if "Exception" in ln), lines[0] if lines else "")
+        logger.warning(f"Reasoning failed ({type(e).__name__}): {reason.strip()[:300]}")
         return None
     finally:
         try:
@@ -738,20 +858,38 @@ def _parse_rdf_response(response):
     -------
     rdflib.Graph or None
         The parsed graph when the response carried a recognised RDF media
-        type (or parsed as one) and was non-empty; otherwise ``None``.
+        type (or an untyped body that parses as RDF) and was non-empty;
+        otherwise ``None``.
+
+    Notes
+    -----
+    HTML is never parsed.  A server that answers an RDF request with an HTML
+    page (common for static documentation hosts) must count as "no RDF".
+    Feeding HTML to the lenient Turtle parser yields junk triples such as
+    ``<file:///cwd/!DOCTYPE html>``, which earlier made CN1, URI1, URI2 and
+    P37 report RDF as available when it was not.  Relative IRIs are resolved
+    against the response URL, not the working directory.
     """
     text = response.get("text")
     if not text:
         return None
-    formats = []
-    ct = response.get("content_type")
+    ct = response.get("content_type") or ""
+    head = text.lstrip()[:200].lower()
+    if ct in ("text/html", "application/xhtml+xml") or head.startswith(
+            ("<!doctype html", "<html")):
+        return None
     if ct in RDF_MEDIA_TYPES:
-        formats.append(RDF_MEDIA_TYPES[ct])
-    formats += [f for f in ("turtle", "xml", "json-ld", "nt") if f not in formats]
+        formats = [RDF_MEDIA_TYPES[ct]]
+    elif ct in ("", "text/plain", "application/octet-stream", "application/xml",
+                "text/xml", "application/json"):
+        formats = ["turtle", "xml", "json-ld", "nt"]
+    else:
+        return None
+    base = response.get("final_url") or None
     for fmt in formats:
         g = Graph()
         try:
-            g.parse(data=text, format=fmt)
+            g.parse(data=text, format=fmt, publicID=base)
             if len(g):
                 return g
         except Exception:

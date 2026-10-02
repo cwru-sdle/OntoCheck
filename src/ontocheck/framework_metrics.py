@@ -576,3 +576,231 @@ def print_metric_catalogue():
             )
             print(f"  {'':<34} {d.description}")
         print()
+
+
+# ---------------------------------------------------------------------------
+# One-call report over all three frameworks
+# ---------------------------------------------------------------------------
+
+_FRAMEWORK_ORDER = ("OOPS!", "FOOPS!", "OQuaRE")
+_FOOPS_ORDER = ("CN1", "DOC1", "FIND1", "FIND2", "FIND3", "FIND_3_BIS", "HTTP1",
+                "OM1", "OM2", "OM3", "OM4.1", "OM4.2", "OM5.1", "OM5.2", "PURL1",
+                "RDF1", "URI1", "URI2", "VER1", "VER2", "VOC1", "VOC2", "VOC3",
+                "VOC4")
+
+
+def _report_sort_key(metric_id):
+    """
+    Sort key placing metrics in catalogue order within each framework.
+
+    Parameters
+    ----------
+    metric_id : str
+        Registry identifier.
+
+    Returns
+    -------
+    tuple
+        ``(framework position, position within the framework's catalogue)``.
+    """
+    d = METRIC_REGISTRY[metric_id]
+    fw = _FRAMEWORK_ORDER.index(d.source_framework.value) \
+        if d.source_framework.value in _FRAMEWORK_ORDER else len(_FRAMEWORK_ORDER)
+    sid = d.source_id.replace("-T", "")
+    pos = _FOOPS_ORDER.index(sid) if sid in _FOOPS_ORDER else sid
+    return (fw, f"{pos:03d}" if isinstance(pos, int) else pos)
+
+
+def _short(term):
+    """
+    Return a compact form of an affected element for display.
+
+    Parameters
+    ----------
+    term : object
+        Usually an IRI string.
+
+    Returns
+    -------
+    str
+        The local name of an IRI (text after the last ``#`` or ``/``), or the
+        string form of anything else.
+    """
+    s = str(term)
+    for sep in ("#", "/"):
+        if sep in s.rstrip(sep):
+            s = s.rstrip(sep).rsplit(sep, 1)[-1]
+    return s
+
+
+def framework_report(ttl_file, frameworks=None, allow_network=True, has_abox=None,
+                     has_reasoner=False, questions=None, domain_prefixes=None,
+                     domain_ns_fragments=None, max_examples=3, output_csv=None,
+                     split=True):
+    """
+    Run the OOPS!, FOOPS! and OQuaRE metrics and return a readable table.
+
+    One row per metric, in catalogue order, with the metric's name, what it
+    measures, its score, its outcome and -- when it did not pass -- the
+    reason, including a few of the affected elements.  By default the rows
+    are returned as three tables, one per framework.
+
+    Definitions
+    -----------
+    - result: ``"pass"`` or ``"fail"`` for OOPS! and FOOPS! checks;
+      ``"grade k/5"`` for OQuaRE metrics, using the static scale;
+      ``"skipped"`` when a requirement (network, instance data, competency
+      questions) is unmet; ``"error"`` when the metric raised.
+
+    - reason: empty for passing checks.  Otherwise the metric's own message,
+      followed by up to *max_examples* affected elements, or the skip/error
+      status.  For OQuaRE metrics it states how the value was computed.
+
+    Source
+    ------
+    OntoCheck (SDLE Research Center, Case Western Reserve University).
+    Metric definitions: OOPS! (https://oops.linkeddata.es/catalogue.jsp),
+    FOOPS! (https://w3id.org/foops/catalog), OQuaRE (Duque-Ramos et al.
+    2011, 2016).
+
+    Version: 0.0.1
+
+    Parameters
+    ----------
+    ttl_file : str or pathlib.Path
+        Path to the ontology Turtle (.ttl) file.
+    frameworks : list of str or None, optional
+        Restrict to some of ``"OOPS!"``, ``"FOOPS!"``, ``"OQuaRE"``.
+        ``None`` runs all three (83 metrics).
+    allow_network : bool, optional
+        Whether network tests may make HTTP requests.  Default ``True``.
+    has_abox : bool or None, optional
+        Whether the file contains instance data.  ``None`` (default) detects
+        it: individuals that are not also declared as classes or properties.
+    has_reasoner : bool, optional
+        Passed through to the registry's requirement check.  No metric
+        currently requires it; OOPS! P31 uses HermiT when available.
+    questions : str, pathlib.Path, list of str, or None, optional
+        Competency questions for OOPS! P09.  Skipped when ``None``.
+    domain_prefixes : list of str or None, optional
+        SPARQL prefixes marking domain terms in *questions*.
+    domain_ns_fragments : list of str or None, optional
+        Namespace fragments restricting the ontology's domain terms.
+    max_examples : int, optional
+        Number of affected elements quoted in ``reason``.  Default 3.
+    output_csv : str or pathlib.Path or None, optional
+        When given, the results are also written to CSV.  With
+        ``split=True`` one file per framework is written, named
+        ``<stem>_OOPS.csv``, ``<stem>_FOOPS.csv`` and ``<stem>_OQuaRE.csv``.
+    split : bool, optional
+        ``True`` (default) returns one table per framework; ``False``
+        returns a single table with the framework in the ``metric`` column.
+
+    Returns
+    -------
+    dict of str to pandas.DataFrame, or pandas.DataFrame
+        With ``split=True``: ``{"OOPS!": df, "FOOPS!": df, "OQuaRE": df}``,
+        containing only the frameworks that were run.  Each table has
+        columns ``metric``, ``description``, ``score``, ``result`` and
+        ``reason`` and is indexed by registry identifier.  With
+        ``split=False``: one such table for all metrics.  In both cases the
+        full :class:`~ontocheck.metric_registry.MetricResult` objects are
+        available as ``df.attrs["results"]`` (a dict keyed by identifier)
+        for drilling into ``affected`` and ``detail``.
+
+    Output Information
+    ------------------
+    - One row per metric; nothing is printed.
+
+    Error Handling
+    --------------
+    - A metric that raises is reported with ``result == "error"`` and the
+      exception in ``reason``; the remaining metrics still run.
+    - ``ImportError`` is raised if pandas is not installed.
+
+    Examples
+    --------
+    >>> tables = framework_report("XRD.ttl", allow_network=False)  # doctest: +SKIP
+    >>> tables["OOPS!"][tables["OOPS!"].result == "fail"]          # doctest: +SKIP
+    >>> tables["OQuaRE"]                                           # doctest: +SKIP
+    >>> r = tables["OOPS!"].attrs["results"]["oopsP08MissingAnnotations"]  # doctest: +SKIP
+    >>> r.affected                                                 # doctest: +SKIP
+    """
+    try:
+        import pandas as pd
+    except ImportError as e:
+        raise ImportError("framework_report requires pandas "
+                          "(pip install pandas)") from e
+
+    if has_abox is None:
+        from rdflib import Graph
+        from .helpers.semantic_helpers import _individuals
+        g = Graph()
+        g.parse(str(ttl_file), format="turtle")
+        has_abox = bool(_individuals(g))
+
+    results = run_framework_metrics(
+        str(ttl_file), frameworks=frameworks, allow_network=allow_network,
+        has_abox=has_abox, has_reasoner=has_reasoner, questions=questions,
+        domain_prefixes=domain_prefixes if questions else None,
+        domain_ns_fragments=domain_ns_fragments,
+    )
+    by_id = {r.metric_id: r for r in results}
+
+    rows = []
+    for mid in sorted(by_id, key=_report_sort_key):
+        r, d = by_id[mid], METRIC_REGISTRY[mid]
+        sid = d.source_id.replace("-T", "")
+        grade = (r.detail or {}).get("static_scale")
+        if r.status.startswith("Skipped"):
+            result, reason = "skipped", r.status
+        elif r.status.startswith("Error"):
+            result, reason = "error", r.status
+        elif d.source_framework == SourceFramework.OQUARE:
+            result = f"grade {grade}/5" if grade is not None else "scored"
+            reason = r.message
+        elif r.passed:
+            result, reason = "pass", ""
+        else:
+            result = "fail"
+            named = [a for a in (r.affected or []) if not str(a).startswith("<")]
+            examples = [_short(a) for a in named[:max_examples]]
+            more = len(named) - len(examples)
+            reason = r.message
+            if examples and not any(e in reason for e in examples):
+                reason += "; e.g. " + ", ".join(examples) + \
+                    (f" (+{more} more)" if more > 0 else "")
+        rows.append({
+            "metric_id": mid,
+            "framework": d.source_framework.value,
+            "metric": (f"{sid} - {d.name}" if split
+                       else f"{d.source_framework.value} {sid} - {d.name}"),
+            "description": d.description,
+            "score": r.score,
+            "result": result,
+            "reason": reason,
+        })
+
+    df = pd.DataFrame(rows).set_index("metric_id")
+
+    if not split:
+        df = df.drop(columns="framework")
+        df.attrs["results"] = by_id
+        df.attrs["ontology"] = str(ttl_file)
+        if output_csv:
+            df.to_csv(output_csv)
+        return df
+
+    from pathlib import Path
+    tables = {}
+    for fw in _FRAMEWORK_ORDER:
+        part = df[df["framework"] == fw].drop(columns="framework")
+        if part.empty:
+            continue
+        part.attrs["results"] = {k: by_id[k] for k in part.index}
+        part.attrs["ontology"] = str(ttl_file)
+        tables[fw] = part
+        if output_csv:
+            out = Path(output_csv)
+            part.to_csv(out.with_name(f"{out.stem}_{fw.rstrip('!')}{out.suffix or '.csv'}"))
+    return tables

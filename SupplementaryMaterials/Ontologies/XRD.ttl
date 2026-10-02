@@ -8,11 +8,6 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-mds: a owl:Ontology ;
-    rdfs:label "MDS Neural Network Modeling Ontology"@en ;
-    rdfs:comment "An ontology for neural network modeling and training processes based on Common Core Ontology"@en ;
-    owl:imports <http://www.ontologyrepository.com/CommonCoreOntologies/> .
-
 mds:APS_1ID a owl:Class ;
     rdfs:label "APS 1-ID Beamline" ;
     rdfs:subClassOf mds:Beamline ;

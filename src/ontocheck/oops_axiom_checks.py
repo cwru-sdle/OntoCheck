@@ -1423,7 +1423,11 @@ def oops_p31_wrong_equivalent_classes_v_0_0_1(ttl_file):
                 "unsatisfiable_participants": unsat_part,
                 "collapsed_sets": collapsed,
                 "reasoner": reasoned is not None,
-                "consistent": consistent, "heuristic": True},
+                "consistent": consistent,
+                "relaxed_datatypes": (reasoned or {}).get("relaxed_datatypes", []),
+                "declared_untyped_classes": (reasoned or {}).get(
+                    "declared_untyped_classes", []),
+                "heuristic": True},
         message=(f"{len(affected)} class(es) implicated in wrong "
                  f"equivalences" if affected
                  else "No wrong equivalent classes detected"
