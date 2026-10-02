@@ -4,6 +4,7 @@ from .evaluators import EvaluatorRegistry, default_registry
 from .reasoners import (
     GraphPathReasoner,
     HermiTReasoner,
+    OwlreadyReasoner,
     MaterializingReasoner,
     Reasoner,
     ReasonerAnswer,
@@ -35,6 +36,7 @@ __all__ = [
     "EvaluatorRegistry",
     "GraphPathReasoner",
     "HermiTReasoner",
+    "OwlreadyReasoner",
     "MaterializingReasoner",
     "Reasoner",
     "ReasonerAnswer",
