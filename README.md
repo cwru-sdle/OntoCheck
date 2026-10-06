@@ -40,6 +40,16 @@ pip install -e ../hermitpy
 "inference": { "profile": "hermit" }
 ```
 
+Owlready2 runs the Java HermiT reasoner. `java -version` must work. A `JAVA_EXE` path is not required when Java is on `PATH`.
+
+```bash
+pip install owlready2
+```
+
+```json
+"inference": { "profile": "owlready" }
+```
+
 ---
 
 ## How It Works
