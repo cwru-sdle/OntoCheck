@@ -21,6 +21,15 @@ from .models import (
     ProvenanceSpec,
     SuiteResult,
 )
+from .impact import (
+    ImpactReport,
+    ImpactRow,
+    assess_impact,
+    ontology_concepts,
+    ontology_relations,
+    remove_concept,
+    remove_relation,
+)
 from .runner import BenchmarkRunner, run_suite
 
 __all__ = [
@@ -35,16 +44,23 @@ __all__ = [
     "EvaluatorRegistry",
     "GraphPathReasoner",
     "HermiTReasoner",
+    "ImpactReport",
+    "ImpactRow",
     "MaterializingReasoner",
     "Reasoner",
     "ReasonerAnswer",
     "ReasonerRegistry",
     "ProvenanceSpec",
     "SuiteResult",
+    "assess_impact",
     "default_reasoners",
     "default_registry",
     "load_suite",
+    "ontology_concepts",
+    "ontology_relations",
     "parse_suite",
+    "remove_concept",
+    "remove_relation",
     "run_suite",
     "write_result",
 ]
