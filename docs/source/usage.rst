@@ -35,7 +35,7 @@ Run one or more task-agnostic metrics on an ontology.
 .. code-block:: bash
 
    # Run two specific metrics
-   ontocheck my_ontology.ttl --metrics altLabelCheck definitionCheck
+   ontocheck my_ontology.ttl --metrics altLabelCheck classConnections
 
    # Run all available metrics with custom output paths
    ontocheck my_ontology.ttl --metrics all --log-file results.log --csv-file results.csv
@@ -80,7 +80,7 @@ invocation.
    ontocheck my_ontology.ttl \
        --questions competency_questions.json \
        --domain-prefixes mds \
-       --metrics checkLabel definitionCheck
+       --metrics altLabelCheck semanticConnection
 
 Cross-Domain
 ^^^^^^^^^^^^^
@@ -156,7 +156,7 @@ more task-agnostic metrics on a Turtle file.
    # Run selected metrics
    run_assessment(
        ttl_file="my_ontology.ttl",
-       metrics=["altLabelCheck", "isolatedElements", "semanticConnection"],
+       metrics=["altLabelCheck", "classConnections", "semanticConnection"],
        output_log_file="assessment.log",
        output_csv_file="scores.csv",
    )
@@ -202,7 +202,7 @@ Run task-agnostic metrics alongside the task-based assessment.
        ttl_files="my_ontology.ttl",
        questions="competency_questions.json",
        domain_prefixes=["mds"],
-       metrics=["checkLabel", "definitionCheck"],
+       metrics=["altLabelCheck", "semanticConnection"],
    )
 
 Cross-Domain Assessment
@@ -288,18 +288,32 @@ The following metric names can be passed to the ``--metrics`` CLI argument
 or the ``metrics`` parameter of ``run_assessment``:
 
 **Labeling:**
-``checkLabel``, ``altLabelCheck``, ``definitionCheck``
+``altLabelCheck``
 
 **Structural:**
-``isolatedElements``, ``classConnections``, ``missingDomainRange``,
-``leafNodeCheck``, ``semanticConnection``
+``classConnections``, ``leafNodeCheck``, ``semanticConnection``
 
 **Accessibility:**
-``sparqlEndpoint``, ``rdfDump``, ``humanLicense``, ``externalLinks``
+``sparqlEndpoint``, ``rdfDump``, ``externalLinks``
 
 **Naming Convention:**
-``classCapitalCheck``, ``classSpaceCheck``, ``spellCheck``,
-``duplicateLabels``, ``searchClass``
+``classCapitalCheck``, ``classSpaceCheck``, ``spellCheck``, ``searchClass``
+
+Label and definition coverage, isolated elements, missing domains and
+ranges, licensing and duplicate labels are covered by the OOPS! and FOOPS!
+metrics (``--oops``, ``--foops``); run ``ontocheck --list-metrics`` for the
+full catalogue.
+
+Context-Weighted Scores
+-----------------------
+
+When competency questions are supplied, or the input carries instance data,
+framework metric results are also reported weighted by context, in
+``Unweighted`` and ``Weighted`` columns side by side.  Query terms are
+matched to ontology entities and weight spreads to what the answers depend
+on (subclasses, the domain and range classes of the properties used, and,
+with decay, superclasses); classes with more instances weigh more.  See
+:mod:`ontocheck.context_weighting`.
 
 OntoCheck is Built for the Community
 -------------------------------------

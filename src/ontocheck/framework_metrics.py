@@ -391,11 +391,11 @@ def summarise_results(results):
     }
 
 
-def write_extended_csv(results, output_csv_file):
+def write_extended_csv(results, output_csv_file, normalized=None):
     """
     Write framework results to an extended CSV.
 
-    Version: 0.0.1
+    Version: 0.0.2
 
     Parameters
     ----------
@@ -403,6 +403,10 @@ def write_extended_csv(results, output_csv_file):
         Results to write.
     output_csv_file : str or pathlib.Path
         Destination path.
+    normalized : list of NormalizedMetric or None, optional
+        Context-weighted results, one per entry of *results*, as returned by
+        :func:`~ontocheck.context_weighting.normalize_results`.  When given,
+        ``Unweighted`` and ``Weighted`` columns are added side by side.
 
     Returns
     -------
@@ -422,11 +426,13 @@ def write_extended_csv(results, output_csv_file):
         "Metric", "Framework", "SourceID", "Severity", "Score", "Passed",
         "Affected", "TotalExamined", "Message", "Status",
     ]
+    if normalized is not None:
+        fieldnames[5:5] = ["Unweighted", "Weighted"]
     try:
         with open(output_csv_file, "w", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
-            for result in results:
+            for i, result in enumerate(results):
                 descriptor = METRIC_REGISTRY.get(result.metric_id)
                 row = result.to_extended_row()
                 row["Framework"] = (
@@ -436,12 +442,28 @@ def write_extended_csv(results, output_csv_file):
                 row["Severity"] = (
                     descriptor.severity.value if descriptor else ""
                 )
+                if normalized is not None:
+                    # A file without context: weighting leaves scores as-is.
+                    n = normalized[i]
+                    row["Unweighted"] = _cell(
+                        n.unweighted_score if n else result.score)
+                    row["Weighted"] = _cell(
+                        n.display_weighted if n else result.score)
                 writer.writerow(row)
         logger.info(f"--- Wrote framework results to {output_csv_file} ---")
         return True
     except OSError as e:
         logger.error(f"Failed to write {output_csv_file}: {e}")
         return False
+
+
+def _cell(value):
+    """Format a score for a CSV cell: floats to four places, None as N/A."""
+    if value is None:
+        return "N/A"
+    if isinstance(value, float):
+        return round(value, 4)
+    return value
 
 
 def add_cli_arguments(parser):
@@ -636,7 +658,7 @@ def _short(term):
 def framework_report(ttl_file, frameworks=None, allow_network=True, has_abox=None,
                      has_reasoner=False, questions=None, domain_prefixes=None,
                      domain_ns_fragments=None, max_examples=3, output_csv=None,
-                     split=True):
+                     split=True, weighting=True):
     """
     Run the OOPS!, FOOPS! and OQuaRE metrics and return a readable table.
 
@@ -695,6 +717,11 @@ def framework_report(ttl_file, frameworks=None, allow_network=True, has_abox=Non
     split : bool, optional
         ``True`` (default) returns one table per framework; ``False``
         returns a single table with the framework in the ``metric`` column.
+    weighting : bool, optional
+        When ``True`` (default) and there is a context -- competency
+        *questions*, instance data, or both -- ``unweighted`` and ``weighted``
+        columns are added next to ``score``.  See
+        :mod:`ontocheck.context_weighting`.
 
     Returns
     -------
@@ -702,7 +729,8 @@ def framework_report(ttl_file, frameworks=None, allow_network=True, has_abox=Non
         With ``split=True``: ``{"OOPS!": df, "FOOPS!": df, "OQuaRE": df}``,
         containing only the frameworks that were run.  Each table has
         columns ``metric``, ``description``, ``score``, ``result`` and
-        ``reason`` and is indexed by registry identifier.  With
+        ``reason`` (plus ``unweighted`` and ``weighted`` when weighted) and
+        is indexed by registry identifier.  With
         ``split=False``: one such table for all metrics.  In both cases the
         full :class:`~ontocheck.metric_registry.MetricResult` objects are
         available as ``df.attrs["results"]`` (a dict keyed by identifier)
@@ -746,6 +774,11 @@ def framework_report(ttl_file, frameworks=None, allow_network=True, has_abox=Non
         domain_ns_fragments=domain_ns_fragments,
     )
     by_id = {r.metric_id: r for r in results}
+    weighted = {}
+    if weighting and (questions is not None or has_abox):
+        from .context_weighting import build_context, normalize_results
+        ctx = build_context(ttl_file, questions, use_instances=has_abox)
+        weighted = {n.metric_id: n for n in normalize_results(results, ctx)}
 
     rows = []
     for mid in sorted(by_id, key=_report_sort_key):
@@ -777,6 +810,9 @@ def framework_report(ttl_file, frameworks=None, allow_network=True, has_abox=Non
                        else f"{d.source_framework.value} {sid} - {d.name}"),
             "description": d.description,
             "score": r.score,
+            **({"unweighted": weighted[mid].unweighted_score,
+                "weighted": weighted[mid].display_weighted}
+               if weighted else {}),
             "result": result,
             "reason": reason,
         })

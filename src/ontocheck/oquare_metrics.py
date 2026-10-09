@@ -708,11 +708,11 @@ def oquare_anonto_v_0_0_1(ttl_file):
 
     Notes
     -----
-    Relates to, but does not duplicate, the existing ``checkLabel``,
-    ``altLabelCheck`` and ``definitionCheck`` metrics.  Those report the
-    *proportion of classes* carrying an annotation; ANOnto reports the *mean
-    number* of annotations per class, so an ontology in which every class has
-    exactly one label scores 1.0 here and 100% there.
+    Relates to, but does not duplicate, FOOPS! VOC3-T and VOC4-T and the
+    ``altLabelCheck`` metric.  Those report the *proportion of terms* carrying
+    an annotation; ANOnto reports the *mean number* of annotations per class,
+    so an ontology in which every class has exactly one label scores 1.0 here
+    and 100% there.
 
     Examples
     --------
@@ -775,8 +775,7 @@ def oquare_aronto_v_0_0_1(ttl_file):
 
     Notes
     -----
-    Complementary to the existing ``missingDomainRange`` metric, which lists
-    the offending properties.  AROnto expresses the same underlying fact as a
+    Complementary to OOPS! P11, which lists the offending properties.  AROnto expresses the same underlying fact as a
     ratio suitable for the OQuaRE quality aggregation.
 
     Examples

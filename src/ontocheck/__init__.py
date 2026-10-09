@@ -1,13 +1,8 @@
 from .altLabelCheck import mainAltLabelCheck_v_0_0_1
 from .check_external_data_provider_links_ttl import check_external_data_provider_links_ttl
-from .check_for_isolated_elements import check_for_isolated_elements
-from .check_human_readable_license_ttl import check_human_readable_license_ttl
 from .check_rdf_dump_accessibility_ttl import check_rdf_dump_accessibility_ttl
 from .check_sparql_accessibility_ttl import check_sparql_accessibility_ttl
 from .count_class_connected_components import count_class_connected_components
-from .defCheck import mainDefCheck_v_0_0_1
-from .find_duplicate_labels_from_graph import find_duplicate_labels_from_graph
-from .get_properties_missing_domain_and_range import get_properties_missing_domain_and_range
 from .leafNodeCheck import mainLeafNodeCheck_v_0_0_1
 from .semanticConnection import mainSemanticConnection_v_0_0_1
 from .mds_design_check import mds_design_check_v_0_0_1
@@ -16,7 +11,6 @@ from .run_assessment import run_assessment
 from .task_based_metric import task_based_metric_v_0_0_1
 from .check_class_name_capital import mainClassNameCapitalCheck_v_0_0_1
 from .check_class_name_space import mainClassNameSpaceCheck_v_0_0_1
-from .check_label import mainLabelCheck_v_0_0_1
 from .class_search import mainClassSearch_v_0_0_1
 from .nlp_json import build_question_json
 
@@ -167,21 +161,15 @@ from .oquare_metrics import (
 __all__ = [
     "mainAltLabelCheck_v_0_0_1",
     "check_external_data_provider_links_ttl",
-    "check_for_isolated_elements",
-    "check_human_readable_license_ttl",
     "check_rdf_dump_accessibility_ttl",
     "check_sparql_accessibility_ttl",
     "count_class_connected_components",
-    "mainDefCheck_v_0_0_1",
-    "find_duplicate_labels_from_graph",
-    "get_properties_missing_domain_and_range",
     "mainLeafNodeCheck_v_0_0_1",
     "mainSemanticConnection_v_0_0_1",
     "mds_design_check_v_0_0_1",
     "spell_check_v_0_0_1",
     "mainClassNameCapitalCheck_v_0_0_1",
     "mainClassNameSpaceCheck_v_0_0_1",
-    "mainLabelCheck_v_0_0_1",
     "mainClassSearch_v_0_0_1",
     "run_assessment",
     "task_based_metric_v_0_0_1",
