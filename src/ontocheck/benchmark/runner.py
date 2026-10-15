@@ -57,13 +57,27 @@ class BenchmarkRunner:
             raise ValueError("At least one ontology file is required")
 
         graph = Graph()
-        for prefix, uri in suite.namespaces.items():
-            graph.bind(prefix, Namespace(uri))
         for ontology_file in files:
             graph.parse(str(ontology_file), format="turtle")
+        return self.run_graph(suite, graph)
+
+    def run_graph(self, suite: BenchmarkSuite, graph: Graph) -> SuiteResult:
+        """Execute a validated suite against an in-memory graph.
+
+        The caller's graph is copied. Suite namespace prefixes are bound on
+        the copy so prefixed names in queries resolve.
+        """
+
+        prepared = Graph()
+        for prefix, uri in suite.namespaces.items():
+            prepared.bind(prefix, Namespace(uri))
+        for prefix, namespace in graph.namespaces():
+            prepared.bind(prefix, namespace)
+        for triple in graph:
+            prepared.add(triple)
 
         context = EvaluationContext(
-            graph=graph,
+            graph=prepared,
             inference_profile=suite.inference_profile,
             reasoners=self.reasoners,
         )
