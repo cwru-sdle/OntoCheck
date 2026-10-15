@@ -25,6 +25,17 @@ Changelog (v0.0.2)
 - CHANGED: ``--metrics all`` expands to the original eighteen metrics only.
   The framework metrics are reached through their own flags, so an existing
   invocation behaves exactly as before.
+
+Changelog (v0.0.3)
+------------------
+- REMOVED: ``checkLabel``, ``definitionCheck``, ``isolatedElements``,
+  ``missingDomainRange``, ``humanLicense`` and ``duplicateLabels``.  Each
+  duplicated a framework metric: FOOPS! VOC3-T, FOOPS! VOC4-T, OOPS! P04,
+  OOPS! P11, FOOPS! OM4.1-T / OOPS! P41 and OOPS! P32 respectively.  The MDS
+  design-check suite now runs the framework equivalents.
+- ADDED: context weighting.  When framework metrics run with competency
+  questions or over a file with instance data, the framework CSV gains
+  ``Unweighted`` and ``Weighted`` columns; see ``context_weighting``.
 """
 
 import csv
@@ -38,18 +49,10 @@ from .check_class_name_space import mainClassNameSpaceCheck_v_0_0_1
 from .check_external_data_provider_links_ttl import (
     check_external_data_provider_links_ttl,
 )
-from .check_for_isolated_elements import check_for_isolated_elements
-from .check_human_readable_license_ttl import check_human_readable_license_ttl
-from .check_label import mainLabelCheck_v_0_0_1
 from .check_rdf_dump_accessibility_ttl import check_rdf_dump_accessibility_ttl
 from .check_sparql_accessibility_ttl import check_sparql_accessibility_ttl
 from .class_search import mainClassSearch_v_0_0_1
 from .count_class_connected_components import count_class_connected_components
-from .defCheck import mainDefCheck_v_0_0_1
-from .find_duplicate_labels_from_graph import find_duplicate_labels_from_graph
-from .get_properties_missing_domain_and_range import (
-    get_properties_missing_domain_and_range,
-)
 from .leafNodeCheck import mainLeafNodeCheck_v_0_0_1
 from .mds_design_check import mds_design_check_v_0_0_1
 from .semanticConnection import mainSemanticConnection_v_0_0_1
@@ -59,21 +62,15 @@ from .task_based_metric import task_based_metric_v_0_0_1
 METRIC_DISPATCHER = {
     "altLabelCheck": mainAltLabelCheck_v_0_0_1,
     "externalLinks": check_external_data_provider_links_ttl,
-    "isolatedElements": check_for_isolated_elements,
-    "humanLicense": check_human_readable_license_ttl,
     "rdfDump": check_rdf_dump_accessibility_ttl,
     "sparqlEndpoint": check_sparql_accessibility_ttl,
     "classConnections": count_class_connected_components,
-    "definitionCheck": mainDefCheck_v_0_0_1,
-    "duplicateLabels": find_duplicate_labels_from_graph,
-    "missingDomainRange": get_properties_missing_domain_and_range,
     "leafNodeCheck": mainLeafNodeCheck_v_0_0_1,
     "semanticConnection": mainSemanticConnection_v_0_0_1,
     "mdsDesignCheck": mds_design_check_v_0_0_1,
     "spellCheck": spell_check_v_0_0_1,
     "classCapitalCheck": mainClassNameCapitalCheck_v_0_0_1,
     "classSpaceCheck": mainClassNameSpaceCheck_v_0_0_1,
-    "checkLabel": mainLabelCheck_v_0_0_1,
     "searchClass": mainClassSearch_v_0_0_1,
 }
 
@@ -121,12 +118,12 @@ def _teardown_logging(console_handler):
 # ---------------------------------------------------------------------------
 
 _MDS_DESIGN_CHECK_METRICS = [
-    "checkLabel",
-    "definitionCheck",
+    "foopsVOC3AllTermsLabelled",
+    "foopsVOC4AllTermsDefined",
     "semanticConnection",
     "classCapitalCheck",
     "classSpaceCheck",
-    "duplicateLabels",
+    "oopsP32SameLabel",
 ]
 
 # Preferred headline key per metric, used by ``_scalarize`` when a metric
@@ -191,8 +188,9 @@ def run_assessment(
         warning.
     mds_design_check : bool, optional
         When ``True``, adds the predefined set of MDS ontology design
-        metrics (checkLabel, definitionCheck, semanticConnection,
-        classCapitalCheck, classSpaceCheck, duplicateLabels) to whatever
+        metrics (foopsVOC3AllTermsLabelled, foopsVOC4AllTermsDefined,
+        semanticConnection, classCapitalCheck, classSpaceCheck,
+        oopsP32SameLabel) to whatever
         *metrics* already requests, and prepends a summary to the log file.
 
         In version 0.0.1 this **replaced** *metrics* rather than adding to
@@ -212,7 +210,8 @@ def run_assessment(
     has_abox : bool, optional
         Whether the input contains instance data.  Metrics undefined over a
         schema alone, such as OQuaRE ``CROnto``, are skipped when ``False``.
-        Default ``False``.
+        Default ``False``.  Context weighting detects instance data on its
+        own, so this does not need to be set for instances to carry weight.
     framework_csv_file : str, optional
         Path for the extended framework results CSV.
 
@@ -292,10 +291,11 @@ def run_assessment(
             "--- Running framework metrics (OQuaRE / OOPS! / FOOPS!) ---"
         )
         framework_results = []
+        normalized = []
         for f in ttl_files:
             if len(ttl_files) > 1:
                 logging.info(f"--- Framework metrics for: {f} ---")
-            framework_results.extend(run_framework_metrics(
+            file_results = run_framework_metrics(
                 str(f),
                 frameworks=frameworks,
                 allow_network=allow_network,
@@ -303,7 +303,10 @@ def run_assessment(
                 questions=questions,
                 domain_prefixes=domain_prefixes,
                 domain_ns_fragments=domain_ns_fragments,
-            ))
+            )
+            framework_results.extend(file_results)
+            normalized.extend(_weight_results(f, file_results, questions,
+                                              has_abox))
         summary = summarise_results(framework_results)
         logging.info(
             f"Framework metrics: {summary['run']} run, "
@@ -313,7 +316,10 @@ def run_assessment(
         )
         for severity, count in sorted(summary["by_severity"].items()):
             logging.info(f"  {severity}: {count} failing check(s)")
-        write_extended_csv(framework_results, framework_csv_file)
+        # Weighted columns only when some file had a context to weight by.
+        if not any(n is not None for n in normalized):
+            normalized = None
+        write_extended_csv(framework_results, framework_csv_file, normalized)
         results.extend(r.to_row() for r in framework_results)
 
     _write_csv(results, output_csv_file)
@@ -338,6 +344,28 @@ def run_assessment(
 # ---------------------------------------------------------------------------
 # Internal helpers
 # ---------------------------------------------------------------------------
+
+def _weight_results(ttl_file, results, questions, has_abox):
+    """
+    Context-weight one file's framework results.
+
+    Returns one ``NormalizedMetric`` per result, or a list of ``None`` when
+    the file has neither competency questions nor instance data -- with no
+    context, weighted and unweighted scores would be identical.
+    """
+    from .context_weighting import build_context, normalize_results
+
+    ctx = build_context(ttl_file, questions,
+                        use_instances=True if has_abox else "auto")
+    if questions is None and not ctx.params["use_instances"]:
+        return [None] * len(results)
+    logging.info(
+        f"Context weighting: {ctx.params.get('anchored_entities', 0)} "
+        f"entities anchored by the questions, "
+        f"{ctx.params['individuals']} individuals"
+    )
+    return normalize_results(results, ctx)
+
 
 def _log_task_based_result(result):
     """Log the task-based Recall/Precision results."""

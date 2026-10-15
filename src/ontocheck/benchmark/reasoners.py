@@ -2,9 +2,13 @@
 
 from __future__ import annotations
 
+import os
+import shutil
+import tempfile
 from collections import deque
 from dataclasses import dataclass
-from typing import Any, Dict, List, Protocol, Tuple
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Protocol, Tuple
 
 from rdflib import Graph, OWL, RDF, RDFS, URIRef
 
@@ -246,10 +250,157 @@ class HermiTReasoner:
         return HermitPyReasoner(graph)
 
 
+class OwlreadyReasoner:
+    """Classify an ontology with HermiT through owlready2.
+
+    Owlready2 ships HermiT and runs it with ``java``. ``JAVA_EXE`` stays
+    ``java`` when that command is on ``PATH``. A full path is used only when
+    Java is installed but not on ``PATH``, via ``JAVA_HOME``.
+    """
+
+    name = "owlready2-hermit"
+
+    def materialize(self, graph: Graph) -> Graph:
+        """Return the graph plus HermiT's direct subclass hierarchy."""
+
+        pairs = self._direct_pairs(graph)
+        materialized = Graph()
+        for prefix, namespace in graph.namespaces():
+            materialized.bind(prefix, namespace)
+        for triple in graph:
+            materialized.add(triple)
+        for child, parent in pairs:
+            materialized.add((URIRef(child), RDFS.subClassOf, URIRef(parent)))
+        return materialized
+
+    def reason(self, case: BenchmarkCase, graph: Graph) -> List[ReasonerAnswer]:
+        """Answer a graph-path query against the classified hierarchy."""
+
+        if case.query.language != "graph_path":
+            raise ValueError(
+                "owlready reasoner currently answers graph_path queries "
+                "on the classified hierarchy"
+            )
+        return GraphPathReasoner().reason(case, self.materialize(graph))
+
+    def _direct_pairs(self, graph: Graph) -> List[Tuple[str, str]]:
+        owlready2, sync_reasoner, world_cls = self._owlready()
+        self._use_java(owlready2)
+        prepared = _declare_named_classes(graph)
+        temp_path = _write_rdfxml(prepared)
+        world = world_cls()
+        try:
+            onto = world.get_ontology(temp_path.as_uri()).load()
+            try:
+                sync_reasoner(onto, debug=0)
+            except FileNotFoundError as error:
+                raise UnsupportedReasoner(
+                    "The owlready profile could not start Java. "
+                    "Install a JDK and check that `java -version` works."
+                ) from error
+            return _pairs_from_world(world)
+        finally:
+            temp_path.unlink(missing_ok=True)
+            close = getattr(world, "close", None)
+            if callable(close):
+                close()
+
+    def _owlready(self):
+        try:
+            import owlready2
+            from owlready2 import World, sync_reasoner
+        except ImportError as error:
+            raise UnsupportedReasoner(
+                "The owlready profile requires owlready2. "
+                "Install it with pip install owlready2."
+            ) from error
+        return owlready2, sync_reasoner, World
+
+    def _use_java(self, owlready2) -> str:
+        """Point owlready2 at a JVM without a hardcoded executable path."""
+
+        configured = getattr(owlready2, "JAVA_EXE", "java")
+        if configured and configured != "java" and Path(configured).is_file():
+            return configured
+        found = shutil.which("java")
+        if not found:
+            home = os.environ.get("JAVA_HOME")
+            if home:
+                name = "java.exe" if os.name == "nt" else "java"
+                candidate = Path(home) / "bin" / name
+                if candidate.is_file():
+                    found = str(candidate)
+        if not found:
+            raise UnsupportedReasoner(
+                "The owlready profile needs Java on PATH. "
+                "Install a JDK and check `java -version`. "
+                "If Java is installed but not on PATH, set JAVA_HOME."
+            )
+        owlready2.JAVA_EXE = found
+        return found
+
+
+def _declare_named_classes(graph: Graph) -> Graph:
+    """Add class declarations so owlready2 keeps named subclass terms."""
+
+    prepared = Graph()
+    for prefix, namespace in graph.namespaces():
+        prepared.bind(prefix, namespace)
+    for triple in graph:
+        prepared.add(triple)
+    terms = set()
+    for predicate in (RDFS.subClassOf, OWL.equivalentClass, OWL.disjointWith):
+        terms.update(prepared.subjects(predicate, None))
+        terms.update(prepared.objects(None, predicate))
+    owl_ns = str(OWL)
+    for term in terms:
+        if isinstance(term, URIRef) and not str(term).startswith(owl_ns):
+            prepared.add((term, RDF.type, OWL.Class))
+    return prepared
+
+
+def _write_rdfxml(graph: Graph) -> Path:
+    handle = tempfile.NamedTemporaryFile(suffix=".owl", delete=False)
+    path = Path(handle.name)
+    handle.close()
+    graph.serialize(path, format="xml")
+    return path
+
+
+def _pairs_from_world(world) -> List[Tuple[str, str]]:
+    pairs = set()
+    for cls in world.classes():
+        child = getattr(cls, "iri", None)
+        if not child or str(child).startswith(str(OWL)):
+            continue
+        for parent in list(cls.is_a) + list(cls.equivalent_to):
+            parent_iri = _named_class_iri(parent)
+            if parent_iri:
+                pairs.add((child, parent_iri))
+    nothing = str(OWL.Nothing)
+    thing = str(OWL.Thing)
+    unsatisfiable = {child for child, parent in pairs if parent == nothing}
+    return sorted(
+        pair
+        for pair in pairs
+        if not (pair[0] in unsatisfiable and pair[1] == thing)
+    )
+
+
+def _named_class_iri(entity) -> Optional[str]:
+    if entity.__class__.__name__ in {"Restriction", "And", "Or", "Not", "OneOf"}:
+        return None
+    iri = getattr(entity, "iri", None)
+    if not isinstance(iri, str):
+        return None
+    return iri
+
+
 def default_reasoners() -> ReasonerRegistry:
     """Create the built-in reasoner registry."""
 
     registry = ReasonerRegistry()
     registry.register("graph_path", GraphPathReasoner())
     registry.register("hermit", HermiTReasoner())
+    registry.register("owlready", OwlreadyReasoner())
     return registry

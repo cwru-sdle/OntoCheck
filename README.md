@@ -40,6 +40,16 @@ pip install -e ../hermitpy
 "inference": { "profile": "hermit" }
 ```
 
+Owlready2 runs the Java HermiT reasoner. `java -version` must work. A `JAVA_EXE` path is not required when Java is on `PATH`.
+
+```bash
+pip install owlready2
+```
+
+```json
+"inference": { "profile": "owlready" }
+```
+
 ---
 
 ## How It Works
@@ -63,7 +73,7 @@ Users select which metrics to run and, optionally, provide competency questions 
 ontocheck -h
 
 # Run specific task-agnostic metrics
-ontocheck path/to/ontology.ttl --metrics altLabelCheck definitionCheck
+ontocheck path/to/ontology.ttl --metrics altLabelCheck classConnections
 
 # Run all task-agnostic metrics
 ontocheck path/to/ontology.ttl --metrics all
@@ -101,7 +111,7 @@ from ontocheck import run_assessment
 # Run specific task-agnostic metrics
 run_assessment(
     ttl_files="path/to/ontology.ttl",
-    metrics=["altLabelCheck", "definitionCheck", "isolatedElements"],
+    metrics=["altLabelCheck", "classConnections", "semanticConnection"],
 )
 
 # Task-based assessment (Recall / Precision)
@@ -134,23 +144,19 @@ result = run_assessment(
 
 ## Available Task-Agnostic Metrics
 
-OntoCheck provides **17 task-agnostic metrics** organized into four categories, along with a **task-based assessment methodology**.
+OntoCheck provides **11 task-agnostic metrics** organized into four categories, along with a **task-based assessment methodology**.  Label and definition coverage, isolated elements, missing domains and ranges, licensing and duplicate labels are covered by the OOPS! and FOOPS! metrics (`--oops`, `--foops`; see `--list-metrics`), so OntoCheck does not duplicate them.
 
 ### Labeling
 
 | Metric | Function | Description |
 |---|---|---|
-| `checkLabel` | `mainLabelCheck_v_0_0_1` | Proportion of named classes carrying human-readable identifiers |
 | `altLabelCheck` | `mainAltLabelCheck_v_0_0_1` | Proportion of named classes carrying synonyms |
-| `definitionCheck` | `mainDefCheck_v_0_0_1` | Proportion of named classes carrying formal definitions |
 
 ### Structural
 
 | Metric | Function | Description |
 |---|---|---|
-| `isolatedElements` | `check_for_isolated_elements` | Identifies orphaned classes within the ontology |
 | `classConnections` | `count_class_connected_components` | Identifies disconnected subgraphs |
-| `missingDomainRange` | `get_properties_missing_domain_and_range` | Identifies undeclared domain and range restrictions |
 | `leafNodeCheck` | `mainLeafNodeCheck_v_0_0_1` | Identifies all leaf nodes in the ontology hierarchy |
 | `semanticConnection` | `mainSemanticConnection_v_0_0_1` | Verifies grounding in upper-level ontologies (e.g., CCO, BFO) |
 
@@ -160,7 +166,6 @@ OntoCheck provides **17 task-agnostic metrics** organized into four categories, 
 |---|---|---|
 | `sparqlEndpoint` | `check_sparql_accessibility_ttl` | Verifies reachability of the SPARQL endpoint |
 | `rdfDump` | `check_rdf_dump_accessibility_ttl` | Verifies availability of the RDF data dump |
-| `humanLicense` | `check_human_readable_license_ttl` | Verifies presence and fitness of licensing information |
 | `externalLinks` | `check_external_data_provider_links_ttl` | Checks validity of external links within the ontology |
 
 ### Naming Convention
@@ -170,7 +175,6 @@ OntoCheck provides **17 task-agnostic metrics** organized into four categories, 
 | `classCapitalCheck` | `mainClassNameCapitalCheck_v_0_0_1` | Flags departures from standard capitalization |
 | `classSpaceCheck` | `mainClassNameSpaceCheck_v_0_0_1` | Flags use of spaces in class identifiers |
 | `spellCheck` | `spell_check_v_0_0_1` | Spell checking on labels and definitions |
-| `duplicateLabels` | `find_duplicate_labels_from_graph` | Identifies duplicate labels across entities |
 | `searchClass` | `mainClassSearch_v_0_0_1` | Identifies classes matching a user-specified string |
 
 ### Task-Based Assessment
@@ -181,6 +185,26 @@ The task-based methodology measures how well an ontology supports analytical que
 - **Precision** = |T_a intersection T_o| / |T_o| -- the fraction of ontology terms utilized by the task queries
 
 where T_a is the set of domain terms extracted from the SPARQL queries and T_o is the set of domain terms defined in the ontology.
+
+### Context-Weighted Scores
+
+Framework metrics normally count every term equally.  When competency questions are supplied, or the input is a knowledge graph with instance data, OntoCheck also reports each OOPS!, FOOPS! and OQuaRE score weighted by context, next to the unweighted score:
+
+- **Questions** -- query terms are matched to ontology entities (exact IRIs in SPARQL, label similarity in natural language), and weight then spreads to what the answers depend on: subclasses, the domain and range classes of the properties used, and, with decay, superclasses.  Siblings and unrelated terms get no weight.
+- **Instances** -- a class weighs `1 + log(1 + n)` for `n` instances (counting instances of its subclasses), so defects on well-populated classes count more.  Individuals take the weight of their classes.
+- **Both** -- the weights multiply: the questions decide *what* matters, the data decides *how much*.
+
+A defect count becomes a weighted defect rate, and an OQuaRE metric becomes a weighted mean over classes.  Metrics about the ontology document itself (metadata, licensing, accessibility) are the same for every question, so their weighted and unweighted values are equal.
+
+```python
+from ontocheck.framework_metrics import framework_report
+
+tables = framework_report("xrd.ttl", questions="competency_questions.json",
+                          domain_prefixes=["mds"])
+tables["OOPS!"][["score", "unweighted", "weighted"]]
+```
+
+From the command line, `--questions` together with `--oops`, `--foops` or `--oquare` adds `Unweighted` and `Weighted` columns to the framework CSV.
 
 ---
 

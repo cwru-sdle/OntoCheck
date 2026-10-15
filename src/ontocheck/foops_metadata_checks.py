@@ -19,15 +19,12 @@ VOC3-T     All terms have labels                          R1
 VOC4-T     All terms have definitions                     R1
 =========  =============================================  =====
 
-Relationship to the existing OntoCheck metrics
-----------------------------------------------
-``checkLabel`` (``mainLabelCheck_v_0_0_1``) and ``definitionCheck``
-(``mainDefCheck_v_0_0_1``) examine *named classes* only.  FOOPS! VOC3-T and
-VOC4-T require coverage across *all* terms, so properties and named
-individuals must be included.  The two metrics here widen the population
-rather than modifying the existing functions, which keeps their behaviour and
-their CSV output unchanged.  Doing so also strengthens coverage of OOPS! P08
-(missing annotations), which is likewise term-wide.
+Label and definition coverage
+-----------------------------
+FOOPS! VOC3-T and VOC4-T require coverage across *all* terms, so properties
+and named individuals are included alongside classes.  They replace
+OntoCheck's former class-only ``checkLabel`` and ``definitionCheck`` metrics;
+the class-only figures remain available in each result's ``detail``.
 
 A note on operationalisation
 ----------------------------
@@ -365,8 +362,7 @@ def foops_om2_recommended_metadata_v_0_0_1(ttl_file):
 
     Notes
     -----
-    The ``license`` slot overlaps with the existing ``humanLicense`` metric
-    and with OOPS! P41.  It is retained here so that the OM2-T score matches
+    The ``license`` slot overlaps with FOOPS! OM4.1-T and OOPS! P41.  It is retained here so that the OM2-T score matches
     the FOOPS! tier definition rather than silently omitting a slot.
 
     Examples
@@ -817,13 +813,11 @@ def foops_voc3_all_terms_labelled_v_0_0_1(ttl_file):
 
     - Coverage: the proportion of own terms carrying at least one valid label.
 
-    Relationship to ``checkLabel``
-    ------------------------------
-    The existing ``mainLabelCheck_v_0_0_1`` examines named classes only, so it
-    cannot satisfy VOC3-T, which is term-wide.  This metric widens the
-    population to properties and individuals and reports the class-only and
-    property-only figures separately in ``detail``, so the two can be
-    reconciled.  It also strengthens coverage of OOPS! P08.
+    Class and property coverage
+    ---------------------------
+    The class-only and property-only figures are reported separately in
+    ``detail``.  The class-only figure is what OntoCheck's former
+    ``checkLabel`` metric reported.
 
     Source
     ------
@@ -944,11 +938,11 @@ def foops_voc4_all_terms_defined_v_0_0_1(ttl_file):
     - Coverage: the proportion of own terms carrying at least one valid
       definition.
 
-    Relationship to ``definitionCheck``
-    -----------------------------------
-    As with VOC3-T, the existing ``mainDefCheck_v_0_0_1`` examines named
-    classes only and therefore cannot satisfy this term-wide test.  Property
-    and individual coverage are reported separately in ``detail``.
+    Class and property coverage
+    ---------------------------
+    As with VOC3-T, class, property and individual coverage are reported
+    separately in ``detail``.  The class-only figure corresponds to
+    OntoCheck's former ``definitionCheck`` metric.
 
     Source
     ------

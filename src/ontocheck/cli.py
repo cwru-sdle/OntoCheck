@@ -65,7 +65,9 @@ def _build_parser():
         "--questions",
         help="Path to a competency-question file (.json or .md)\n"
              "containing SPARQL queries.  When provided, task-based\n"
-             "Recall and Precision are computed automatically.",
+             "Recall and Precision are computed automatically, and\n"
+             "framework metrics are also reported weighted by the\n"
+             "terms the questions depend on.",
     )
 
     parser.add_argument(
@@ -100,8 +102,9 @@ def _build_parser():
         action="store_true",
         default=False,
         help="Add the MDS ontology design check suite:\n"
-             "  checkLabel, definitionCheck, semanticConnection,\n"
-             "  classCapitalCheck, classSpaceCheck, duplicateLabels.\n"
+             "  foopsVOC3AllTermsLabelled, foopsVOC4AllTermsDefined,\n"
+             "  semanticConnection, classCapitalCheck, classSpaceCheck,\n"
+             "  oopsP32SameLabel.\n"
              "These are added to any --metrics already requested, not\n"
              "substituted for them.  Prepends a summary to the log file.",
     )

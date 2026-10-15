@@ -613,9 +613,8 @@ def oops_p04_unconnected_elements_v_0_0_1(ttl_file):
 
     Notes
     -----
-    OntoCheck's ``isolatedElements`` metric treats a property as isolated
-    unless it takes part in a property-to-property axiom.  P04 follows the
-    OOPS! reading, in which a domain or range already connects a property.
+    Follows the OOPS! reading, in which a domain or range already connects a
+    property.  Replaces OntoCheck's former ``isolatedElements`` metric.
 
     Examples
     --------
@@ -821,9 +820,8 @@ def oops_p08_missing_annotations_v_0_0_1(ttl_file):
 
     Notes
     -----
-    OntoCheck's ``checkLabel`` and ``definitionCheck`` examine classes only
-    and every class in the file.  P08 covers properties too and restricts to
-    the own namespace, matching the OOPS! element scope.
+    P08 covers classes and properties and restricts to the own namespace,
+    matching the OOPS! element scope.
 
     Examples
     --------
@@ -906,8 +904,10 @@ def oops_p11_missing_domain_range_v_0_0_1(ttl_file):
 
     Notes
     -----
-    OntoCheck's ``missingDomainRange`` counts every declared property,
-    including stubs of imported properties, and ignores inverses.
+    Only own properties are counted, so stubs of imported properties are
+    ignored, and a property whose inverse declares the missing domain or
+    range is not flagged.  Replaces OntoCheck's former ``missingDomainRange``
+    metric.
 
     Examples
     --------
@@ -1667,8 +1667,8 @@ def oops_p32_same_label_v_0_0_1(ttl_file):
 
     Notes
     -----
-    OntoCheck's ``duplicateLabels`` also compares properties and counts
-    duplicate label values rather than affected classes.
+    Counts affected classes, not duplicate label values.  Replaces
+    OntoCheck's former ``duplicateLabels`` metric.
 
     Examples
     --------
@@ -1766,9 +1766,9 @@ def oops_p41_no_license_v_0_0_1(ttl_file):
 
     Notes
     -----
-    OntoCheck's ``humanLicense`` searches all literals and the raw file text
-    for license keywords.  P41 requires a machine-readable statement on the
-    ontology resource, which is what OOPS! and FOOPS! test.
+    P41 requires a machine-readable statement on the ontology resource, which
+    is what OOPS! and FOOPS! test.  A license mentioned only in free text or
+    file comments does not pass.
 
     Examples
     --------
