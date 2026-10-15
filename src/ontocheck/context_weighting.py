@@ -895,9 +895,15 @@ METRIC_SCOPE = {
     "foopsVOC4AllTermsDefined": ("entity", True),
 }
 
-# Metrics whose affected list is not a set of ontology entities.  P09 lists
-# query terms the ontology lacks -- there is nothing in the ontology to weight.
-_NOT_ENTITY_LEVEL = {"oopsP09MissingDomainInfo"}
+# Metrics that are already defined by the competency questions, so query
+# weighting does not apply.  P09 and the fitness metrics list query terms or
+# edges rather than ontology entities.
+_NOT_ENTITY_LEVEL = {
+    "oopsP09MissingDomainInfo",
+    "conceptualFitness",
+    "structuralFitness",
+    "counterfactualImportance",
+}
 
 
 @dataclass
@@ -978,7 +984,7 @@ class NormalizedMetric:
         """
         if self.normalizable:
             return self.weighted_score
-        if self.scope == "ontology":
+        if self.scope in ("ontology", "query"):
             return self.raw_score
         return None
 
@@ -1236,6 +1242,12 @@ def normalize_results(results, ctx):
                 prim = _OntologyPrimitives(ctx.universe.g)
                 terms = _oquare_terms(prim)
             out.append(_normalize_oquare(r, ctx, prim, terms))
+            continue
+        if r.metric_id in _NOT_ENTITY_LEVEL:
+            out.append(NormalizedMetric(
+                r.metric_id, r.score, False, "query",
+                detail={"reason": "already defined by the competency questions"},
+            ))
             continue
         nm = _normalize_entity_metric(r, d, ctx)
         out.append(nm or NormalizedMetric(

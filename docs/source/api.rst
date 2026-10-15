@@ -142,6 +142,13 @@ ontocheck.mds\_design\_check
    :members:
    :show-inheritance:
 
+ontocheck.query\_fitness
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: ontocheck.query_fitness
+   :members:
+   :show-inheritance:
+
 ontocheck.context\_weighting
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

@@ -33,6 +33,9 @@ Changelog (v0.0.3)
   duplicated a framework metric: FOOPS! VOC3-T, FOOPS! VOC4-T, OOPS! P04,
   OOPS! P11, FOOPS! OM4.1-T / OOPS! P41 and OOPS! P32 respectively.  The MDS
   design-check suite now runs the framework equivalents.
+- ADDED: conceptual fitness, structural fitness and counterfactual
+  importance (``query_fitness``), run with Recall and Precision whenever
+  competency questions are given.
 - ADDED: context weighting.  When framework metrics run with competency
   questions or over a file with instance data, the framework CSV gains
   ``Unweighted`` and ``Weighted`` columns; see ``context_weighting``.
@@ -278,6 +281,7 @@ def run_assessment(
         )
         _log_task_based_result(task_result)
         results.extend(_task_based_result_to_rows(task_result))
+        results.extend(_run_query_fitness(ttl_files, questions))
 
     if metrics is not None:
         logging.info("--- Running task-agnostic metrics ---")
@@ -344,6 +348,31 @@ def run_assessment(
 # ---------------------------------------------------------------------------
 # Internal helpers
 # ---------------------------------------------------------------------------
+
+def _run_query_fitness(ttl_files, questions):
+    """
+    Run conceptual fitness, structural fitness and counterfactual importance
+    over the merged ontology files, returning CSV rows.
+    """
+    from .query_fitness import (
+        conceptual_fitness_v_0_0_1,
+        counterfactual_importance_v_0_0_1,
+        structural_fitness_v_0_0_1,
+    )
+
+    rows = []
+    for fn in (conceptual_fitness_v_0_0_1, structural_fitness_v_0_0_1,
+               counterfactual_importance_v_0_0_1):
+        try:
+            r = fn(ttl_files, questions)
+            logging.info(r.message)
+            rows.append(r.to_row())
+        except Exception as e:                   # noqa: BLE001
+            name = fn.__name__.replace("_v_0_0_1", "")
+            logging.error(f"{name} failed: {e}", exc_info=True)
+            rows.append({"Metric": name, "Score": "N/A", "Status": f"Error: {e}"})
+    return rows
+
 
 def _weight_results(ttl_file, results, questions, has_abox):
     """

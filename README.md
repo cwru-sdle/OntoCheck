@@ -186,6 +186,14 @@ The task-based methodology measures how well an ontology supports analytical que
 
 where T_a is the set of domain terms extracted from the SPARQL queries and T_o is the set of domain terms defined in the ontology.
 
+### Query Fitness
+
+Three further metrics run alongside Recall and Precision whenever competency questions are given.  They read each question's concepts and edges from the `graph_query` of the question file, or from the triple patterns of its SPARQL.
+
+- **Conceptual fitness** `f_c = Σ w_c · m(c, O) / Σ w_c` -- how well the questions' concepts match the ontology.  `m` is 1 for an exact match, the label similarity for a near match, 0 otherwise; `w_c` sums `|C_q| / |C_lm|` over the queries using concept `c`, where `C_lm` is the largest query.
+- **Structural fitness** `f_s = Σ w_e · s(e, O) / Σ w_e` -- the weighted share of the questions' edges `A --p--> B` that belong to the ontology, through domain and range, an OWL restriction, or instance data.  `w_e` is defined like `w_c` over edges.
+- **Counterfactual importance** `CI(x) = F(O) − F(O \ x)`, with `F = (f_c + f_s) / 2` -- the fitness lost if element `x` were removed.  It ranks the classes and properties the questions rely on, including ones no question names directly, such as a domain class.
+
 ### Context-Weighted Scores
 
 Framework metrics normally count every term equally.  When competency questions are supplied, or the input is a knowledge graph with instance data, OntoCheck also reports each OOPS!, FOOPS! and OQuaRE score weighted by context, next to the unweighted score:

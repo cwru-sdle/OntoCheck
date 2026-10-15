@@ -45,6 +45,7 @@ from . import oops_lexical_checks  # noqa: F401
 from . import oops_axiom_checks  # noqa: F401
 from . import foops_access_checks  # noqa: F401
 from . import oquare_metrics  # noqa: F401
+from . import query_fitness  # noqa: F401
 from .metric_registry import (
     METRIC_REGISTRY,
     Category,
