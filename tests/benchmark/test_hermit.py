@@ -11,7 +11,10 @@ from ontocheck.benchmark import (
     default_reasoners,
 )
 from ontocheck.benchmark.models import ExpectedResult, QuerySpec
-from hermitpy import InconsistentOntology, UnsupportedConstruct
+try:
+    from hermitpy import InconsistentOntology, UnsupportedConstruct
+except ImportError:  # optional dependency, as in test_owlready
+    raise unittest.SkipTest("hermitpy is not installed")
 
 EX = "https://example.org/"
 THING = "http://www.w3.org/2002/07/owl#Thing"

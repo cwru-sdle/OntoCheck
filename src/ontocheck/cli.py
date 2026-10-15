@@ -28,12 +28,17 @@ Changelog (v0.0.3)
 - ADDED: ``--conceptual-fitness``, ``--structural-fitness`` and
   ``--counterfactual-importance``.  Each needs ``--questions``; with
   ``--questions`` and none of them, all three run.
+- FIXED: ``--benchmark`` and ``--benchmark-output`` were lost when the
+  framework flags were added (v0.0.2), so the benchmark runner could not be
+  reached from the command line although the README documents it.  Both are
+  restored, with ``main`` again returning the benchmark's exit code.
 """
 
 import argparse
 import logging
 import sys
 
+from .benchmark import run_suite, write_result
 from .framework_metrics import (
     add_cli_arguments,
     print_metric_catalogue,
@@ -155,6 +160,19 @@ def _build_parser():
              "(default: assessment_scores.csv).",
     )
 
+    parser.add_argument(
+        "--benchmark",
+        help="Path to a versioned executable benchmark suite (.json).\n"
+             "May be combined with existing assessment options.",
+    )
+
+    parser.add_argument(
+        "--benchmark-output",
+        default="benchmark_results.json",
+        help="Path to save benchmark JSON results\n"
+             "(default: benchmark_results.json).",
+    )
+
     add_cli_arguments(parser)
 
     return parser
@@ -177,10 +195,11 @@ def _validate_args(args):
     fitness_requested = any(getattr(args, f, None) for f in (
         "conceptual_fitness", "structural_fitness", "counterfactual_importance"))
     if not any([args.metrics, args.questions, args.mds_ontodesigncheck,
-                framework_requested, fitness_requested]):
+                framework_requested, fitness_requested, args.benchmark]):
         errors.append(
             "At least one of --metrics, --questions, --mds-ontodesigncheck, "
-            "--oops, --foops, --oquare or --framework-metrics is required."
+            "--oops, --foops, --oquare, --framework-metrics or --benchmark "
+            "is required."
         )
 
     if args.questions and not args.domain_prefixes:
@@ -199,6 +218,39 @@ def _validate_args(args):
         sys.exit(1)
 
 
+def _run_benchmark(args):
+    """Run a benchmark suite, write its report, and return an exit code."""
+
+    try:
+        result = run_suite(args.benchmark, args.ttl_files)
+        write_result(result, args.benchmark_output)
+    except Exception as error:
+        print("Benchmark failed: {}".format(error), file=sys.stderr)
+        return 1
+
+    print(
+        "Benchmark {!r}: {:.4f}".format(result.suite_id, result.score)
+    )
+    for case in result.results:
+        print(
+            "  {}: {} ({:.4f})".format(
+                case.case_id, case.status, case.score
+            )
+        )
+    print("Results: {}".format(args.benchmark_output))
+    return 1 if any(case.status == "error" for case in result.results) else 0
+
+
+def _assessment_requested(args):
+    """Whether any assessment option was given, as opposed to --benchmark alone."""
+    return any([
+        args.metrics, args.questions, args.mds_ontodesigncheck,
+        resolve_cli_frameworks(args),
+        args.conceptual_fitness, args.structural_fitness,
+        args.counterfactual_importance,
+    ])
+
+
 def main():
     """Entry point for the ``ontocheck`` command."""
     parser = _build_parser()
@@ -208,7 +260,7 @@ def main():
     # loaded, so it works without a .ttl argument.
     if getattr(args, "list_metrics", False):
         print_metric_catalogue()
-        return
+        return 0
 
     _validate_args(args)
 
@@ -218,6 +270,9 @@ def main():
         metrics = list(CORE_METRIC_NAMES)
 
     frameworks = resolve_cli_frameworks(args)
+
+    if not _assessment_requested(args):
+        return _run_benchmark(args)
 
     logger.info("--- OntoCheck Assessment ---")
 
@@ -240,6 +295,8 @@ def main():
         counterfactual_importance=args.counterfactual_importance,
     )
 
+    return _run_benchmark(args) if args.benchmark else 0
+
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
