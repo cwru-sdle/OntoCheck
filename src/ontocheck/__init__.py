@@ -14,8 +14,11 @@ from .check_class_name_space import mainClassNameSpaceCheck_v_0_0_1
 from .class_search import mainClassSearch_v_0_0_1
 from .nlp_json import build_question_json
 from .query_fitness import (
+    conceptual_fitness,
     conceptual_fitness_v_0_0_1,
+    counterfactual_importance,
     counterfactual_importance_v_0_0_1,
+    structural_fitness,
     structural_fitness_v_0_0_1,
 )
 
@@ -179,6 +182,9 @@ __all__ = [
     "run_assessment",
     "task_based_metric_v_0_0_1",
     "build_question_json",
+    "conceptual_fitness",
+    "structural_fitness",
+    "counterfactual_importance",
     "conceptual_fitness_v_0_0_1",
     "structural_fitness_v_0_0_1",
     "counterfactual_importance_v_0_0_1",

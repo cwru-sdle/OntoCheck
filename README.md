@@ -194,6 +194,22 @@ Three further metrics run alongside Recall and Precision whenever competency que
 - **Structural fitness** `f_s = Σ w_e · s(e, O) / Σ w_e` -- the weighted share of the questions' edges `A --p--> B` that belong to the ontology, through domain and range, an OWL restriction, or instance data.  `w_e` is defined like `w_c` over edges.
 - **Counterfactual importance** `CI(x) = F(O) − F(O \ x)`, with `F = (f_c + f_s) / 2` -- the fitness lost if element `x` were removed.  It ranks the classes and properties the questions rely on, including ones no question names directly, such as a domain class.
 
+```bash
+# All three run with --questions; the flags pick a subset
+ontocheck xrd.ttl --questions competency_questions.json --domain-prefixes mds \
+    --structural-fitness --counterfactual-importance
+```
+
+```python
+from ontocheck import run_assessment, structural_fitness
+
+r = run_assessment("xrd.ttl", questions="competency_questions.json",
+                   domain_prefixes=["mds"], conceptual_fitness=True)
+r["conceptual_fitness"]
+
+structural_fitness("xrd.ttl", "competency_questions.json").affected  # missing edges
+```
+
 ### Context-Weighted Scores
 
 Framework metrics normally count every term equally.  When competency questions are supplied, or the input is a knowledge graph with instance data, OntoCheck also reports each OOPS!, FOOPS! and OQuaRE score weighted by context, next to the unweighted score:

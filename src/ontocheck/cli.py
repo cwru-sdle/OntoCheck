@@ -22,6 +22,12 @@ Changelog (v0.0.2)
   automatically when omitted.
 - CHANGED: the "nothing selected" validation accepts an invocation that asks
   only for framework metrics.
+
+Changelog (v0.0.3)
+------------------
+- ADDED: ``--conceptual-fitness``, ``--structural-fitness`` and
+  ``--counterfactual-importance``.  Each needs ``--questions``; with
+  ``--questions`` and none of them, all three run.
 """
 
 import argparse
@@ -65,9 +71,36 @@ def _build_parser():
         "--questions",
         help="Path to a competency-question file (.json or .md)\n"
              "containing SPARQL queries.  When provided, task-based\n"
-             "Recall and Precision are computed automatically, and\n"
-             "framework metrics are also reported weighted by the\n"
-             "terms the questions depend on.",
+             "Recall and Precision are computed automatically, along\n"
+             "with conceptual fitness, structural fitness and\n"
+             "counterfactual importance.  Framework metrics are also\n"
+             "reported weighted by the terms the questions depend on.",
+    )
+
+    fitness = parser.add_argument_group(
+        "query fitness",
+        "Metrics over the competency questions; they need --questions.\n"
+        "With --questions and none of these flags, all three run.",
+    )
+    fitness.add_argument(
+        "--conceptual-fitness",
+        action="store_true",
+        default=None,
+        help="Weighted match quality of the questions' concepts.",
+    )
+    fitness.add_argument(
+        "--structural-fitness",
+        action="store_true",
+        default=None,
+        help="Weighted share of the questions' edges present in the\n"
+             "ontology.",
+    )
+    fitness.add_argument(
+        "--counterfactual-importance",
+        action="store_true",
+        default=None,
+        help="Ontology elements whose removal lowers the questions'\n"
+             "fitness, most important first.",
     )
 
     parser.add_argument(
@@ -141,8 +174,10 @@ def _validate_args(args):
     if not args.ttl_files:
         errors.append("At least one .ttl file is required.")
 
+    fitness_requested = any(getattr(args, f, None) for f in (
+        "conceptual_fitness", "structural_fitness", "counterfactual_importance"))
     if not any([args.metrics, args.questions, args.mds_ontodesigncheck,
-                framework_requested]):
+                framework_requested, fitness_requested]):
         errors.append(
             "At least one of --metrics, --questions, --mds-ontodesigncheck, "
             "--oops, --foops, --oquare or --framework-metrics is required."
@@ -150,6 +185,12 @@ def _validate_args(args):
 
     if args.questions and not args.domain_prefixes:
         errors.append("--domain-prefixes is required when --questions is provided.")
+    fitness_flags = [f for f in ("conceptual_fitness", "structural_fitness",
+                                 "counterfactual_importance")
+                     if getattr(args, f, None)]
+    if fitness_flags and not args.questions:
+        names = ", ".join("--" + f.replace("_", "-") for f in fitness_flags)
+        errors.append(f"--questions is required with {names}.")
 
     if errors:
         print("Error:", file=sys.stderr)
@@ -194,6 +235,9 @@ def main():
         allow_network=not getattr(args, "no_network", False),
         has_abox=getattr(args, "has_abox", False),
         framework_csv_file=getattr(args, "framework_csv", "framework_scores.csv"),
+        conceptual_fitness=args.conceptual_fitness,
+        structural_fitness=args.structural_fitness,
+        counterfactual_importance=args.counterfactual_importance,
     )
 
 

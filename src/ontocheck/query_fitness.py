@@ -605,6 +605,12 @@ def counterfactual_importance_v_0_0_1(ttl_file, questions=None,
     )
 
 
+# Plain names, as the metrics are called in the paper and the CLI.
+conceptual_fitness = conceptual_fitness_v_0_0_1
+structural_fitness = structural_fitness_v_0_0_1
+counterfactual_importance = counterfactual_importance_v_0_0_1
+
+
 for _id, _name, _fn, _scale, _hib, _desc in (
     ("conceptualFitness", "Conceptual fitness", conceptual_fitness_v_0_0_1,
      Scale.PROPORTION, True,

@@ -1,5 +1,6 @@
 """Tests for conceptual fitness, structural fitness and counterfactual importance."""
 
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -101,6 +102,22 @@ class QueryFitnessTest(unittest.TestCase):
         self.assertEqual(imp[EX + "partOf"], imp[EX + "Facility"])
         self.assertEqual(set(r.affected[:2]), {EX + "Facility", EX + "partOf"})
         self.assertNotIn(EX + "Sample", imp)
+
+    def test_runner_selects_metrics_by_name(self):
+        from ontocheck import run_assessment
+        out = Path(self.tmp.name)
+        questions = out / "questions.json"
+        questions.write_text(json.dumps(QUESTIONS), encoding="utf-8")
+        kwargs = dict(questions=str(questions), domain_prefixes=["ex"],
+                      output_log_file=str(out / "a.log"),
+                      output_csv_file=str(out / "a.csv"))
+        r = run_assessment(self.ttl, structural_fitness=True, **kwargs)
+        self.assertEqual(list(r["fitness"]), ["structuralFitness"])
+        self.assertAlmostEqual(r["structural_fitness"], round(2 / 3, 4))
+        r = run_assessment(self.ttl, **kwargs)              # default: all three
+        self.assertEqual(set(r["fitness"]), {"conceptualFitness",
+                                             "structuralFitness",
+                                             "counterfactualImportance"})
 
 
 if __name__ == "__main__":
