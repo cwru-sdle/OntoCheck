@@ -25,9 +25,9 @@ Changelog (v0.0.2)
 
 Changelog (v0.0.3)
 ------------------
-- ADDED: ``--conceptual-fitness``, ``--structural-fitness`` and
-  ``--counterfactual-importance``.  Each needs ``--questions``; with
-  ``--questions`` and none of them, all three run.
+- ADDED: ``--conceptual-fitness`` and ``--structural-fitness``, which need
+  ``--questions``, and ``--counterfactual-importance``, which needs
+  ``--benchmark``.  With none of them, each runs when its input is given.
 - FIXED: ``--benchmark`` and ``--benchmark-output`` were lost when the
   framework flags were added (v0.0.2), so the benchmark runner could not be
   reached from the command line although the README documents it.  Both are
@@ -77,35 +77,38 @@ def _build_parser():
         help="Path to a competency-question file (.json or .md)\n"
              "containing SPARQL queries.  When provided, task-based\n"
              "Recall and Precision are computed automatically, along\n"
-             "with conceptual fitness, structural fitness and\n"
-             "counterfactual importance.  Framework metrics are also\n"
-             "reported weighted by the terms the questions depend on.",
+             "with conceptual and structural fitness.  Framework\n"
+             "metrics are also reported weighted by the terms the\n"
+             "questions depend on.",
     )
 
     fitness = parser.add_argument_group(
         "query fitness",
-        "Metrics over the competency questions; they need --questions.\n"
-        "With --questions and none of these flags, all three run.",
+        "Conceptual and structural fitness need --questions;\n"
+        "counterfactual importance needs --benchmark.  With none of\n"
+        "these flags, each runs when its input is given.",
     )
     fitness.add_argument(
         "--conceptual-fitness",
         action="store_true",
         default=None,
-        help="Weighted match quality of the questions' concepts.",
+        help="F_C: weighted exact/entailed support for the questions'\n"
+             "required concepts.",
     )
     fitness.add_argument(
         "--structural-fitness",
         action="store_true",
         default=None,
-        help="Weighted share of the questions' edges present in the\n"
-             "ontology.",
+        help="F_S: support of the questions' task edges by\n"
+             "minimum-cost admissible schema paths.",
     )
     fitness.add_argument(
         "--counterfactual-importance",
         action="store_true",
         default=None,
-        help="Ontology elements whose removal lowers the questions'\n"
-             "fitness, most important first.",
+        help="w_c^impact: drop in the --benchmark score when each\n"
+             "required concept is removed, and its agreement with the\n"
+             "workload weights.",
     )
 
     parser.add_argument(
@@ -204,12 +207,15 @@ def _validate_args(args):
 
     if args.questions and not args.domain_prefixes:
         errors.append("--domain-prefixes is required when --questions is provided.")
-    fitness_flags = [f for f in ("conceptual_fitness", "structural_fitness",
-                                 "counterfactual_importance")
+    fitness_flags = [f for f in ("conceptual_fitness", "structural_fitness")
                      if getattr(args, f, None)]
     if fitness_flags and not args.questions:
         names = ", ".join("--" + f.replace("_", "-") for f in fitness_flags)
         errors.append(f"--questions is required with {names}.")
+    if getattr(args, "counterfactual_importance", None) and not args.benchmark:
+        errors.append(
+            "--benchmark is required with --counterfactual-importance."
+        )
 
     if errors:
         print("Error:", file=sys.stderr)
@@ -293,6 +299,7 @@ def main():
         conceptual_fitness=args.conceptual_fitness,
         structural_fitness=args.structural_fitness,
         counterfactual_importance=args.counterfactual_importance,
+        benchmark=args.benchmark,
     )
 
     return _run_benchmark(args) if args.benchmark else 0

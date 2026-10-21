@@ -15,11 +15,11 @@ from .class_search import mainClassSearch_v_0_0_1
 from .nlp_json import build_question_json
 from .query_fitness import (
     conceptual_fitness,
-    conceptual_fitness_v_0_0_1,
+    conceptual_fitness_v_0_1_0,
     counterfactual_importance,
-    counterfactual_importance_v_0_0_1,
+    counterfactual_importance_v_0_1_0,
     structural_fitness,
-    structural_fitness_v_0_0_1,
+    structural_fitness_v_0_1_0,
 )
 
 # ---------------------------------------------------------------------------
@@ -185,9 +185,9 @@ __all__ = [
     "conceptual_fitness",
     "structural_fitness",
     "counterfactual_importance",
-    "conceptual_fitness_v_0_0_1",
-    "structural_fitness_v_0_0_1",
-    "counterfactual_importance_v_0_0_1",
+    "conceptual_fitness_v_0_1_0",
+    "structural_fitness_v_0_1_0",
+    "counterfactual_importance_v_0_1_0",
 
     # Metric registry
     "Category",

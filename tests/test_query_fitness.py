@@ -1,21 +1,24 @@
-"""Tests for conceptual fitness, structural fitness and counterfactual importance."""
+"""Tests for conceptual fitness, structural fitness and counterfactual
+concept importance."""
 
 import json
+import math
 import tempfile
 import unittest
 from pathlib import Path
 
 from ontocheck.query_fitness import (
-    conceptual_fitness_v_0_0_1,
-    counterfactual_importance_v_0_0_1,
-    structural_fitness_v_0_0_1,
+    conceptual_fitness,
+    counterfactual_importance,
+    structural_fitness,
 )
 
 
 EX = "https://example.org/"
 
-# measures links detectors to quantities through domain and range; partOf has
-# no domain or range, but Beamline carries "partOf some Facility".
+# measures links Detector to Quantity by domain and range; partOf has no
+# domain or range, but Beamline carries "partOf some Facility".  Device is
+# declared equivalent to an external Instrument class.
 ONTOLOGY = """\
 @prefix ex: <https://example.org/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
@@ -30,27 +33,58 @@ ex:Sample a owl:Class ; rdfs:label "Sample" .
 ex:Beamline a owl:Class ; rdfs:label "Beamline" ;
     rdfs:subClassOf [ a owl:Restriction ; owl:onProperty ex:partOf ;
                       owl:someValuesFrom ex:Facility ] .
+ex:Device a owl:Class ;
+    owl:equivalentClass <https://other.org/Instrument> .
 ex:measures a owl:ObjectProperty ; rdfs:domain ex:Detector ;
     rdfs:range ex:Quantity .
 ex:partOf a owl:ObjectProperty .
 """
 
 
-def query(a, rel, b):
-    return {"graph_query": {
-        "nodes": [{"nid": 0, "node_type": "class", "class": a},
-                  {"nid": 1, "node_type": "class", "class": b}],
-        "edges": [{"start": 0, "end": 1, "relation": rel}],
+def query(nodes, edges=(), prefix=None):
+    item = {"graph_query": {
+        "nodes": [{"nid": i, "node_type": "class", "class": c}
+                  for i, c in enumerate(nodes)],
+        "edges": [{"start": s, "end": t, "relation": r} for s, r, t in edges],
     }}
+    if prefix:
+        item["sparql_query"] = f"PREFIX ex: <{prefix}> SELECT * WHERE {{}}"
+    return item
 
 
-# Every query has 3 concepts and 1 edge, so |Q_lm| = 3 concepts / 1 edge and
-# w_c is the number of queries using c; w_e = 1 for each edge.
 QUESTIONS = [
-    query("ex:XrayDetector", "ex:measures", "ex:Quantity"),  # domain/range
-    query("ex:Beamline", "ex:partOf", "ex:Facility"),        # restriction
-    query("ex:Gizmo", "ex:partOf", "ex:Facility"),           # Gizmo missing
+    # d = 2: XrayDetector -> Detector (superclass), then measures.
+    query(["ex:XrayDetector", "ex:Quantity"], [(0, "ex:measures", 1)]),
+    # d = 1: the restriction on Beamline.
+    query(["ex:Beamline", "ex:Facility"], [(0, "ex:partOf", 1)]),
+    # Gizmo has no support, so the edge has none either.
+    query(["ex:Gizmo", "ex:Facility"], [(0, "ex:partOf", 1)]),
+    # Entailed support through owl:equivalentClass; no task edges.
+    query(["<https://other.org/Instrument>"]),
 ]
+
+
+def ask(case_id, text):
+    return {"id": case_id, "level": "fact_retrieval",
+            "task_type": "fact_retrieval", "prompt": case_id,
+            "query": {"language": "sparql", "text": text},
+            "expected": {"kind": "boolean", "values": True}}
+
+
+SUITE = {
+    "schema_version": "1.0", "suite_id": "fitness-v1", "domain": "test",
+    "namespaces": {"ex": EX,
+                   "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+                   "owl": "http://www.w3.org/2002/07/owl#"},
+    "inference": {"profile": "none"},
+    "cases": [
+        ask("a", "ASK { ex:XrayDetector rdfs:subClassOf ex:Detector }"),
+        ask("b", "ASK { ex:Beamline a owl:Class }"),
+        # Facility is named but optional: removing it changes nothing.
+        ask("c", "ASK { ex:Sample a owl:Class . "
+                 "OPTIONAL { ex:Facility a owl:Class } }"),
+    ],
+}
 
 
 class QueryFitnessTest(unittest.TestCase):
@@ -58,50 +92,68 @@ class QueryFitnessTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.tmp = tempfile.TemporaryDirectory()
-        cls.ttl = Path(cls.tmp.name) / "onto.ttl"
+        root = Path(cls.tmp.name)
+        cls.ttl = root / "onto.ttl"
         cls.ttl.write_text(ONTOLOGY, encoding="utf-8")
+        cls.suite = root / "suite.json"
+        cls.suite.write_text(json.dumps(SUITE), encoding="utf-8")
 
     @classmethod
     def tearDownClass(cls):
         cls.tmp.cleanup()
 
     def test_conceptual_fitness(self):
-        # Weights: Facility 2, partOf 2, the other five concepts 1 each (9).
-        # Only Gizmo (weight 1) is unmatched: f_c = 8 / 9.
-        r = conceptual_fitness_v_0_0_1(self.ttl, QUESTIONS)
-        self.assertAlmostEqual(r.score, round(8 / 9, 4))
+        # F_C per query with w = 1: 1, 1, 2/3, 1; averaged with pi = 1/4.
+        r = conceptual_fitness(self.ttl, QUESTIONS)
+        self.assertAlmostEqual(r.score, round(11 / 12, 4))
         self.assertEqual(r.affected, [EX + "Gizmo"])
-        self.assertEqual(r.detail["concepts"][EX + "Facility"]["weight"], 2.0)
+        concepts = r.detail["concepts"]
+        self.assertEqual(concepts["https://other.org/Instrument"]["tier"],
+                         "entailed")
+        # w_work: Facility is in queries 2 and 3, each with 3 requirements.
+        self.assertAlmostEqual(concepts[EX + "Facility"]["w_work"],
+                               round(2 * (1 / 4) / 3, 4))
+
+        # A query namespace that differs from the ontology's binding for the
+        # same prefix is an authorised mapping (exact) -- or, when that is
+        # not authorised, only an alignment on the local name.
+        moved = [query(["ex:Quantity"], prefix="https://elsewhere.org/")]
+        r = conceptual_fitness(self.ttl, moved)
+        self.assertEqual(r.score, 1.0)
+        self.assertEqual(r.detail["concepts"]["https://elsewhere.org/Quantity"]
+                         ["via"], "prefix mapping")
+        r = conceptual_fitness(self.ttl, moved, authorize_prefix_mapping=False)
+        self.assertEqual(r.score, 0.0)
+        self.assertEqual(r.detail["aligned_score"], 1.0)
 
     def test_structural_fitness(self):
-        r = structural_fitness_v_0_0_1(self.ttl, QUESTIONS)
-        self.assertAlmostEqual(r.score, round(2 / 3, 4))
-        self.assertEqual(r.detail["per_query"], [1.0, 1.0, 0.0])
-        evidence = {k: v["evidence"] for k, v in r.detail["edges"].items()}
-        self.assertEqual(evidence["XrayDetector --measures--> Quantity"],
-                         "domain/range")
-        self.assertEqual(evidence["Beamline --partOf--> Facility"],
-                         "restriction")
+        # s = exp(-ln 2 (d - 1)): 1/2, 1, 0; query 4 has no edges.
+        r = structural_fitness(self.ttl, QUESTIONS)
+        self.assertAlmostEqual(r.score, round((0.5 + 1 + 0) / 3, 4))
+        edges = r.detail["edges"]
+        self.assertEqual(edges["XrayDetector --measures--> Quantity"]["d"], 2)
+        self.assertEqual(edges["Beamline --partOf--> Facility"]["d"], 1)
+        self.assertIsNone(edges["Gizmo --partOf--> Facility"]["d"])
+        # Path coverage 1, 1, 0; path stretch 2 and 1 where defined.
+        self.assertAlmostEqual(r.detail["path_coverage"], round(2 / 3, 4))
+        self.assertAlmostEqual(r.detail["path_stretch"], 1.5)
 
-        # The same question as SPARQL gives the same edge.
-        sparql = ("PREFIX ex: <https://example.org/> SELECT ?d WHERE { "
-                  "?d a ex:XrayDetector . ?d ex:measures ?q . ?q a ex:Quantity }")
-        r = structural_fitness_v_0_0_1(self.ttl, [sparql])
-        self.assertEqual(r.score, 1.0)
+        r = structural_fitness(self.ttl, QUESTIONS[:1], lam=math.log(4))
+        self.assertAlmostEqual(r.score, 0.25)
 
     def test_counterfactual_importance(self):
-        r = counterfactual_importance_v_0_0_1(self.ttl, QUESTIONS)
-        imp = r.detail["importance"]
-        # Detector is not in any query, but the measures edge rests on it.
-        self.assertAlmostEqual(imp[EX + "Detector"]["structural"], round(1 / 3, 4))
-        self.assertEqual(imp[EX + "Detector"]["conceptual"], 0.0)
-        # Facility: conceptual weight 2/9 and one of three edges.
-        self.assertAlmostEqual(imp[EX + "Facility"]["total"],
-                               round((2 / 9 + 1 / 3) / 2, 4))
-        # partOf carries exactly as much (weight 2, the same edge): a tie.
-        self.assertEqual(imp[EX + "partOf"], imp[EX + "Facility"])
-        self.assertEqual(set(r.affected[:2]), {EX + "Facility", EX + "partOf"})
-        self.assertNotIn(EX + "Sample", imp)
+        r = counterfactual_importance(self.ttl, benchmark=self.suite)
+        weights = r.detail["weights"]
+        # Removing any of the four required concepts fails one of the three
+        # cases; removing Facility changes nothing.
+        self.assertAlmostEqual(weights[EX + "Beamline"]["drop"], round(1 / 3, 4))
+        self.assertEqual(weights[EX + "Facility"]["w_impact"], 0.0)
+        self.assertAlmostEqual(weights[EX + "Sample"]["w_impact"], 0.25)
+        # w_work: Beamline 1/3, the other four 1/6.  Spearman = 0.25.
+        self.assertAlmostEqual(r.score, 0.25)
+
+        r = counterfactual_importance(self.ttl, QUESTIONS)
+        self.assertTrue(r.status.startswith("Skipped"))
 
     def test_runner_selects_metrics_by_name(self):
         from ontocheck import run_assessment
@@ -113,11 +165,12 @@ class QueryFitnessTest(unittest.TestCase):
                       output_csv_file=str(out / "a.csv"))
         r = run_assessment(self.ttl, structural_fitness=True, **kwargs)
         self.assertEqual(list(r["fitness"]), ["structuralFitness"])
-        self.assertAlmostEqual(r["structural_fitness"], round(2 / 3, 4))
-        r = run_assessment(self.ttl, **kwargs)              # default: all three
-        self.assertEqual(set(r["fitness"]), {"conceptualFitness",
-                                             "structuralFitness",
-                                             "counterfactualImportance"})
+        # Default: fitness from the questions, importance only with a suite.
+        r = run_assessment(self.ttl, **kwargs)
+        self.assertEqual(set(r["fitness"]),
+                         {"conceptualFitness", "structuralFitness"})
+        r = run_assessment(self.ttl, benchmark=str(self.suite), **kwargs)
+        self.assertIn("counterfactualImportance", r["fitness"])
 
 
 if __name__ == "__main__":

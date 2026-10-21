@@ -33,11 +33,12 @@ Changelog (v0.0.3)
   duplicated a framework metric: FOOPS! VOC3-T, FOOPS! VOC4-T, OOPS! P04,
   OOPS! P11, FOOPS! OM4.1-T / OOPS! P41 and OOPS! P32 respectively.  The MDS
   design-check suite now runs the framework equivalents.
-- ADDED: conceptual fitness, structural fitness and counterfactual
-  importance (``query_fitness``), run with Recall and Precision whenever
-  competency questions are given.  The ``conceptual_fitness``,
-  ``structural_fitness`` and ``counterfactual_importance`` arguments (CLI:
-  ``--conceptual-fitness`` and so on) select a subset.
+- ADDED: conceptual fitness, structural fitness and counterfactual concept
+  importance (``query_fitness``).  The first two run whenever competency
+  questions are given; counterfactual importance runs when a benchmark suite
+  is given.  The ``conceptual_fitness``, ``structural_fitness`` and
+  ``counterfactual_importance`` arguments (CLI: ``--conceptual-fitness`` and
+  so on) select a subset.
 - ADDED: context weighting.  When framework metrics run with competency
   questions or over a file with instance data, the framework CSV gains
   ``Unweighted`` and ``Weighted`` columns; see ``context_weighting``.
@@ -162,6 +163,7 @@ def run_assessment(
     conceptual_fitness=None,
     structural_fitness=None,
     counterfactual_importance=None,
+    benchmark=None,
 ):
     """Run ontology assessment with any combination of metrics.
 
@@ -225,12 +227,16 @@ def run_assessment(
         Path for the extended framework results CSV.
     conceptual_fitness, structural_fitness, counterfactual_importance : \
 bool or None, optional
-        Select the query fitness metrics (see ``query_fitness``), which need
-        *questions*.  When all three are ``None`` (default) every one of them
-        runs whenever *questions* is given.  Otherwise only those set to
-        ``True`` run.  The metric names ``conceptualFitness``,
-        ``structuralFitness`` and ``counterfactualImportance`` may also be
-        listed in *metrics*, with the same effect as setting the flag.
+        Select the fitness metrics of ``query_fitness``.  Conceptual and
+        structural fitness need *questions*; counterfactual importance needs
+        *benchmark*.  When all three are ``None`` (default), each runs when
+        its input is given.  Otherwise only those set to ``True`` run.  The
+        metric names ``conceptualFitness``, ``structuralFitness`` and
+        ``counterfactualImportance`` may also be listed in *metrics*, with
+        the same effect as setting the flag.
+    benchmark : str or pathlib.Path, optional
+        A benchmark suite with expected answers.  Supplies Z, the downstream
+        score, for counterfactual importance.
 
     Returns
     -------
@@ -260,7 +266,7 @@ bool or None, optional
 
     fitness = _select_query_fitness(
         metrics, conceptual_fitness, structural_fitness,
-        counterfactual_importance,
+        counterfactual_importance, questions, benchmark,
     )
     if isinstance(metrics, (list, set, tuple)):
         metrics = [m for m in metrics if m not in _QUERY_FITNESS] or None
@@ -306,19 +312,17 @@ bool or None, optional
         )
         _log_task_based_result(task_result)
         results.extend(_task_based_result_to_rows(task_result))
-        if fitness:
-            logging.info("--- Running query fitness metrics ---")
-            fitness_results = _run_query_fitness(ttl_files, questions, fitness)
-            results.extend(r.to_row() for r in fitness_results)
-            task_result["fitness"] = {r.metric_id: r for r in fitness_results}
-            for r in fitness_results:
-                task_result[_QUERY_FITNESS[r.metric_id]] = r.score
-    elif fitness and any(x is not None for x in (
-            conceptual_fitness, structural_fitness, counterfactual_importance)):
-        logging.warning(
-            "The query fitness metrics need competency questions; pass "
-            "--questions. Skipped."
-        )
+
+    if fitness:
+        logging.info("--- Running fitness metrics ---")
+        fitness_results = _run_query_fitness(ttl_files, questions, benchmark,
+                                             fitness)
+        results.extend(r.to_row() for r in fitness_results)
+        if task_result is None:
+            task_result = {}
+        task_result["fitness"] = {r.metric_id: r for r in fitness_results}
+        for r in fitness_results:
+            task_result[_QUERY_FITNESS[r.metric_id]] = r.score
 
     if metrics is not None:
         logging.info("--- Running task-agnostic metrics ---")
@@ -394,28 +398,48 @@ _QUERY_FITNESS = {
 }
 
 
-def _select_query_fitness(metrics, conceptual, structural, counterfactual):
+def _select_query_fitness(metrics, conceptual, structural, counterfactual,
+                          questions=None, benchmark=None):
     """
-    Resolve which query fitness metrics to run.
+    Resolve which fitness metrics to run.
 
     Returns
     -------
     list of str
-        Metric names.  All three when nothing selects them explicitly.
+        Metric names.  When nothing selects them explicitly: conceptual and
+        structural fitness if there are questions, counterfactual importance
+        if there is a benchmark suite.  An explicitly selected metric whose
+        input is missing is skipped with a warning.
     """
     flags = dict(zip(_QUERY_FITNESS, (conceptual, structural, counterfactual)))
     if isinstance(metrics, (list, set, tuple)):
         for name in _QUERY_FITNESS:
             if name in metrics:
                 flags[name] = True
+    available = {
+        "conceptualFitness": questions is not None,
+        "structuralFitness": questions is not None,
+        "counterfactualImportance": benchmark is not None,
+    }
     if all(v is None for v in flags.values()):
-        return list(_QUERY_FITNESS)
-    return [name for name, v in flags.items() if v]
+        return [name for name in _QUERY_FITNESS if available[name]]
+    chosen = []
+    for name, v in flags.items():
+        if not v:
+            continue
+        if available[name]:
+            chosen.append(name)
+        else:
+            need = "a benchmark suite (--benchmark)" \
+                if name == "counterfactualImportance" \
+                else "competency questions (--questions)"
+            logging.warning(f"{name} needs {need}; skipped.")
+    return chosen
 
 
-def _run_query_fitness(ttl_files, questions, names):
+def _run_query_fitness(ttl_files, questions, benchmark, names):
     """
-    Run the selected query fitness metrics over the merged ontology files.
+    Run the selected fitness metrics over the merged ontology files.
 
     Returns
     -------
@@ -424,15 +448,16 @@ def _run_query_fitness(ttl_files, questions, names):
     from .query_fitness import counterfactual_importance
     from .query_fitness import conceptual_fitness, structural_fitness
 
-    functions = {
-        "conceptualFitness": conceptual_fitness,
-        "structuralFitness": structural_fitness,
-        "counterfactualImportance": counterfactual_importance,
+    calls = {
+        "conceptualFitness": lambda: conceptual_fitness(ttl_files, questions),
+        "structuralFitness": lambda: structural_fitness(ttl_files, questions),
+        "counterfactualImportance": lambda: counterfactual_importance(
+            ttl_files, benchmark=benchmark),
     }
     out = []
     for name in names:
         try:
-            r = functions[name](ttl_files, questions)
+            r = calls[name]()
             logging.info(r.message)
         except Exception as e:                   # noqa: BLE001
             logging.error(f"{name} failed: {e}", exc_info=True)

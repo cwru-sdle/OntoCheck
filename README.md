@@ -188,26 +188,24 @@ where T_a is the set of domain terms extracted from the SPARQL queries and T_o i
 
 ### Query Fitness
 
-Three further metrics run alongside Recall and Precision whenever competency questions are given.  They read each question's concepts and edges from the `graph_query` of the question file, or from the triple patterns of its SPARQL.
+Conceptual fitness, structural fitness and counterfactual concept importance measure how well an ontology supports a query workload.  Each query's required concepts `C_q` and task edges `E_q` come from the `graph_query` of the question file, or from its SPARQL.  Per-query scores are averaged over the workload with `π_q = 1/|Q|`.
 
-- **Conceptual fitness** `f_c = Σ w_c · m(c, O) / Σ w_c` -- how well the questions' concepts match the ontology.  `m` is 1 for an exact match, the label similarity for a near match, 0 otherwise; `w_c` sums `|C_q| / |C_lm|` over the queries using concept `c`, where `C_lm` is the largest query.
-- **Structural fitness** `f_s = Σ w_e · s(e, O) / Σ w_e` -- the weighted share of the questions' edges `A --p--> B` that belong to the ontology, through domain and range, an OWL restriction, or instance data.  `w_e` is defined like `w_c` over edges.
-- **Counterfactual importance** `CI(x) = F(O) − F(O \ x)`, with `F = (f_c + f_s) / 2` -- the fitness lost if element `x` were removed.  It ranks the classes and properties the questions rely on, including ones no question names directly, such as a domain class.
+- **Conceptual fitness** `F_C(q) = Σ w_c μ(c, O) / Σ w_c`, with canonical weights `w_c = 1` or the workload weights `w_c = Σ_q π_q 1[c ∈ C_q] / |C_q|`.  Support `μ` is *exact* (the IRI is in the ontology, or an authorised mapping), *entailed* (an equivalence axiom), or *aligned* (a matcher).  The score uses exact and entailed support; the score with aligned support and the ambiguity `A_C` are reported next to it.
+- **Structural fitness** `F_S(q) = max_φ Σ w_e s(e) / Σ w_e`, with `s(e) = exp(−λ (d − 1))` for the fewest steps `d` on an admissible schema path that realises the task relation, and 0 when there is none.  Steps are superclass moves, one edge of the relation (from its domain and range, a restriction, a subproperty, an inverse or a property chain), and class moves to the target.  Instance data does not count.  `PathCoverage` and `PathStretch` are reported next to it.
+- **Counterfactual concept importance** `w_c^impact ∝ Z(O) − Z(O^{−c})`, where `Z` is the score of a benchmark suite with expected answers.  It validates the workload weights rather than entering `F_C`: the score is the rank correlation between `w_c^work` and `w_c^impact`.
 
 ```bash
-# All three run with --questions; the flags pick a subset
+# F_C and F_S run with --questions; importance needs --benchmark
 ontocheck xrd.ttl --questions competency_questions.json --domain-prefixes mds \
-    --structural-fitness --counterfactual-importance
+    --benchmark xrd-suite.json --counterfactual-importance
 ```
 
 ```python
-from ontocheck import run_assessment, structural_fitness
+from ontocheck import conceptual_fitness, structural_fitness, counterfactual_importance
 
-r = run_assessment("xrd.ttl", questions="competency_questions.json",
-                   domain_prefixes=["mds"], conceptual_fitness=True)
-r["conceptual_fitness"]
-
-structural_fitness("xrd.ttl", "competency_questions.json").affected  # missing edges
+conceptual_fitness("xrd.ttl", "competency_questions.json", weighting="workload")
+structural_fitness("xrd.ttl", "competency_questions.json").affected   # unrealised edges
+counterfactual_importance("xrd.ttl", benchmark="xrd-suite.json").detail["weights"]
 ```
 
 ### Context-Weighted Scores
