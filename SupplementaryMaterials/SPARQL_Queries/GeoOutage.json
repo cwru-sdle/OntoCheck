@@ -43,7 +43,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?county ?maxOutages\nWHERE {\n  {\n    SELECT ?county (MAX(?num) AS ?maxOutages)\n    WHERE {\n      ?rec a goo:OutageRecord ;\n           goo:representsCounty ?county ;\n           goo:numberOfOutages ?num .\n    }\n    GROUP BY ?county\n  }\n}\nORDER BY DESC(?maxOutages)"
+    "sparql_query": "PREFIX goo:    <https://purl.archive.org/geooutageonto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?county ?maxOutages\nWHERE {\n  {\n    SELECT ?county (MAX(?num) AS ?maxOutages)\n    WHERE {\n      ?rec a goo:OutageRecord ;\n           goo:representsCounty ?county ;\n           goo:numberOfOutages ?num .\n    }\n    GROUP BY ?county\n  }\n}\nORDER BY DESC(?maxOutages)"
   },
   {
     "qid": 1000001,
@@ -95,7 +95,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?rec ?county ?date ?num\nWHERE {\n  ?rec a goo:OutageRecord ;\n       goo:representsCounty ?county ;\n       goo:recordDateTime ?date ;\n       goo:numberOfOutages ?num .\n}\nORDER BY DESC(?num)\nLIMIT 100"
+    "sparql_query": "PREFIX goo:    <https://purl.archive.org/geooutageonto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?rec ?county ?date ?num\nWHERE {\n  ?rec a goo:OutageRecord ;\n       goo:representsCounty ?county ;\n       goo:recordDateTime ?date ;\n       goo:numberOfOutages ?num .\n}\nORDER BY DESC(?num)\nLIMIT 100"
   },
   {
     "qid": 1000002,
@@ -132,7 +132,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?rec ?recordDate ?numOutages\nWHERE {\n  ?rec a goo:OutageRecord ;\n       goo:recordDateTime ?recordDate ;\n       goo:numberOfOutages ?numOutages .\n  FILTER (YEAR(?recordDate) = 2022)\n}"
+    "sparql_query": "PREFIX goo:    <https://purl.archive.org/geooutageonto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?rec ?recordDate ?numOutages\nWHERE {\n  ?rec a goo:OutageRecord ;\n       goo:recordDateTime ?recordDate ;\n       goo:numberOfOutages ?numOutages .\n  FILTER (YEAR(?recordDate) = 2022)\n}"
   },
   {
     "qid": 1000003,
@@ -172,7 +172,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?ntl ?date ?locator\nWHERE {\n  ?ntl a goo:NTLImage ;\n       ma-ont:date ?date ;\n       goo:representsCounty dbr:Orange_County%2C_Florida ;\n       ma-ont:locator ?locator .\n  FILTER (YEAR(?date) = 2025)\n}"
+    "sparql_query": "PREFIX goo:    <https://purl.archive.org/geooutageonto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?ntl ?date ?locator\nWHERE {\n  ?ntl a goo:NTLImage ;\n       ma-ont:date ?date ;\n       goo:representsCounty dbr:Orange_County%2C_Florida ;\n       ma-ont:locator ?locator .\n  FILTER (YEAR(?date) = 2025)\n}"
   },
   {
     "qid": 1000004,
@@ -212,7 +212,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?county\nWHERE {\n  VALUES ?rec { <urn:outage-record> }\n  ?rec a goo:OutageRecord ;\n       goo:representsCounty ?county .\n}"
+    "sparql_query": "PREFIX goo:    <https://purl.archive.org/geooutageonto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?county\nWHERE {\n  VALUES ?rec { <urn:outage-record> }\n  ?rec a goo:OutageRecord ;\n       goo:representsCounty ?county .\n}"
   },
   {
     "qid": 1000005,
@@ -252,7 +252,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?county\nWHERE {\n  VALUES ?ntl { <urn:ntl-image> }\n  ?ntl a goo:NTLImage ;\n       goo:representsCounty ?county .\n}"
+    "sparql_query": "PREFIX goo:    <https://purl.archive.org/geooutageonto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?county\nWHERE {\n  VALUES ?ntl { <urn:ntl-image> }\n  ?ntl a goo:NTLImage ;\n       goo:representsCounty ?county .\n}"
   },
   {
     "qid": 1000006,
@@ -292,7 +292,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?county\nWHERE {\n  VALUES ?map { <urn:outage-map> }\n  ?map a goo:OutageMap ;\n       goo:representsCounty ?county .\n}"
+    "sparql_query": "PREFIX goo:    <https://purl.archive.org/geooutageonto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?county\nWHERE {\n  VALUES ?map { <urn:outage-map> }\n  ?map a goo:OutageMap ;\n       goo:representsCounty ?county .\n}"
   },
   {
     "qid": 1000007,
@@ -332,7 +332,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?date\nWHERE {\n  VALUES ?rec { <urn:outage-record> }\n  ?rec a goo:OutageRecord ;\n       goo:recordDateTime ?date .\n}"
+    "sparql_query": "PREFIX goo:    <https://purl.archive.org/geooutageonto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?date\nWHERE {\n  VALUES ?rec { <urn:outage-record> }\n  ?rec a goo:OutageRecord ;\n       goo:recordDateTime ?date .\n}"
   },
   {
     "qid": 1000008,
@@ -372,7 +372,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?num\nWHERE {\n  VALUES ?rec { <urn:outage-record> }\n  ?rec a goo:OutageRecord ;\n       goo:numberOfOutages ?num .\n}"
+    "sparql_query": "PREFIX goo:    <https://purl.archive.org/geooutageonto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?num\nWHERE {\n  VALUES ?rec { <urn:outage-record> }\n  ?rec a goo:OutageRecord ;\n       goo:numberOfOutages ?num .\n}"
   },
   {
     "qid": 1000009,
@@ -412,7 +412,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?ntl\nWHERE {\n  VALUES ?rec { <urn:outage-record> }\n  ?rec a goo:OutageRecord ;\n       goo:hasNTLImage ?ntl .\n}"
+    "sparql_query": "PREFIX goo:    <https://purl.archive.org/geooutageonto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?ntl\nWHERE {\n  VALUES ?rec { <urn:outage-record> }\n  ?rec a goo:OutageRecord ;\n       goo:hasNTLImage ?ntl .\n}"
   },
   {
     "qid": 1000010,
@@ -452,7 +452,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?map\nWHERE {\n  VALUES ?rec { <urn:outage-record> }\n  ?rec a goo:OutageRecord ;\n       goo:hasOutageMap ?map .\n}"
+    "sparql_query": "PREFIX goo:    <https://purl.archive.org/geooutageonto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?map\nWHERE {\n  VALUES ?rec { <urn:outage-record> }\n  ?rec a goo:OutageRecord ;\n       goo:hasOutageMap ?map .\n}"
   },
   {
     "qid": 1000011,
@@ -492,7 +492,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?map\nWHERE {\n  VALUES ?ntl { <urn:ntl-image> }\n  ?ntl a goo:NTLImage ;\n       goo:hasOutageMap ?map .\n}"
+    "sparql_query": "PREFIX goo:    <https://purl.archive.org/geooutageonto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?map\nWHERE {\n  VALUES ?ntl { <urn:ntl-image> }\n  ?ntl a goo:NTLImage ;\n       goo:hasOutageMap ?map .\n}"
   },
   {
     "qid": 1000012,
@@ -532,7 +532,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?satellite\nWHERE {\n  VALUES ?ntl { <urn:ntl-image> }\n  ?ntl a goo:NTLImage ;\n       goo:fromSatellite ?satellite .\n}"
+    "sparql_query": "PREFIX goo:    <https://purl.archive.org/geooutageonto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?satellite\nWHERE {\n  VALUES ?ntl { <urn:ntl-image> }\n  ?ntl a goo:NTLImage ;\n       goo:fromSatellite ?satellite .\n}"
   },
   {
     "qid": 1000013,
@@ -572,7 +572,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?sensor\nWHERE {\n  VALUES ?ntl { <urn:ntl-image> }\n  ?ntl a goo:NTLImage ;\n       goo:fromSensor ?sensor .\n}"
+    "sparql_query": "PREFIX goo:    <https://purl.archive.org/geooutageonto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?sensor\nWHERE {\n  VALUES ?ntl { <urn:ntl-image> }\n  ?ntl a goo:NTLImage ;\n       goo:fromSensor ?sensor .\n}"
   },
   {
     "qid": 1000014,
@@ -624,7 +624,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?rec ?date ?num\nWHERE {\n  ?rec a goo:OutageRecord ;\n       goo:representsCounty dbr:Lee_County%2C_Florida ;\n       goo:recordDateTime ?date ;\n       goo:numberOfOutages ?num .\n  FILTER (?num > 100)\n  FILTER(\n    ?date >= \"2022-08-28T00:00:00Z\"^^xsd:dateTime &&\n    ?date <  \"2022-10-28T00:00:00Z\"^^xsd:dateTime\n  )\n}\nORDER BY ?date"
+    "sparql_query": "PREFIX goo:    <https://purl.archive.org/geooutageonto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?rec ?date ?num\nWHERE {\n  ?rec a goo:OutageRecord ;\n       goo:representsCounty dbr:Lee_County%2C_Florida ;\n       goo:recordDateTime ?date ;\n       goo:numberOfOutages ?num .\n  FILTER (?num > 100)\n  FILTER(\n    ?date >= \"2022-08-28T00:00:00Z\"^^xsd:dateTime &&\n    ?date <  \"2022-10-28T00:00:00Z\"^^xsd:dateTime\n  )\n}\nORDER BY ?date"
   },
   {
     "qid": 1000015,
@@ -679,7 +679,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?ntl ?rec ?date ?num\nWHERE {\n  ?rec a goo:OutageRecord ;\n       goo:representsCounty dbr:Lee_County%2C_Florida ;\n       goo:hasNTLImage ?ntl ;\n       goo:recordDateTime ?date ;\n       goo:numberOfOutages ?num .\n  ?ntl a goo:NTLImage .\n  FILTER (?num > 100)\n  FILTER(\n    ?date >= \"2022-08-28T00:00:00Z\"^^xsd:dateTime &&\n    ?date <  \"2022-10-28T00:00:00Z\"^^xsd:dateTime\n  )\n}\nORDER BY ?date"
+    "sparql_query": "PREFIX goo:    <https://purl.archive.org/geooutageonto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?ntl ?rec ?date ?num\nWHERE {\n  ?rec a goo:OutageRecord ;\n       goo:representsCounty dbr:Lee_County%2C_Florida ;\n       goo:hasNTLImage ?ntl ;\n       goo:recordDateTime ?date ;\n       goo:numberOfOutages ?num .\n  ?ntl a goo:NTLImage .\n  FILTER (?num > 100)\n  FILTER(\n    ?date >= \"2022-08-28T00:00:00Z\"^^xsd:dateTime &&\n    ?date <  \"2022-10-28T00:00:00Z\"^^xsd:dateTime\n  )\n}\nORDER BY ?date"
   },
   {
     "qid": 1000016,
@@ -734,7 +734,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?map ?rec ?date ?num\nWHERE {\n  ?rec a goo:OutageRecord ;\n       goo:representsCounty dbr:Lee_County%2C_Florida ;\n       goo:hasOutageMap ?map ;\n       goo:recordDateTime ?date ;\n       goo:numberOfOutages ?num .\n  ?map a goo:OutageMap .\n  FILTER (?num > 100)\n  FILTER(\n    ?date >= \"2022-08-28T00:00:00Z\"^^xsd:dateTime &&\n    ?date <  \"2022-10-28T00:00:00Z\"^^xsd:dateTime\n  )\n}\nORDER BY ?date"
+    "sparql_query": "PREFIX goo:    <https://purl.archive.org/geooutageonto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?map ?rec ?date ?num\nWHERE {\n  ?rec a goo:OutageRecord ;\n       goo:representsCounty dbr:Lee_County%2C_Florida ;\n       goo:hasOutageMap ?map ;\n       goo:recordDateTime ?date ;\n       goo:numberOfOutages ?num .\n  ?map a goo:OutageMap .\n  FILTER (?num > 100)\n  FILTER(\n    ?date >= \"2022-08-28T00:00:00Z\"^^xsd:dateTime &&\n    ?date <  \"2022-10-28T00:00:00Z\"^^xsd:dateTime\n  )\n}\nORDER BY ?date"
   },
   {
     "qid": 1000017,
@@ -780,7 +780,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?county (MAX(?num) AS ?maxOutages)\nWHERE {\n  ?rec a goo:OutageRecord ;\n       goo:representsCounty ?county ;\n       goo:numberOfOutages ?num .\n}\nGROUP BY ?county\nORDER BY DESC(?maxOutages)"
+    "sparql_query": "PREFIX goo:    <https://purl.archive.org/geooutageonto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?county (MAX(?num) AS ?maxOutages)\nWHERE {\n  ?rec a goo:OutageRecord ;\n       goo:representsCounty ?county ;\n       goo:numberOfOutages ?num .\n}\nGROUP BY ?county\nORDER BY DESC(?maxOutages)"
   },
   {
     "qid": 1000018,
@@ -856,7 +856,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?county ?maxOutages ?rec ?ntl ?map\nWHERE {\n  {\n    SELECT ?county (MAX(?num) AS ?maxOutages)\n    WHERE {\n      ?rec a goo:OutageRecord ;\n           goo:representsCounty ?county ;\n           goo:numberOfOutages ?num .\n    }\n    GROUP BY ?county\n  }\n  ?rec a goo:OutageRecord ;\n       goo:representsCounty ?county ;\n       goo:numberOfOutages ?maxOutages ;\n       goo:hasNTLImage ?ntl ;\n       goo:hasOutageMap ?map .\n}\nORDER BY DESC(?maxOutages)"
+    "sparql_query": "PREFIX goo:    <https://purl.archive.org/geooutageonto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?county ?maxOutages ?rec ?ntl ?map\nWHERE {\n  {\n    SELECT ?county (MAX(?num) AS ?maxOutages)\n    WHERE {\n      ?rec a goo:OutageRecord ;\n           goo:representsCounty ?county ;\n           goo:numberOfOutages ?num .\n    }\n    GROUP BY ?county\n  }\n  ?rec a goo:OutageRecord ;\n       goo:representsCounty ?county ;\n       goo:numberOfOutages ?maxOutages ;\n       goo:hasNTLImage ?ntl ;\n       goo:hasOutageMap ?map .\n}\nORDER BY DESC(?maxOutages)"
   },
   {
     "qid": 1000019,
@@ -917,6 +917,6 @@
         }
       ]
     },
-    "sparql_query": "PREFIX goo:    <https://ucf-henat.github.io/GeoOutageOnto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?county ?maxOutages ?dateOfMax\nWHERE {\n  {\n    SELECT ?county (MAX(?num) AS ?maxOutages)\n    WHERE {\n      ?rec a goo:OutageRecord ;\n           goo:representsCounty ?county ;\n           goo:numberOfOutages ?num .\n    }\n    GROUP BY ?county\n  }\n  ?rec a goo:OutageRecord ;\n       goo:representsCounty ?county ;\n       goo:numberOfOutages ?maxOutages ;\n       goo:recordDateTime ?dateOfMax .\n}\nORDER BY DESC(?maxOutages)"
+    "sparql_query": "PREFIX goo:    <https://purl.archive.org/geooutageonto/#>\nPREFIX dbo:    <https://dbpedia.org/ontology/>\nPREFIX dbr:    <https://dbpedia.org/page/>\nPREFIX ma-ont: <http://www.w3.org/ns/ma-ont#>\nPREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>\nPREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?county ?maxOutages ?dateOfMax\nWHERE {\n  {\n    SELECT ?county (MAX(?num) AS ?maxOutages)\n    WHERE {\n      ?rec a goo:OutageRecord ;\n           goo:representsCounty ?county ;\n           goo:numberOfOutages ?num .\n    }\n    GROUP BY ?county\n  }\n  ?rec a goo:OutageRecord ;\n       goo:representsCounty ?county ;\n       goo:numberOfOutages ?maxOutages ;\n       goo:recordDateTime ?dateOfMax .\n}\nORDER BY DESC(?maxOutages)"
   }
 ]

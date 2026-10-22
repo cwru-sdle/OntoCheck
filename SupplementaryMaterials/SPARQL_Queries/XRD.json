@@ -37,7 +37,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?facility ?label\nWHERE {\n  VALUES ?beamline { <http://example.org/resource#beamline.001> }\n  ?beamline a mds:Beamline .\n  ?beamline cco:ont00001857 ?facility .\n  ?facility a mds:SynchrotronFacility .\n  OPTIONAL { ?facility rdfs:label ?label }\n}"
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/files/MDS_Onto/index-en.html#>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?facility ?label\nWHERE {\n  VALUES ?beamline { <http://example.org/resource#beamline.001> }\n  ?beamline a mds:Beamline .\n  ?beamline cco:ont00001857 ?facility .\n  ?facility a mds:SynchrotronFacility .\n  OPTIONAL { ?facility rdfs:label ?label }\n}"
   },
   {
     "qid": 1000001,
@@ -77,7 +77,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?detector ?label\nWHERE {\n  VALUES ?recipe { <http://example.org/resource#recipe.001> }\n  ?recipe a mds:XrayRecipe .\n  ?tool obo:BFO_0000056 ?recipe .\n  ?tool a mds:XrayDetector .\n  BIND(?tool AS ?detector)\n  OPTIONAL { ?detector rdfs:label ?label }\n}"
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/files/MDS_Onto/index-en.html#>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?detector ?label\nWHERE {\n  VALUES ?recipe { <http://example.org/resource#recipe.001> }\n  ?recipe a mds:XrayRecipe .\n  ?tool obo:BFO_0000056 ?recipe .\n  ?tool a mds:XrayDetector .\n  BIND(?tool AS ?detector)\n  OPTIONAL { ?detector rdfs:label ?label }\n}"
   },
   {
     "qid": 1000002,
@@ -117,7 +117,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?pixelSizeWidth\nWHERE {\n  VALUES ?detector { <http://example.org/resource#detector.001> }\n  ?detector a mds:XrayDetector .\n  ?detector cco:ont00001904 ?pixelSizeWidth .\n  ?pixelSizeWidth a mds:PixelSizeWidth .\n}"
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/files/MDS_Onto/index-en.html#>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?pixelSizeWidth\nWHERE {\n  VALUES ?detector { <http://example.org/resource#detector.001> }\n  ?detector a mds:XrayDetector .\n  ?detector cco:ont00001904 ?pixelSizeWidth .\n  ?pixelSizeWidth a mds:PixelSizeWidth .\n}"
   },
   {
     "qid": 1000003,
@@ -157,7 +157,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?method ?label\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample a mds:XraySample .\n  ?method a mds:ProcessingMethod ;\n          obo:BFO_0000057 ?sample .\n  OPTIONAL { ?method rdfs:label ?label }\n}"
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/files/MDS_Onto/index-en.html#>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?method ?label\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample a mds:XraySample .\n  ?method a mds:ProcessingMethod ;\n          obo:BFO_0000057 ?sample .\n  OPTIONAL { ?method rdfs:label ?label }\n}"
   },
   {
     "qid": 1000004,
@@ -197,7 +197,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?formula\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample a mds:XraySample ;\n          cco:ont00001879 ?formula .\n  ?formula a mds:ChemicalFormula .\n}"
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/files/MDS_Onto/index-en.html#>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?formula\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample a mds:XraySample ;\n          cco:ont00001879 ?formula .\n  ?formula a mds:ChemicalFormula .\n}"
   },
   {
     "qid": 1000005,
@@ -252,7 +252,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?latticeParam ?value\nWHERE {\n  VALUES ?pattern { <http://example.org/resource#pattern.001> }\n  ?refinement a mds:RietveldRefinement ;\n              cco:ont00001921 ?pattern ;\n              cco:ont00001986 ?latticeParam .\n  ?latticeParam a mds:LatticeParameter .\n  OPTIONAL { ?latticeParam cco:ont00001769 ?value }\n}"
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/files/MDS_Onto/index-en.html#>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?latticeParam ?value\nWHERE {\n  VALUES ?pattern { <http://example.org/resource#pattern.001> }\n  ?refinement a mds:RietveldRefinement ;\n              cco:ont00001921 ?pattern ;\n              cco:ont00001986 ?latticeParam .\n  ?latticeParam a mds:LatticeParameter .\n  OPTIONAL { ?latticeParam cco:ont00001769 ?value }\n}"
   },
   {
     "qid": 1000006,
@@ -307,7 +307,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?dislocationDensity ?value\nWHERE {\n  VALUES ?pattern { <http://example.org/resource#pattern.001> }\n  ?dlpa a mds:DiffractionLineProfileAnalysis ;\n        cco:ont00001921 ?pattern ;\n        cco:ont00001986 ?dislocationDensity .\n  ?dislocationDensity a mds:DislocationDensity .\n  OPTIONAL { ?dislocationDensity cco:ont00001769 ?value }\n}"
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/files/MDS_Onto/index-en.html#>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?dislocationDensity ?value\nWHERE {\n  VALUES ?pattern { <http://example.org/resource#pattern.001> }\n  ?dlpa a mds:DiffractionLineProfileAnalysis ;\n        cco:ont00001921 ?pattern ;\n        cco:ont00001986 ?dislocationDensity .\n  ?dislocationDensity a mds:DislocationDensity .\n  OPTIONAL { ?dislocationDensity cco:ont00001769 ?value }\n}"
   },
   {
     "qid": 1000007,
@@ -347,7 +347,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?phaseFraction ?value\nWHERE {\n  VALUES ?refinement { <http://example.org/resource#refinement.001> }\n  ?refinement a mds:RietveldRefinement ;\n              cco:ont00001986 ?phaseFraction .\n  ?phaseFraction a mds:PhaseFraction .\n  OPTIONAL { ?phaseFraction cco:ont00001769 ?value }\n}"
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/files/MDS_Onto/index-en.html#>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?phaseFraction ?value\nWHERE {\n  VALUES ?refinement { <http://example.org/resource#refinement.001> }\n  ?refinement a mds:RietveldRefinement ;\n              cco:ont00001986 ?phaseFraction .\n  ?phaseFraction a mds:PhaseFraction .\n  OPTIONAL { ?phaseFraction cco:ont00001769 ?value }\n}"
   },
   {
     "qid": 1000008,
@@ -387,7 +387,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?transusTemp ?value\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample a mds:XraySample .\n  ?transusTemp a mds:BetaTitaniumTransusTemperature ;\n               obo:BFO_0000197 ?sample .\n  OPTIONAL { ?transusTemp cco:ont00001769 ?value }\n}"
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/files/MDS_Onto/index-en.html#>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?transusTemp ?value\nWHERE {\n  VALUES ?sample { <http://example.org/resource#sample.001> }\n  ?sample a mds:XraySample .\n  ?transusTemp a mds:BetaTitaniumTransusTemperature ;\n               obo:BFO_0000197 ?sample .\n  OPTIONAL { ?transusTemp cco:ont00001769 ?value }\n}"
   },
   {
     "qid": 1000009,
@@ -442,7 +442,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?crystalStructure ?label\nWHERE {\n  ?phase a mds:AlphaTiPhase ;\n         obo:BFO_0000171 ?unitCell .\n  ?unitCell a mds:AlphaTiUnitCell ;\n            obo:BFO_0000196 ?crystalStructure .\n  ?crystalStructure a mds:CrystalStructure .\n  OPTIONAL { ?crystalStructure rdfs:label ?label }\n}"
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/files/MDS_Onto/index-en.html#>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?crystalStructure ?label\nWHERE {\n  ?phase a mds:AlphaTiPhase ;\n         obo:BFO_0000171 ?unitCell .\n  ?unitCell a mds:AlphaTiUnitCell ;\n            obo:BFO_0000196 ?crystalStructure .\n  ?crystalStructure a mds:CrystalStructure .\n  OPTIONAL { ?crystalStructure rdfs:label ?label }\n}"
   },
   {
     "qid": 1000010,
@@ -482,7 +482,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?morphology ?label\nWHERE {\n  ?solidification a mds:RapidSolidification ;\n                  cco:ont00001986 ?morphology .\n  ?morphology a/rdfs:subClassOf* mds:GrainMorphology .\n  OPTIONAL { ?morphology rdfs:label ?label }\n}"
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/files/MDS_Onto/index-en.html#>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?morphology ?label\nWHERE {\n  ?solidification a mds:RapidSolidification ;\n                  cco:ont00001986 ?morphology .\n  ?morphology a/rdfs:subClassOf* mds:GrainMorphology .\n  OPTIONAL { ?morphology rdfs:label ?label }\n}"
   },
   {
     "qid": 1000011,
@@ -522,7 +522,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?thermalProfile\nWHERE {\n  VALUES ?ht { <http://example.org/resource#heattreatment.001> }\n  ?ht a mds:IsothermalTransformation .\n  ?directive cco:ont00001808 ?ht .\n  ?directive a mds:ThermalProfile .\n  BIND(?directive AS ?thermalProfile)\n}"
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/files/MDS_Onto/index-en.html#>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?thermalProfile\nWHERE {\n  VALUES ?ht { <http://example.org/resource#heattreatment.001> }\n  ?ht a mds:IsothermalTransformation .\n  ?directive cco:ont00001808 ?ht .\n  ?directive a mds:ThermalProfile .\n  BIND(?directive AS ?thermalProfile)\n}"
   },
   {
     "qid": 1000012,
@@ -562,7 +562,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?coolingRate ?value\nWHERE {\n  VALUES ?cct { <http://example.org/resource#cct.001> }\n  ?cct a mds:ContinuousCoolingTransformation .\n  ?coolingRate a mds:CoolingRate ;\n              obo:BFO_0000197 ?cct .\n  OPTIONAL { ?coolingRate cco:ont00001769 ?value }\n}"
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/files/MDS_Onto/index-en.html#>\nPREFIX obo: <http://purl.obolibrary.org/obo/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?coolingRate ?value\nWHERE {\n  VALUES ?cct { <http://example.org/resource#cct.001> }\n  ?cct a mds:ContinuousCoolingTransformation .\n  ?coolingRate a mds:CoolingRate ;\n              obo:BFO_0000197 ?cct .\n  OPTIONAL { ?coolingRate cco:ont00001769 ?value }\n}"
   },
   {
     "qid": 1000013,
@@ -617,7 +617,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?config\nWHERE {\n  VALUES ?pattern { <http://example.org/resource#pattern1d.001> }\n  ?integration a mds:AzimuthalIntegration ;\n               cco:ont00001986 ?pattern ;\n               cco:ont00001921 ?config .\n  ?config a mds:IntegrationOptions .\n}"
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/files/MDS_Onto/index-en.html#>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?config\nWHERE {\n  VALUES ?pattern { <http://example.org/resource#pattern1d.001> }\n  ?integration a mds:AzimuthalIntegration ;\n               cco:ont00001986 ?pattern ;\n               cco:ont00001921 ?config .\n  ?config a mds:IntegrationOptions .\n}"
   },
   {
     "qid": 1000014,
@@ -657,7 +657,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?transformation ?label\nWHERE {\n  ?transformation rdfs:subClassOf mds:SolidStatePhaseTransformation .\n  OPTIONAL { ?transformation rdfs:label ?label }\n}"
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/files/MDS_Onto/index-en.html#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?transformation ?label\nWHERE {\n  ?transformation rdfs:subClassOf mds:SolidStatePhaseTransformation .\n  OPTIONAL { ?transformation rdfs:label ?label }\n}"
   },
   {
     "qid": 1000015,
@@ -697,7 +697,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?beamline ?label\nWHERE {\n  ?beamline rdfs:subClassOf mds:Beamline .\n  ?beamline rdfs:label ?label .\n  FILTER(CONTAINS(STR(?label), \"APS\"))\n}"
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/files/MDS_Onto/index-en.html#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?beamline ?label\nWHERE {\n  ?beamline rdfs:subClassOf mds:Beamline .\n  ?beamline rdfs:label ?label .\n  FILTER(CONTAINS(STR(?label), \"APS\"))\n}"
   },
   {
     "qid": 1000016,
@@ -752,7 +752,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX owl: <http://www.w3.org/2002/07/owl#>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?law ?label\nWHERE {\n  ?law rdfs:subClassOf mds:GoverningLaw ;\n       rdfs:subClassOf [ a owl:Restriction ;\n                         owl:onProperty cco:ont00001808 ;\n                         owl:someValuesFrom mds:LatticeParameter ] .\n  OPTIONAL { ?law rdfs:label ?label }\n}"
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/files/MDS_Onto/index-en.html#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX owl: <http://www.w3.org/2002/07/owl#>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?law ?label\nWHERE {\n  ?law rdfs:subClassOf mds:GoverningLaw ;\n       rdfs:subClassOf [ a owl:Restriction ;\n                         owl:onProperty cco:ont00001808 ;\n                         owl:someValuesFrom mds:LatticeParameter ] .\n  OPTIONAL { ?law rdfs:label ?label }\n}"
   },
   {
     "qid": 1000017,
@@ -792,7 +792,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX owl: <http://www.w3.org/2002/07/owl#>\nSELECT ?targetPhase ?label\nWHERE {\n  mds:BetaTiPhase rdfs:subClassOf [ a owl:Restriction ;\n                                     owl:onProperty mds:transforms_into ;\n                                     owl:someValuesFrom ?targetPhase ] .\n  OPTIONAL { ?targetPhase rdfs:label ?label }\n}"
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/files/MDS_Onto/index-en.html#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX owl: <http://www.w3.org/2002/07/owl#>\nSELECT ?targetPhase ?label\nWHERE {\n  mds:BetaTiPhase rdfs:subClassOf [ a owl:Restriction ;\n                                     owl:onProperty mds:transforms_into ;\n                                     owl:someValuesFrom ?targetPhase ] .\n  OPTIONAL { ?targetPhase rdfs:label ?label }\n}"
   },
   {
     "qid": 1000018,
@@ -832,7 +832,7 @@
         }
       ]
     },
-    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?holdTemp ?value\nWHERE {\n  VALUES ?experiment { <http://example.org/resource#isothermal.001> }\n  ?experiment a mds:IsothermalTransformation .\n  ?directive cco:ont00001808 ?experiment .\n  ?directive cco:ont00001808 ?holdTemp .\n  ?holdTemp a mds:IsothermalHoldTemperature .\n  OPTIONAL { ?holdTemp cco:ont00001769 ?value }\n}"
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/files/MDS_Onto/index-en.html#>\nPREFIX cco: <https://www.commoncoreontologies.org/>\nSELECT ?holdTemp ?value\nWHERE {\n  VALUES ?experiment { <http://example.org/resource#isothermal.001> }\n  ?experiment a mds:IsothermalTransformation .\n  ?directive cco:ont00001808 ?experiment .\n  ?directive cco:ont00001808 ?holdTemp .\n  ?holdTemp a mds:IsothermalHoldTemperature .\n  OPTIONAL { ?holdTemp cco:ont00001769 ?value }\n}"
   },
   {
     "qid": 1000019,
@@ -887,6 +887,6 @@
         }
       ]
     },
-    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/mds/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX owl: <http://www.w3.org/2002/07/owl#>\nSELECT ?amProcess ?amLabel ?solidification ?solidLabel\nWHERE {\n  ?amProcess rdfs:subClassOf mds:AdditiveManufacturingProcess .\n  ?amProcess rdfs:subClassOf [ a owl:Restriction ;\n                                owl:onProperty mds:has_increased_likelihood_of ;\n                                owl:someValuesFrom ?solidification ] .\n  ?solidification rdfs:subClassOf* mds:Solidification .\n  OPTIONAL { ?amProcess rdfs:label ?amLabel }\n  OPTIONAL { ?solidification rdfs:label ?solidLabel }\n}"
+    "sparql_query": "PREFIX mds: <https://cwrusdle.bitbucket.io/files/MDS_Onto/index-en.html#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX owl: <http://www.w3.org/2002/07/owl#>\nSELECT ?amProcess ?amLabel ?solidification ?solidLabel\nWHERE {\n  ?amProcess rdfs:subClassOf mds:AdditiveManufacturingProcess .\n  ?amProcess rdfs:subClassOf [ a owl:Restriction ;\n                                owl:onProperty mds:has_increased_likelihood_of ;\n                                owl:someValuesFrom ?solidification ] .\n  ?solidification rdfs:subClassOf* mds:Solidification .\n  OPTIONAL { ?amProcess rdfs:label ?amLabel }\n  OPTIONAL { ?solidification rdfs:label ?solidLabel }\n}"
   }
 ]

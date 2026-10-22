@@ -1,117 +1,617 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix geosparql: <http://www.opengis.net/ont/geosparql#> .
+@prefix goo: <https://purl.archive.org/geooutageonto/#> .
+@prefix mds: <https://cwrusdle.bitbucket.io/mds/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix xml: <http://www.w3.org/XML/1998/namespace> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@base <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-[ rdf:type owl:Ontology
- ] .
+goo:Ontology a owl:Ontology ;
+    rdfs:label "GeoOutageOnto"@en ;
+    dcterms:creator "UCF SAGE & CWRU SDLE Research Center" ;
+    dcterms:description "An ontology for representing geospatial resilience data, including outage records, satellite imagery, outage maps, storm events, hurricanes, counties, sensors, and spectral bands."@en ;
+    owl:imports mds:Ontology ;
+    owl:versionInfo "1.1.0" .
 
-#################################################################
-#    Object Properties
-#################################################################
+goo:AquaImage a owl:Class ;
+    rdfs:label "Aqua Image"@en ;
+    rdfs:comment "A subclass of mds:Image representing NASA Aqua satellite images."@en ;
+    rdfs:subClassOf goo:SatelliteImage .
 
-###  https://ucf-henat.github.io/GeoOutageOnto/#fromSatellite
-<https://ucf-henat.github.io/GeoOutageOnto/#fromSatellite> rdf:type owl:ObjectProperty ;
-                                                           rdfs:domain <https://ucf-henat.github.io/GeoOutageOnto/#NTLImage> ;
-                                                           rdfs:range <https://www.eoknowledgehub.cn/eo/resource/satellite.2011-061A> ;
-                                                           rdfs:comment "Indicates which satellite captured the image."@en ;
-                                                           rdfs:label "from satellite"@en .
+goo:GOESImage a owl:Class ;
+    rdfs:label "GOES Image"@en ;
+    rdfs:comment "A subclass of mds:Image representing NOAA GOES satellite images."@en ;
+    rdfs:subClassOf goo:SatelliteImage .
 
+goo:TerraImage a owl:Class ;
+    rdfs:label "Terra Image"@en ;
+    rdfs:comment "A subclass of mds:Image representing NASA Terra satellite images."@en ;
+    rdfs:subClassOf goo:SatelliteImage .
 
-###  https://ucf-henat.github.io/GeoOutageOnto/#fromSensor
-<https://ucf-henat.github.io/GeoOutageOnto/#fromSensor> rdf:type owl:ObjectProperty ;
-                                                        rdfs:domain <https://ucf-henat.github.io/GeoOutageOnto/#NTLImage> ;
-                                                        rdfs:range <https://www.eoknowledgehub.cn/eo/resource/sensor.1c58ddb9-2b4c-4fe0-9970-f5fdc7242f6b> ;
-                                                        rdfs:comment "Indicates which sensor (instrument) on the satellite captured the image."@en ;
-                                                        rdfs:label "from sensor"@en .
+goo:acquisitionDateTime a owl:DatatypeProperty ;
+    rdfs:label "Acquisition DateTime"@en ;
+    rdfs:comment "The date and time when the satellite observation was acquired."@en ;
+    rdfs:domain goo:SatelliteImage ;
+    rdfs:range xsd:dateTime .
 
+goo:allCauseMortalityRate a owl:DatatypeProperty ;
+    rdfs:label "All-Cause Mortality Rate"@en ;
+    rdfs:comment "Age-adjusted all-cause mortality rate per 100,000 population."@en ;
+    rdfs:domain goo:WONDERRecord ;
+    rdfs:range xsd:decimal .
 
-###  https://ucf-henat.github.io/GeoOutageOnto/#hasNTLImage
-<https://ucf-henat.github.io/GeoOutageOnto/#hasNTLImage> rdf:type owl:ObjectProperty ;
-                                                         rdfs:domain <https://ucf-henat.github.io/GeoOutageOnto/#OutageRecord> ;
-                                                         rdfs:range <https://ucf-henat.github.io/GeoOutageOnto/#NTLImage> ;
-                                                         rdfs:comment "Associates numerical outage record with NTL image from same day as recorded outage record."@en ;
-                                                         rdfs:label "has NTL image"@en .
+goo:basin a owl:DatatypeProperty ;
+    rdfs:label "Basin"@en ;
+    rdfs:comment "The ocean basin where the storm occurred (e.g., ATL, EPAC)."@en ;
+    rdfs:domain goo:HurricaneEventRecord ;
+    rdfs:range xsd:string .
 
+goo:cancerMortalityRate a owl:DatatypeProperty ;
+    rdfs:label "Cancer Mortality Rate"@en ;
+    rdfs:comment "Age-adjusted cancer mortality rate per 100,000 population."@en ;
+    rdfs:domain goo:WONDERRecord ;
+    rdfs:range xsd:decimal .
 
-###  https://ucf-henat.github.io/GeoOutageOnto/#hasOutageMap
-<https://ucf-henat.github.io/GeoOutageOnto/#hasOutageMap> rdf:type owl:ObjectProperty ;
-                                                          rdfs:domain <https://ucf-henat.github.io/GeoOutageOnto/#NTLImage> ,
-                                                                      <https://ucf-henat.github.io/GeoOutageOnto/#OutageRecord> ;
-                                                          rdfs:range <https://ucf-henat.github.io/GeoOutageOnto/#OutageMap> ;
-                                                          rdfs:comment "Associates numerical NTL image or outage record with power outage severity map generated from NTL image."@en ;
-                                                          rdfs:label "has outage map"@en .
+goo:cardiovascularDiseaseMortalityRate a owl:DatatypeProperty ;
+    rdfs:label "Cardiovascular Disease Mortality Rate"@en ;
+    rdfs:comment "Age-adjusted cardiovascular disease mortality rate per 100,000 population."@en ;
+    rdfs:domain goo:WONDERRecord ;
+    rdfs:range xsd:decimal .
 
+goo:cloudCoverPercentage a owl:DatatypeProperty ;
+    rdfs:label "Cloud Cover Percentage"@en ;
+    rdfs:comment "The estimated percentage of cloud cover in the satellite image or source granule."@en ;
+    rdfs:domain goo:SatelliteImage ;
+    rdfs:range xsd:decimal .
 
-###  https://ucf-henat.github.io/GeoOutageOnto/#representsCounty
-<https://ucf-henat.github.io/GeoOutageOnto/#representsCounty> rdf:type owl:ObjectProperty ;
-                                                              rdfs:domain <http://www.w3.org/ns/ma-ont#Image> ,
-                                                                          <https://ucf-henat.github.io/GeoOutageOnto/#OutageRecord> ;
-                                                              rdfs:range <https://dbpedia.org/ontology/AdministrativeRegion> ;
-                                                              rdfs:comment "Links an NTL image, outage map, or outage record to U.S. county (instance of dbo:AdministrativeRegion) that it depicts."@en ;
-                                                              rdfs:label "represents county"@en .
+goo:collectionVersion a owl:DatatypeProperty ;
+    rdfs:label "Collection Version"@en ;
+    rdfs:comment "The collection or processing version of the source satellite dataset."@en ;
+    rdfs:domain goo:SatelliteImage ;
+    rdfs:range xsd:string .
 
+goo:containsSensor a owl:ObjectProperty ;
+    rdfs:label "contains sensor"@en ;
+    rdfs:comment "Links a satellite directly to a sensor instrument that is equipped on board."@en ;
+    rdfs:domain goo:Satellite ;
+    rdfs:range goo:Sensor ;
+    rdfs:subPropertyOf mds:containsSensor .
 
-#################################################################
-#    Data properties
-#################################################################
+goo:damageCrops a owl:DatatypeProperty ;
+    rdfs:label "Crop Damage"@en ;
+    rdfs:comment "Estimated crop damage formatted as a string."@en ;
+    rdfs:domain goo:StormEventRecord ;
+    rdfs:range xsd:string .
 
-###  https://ucf-henat.github.io/GeoOutageOnto/#numberOfOutages
-<https://ucf-henat.github.io/GeoOutageOnto/#numberOfOutages> rdf:type owl:DatatypeProperty ;
-                                                             rdfs:domain <https://ucf-henat.github.io/GeoOutageOnto/#OutageRecord> ;
-                                                             rdfs:range xsd:integer ;
-                                                             rdfs:comment "Numerical outage record for county at date and time from Eagle-I dataset."@en ;
-                                                             rdfs:label "Number of Outages"@en .
+goo:damageProperty a owl:DatatypeProperty ;
+    rdfs:label "Property Damage"@en ;
+    rdfs:comment "Estimated property damage formatted as a string (e.g., '250K', '2.5M')."@en ;
+    rdfs:domain goo:StormEventRecord ;
+    rdfs:range xsd:string .
 
+goo:dayNightFlag a owl:DatatypeProperty ;
+    rdfs:label "Day/Night Flag"@en ;
+    rdfs:comment "A flag indicating whether the observation was acquired during daytime, nighttime, or both."@en ;
+    rdfs:domain goo:SatelliteImage ;
+    rdfs:range xsd:string .
 
-###  https://ucf-henat.github.io/GeoOutageOnto/#recordDateTime
-<https://ucf-henat.github.io/GeoOutageOnto/#recordDateTime> rdf:type owl:DatatypeProperty ;
-                                                            rdfs:domain <https://ucf-henat.github.io/GeoOutageOnto/#OutageRecord> ;
-                                                            rdfs:range xsd:dateTime ;
-                                                            rdfs:comment "Date and time for numerical outage record for county from Eagle-I dataset."@en ;
-                                                            rdfs:label "Outage Record DateTime"@en .
+goo:deathsDirect a owl:DatatypeProperty ;
+    rdfs:label "Direct Deaths"@en ;
+    rdfs:comment "Number of direct deaths attributed to the storm event."@en ;
+    rdfs:domain goo:StormEventRecord ;
+    rdfs:range xsd:integer .
 
+goo:derivedFromSatelliteDataset a owl:ObjectProperty ;
+    rdfs:label "derived from satellite dataset"@en ;
+    rdfs:comment "Links a satellite image to the broader satellite dataset product used as its source."@en ;
+    rdfs:domain goo:SatelliteImage ;
+    rdfs:range goo:SatelliteDatasetProduct .
 
-#################################################################
-#    Classes
-#################################################################
+goo:diabetesPrevalence a owl:DatatypeProperty ;
+    rdfs:label "Diabetes Prevalence"@en ;
+    rdfs:comment "Percentage of adults with diagnosed diabetes."@en ;
+    rdfs:domain goo:WONDERRecord ;
+    rdfs:range xsd:decimal .
 
-###  http://www.w3.org/ns/ma-ont#Image
-<http://www.w3.org/ns/ma-ont#Image> rdf:type owl:Class .
+goo:episodeId a owl:DatatypeProperty ;
+    rdfs:label "Episode ID"@en ;
+    rdfs:comment "The unique identifier for a storm episode."@en ;
+    rdfs:domain goo:StormEpisodeRecord ;
+    rdfs:range xsd:string .
 
+goo:eventEndTime a owl:DatatypeProperty ;
+    rdfs:label "Event End Time"@en ;
+    rdfs:comment "Event end date and time for tabular data."@en ;
+    rdfs:domain goo:TabularData ;
+    rdfs:range xsd:dateTime .
 
-###  https://dbpedia.org/ontology/AdministrativeRegion
-<https://dbpedia.org/ontology/AdministrativeRegion> rdf:type owl:Class .
+goo:eventNarrative a owl:DatatypeProperty ;
+    rdfs:label "Event Narrative"@en ;
+    rdfs:comment "A descriptive narrative detailing the storm event's progression and impacts."@en ;
+    rdfs:domain goo:StormEventRecord ;
+    rdfs:range xsd:string .
 
+goo:eventStartTime a owl:DatatypeProperty ;
+    rdfs:label "Event Start Time"@en ;
+    rdfs:comment "Event start date and time for tabular data."@en ;
+    rdfs:domain goo:TabularData ;
+    rdfs:range xsd:dateTime .
 
-###  https://ucf-henat.github.io/GeoOutageOnto/#NTLImage
-<https://ucf-henat.github.io/GeoOutageOnto/#NTLImage> rdf:type owl:Class ;
-                                                      rdfs:subClassOf <http://www.w3.org/ns/ma-ont#Image> ;
-                                                      rdfs:comment "A subclass of ma-ont:Image representing Nighttime Light images from Black Marble Dataset."@en ;
-                                                      rdfs:label "NTL Image"@en .
+goo:fipsCode a owl:DatatypeProperty ;
+    rdfs:label "FIPS Code"@en ;
+    rdfs:comment "The Federal Information Processing Standards (FIPS) code of a county, state, territory, or the District of Columbia."@en ;
+    rdfs:domain goo:AdministrativeAreaScopedEntity ;
+    rdfs:range xsd:string .
 
+goo:fromSatellite a owl:ObjectProperty ;
+    rdfs:label "from satellite"@en ;
+    rdfs:comment "Indicates which satellite captured the image."@en ;
+    rdfs:domain goo:SatelliteImage ;
+    rdfs:range goo:Satellite ;
+    rdfs:subPropertyOf mds:generatedBySatellite .
 
-###  https://ucf-henat.github.io/GeoOutageOnto/#OutageMap
-<https://ucf-henat.github.io/GeoOutageOnto/#OutageMap> rdf:type owl:Class ;
-                                                       rdfs:subClassOf <http://www.w3.org/ns/ma-ont#Image> ;
-                                                       rdfs:comment "Power outage map of county generated using NTL Imagery and Multimodal Outage Detector."@en ;
-                                                       rdfs:label "Outage Map"@en .
+goo:fromSensor a owl:ObjectProperty ;
+    rdfs:label "from sensor"@en ;
+    rdfs:comment "Indicates which sensor (instrument) on the satellite captured the image."@en ;
+    rdfs:domain goo:SatelliteImage ;
+    rdfs:range goo:Sensor ;
+    rdfs:subPropertyOf mds:generatedBySensor .
 
+goo:granuleId a owl:DatatypeProperty ;
+    rdfs:label "Granule ID"@en ;
+    rdfs:comment "The source granule, scene, or file identifier for a satellite image."@en ;
+    rdfs:domain goo:SatelliteImage ;
+    rdfs:range xsd:string .
 
-###  https://ucf-henat.github.io/GeoOutageOnto/#OutageRecord
-<https://ucf-henat.github.io/GeoOutageOnto/#OutageRecord> rdf:type owl:Class ;
-                                                          rdfs:comment "Numerical outage record for county at date and time from Eagle-I dataset."@en ;
-                                                          rdfs:label "Outage Record"@en .
+goo:hasDatasetProduct a owl:ObjectProperty ;
+    rdfs:label "has dataset product"@en ;
+    rdfs:comment "Links a satellite image to the dataset product or collection from which it was derived."@en ;
+    rdfs:domain goo:SatelliteImage ;
+    rdfs:range goo:SatelliteDatasetProduct .
 
+goo:hasOrbit a owl:ObjectProperty ;
+    rdfs:label "has orbit"@en ;
+    rdfs:comment "Links a satellite to its orbital configuration or orbit classification."@en ;
+    rdfs:domain goo:SatelliteImage ;
+    rdfs:range goo:SatelliteOrbit .
 
-###  https://www.eoknowledgehub.cn/eo/resource/satellite.2011-061A
-<https://www.eoknowledgehub.cn/eo/resource/satellite.2011-061A> rdf:type owl:Class .
+goo:hasSourceGranule a owl:ObjectProperty ;
+    rdfs:label "has source granule"@en ;
+    rdfs:comment "Links a satellite image to its source granule, tile, or scene."@en ;
+    rdfs:domain goo:SatelliteImage ;
+    rdfs:range goo:SatelliteGranule .
 
+goo:hasSpatialReferenceSystem a owl:ObjectProperty ;
+    rdfs:label "has spatial reference system"@en ;
+    rdfs:comment "Links a satellite image to its coordinate reference system, projection, or spatial grid."@en ;
+    rdfs:domain goo:SatelliteImage ;
+    rdfs:range goo:SpatialReferenceSystem .
 
-###  https://www.eoknowledgehub.cn/eo/resource/sensor.1c58ddb9-2b4c-4fe0-9970-f5fdc7242f6b
-<https://www.eoknowledgehub.cn/eo/resource/sensor.1c58ddb9-2b4c-4fe0-9970-f5fdc7242f6b> rdf:type owl:Class .
+goo:hasSpectralBand a owl:ObjectProperty ;
+    rdfs:label "has spectral band"@en ;
+    rdfs:comment "Links a satellite image or sensor to a spectral band it represents, captures, or supports."@en ;
+    rdfs:domain goo:SpectralBandScopedEntity ;
+    rdfs:range goo:SpectralBand .
 
+goo:hasTrackRecord a owl:ObjectProperty ;
+    rdfs:label "has track record"@en ;
+    rdfs:comment "Associates a hurricane event record with its individual 6-hourly position and intensity track records."@en ;
+    rdfs:domain goo:HurricaneEventRecord ;
+    rdfs:range goo:HurricaneTrackRecord .
 
-###  Generated by the OWL API (version 5.1.18) https://github.com/owlcs/owlapi/
+goo:hurricaneId a owl:DatatypeProperty ;
+    rdfs:label "Storm ID"@en ;
+    rdfs:comment "The official NHC storm identifier (e.g., AL092021)."@en ;
+    rdfs:domain goo:HurricaneEventRecord ;
+    rdfs:range xsd:string .
+
+goo:injuriesDirect a owl:DatatypeProperty ;
+    rdfs:label "Direct Injuries"@en ;
+    rdfs:comment "Number of direct injuries attributed to the storm event."@en ;
+    rdfs:domain goo:StormEventRecord ;
+    rdfs:range xsd:integer .
+
+goo:instrumentMode a owl:DatatypeProperty ;
+    rdfs:label "Instrument Mode"@en ;
+    rdfs:comment "The instrument or acquisition mode used to capture the satellite image."@en ;
+    rdfs:domain goo:SatelliteImage ;
+    rdfs:range xsd:string .
+
+goo:lat a owl:DatatypeProperty ;
+    rdfs:label "Latitude"@en ;
+    rdfs:comment "Latitude as a decimal literal."@en ;
+    rdfs:range xsd:decimal ;
+    rdfs:seeAlso mds:Latitude,
+        mds:hasLat ;
+    rdfs:subPropertyOf geo:lat .
+
+goo:locatedInState a owl:ObjectProperty ;
+    rdfs:label "located in state"@en ;
+    rdfs:comment "Links a U.S. county or equivalent county-level area to its state, territory, or District of Columbia instance."@en ;
+    rdfs:domain goo:County ;
+    rdfs:range goo:State .
+
+goo:lon a owl:DatatypeProperty ;
+    rdfs:label "Longitude"@en ;
+    rdfs:comment "Longitude as a decimal literal."@en ;
+    rdfs:range xsd:decimal ;
+    rdfs:seeAlso mds:Longitude,
+        mds:hasLong ;
+    rdfs:subPropertyOf geo:long .
+
+goo:maxSustainedWindSpeed a owl:DatatypeProperty ;
+    rdfs:label "Maximum Sustained Wind Speed (knots)"@en ;
+    rdfs:comment "The maximum sustained wind speed as a literal value in knots."@en ;
+    rdfs:domain goo:HurricaneObservationEntity ;
+    rdfs:range xsd:integer ;
+    rdfs:seeAlso mds:WindSpeed,
+        mds:hasWindSpeed .
+
+goo:minPressure a owl:DatatypeProperty ;
+    rdfs:label "Minimum Central Pressure (mb)"@en ;
+    rdfs:comment "The minimum central pressure of the storm in millibars."@en ;
+    rdfs:domain goo:HurricaneObservationEntity ;
+    rdfs:range xsd:integer .
+
+goo:minorityPercentage a owl:DatatypeProperty ;
+    rdfs:label "Minority Percentage"@en ;
+    rdfs:comment "Percentage of population that identifies as racial/ethnic minority."@en ;
+    rdfs:domain goo:SVIRecord ;
+    rdfs:range xsd:decimal .
+
+goo:neighboringCounties a owl:ObjectProperty,
+        owl:SymmetricProperty ;
+    rdfs:label "neighboring counties"@en ;
+    rdfs:comment "Links a county to the counties that share a border with it."@en ;
+    rdfs:domain goo:County ;
+    rdfs:range goo:County .
+
+goo:neighboringStates a owl:ObjectProperty,
+        owl:SymmetricProperty ;
+    rdfs:label "neighboring states"@en ;
+    rdfs:comment "Links a U.S. state, territory, or the District of Columbia to other state-level areas that share a border with it."@en ;
+    rdfs:domain goo:State ;
+    rdfs:range goo:State .
+
+goo:numberOfOutages a owl:DatatypeProperty ;
+    rdfs:label "Number of Outages"@en ;
+    rdfs:comment "Numerical outage record per customer for county at date and time from Eagle-I dataset."@en ;
+    rdfs:domain goo:CustomerOutageRecord ;
+    rdfs:range xsd:integer .
+
+goo:obesityPrevalence a owl:DatatypeProperty ;
+    rdfs:label "Obesity Prevalence"@en ;
+    rdfs:comment "Percentage of adults with obesity (BMI >= 30)."@en ;
+    rdfs:domain goo:WONDERRecord ;
+    rdfs:range xsd:decimal .
+
+goo:occurredInCounty a owl:ObjectProperty ;
+    rdfs:label "occurred in county"@en ;
+    rdfs:comment "Links a storm event to the county (via CZ_FIPS) where it took place."@en ;
+    rdfs:domain goo:StormEventRecord ;
+    rdfs:range goo:County .
+
+goo:occurredInState a owl:ObjectProperty ;
+    rdfs:label "occurred in state"@en ;
+    rdfs:comment "Links a storm event to the state, territory, or District of Columbia (via STATE_FIPS) where it took place."@en ;
+    rdfs:domain goo:StormEventRecord ;
+    rdfs:range goo:State .
+
+goo:orbitNumber a owl:DatatypeProperty ;
+    rdfs:label "Orbit Number"@en ;
+    rdfs:comment "The orbit number or pass identifier associated with the satellite image acquisition."@en ;
+    rdfs:domain goo:SatelliteImage ;
+    rdfs:range xsd:string .
+
+goo:partOfEpisode a owl:ObjectProperty ;
+    rdfs:label "part of episode"@en ;
+    rdfs:comment "Links an individual storm event record to its broader storm episode record."@en ;
+    rdfs:domain goo:StormEventRecord ;
+    rdfs:range goo:StormEpisodeRecord .
+
+goo:povertyRate a owl:DatatypeProperty ;
+    rdfs:label "Poverty Rate"@en ;
+    rdfs:comment "Percentage of population below poverty level."@en ;
+    rdfs:domain goo:SVIRecord ;
+    rdfs:range xsd:decimal .
+
+goo:processingLevel a owl:DatatypeProperty ;
+    rdfs:label "Processing Level"@en ;
+    rdfs:comment "The processing level of the satellite image product, such as L1B, L2, or L3."@en ;
+    rdfs:domain goo:SatelliteImage ;
+    rdfs:range xsd:string .
+
+goo:productShortName a owl:DatatypeProperty ;
+    rdfs:label "Product Short Name"@en ;
+    rdfs:comment "The dataset product short name associated with the image, such as a NASA Earthdata or MODIS product identifier."@en ;
+    rdfs:domain goo:SatelliteImage ;
+    rdfs:range xsd:string .
+
+goo:productionDateTime a owl:DatatypeProperty ;
+    rdfs:label "Production DateTime"@en ;
+    rdfs:comment "The date and time when the source image product or granule was produced or processed."@en ;
+    rdfs:domain goo:SatelliteImage ;
+    rdfs:range xsd:dateTime .
+
+goo:qualityFlag a owl:DatatypeProperty ;
+    rdfs:label "Quality Flag"@en ;
+    rdfs:comment "A quality assurance flag or summary value associated with the satellite image."@en ;
+    rdfs:domain goo:SatelliteImage ;
+    rdfs:range xsd:string .
+
+goo:recordDateTime a owl:DatatypeProperty ;
+    rdfs:label "Record DateTime"@en ;
+    rdfs:comment "Date and time for tabular data, if only one time point provided."@en ;
+    rdfs:domain goo:TabularData ;
+    rdfs:range xsd:dateTime .
+
+goo:representsCounty a owl:ObjectProperty ;
+    rdfs:label "represents county"@en ;
+    rdfs:comment "Links an NTL image, outage map, or outage record to U.S. county that it depicts."@en ;
+    rdfs:domain goo:CountyScopedEntity ;
+    rdfs:range goo:County .
+
+goo:sourceDownloadUrl a owl:DatatypeProperty ;
+    rdfs:label "Source Download URL"@en ;
+    rdfs:comment "A URL where the source satellite image, granule, or product metadata can be accessed."@en ;
+    rdfs:domain goo:SatelliteImage ;
+    rdfs:range xsd:anyURI ;
+    rdfs:seeAlso mds:FileURI .
+
+goo:spatialResolution a owl:DatatypeProperty ;
+    rdfs:label "Spatial Resolution"@en ;
+    rdfs:comment "The native or nominal spatial resolution of the satellite image, including units when available."@en ;
+    rdfs:domain goo:SatelliteImage ;
+    rdfs:range xsd:string .
+
+goo:statePostalCode a owl:DatatypeProperty ;
+    rdfs:label "State Postal Code"@en ;
+    rdfs:comment "The USPS postal abbreviation for a U.S. state, territory, or the District of Columbia."@en ;
+    rdfs:domain goo:State ;
+    rdfs:range xsd:string .
+
+goo:status a owl:DatatypeProperty ;
+    rdfs:label "Storm Status"@en ;
+    rdfs:comment "The phase or status of the storm at a given time (e.g., TD, TS, HU)."@en ;
+    rdfs:domain goo:HurricaneTrackRecord ;
+    rdfs:range xsd:string .
+
+goo:stormEventId a owl:DatatypeProperty ;
+    rdfs:label "Event ID"@en ;
+    rdfs:comment "The unique identifier for a specific storm event."@en ;
+    rdfs:domain goo:StormEventRecord ;
+    rdfs:range xsd:string .
+
+goo:stormEventType a owl:DatatypeProperty ;
+    rdfs:label "Storm Type"@en ;
+    rdfs:comment "Type of storm event from the NOAA Storm Events Database."@en ;
+    rdfs:domain goo:StormEventRecord ;
+    rdfs:range xsd:string .
+
+goo:sviHouseholdCompositionDisabilityTheme a owl:DatatypeProperty ;
+    rdfs:label "SVI Household Composition and Disability Theme Score"@en ;
+    rdfs:comment "The household composition and disability theme score from the SVI, including age, disability, and household structure."@en ;
+    rdfs:domain goo:SVIRecord ;
+    rdfs:range xsd:decimal .
+
+goo:sviHousingTransportationTheme a owl:DatatypeProperty ;
+    rdfs:label "SVI Housing and Transportation Theme Score"@en ;
+    rdfs:comment "The housing and transportation theme score from the SVI, including housing type and vehicle access."@en ;
+    rdfs:domain goo:SVIRecord ;
+    rdfs:range xsd:decimal .
+
+goo:sviMinorityStatusLanguageTheme a owl:DatatypeProperty ;
+    rdfs:label "SVI Minority Status and Language Theme Score"@en ;
+    rdfs:comment "The minority status and language theme score from the SVI, based on racial/ethnic minorities and language barriers."@en ;
+    rdfs:domain goo:SVIRecord ;
+    rdfs:range xsd:decimal .
+
+goo:sviOverallScore a owl:DatatypeProperty ;
+    rdfs:label "SVI Overall Score"@en ;
+    rdfs:comment "The overall Social Vulnerability Index score for the county, ranging from 0 to 1, indicating relative vulnerability."@en ;
+    rdfs:domain goo:SVIRecord ;
+    rdfs:range xsd:decimal .
+
+goo:sviSocioeconomicTheme a owl:DatatypeProperty ;
+    rdfs:label "SVI Socioeconomic Theme Score"@en ;
+    rdfs:comment "The socioeconomic theme score from the SVI, based on poverty, unemployment, and income indicators."@en ;
+    rdfs:domain goo:SVIRecord ;
+    rdfs:range xsd:decimal .
+
+goo:sviYear a owl:DatatypeProperty ;
+    rdfs:label "SVI Year"@en ;
+    rdfs:comment "The year of the SVI data record."@en ;
+    rdfs:domain goo:SVIRecord ;
+    rdfs:range xsd:integer .
+
+goo:temporalResolution a owl:DatatypeProperty ;
+    rdfs:label "Temporal Resolution"@en ;
+    rdfs:comment "The temporal compositing or revisit interval represented by the satellite image product."@en ;
+    rdfs:domain goo:SatelliteImage ;
+    rdfs:range xsd:string .
+
+goo:tileId a owl:DatatypeProperty ;
+    rdfs:label "Tile ID"@en ;
+    rdfs:comment "The spatial tile identifier associated with a gridded satellite image product."@en ;
+    rdfs:domain goo:SatelliteImage ;
+    rdfs:range xsd:string .
+
+goo:torFScale a owl:DatatypeProperty ;
+    rdfs:label "Tornado F-Scale"@en ;
+    rdfs:comment "The Fujita or Enhanced Fujita scale of the tornado (e.g., F1, EF2)."@en ;
+    rdfs:domain goo:TornadoEventRecord ;
+    rdfs:range xsd:string .
+
+goo:torLength a owl:DatatypeProperty ;
+    rdfs:label "Tornado Length (miles)"@en ;
+    rdfs:comment "The length of the tornado track measured in miles."@en ;
+    rdfs:domain goo:TornadoEventRecord ;
+    rdfs:range xsd:decimal .
+
+goo:torWidth a owl:DatatypeProperty ;
+    rdfs:label "Tornado Width (yards)"@en ;
+    rdfs:comment "The maximum width of the tornado measured in yards."@en ;
+    rdfs:domain goo:TornadoEventRecord ;
+    rdfs:range xsd:integer .
+
+goo:totalPopulation a owl:DatatypeProperty ;
+    rdfs:label "Total Population"@en ;
+    rdfs:comment "The estimated total population of the county from CDC SVI (E_TOTPOP)."@en ;
+    rdfs:domain goo:SVIRecord ;
+    rdfs:range xsd:integer .
+
+goo:unemploymentRate a owl:DatatypeProperty ;
+    rdfs:label "Unemployment Rate"@en ;
+    rdfs:comment "Percentage of civilian labor force that is unemployed."@en ;
+    rdfs:domain goo:SVIRecord ;
+    rdfs:range xsd:decimal .
+
+goo:CustomerOutageRecord a owl:Class ;
+    rdfs:label "Customer Outage Record"@en ;
+    rdfs:comment "Numerical outage record per customer for county at date and time from Eagle-I dataset."@en ;
+    rdfs:subClassOf goo:CountyScopedEntity,
+        goo:TabularData .
+
+goo:SatelliteGranule a owl:Class ;
+    rdfs:label "Satellite Granule"@en ;
+    rdfs:comment "A source satellite granule, tile, or scene from which an image was produced."@en ;
+    rdfs:subClassOf mds:GeospatialRaster .
+
+goo:SatelliteOrbit a owl:Class ;
+    rdfs:label "Satellite Orbit"@en ;
+    rdfs:comment "An orbital configuration or orbit classification associated with a satellite."@en .
+
+goo:SpatialReferenceSystem a owl:Class ;
+    rdfs:label "Spatial Reference System"@en ;
+    rdfs:comment "A coordinate reference system, projection, or grid used by a geospatial raster."@en .
+
+goo:SpectralBand a owl:Class ;
+    rdfs:label "Spectral Band"@en ;
+    rdfs:comment "A specific spectral band of a satellite sensor, characterized by its wavelength and type."@en ;
+    rdfs:subClassOf mds:Band .
+
+goo:generatedFromNTLImage a owl:ObjectProperty ;
+    rdfs:label "generated from NTL image"@en ;
+    rdfs:comment "Associates a power outage severity map with the NTL image from which it was generated."@en ;
+    rdfs:domain goo:OutageMap ;
+    rdfs:range goo:NTLImage ;
+    owl:inverseOf goo:hasOutageMap .
+
+goo:hasOutageMap a owl:ObjectProperty ;
+    rdfs:label "has outage map"@en ;
+    rdfs:comment "Associates an NTL image with a power outage severity map generated from that image."@en ;
+    rdfs:domain goo:NTLImage ;
+    rdfs:range goo:OutageMap ;
+    owl:inverseOf goo:generatedFromNTLImage .
+
+goo:HurricaneTrackRecord a owl:Class ;
+    rdfs:label "Hurricane Track Record"@en ;
+    rdfs:comment "A specific 6-hourly position and intensity record for a hurricane event."@en ;
+    rdfs:subClassOf goo:HurricaneObservationEntity,
+        goo:TabularData .
+
+goo:NTLImage a owl:Class ;
+    rdfs:label "NTL Image"@en ;
+    rdfs:comment "A subclass of mds:Image representing Nighttime Light images from Black Marble Dataset."@en ;
+    rdfs:subClassOf goo:SatelliteImage .
+
+goo:OutageMap a owl:Class ;
+    rdfs:label "Outage Map"@en ;
+    rdfs:comment "A geospatial raster map representing power outage severity, generated from NTL Imagery."@en ;
+    rdfs:subClassOf mds:GeospatialRaster,
+        goo:CountyScopedEntity .
+
+goo:Satellite a owl:Class ;
+    rdfs:label "Satellite"@en ;
+    rdfs:comment "A satellite in orbit used for collecting geospatial data."@en ;
+    rdfs:subClassOf mds:Satellite .
+
+goo:SatelliteDatasetProduct a owl:Class ;
+    rdfs:label "Satellite Dataset Product"@en ;
+    rdfs:comment "A named satellite data product or collection used to derive satellite imagery, such as a NASA Earthdata product."@en ;
+    rdfs:subClassOf mds:Dataset .
+
+goo:Sensor a owl:Class ;
+    rdfs:label "Satellite Sensor"@en ;
+    rdfs:comment "A sensor aboard a satellite used for collecting geospatial data."@en ;
+    rdfs:subClassOf mds:Sensor,
+        goo:SpectralBandScopedEntity .
+
+goo:StormEpisodeRecord a owl:Class ;
+    rdfs:label "Storm Episode Record"@en ;
+    rdfs:comment "A larger overarching weather episode that may contain multiple individual storm events."@en ;
+    rdfs:subClassOf goo:TabularData .
+
+goo:AdministrativeAreaScopedEntity a owl:Class ;
+    rdfs:label "Administrative area-scoped entity"@en ;
+    rdfs:comment "An entity associated with or representing an administrative area such as a U.S. county, state, territory, or the District of Columbia."@en .
+
+goo:HurricaneEventRecord a owl:Class ;
+    rdfs:label "Hurricane Event Record"@en ;
+    rdfs:comment "A hurricane event from the NOAA HURDAT Database."@en ;
+    rdfs:subClassOf goo:HurricaneObservationEntity,
+        goo:TabularData .
+
+goo:SpectralBandScopedEntity a owl:Class ;
+    rdfs:label "Spectral band-scoped entity"@en ;
+    rdfs:comment "An entity associated with one or more spectral bands, such as a satellite image or sensor."@en .
+
+goo:TornadoEventRecord a owl:Class ;
+    rdfs:label "Tornado Event Record"@en ;
+    rdfs:comment "A specific type of storm event representing a tornado, containing specific track and intensity metadata."@en ;
+    rdfs:subClassOf goo:StormEventRecord .
+
+goo:HurricaneObservationEntity a owl:Class ;
+    rdfs:label "Hurricane observation entity"@en ;
+    rdfs:comment "A grouping class for tabular records that contain hurricane observation metadata, such as wind speed, pressure, status, basin, or storm identifier."@en .
+
+goo:County a owl:Class ;
+    rdfs:label "County"@en ;
+    rdfs:comment "A U.S. county with geospatial coordinate metadata and links to external resources such as DBpedia and Wikidata."@en ;
+    rdfs:subClassOf geosparql:Feature,
+        geo:SpatialThing,
+        mds:GeospatialFeature,
+        goo:AdministrativeAreaScopedEntity .
+
+goo:State a owl:Class ;
+    rdfs:label "U.S. State"@en ;
+    rdfs:comment "A U.S. state, territory, or the District of Columbia with geospatial coordinate metadata and links to external resources such as DBpedia and Wikidata."@en ;
+    rdfs:subClassOf geosparql:Feature,
+        geo:SpatialThing,
+        mds:GeospatialFeature,
+        goo:AdministrativeAreaScopedEntity .
+
+goo:WONDERRecord a owl:Class ;
+    rdfs:label "CDC WONDER Record"@en ;
+    rdfs:comment "A record from the CDC WONDER database containing health indicators for a specific county and year."@en ;
+    rdfs:subClassOf goo:CountyScopedEntity,
+        goo:TabularData .
+
+goo:CountyScopedEntity a owl:Class ;
+    rdfs:label "County-scoped entity"@en ;
+    rdfs:comment "An entity associated with or representing a county."@en .
+
+goo:SVIRecord a owl:Class ;
+    rdfs:label "SVI Record"@en ;
+    rdfs:comment "A record from the CDC Social Vulnerability Index dataset for a specific county and year."@en ;
+    rdfs:subClassOf goo:CountyScopedEntity,
+        goo:TabularData .
+
+goo:TabularData a owl:Class ;
+    rdfs:label "Tabular Data"@en ;
+    rdfs:comment "A tabular dataset, such as numerical outage records or storm event records."@en ;
+    rdfs:subClassOf mds:Dataset .
+
+goo:StormEventRecord a owl:Class ;
+    rdfs:label "Storm Event Record"@en ;
+    rdfs:comment "A storm event that from the NOAA Storm Events Database."@en ;
+    rdfs:subClassOf goo:TabularData .
+
+goo:SatelliteImage a owl:Class ;
+    rdfs:label "Satellite Image"@en ;
+    rdfs:comment "A satellite image used in the GeoOutageKG."@en ;
+    rdfs:subClassOf mds:GeospatialRaster,
+        goo:CountyScopedEntity,
+        goo:SpectralBandScopedEntity .
+
