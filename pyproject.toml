@@ -42,6 +42,7 @@ owlready = ["owlready2>=0.51"]
 
 [project.scripts]
 ontocheck = "ontocheck.cli:main"
+ontocheck-leaderboard = "ontocheck.leaderboard_export:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -34,9 +34,10 @@ def mainLeafNodeCheck_v_0_0_1(ttl_file):
 
     Returns
     -------
-    None
-        This function does not (directly) return values. It prints analysis results to terminal/CLI
-        The function may exit early on errors (file not found, parsing errors, or no leaf nodes found)
+    dict or None
+        ``score`` (the number of leaf nodes) and ``leaf_nodes`` (their IRIs).
+        ``None`` when the file cannot be read.  The leaf nodes are also
+        logged, as before.
 
     Output Information
     -----------------
@@ -89,10 +90,13 @@ def mainLeafNodeCheck_v_0_0_1(ttl_file):
 
     if not leaf_nodes:
         logger.info("No leaf nodes were found in the provided ontology.")
-        return
+        return {"score": 0, "leaf_nodes": []}
 
     logger.info("--- Leaf Node Analysis Complete ---")
     logger.info("Leaf Nodes:")
     for leaf in sorted(leaf_nodes):
 
         logger.info(f"{leaf.n3(g.namespace_manager)}")
+
+    return {"score": len(leaf_nodes),
+            "leaf_nodes": sorted(str(leaf) for leaf in leaf_nodes)}

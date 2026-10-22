@@ -1,0 +1,50 @@
+{
+  "domains": [
+    {
+      "name": "EBSD",
+      "files": ["Ontologies/EBSD.ttl"],
+      "questions": "SPARQL_Queries/EBSD.json",
+      "domain_prefixes": ["mds"]
+    },
+    {
+      "name": "Capacitors",
+      "files": [
+        "Ontologies/Capacitor-Equipment.ttl",
+        "Ontologies/Capacitor-Sample.ttl",
+        "Ontologies/Capacitor-SampleHolder.ttl"
+      ],
+      "questions": "SPARQL_Queries/Capacitors.json",
+      "domain_prefixes": ["mds"]
+    },
+    {
+      "name": "GeoOutage",
+      "files": ["Ontologies/GeoOutage.ttl"],
+      "questions": "SPARQL_Queries/GeoOutage.json",
+      "domain_prefixes": ["goo"]
+    },
+    {
+      "name": "Geospatial",
+      "files": [
+        "Ontologies/Geospatial-Rasters.ttl",
+        "Ontologies/Geospatial-SatelliteSensorBand.ttl",
+        "Ontologies/Geospatial-mdsGeo.ttl"
+      ],
+      "questions": "SPARQL_Queries/Geospatial.json",
+      "domain_prefixes": ["mds"]
+    },
+    {
+      "name": "Materials Processing",
+      "files": ["Ontologies/MatProc.ttl"],
+      "questions": "SPARQL_Queries/MatProc.md",
+      "benchmark": "Benchmarks/MatProc-sps.json",
+      "domain_prefixes": ["mds"]
+    },
+    {
+      "name": "XRD",
+      "files": ["Ontologies/XRD.ttl"],
+      "questions": "SPARQL_Queries/XRD.json",
+      "benchmark": "Benchmarks/XRD-graph-path.json",
+      "domain_prefixes": ["mds"]
+    }
+  ]
+}

@@ -55,8 +55,12 @@ def mainAltLabelCheck_v_0_0_1(ttl_file, show="all", export_template = None): # s
 
     Returns
     -------
-    None
-        This function does not (directly) return values. It prints analysis results to your terminal/CLI and optionally exports a template file. The function may exit early on errors (file not found, parsing errors, or no classes found)
+    dict or None
+        ``coverage`` (the proportion of named classes with at least one
+        ``skos:altLabel``), ``total_classes``, ``classes_with_altlabel``,
+        ``classes_without_altlabel`` and ``missing`` (the IRIs without one).
+        ``None`` when the file cannot be read or has no named classes.  The
+        analysis is also printed, as before.
 
     Output Information
     -----------------
@@ -149,3 +153,11 @@ def mainAltLabelCheck_v_0_0_1(ttl_file, show="all", export_template = None): # s
         _export_missing_altlabels_template(g, classes_without_altlabel, export_template)
     elif export_template and not classes_without_altlabel:
         logger.info("No classes missing altLabels - no template needed!")
+
+    return {
+        "coverage": len(classes_with_altlabel) / len(all_classes),
+        "total_classes": len(all_classes),
+        "classes_with_altlabel": len(classes_with_altlabel),
+        "classes_without_altlabel": len(classes_without_altlabel),
+        "missing": sorted(str(c) for c in classes_without_altlabel),
+    }

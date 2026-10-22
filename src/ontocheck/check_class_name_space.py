@@ -31,8 +31,10 @@ def mainClassNameSpaceCheck_v_0_0_1(ttl_file, export_template=None):
 
     Returns
     -------
-    None
-        Prints results to terminal/CLI and optionally exports a CSV report.
+    dict or None
+        ``score`` (the number of class declarations whose name contains a
+        space) and ``classes_with_spaces`` (their names).  ``None`` when the
+        file cannot be read.  Results are also printed, as before.
 
     Output Information
     ------------------
@@ -76,3 +78,8 @@ def mainClassNameSpaceCheck_v_0_0_1(ttl_file, export_template=None):
         _export_space_errors(errors, export_template)
     elif export_template and not errors:
         logger.info("No class names with spaces detected — no report needed!")
+
+    return {
+        "score": len(errors),
+        "classes_with_spaces": [e["local_name"] for e in errors],
+    }

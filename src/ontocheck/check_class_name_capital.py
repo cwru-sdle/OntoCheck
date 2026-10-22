@@ -53,10 +53,11 @@ def mainClassNameCapitalCheck_v_0_0_1(ttl_file, show="all", export_template=None
 
     Returns
     -------
-    None
-        This function does not directly return values. It prints analysis results
-        to your terminal/CLI and optionally exports a CSV report file. The function
-        may exit early on errors (file not found, parsing errors, or no classes found)
+    dict or None
+        ``proportion`` (the share of named classes whose local name starts
+        with a capital letter), ``total_classes``, ``non_capital`` (the IRIs
+        that do not).  ``None`` when the file cannot be read or has no named
+        classes.  The analysis is also printed, as before.
 
     Output Information
     ------------------
@@ -149,3 +150,9 @@ def mainClassNameCapitalCheck_v_0_0_1(ttl_file, show="all", export_template=None
         _export_non_capital_classes_template(g, classes_without_capital, export_template)
     elif export_template and not classes_without_capital:
         logger.info("All classes start with a capital letter — no report export needed!")
+
+    return {
+        "proportion": len(classes_with_capital) / len(all_classes),
+        "total_classes": len(all_classes),
+        "non_capital": sorted(str(c) for c in classes_without_capital),
+    }
