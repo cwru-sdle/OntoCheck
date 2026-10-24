@@ -67,6 +67,12 @@ class LeaderboardExportTest(unittest.TestCase):
         self.assertTrue(values["counterfactualImportance"]["status"]
                         .startswith("Not available"))
         self.assertTrue(values["externalLinks"]["status"].startswith("Skipped"))
+        self.assertEqual(values["structuralFitness"]["level"], "II-A")
+        self.assertEqual(values["benchmarkScore"]["level"], "IV")
+
+        # Each query is listed with its own scores.
+        [q] = entry["queries"]
+        self.assertEqual((q["qid"], q["F_C"], q["unsupported"]), ("1", 1.0, []))
 
     def test_update_keeps_other_domains(self):
         out = self.root / "results.json"

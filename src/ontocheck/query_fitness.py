@@ -150,6 +150,8 @@ class QueryPattern:
 
     concepts: set = field(default_factory=set)
     edges: set = field(default_factory=set)   # (Term or None, Term, Term or None)
+    qid: str = ""
+    question: str = ""
 
 
 def _expand(token, prefixes, ontology_bindings, text=""):
@@ -319,18 +321,29 @@ def load_query_patterns(questions, bindings=None):
         path = Path(str(questions))
         if path.suffix == ".md":
             text = path.read_text(encoding="utf-8")
-            items = re.findall(r"```sparql\s*(.*?)```", text, re.DOTALL)
+            items = []
+            for m in re.finditer(r"```sparql\s*(.*?)```", text, re.DOTALL):
+                head = re.findall(r"\*\*(?:(CQ\d+)\.\s*)?(.+?)\*\*",
+                                  text[:m.start()])
+                qid, question = head[-1] if head else ("", "")
+                items.append({"qid": qid or str(len(items) + 1),
+                              "question": question, "sparql_query": m.group(1)})
         else:
             items = json.loads(path.read_text(encoding="utf-8"))
 
     if isinstance(items, dict) and "cases" in items:
         prefixes = dict(base)
         prefixes.update(items.get("namespaces") or {})
-        return [p for p in (_suite_case_terms(c, prefixes, bindings)
-                            for c in items["cases"]) if p.concepts]
+        patterns = []
+        for c in items["cases"]:
+            p = _suite_case_terms(c, prefixes, bindings)
+            if p.concepts:
+                p.qid, p.question = c.get("id", ""), c.get("prompt", "")
+                patterns.append(p)
+        return patterns
 
     patterns = []
-    for item in items or []:
+    for n, item in enumerate(items or [], 1):
         sparql = item if isinstance(item, str) else (item.get("sparql_query") or "")
         prefixes = dict(base)
         prefixes.update({p or "": ns for p, ns in _PREFIX_DECL.findall(sparql)})
@@ -340,6 +353,11 @@ def load_query_patterns(questions, bindings=None):
         elif sparql:
             pat = _from_sparql(sparql, prefixes, bindings)
         if pat and (pat.concepts or pat.edges):
+            if isinstance(item, dict):
+                pat.qid = str(item.get("qid") or n)
+                pat.question = item.get("question") or ""
+            else:
+                pat.qid = str(n)
             patterns.append(pat)
     return patterns
 
@@ -865,9 +883,13 @@ def conceptual_fitness_v_0_1_0(ttl_file, questions=None, domain_prefixes=None,
             "weighting": weighting,
             "queries": n,
             "per_query": [
-                {"F_C": _r(ev.conceptual_q(q)),
+                {"qid": p.qid, "question": p.question,
+                 "F_C": _r(ev.conceptual_q(q)),
                  "F_C_aligned": _r(ev.conceptual_q(q, aligned=True)),
-                 "A_C": _r(ev.ambiguity_q(q))} for q in range(n)],
+                 "A_C": _r(ev.ambiguity_q(q)),
+                 "unsupported": sorted(c.key for c in p.concepts
+                                       if not ev.mu(c))}
+                for q, p in enumerate(ev.patterns)],
             "tiers": tiers,
             "concepts": concepts,
         },
@@ -907,10 +929,12 @@ def structural_fitness_v_0_1_0(ttl_file, questions=None, domain_prefixes=None,
                     query_weights=query_weights, mappings=mappings,
                     authorize_prefix_mapping=authorize_prefix_mapping,
                     lam=lam, max_hops=max_hops)
-    per_query, coverage, stretch, edges = [], [], [], {}
+    per_query, coverage, stretch, edges, missing_q = [], [], [], {}, []
     for q in range(len(ev.patterns)):
         s, ds = ev.structural_q(q)
         per_query.append(s)
+        missing_q.append(sorted(_edge_label(e) for e, d in ds.items()
+                                if d == math.inf))
         if not ds:
             coverage.append(None)
             stretch.append(None)
@@ -934,9 +958,12 @@ def structural_fitness_v_0_1_0(ttl_file, questions=None, domain_prefixes=None,
             "path_coverage": _r(ev.aggregate(coverage)),
             "path_stretch": _r(ev.aggregate(stretch)),
             "lambda": lam, "weighting": weighting,
-            "per_query": [{"F_S": _r(s), "path_coverage": _r(c),
-                           "path_stretch": _r(t)}
-                          for s, c, t in zip(per_query, coverage, stretch)],
+            "per_query": [{"qid": p.qid, "question": p.question,
+                           "F_S": _r(s), "path_coverage": _r(c),
+                           "path_stretch": _r(t), "unrealised": m}
+                          for p, s, c, t, m in zip(ev.patterns, per_query,
+                                                   coverage, stretch,
+                                                   missing_q)],
             "edges": edges,
         },
         message=f"F_S = {_r(score)}; {len(edges) - len(missing)} of "

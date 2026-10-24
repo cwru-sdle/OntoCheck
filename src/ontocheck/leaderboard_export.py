@@ -8,8 +8,15 @@ tables per domain:
   original score and its unweighted and context-weighted values (see
   :mod:`ontocheck.context_weighting`);
 * ``ontocheck`` -- OntoCheck's own metrics, task-based Recall and Precision,
-  and conceptual fitness, structural fitness and counterfactual concept
-  importance (see :mod:`ontocheck.query_fitness`).
+  conceptual fitness, structural fitness and counterfactual concept
+  importance (see :mod:`ontocheck.query_fitness`), and the benchmark suite's
+  answer scores.
+
+Every row carries a ``level`` of the fitness profile: ``0`` for metrics of
+the ontology alone, ``I`` conceptual, ``II-A`` structural, ``II-B`` logical,
+``III`` retrieval and ``IV`` downstream reasoning.  Each domain also lists
+the queries and benchmark cases behind its Level I-IV values, with each
+query's own scores.
 
 A domain is one or more Turtle files, merged before scoring, with optional
 competency questions (enabling Recall/Precision, the fitness metrics and
@@ -36,7 +43,7 @@ line::
 With ``--update`` the named domains replace their entries in an existing
 output file and every other entry is kept.
 
-Version: 0.0.1
+Version: 0.0.2
 """
 
 import argparse
@@ -139,6 +146,7 @@ def _framework_tables(ttl, questions, domain_prefixes, allow_network, has_abox):
         n = weighted.get(r.metric_id) if weighted else None
         row = {
             "id": r.metric_id,
+            "level": "0",
             "source_id": d.source_id.replace("-T", ""),
             "name": d.name,
             "description": d.description,
@@ -201,12 +209,13 @@ def _ontocheck_table(ttl, questions, benchmark, domain_prefixes, allow_network):
     from .run_assessment import CORE_METRIC_NAMES, METRIC_DISPATCHER, _scalarize
     from .task_based_metric import task_based_metric_v_0_0_1
 
-    rows = []
+    rows, queries, cases = [], {}, []
 
-    def add(metric_id, name, kind, value=None, status="Success", detail=None):
+    def add(metric_id, name, kind, value=None, status="Success", detail=None,
+            level="0"):
         rows.append({"id": metric_id, "name": name, "kind": kind,
-                     "value": _number(value), "status": status,
-                     "detail": detail or {}})
+                     "level": level, "value": _number(value),
+                     "status": status, "detail": detail or {}})
 
     for m in CORE_METRIC_NAMES:
         if m in _NATIVE_SKIP:
@@ -222,37 +231,59 @@ def _ontocheck_table(ttl, questions, benchmark, domain_prefixes, allow_network):
             add(m, _NATIVE_NAMES.get(m, m), "native", status=f"Error: {e}")
 
     if questions is None:
-        for m, name in (("recall", "Recall"), ("precision", "Precision"),
-                        ("conceptualFitness", "Conceptual fitness"),
-                        ("structuralFitness", "Structural fitness")):
-            add(m, name, "task", status="Skipped (no competency questions)")
+        for m, name, level in (("recall", "Recall", "I"),
+                               ("precision", "Precision", "I"),
+                               ("conceptualFitness", "Conceptual fitness", "I"),
+                               ("structuralFitness", "Structural fitness",
+                                "II-A")):
+            add(m, name, "task", status="Skipped (no competency questions)",
+                level=level)
     else:
         try:
             t = task_based_metric_v_0_0_1(str(ttl), questions,
                                           domain_prefixes or [])
             add("recall", "Recall", "task", t["recall"],
                 detail={"T_a": t["T_a_count"], "T_o": t["T_o_count"],
-                        "intersection": t["intersection"]})
-            add("precision", "Precision", "task", t["precision"])
+                        "intersection": t["intersection"]}, level="I")
+            add("precision", "Precision", "task", t["precision"], level="I")
         except Exception as e:                   # noqa: BLE001
-            add("recall", "Recall", "task", status=f"Error: {e}")
-            add("precision", "Precision", "task", status=f"Error: {e}")
-        for metric_id, name, fn, keys in (
+            add("recall", "Recall", "task", status=f"Error: {e}", level="I")
+            add("precision", "Precision", "task", status=f"Error: {e}",
+                level="I")
+        for metric_id, name, fn, keys, level in (
             ("conceptualFitness", "Conceptual fitness", conceptual_fitness,
-             ("aligned_score", "ambiguity")),
+             ("aligned_score", "ambiguity"), "I"),
             ("structuralFitness", "Structural fitness", structural_fitness,
-             ("path_coverage", "path_stretch")),
+             ("path_coverage", "path_stretch"), "II-A"),
         ):
             try:
                 r = fn(str(ttl), questions)
                 add(metric_id, name, "fitness", r.score, r.status,
-                    {k: _number(r.detail.get(k)) for k in keys})
+                    {k: _number(r.detail.get(k)) for k in keys}, level)
+                for q in r.detail.get("per_query", []):
+                    entry = queries.setdefault(
+                        q["qid"], {"qid": q["qid"], "question": q["question"]})
+                    entry.update({k: _number(v) if not isinstance(v, list)
+                                  else v for k, v in q.items()
+                                  if k not in ("qid", "question")})
             except Exception as e:               # noqa: BLE001
-                add(metric_id, name, "fitness", status=f"Error: {e}")
+                add(metric_id, name, "fitness", status=f"Error: {e}",
+                    level=level)
 
+    add("logicalFitness", "Logical fitness", "fitness",
+        status="Not run (no logical requirements)", level="II-B")
+    add("retrievalFitness", "Retrieval fitness", "fitness",
+        status="Not run (no retriever)", level="III")
+
+    downstream = (("benchmarkScore", "Benchmark score"),
+                  ("answerAccuracy", "Answer accuracy"),
+                  ("reasoningPath", "Reasoning-path match"))
     if benchmark is None:
         add("counterfactualImportance", "Counterfactual concept importance",
-            "fitness", status="Not available (no benchmark suite)")
+            "fitness", status="Not available (no benchmark suite)", level="I")
+        for m, name in downstream:
+            add(m, name, "benchmark", status="Not available (no benchmark "
+                "suite)", level="IV")
     else:
         try:
             r = counterfactual_importance(str(ttl), benchmark=str(benchmark))
@@ -262,11 +293,45 @@ def _ontocheck_table(ttl, questions, benchmark, domain_prefixes, allow_network):
             add("counterfactualImportance", "Counterfactual concept importance",
                 "fitness", r.score, r.status,
                 {"Z_baseline": _number(r.detail.get("Z_baseline")),
-                 "top": top})
+                 "top": top}, "I")
         except Exception as e:                   # noqa: BLE001
             add("counterfactualImportance", "Counterfactual concept importance",
-                "fitness", status=f"Error: {e}")
-    return {"rows": rows}
+                "fitness", status=f"Error: {e}", level="I")
+        try:
+            cases, values = _benchmark_cases(ttl, benchmark)
+            for m, name in downstream:
+                add(m, name, "benchmark", values[m], level="IV",
+                    status="Success" if values[m] is not None else
+                    "Not available (no such cases)")
+        except Exception as e:                   # noqa: BLE001
+            for m, name in downstream:
+                add(m, name, "benchmark", status=f"Error: {e}", level="IV")
+    return {"rows": rows}, list(queries.values()), cases
+
+
+def _benchmark_cases(ttl, benchmark):
+    """Run the benchmark suite: its cases and the Level IV summary values."""
+    from .benchmark import load_suite, run_suite
+
+    suite = load_suite(str(benchmark))
+    result = run_suite(suite, [str(ttl)])
+    prompts = {c.id: c.prompt for c in suite.cases}
+    cases = [{"id": c.case_id, "question": prompts.get(c.case_id, ""),
+              "level": c.level, "task_type": c.task_type,
+              "score": _number(c.score),
+              "answer_score": _number(c.answer_score),
+              "evidence_score": _number(c.evidence_score),
+              "constraint_score": _number(c.constraint_score),
+              "status": c.status}
+             for c in result.results]
+    mean = lambda xs: _number(sum(xs) / len(xs)) if xs else None  # noqa: E731
+    answered = [c.answer_score for c in result.results
+                if c.constraint_score is None and c.status == "success"]
+    paths = [c.evidence_score for c in result.results
+             if c.evidence_score is not None]
+    return cases, {"benchmarkScore": _number(result.score),
+                   "answerAccuracy": mean(answered),
+                   "reasoningPath": mean(paths)}
 
 
 def score_domain(name, files, questions=None, benchmark=None,
@@ -292,8 +357,10 @@ def score_domain(name, files, questions=None, benchmark=None,
     Returns
     -------
     dict
-        ``name``, ``files``, ``questions``, ``benchmark``, ``has_abox`` and
-        ``tables`` (``oops``, ``foops``, ``oquare``, ``ontocheck``), or
+        ``name``, ``files``, ``questions``, ``benchmark``, ``has_abox``,
+        ``queries`` (each query's id, text and scores), ``benchmark_cases``
+        (each case's id, prompt and scores) and ``tables`` (``oops``,
+        ``foops``, ``oquare``, ``ontocheck``), or
         ``error`` when the domain could not be scored.
     """
     from .helpers.semantic_helpers import _individuals
@@ -312,7 +379,7 @@ def score_domain(name, files, questions=None, benchmark=None,
             has_abox = bool(_individuals(Graph().parse(str(ttl), format="turtle")))
             tables = _framework_tables(ttl, questions, domain_prefixes,
                                        allow_network, has_abox)
-            tables["ontocheck"] = _ontocheck_table(
+            tables["ontocheck"], queries, cases = _ontocheck_table(
                 ttl, questions, benchmark, domain_prefixes, allow_network)
         except Exception as e:                   # noqa: BLE001
             entry["error"] = f"{type(e).__name__}: {e}"
@@ -321,6 +388,8 @@ def score_domain(name, files, questions=None, benchmark=None,
     entry["weighted_by"] = (
         ["competency questions"] if questions else []) + (
         ["instance data"] if has_abox else [])
+    entry["queries"] = queries
+    entry["benchmark_cases"] = cases
     entry["tables"] = tables
     return entry
 
