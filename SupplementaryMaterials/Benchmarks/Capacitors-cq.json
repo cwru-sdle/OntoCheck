@@ -1,0 +1,289 @@
+{
+  "schema_version": "2.0",
+  "suite_id": "capacitors-cq-v1",
+  "domain": "electronic-components/Capacitors",
+  "context": {
+    "ontology_version": "Capacitor-Sample.ttl, Capacitor-Equipment.ttl, Capacitor-SampleHolder.ttl",
+    "ontology_commit": "59fbb15",
+    "data_version": "capacitors-competency-v1",
+    "data_commit": "59fbb15",
+    "metric_version": "ontocheck-benchmark-v2"
+  },
+  "namespaces": {
+    "mds": "https://cwrusdle.bitbucket.io/mds/",
+    "obo": "http://purl.obolibrary.org/obo/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "inference": {
+    "profile": "graph_path"
+  },
+  "cases": [
+    {
+      "id": "capacitors-retrieval-001",
+      "level": "fact_retrieval",
+      "task_type": "fact_retrieval",
+      "prompt": "Which sensors are part of the exposure chamber?",
+      "query": {
+        "language": "sparql",
+        "text": "SELECT ?part WHERE { { ?part rdfs:subClassOf ?r . ?r owl:onProperty obo:BFO_0000050 ; owl:someValuesFrom mds:ExposureChamber . } UNION { ?part obo:BFO_0000050 mds:ExposureChamber . } }"
+      },
+      "expected": {
+        "kind": "result_set",
+        "values": [
+          "mds:RelativeHumiditySensor",
+          "mds:TypeKThermocouple"
+        ]
+      },
+      "evidence": {
+        "required_claims": [
+          "The relative humidity sensor and the type K thermocouple are part of the exposure chamber."
+        ],
+        "source_ids": [
+          "Capacitor-Sample.ttl#ExposureChamber"
+        ]
+      },
+      "tags": [
+        "parthood",
+        "fact-retrieval"
+      ],
+      "family_id": "capacitor-under-test",
+      "split": "test",
+      "leakage_group": "capacitor-under-test",
+      "provenance": {
+        "sources": [
+          "SupplementaryMaterials/Ontologies/Capacitor-Sample.ttl",
+          "SupplementaryMaterials/Ontologies/Capacitor-Equipment.ttl",
+          "SupplementaryMaterials/Ontologies/Capacitor-SampleHolder.ttl",
+          "SupplementaryMaterials/SPARQL_Queries/Capacitors.json#qid=1000005",
+          "SupplementaryMaterials/SPARQL_Queries/Capacitors.json#qid=1000007"
+        ],
+        "curator": "OntoCheck benchmark team",
+        "reviewers": [
+          "domain-review-required"
+        ]
+      }
+    },
+    {
+      "id": "capacitors-deduction-001",
+      "level": "complex_reasoning",
+      "task_type": "deduction",
+      "prompt": "Following the class hierarchy, what is a multilayer ceramic capacitor two levels up?",
+      "query": {
+        "language": "graph_path",
+        "source": "mds:MultiLayerCeramicCapacitor",
+        "predicate": "rdfs:subClassOf",
+        "min_hops": 2,
+        "max_hops": 2
+      },
+      "expected": {
+        "kind": "result_set",
+        "values": [
+          "mds:ElectronicComponents"
+        ]
+      },
+      "evidence": {
+        "required_paths": [
+          [
+            "mds:MultiLayerCeramicCapacitor",
+            "rdfs:subClassOf",
+            "mds:Capacitor",
+            "rdfs:subClassOf",
+            "mds:ElectronicComponents"
+          ]
+        ],
+        "required_claims": [
+          "A multilayer ceramic capacitor is a capacitor.",
+          "A capacitor is an electronic component."
+        ],
+        "source_ids": [
+          "Capacitor-Sample.ttl#MultiLayerCeramicCapacitor",
+          "Capacitor-Sample.ttl#Capacitor"
+        ]
+      },
+      "scoring": {
+        "answer_weight": 0.7,
+        "evidence_weight": 0.3
+      },
+      "tags": [
+        "subclass",
+        "two-hop",
+        "proof"
+      ],
+      "family_id": "capacitor-under-test",
+      "split": "test",
+      "leakage_group": "capacitor-under-test",
+      "provenance": {
+        "sources": [
+          "SupplementaryMaterials/Ontologies/Capacitor-Sample.ttl",
+          "SupplementaryMaterials/Ontologies/Capacitor-Equipment.ttl",
+          "SupplementaryMaterials/Ontologies/Capacitor-SampleHolder.ttl",
+          "SupplementaryMaterials/SPARQL_Queries/Capacitors.json#qid=1000013",
+          "SupplementaryMaterials/SPARQL_Queries/Capacitors.json#qid=1000009"
+        ],
+        "curator": "OntoCheck benchmark team",
+        "reviewers": [
+          "domain-review-required"
+        ]
+      }
+    },
+    {
+      "id": "capacitors-summary-001",
+      "level": "contextual_summarization",
+      "task_type": "contextual_summary",
+      "prompt": "Provide a structured ontology-grounded summary of the capacitor under test.",
+      "query": {
+        "language": "sparql_summary",
+        "sections": [
+          {
+            "id": "capacitance",
+            "query": "SELECT ?range WHERE { mds:hasCapacitance rdfs:domain mds:Capacitor ; rdfs:range ?range . }"
+          },
+          {
+            "id": "tolerance",
+            "query": "SELECT ?range WHERE { mds:hasTolerance rdfs:domain mds:Capacitor ; rdfs:range ?range . }"
+          },
+          {
+            "id": "voltage_rating",
+            "query": "SELECT ?range WHERE { mds:hasVoltageRating rdfs:domain mds:Capacitor ; rdfs:range ?range . }"
+          },
+          {
+            "id": "supplier",
+            "query": "SELECT ?range WHERE { mds:hasSupplier rdfs:domain mds:Capacitor ; rdfs:range ?range . }"
+          },
+          {
+            "id": "subtypes",
+            "query": "SELECT ?type WHERE { ?type rdfs:subClassOf mds:Capacitor . }"
+          }
+        ]
+      },
+      "expected": {
+        "kind": "structured_summary",
+        "values": {
+          "capacitance": [
+            "mds:Capacitance"
+          ],
+          "tolerance": [
+            "mds:CapacitanceTolerance"
+          ],
+          "voltage_rating": [
+            "mds:VoltageRating"
+          ],
+          "supplier": [
+            "mds:Supplier"
+          ],
+          "subtypes": [
+            "mds:MultiLayerCeramicCapacitor"
+          ]
+        }
+      },
+      "evidence": {
+        "required_claims": [
+          "A capacitor has a capacitance with a tolerance, a voltage rating and a supplier; a multilayer ceramic capacitor is a kind of capacitor."
+        ],
+        "source_ids": [
+          "Capacitor-Sample.ttl#Capacitor"
+        ]
+      },
+      "tags": [
+        "structured-summary",
+        "specification"
+      ],
+      "family_id": "capacitor-under-test",
+      "split": "test",
+      "leakage_group": "capacitor-under-test",
+      "provenance": {
+        "sources": [
+          "SupplementaryMaterials/Ontologies/Capacitor-Sample.ttl",
+          "SupplementaryMaterials/Ontologies/Capacitor-Equipment.ttl",
+          "SupplementaryMaterials/Ontologies/Capacitor-SampleHolder.ttl",
+          "SupplementaryMaterials/SPARQL_Queries/Capacitors.json#qid=1000009",
+          "SupplementaryMaterials/SPARQL_Queries/Capacitors.json#qid=1000011",
+          "SupplementaryMaterials/SPARQL_Queries/Capacitors.json#qid=1000012",
+          "SupplementaryMaterials/SPARQL_Queries/Capacitors.json#qid=1000013"
+        ],
+        "curator": "OntoCheck benchmark team",
+        "reviewers": [
+          "domain-review-required"
+        ]
+      }
+    },
+    {
+      "id": "capacitors-plan-001",
+      "level": "constrained_generation",
+      "task_type": "constrained_plan",
+      "prompt": "Can an ontology-grounded plan select a multilayer ceramic capacitor as the sample under test and mount it by soldering?",
+      "query": {
+        "language": "sparql_constraints",
+        "checks": [
+          {
+            "id": "mlcc-is-capacitor",
+            "query": "ASK { mds:MultiLayerCeramicCapacitor rdfs:subClassOf mds:Capacitor . }"
+          },
+          {
+            "id": "capacitor-is-sample",
+            "query": "ASK { mds:Capacitor rdfs:subClassOf mds:Sample . }"
+          },
+          {
+            "id": "soldering-declared",
+            "query": "ASK { mds:SolderingProcess a owl:Class . }"
+          },
+          {
+            "id": "solder-material-declared",
+            "query": "ASK { mds:SolderMaterial a owl:Class . }"
+          }
+        ]
+      },
+      "expected": {
+        "kind": "constraint_checks",
+        "values": {
+          "mlcc-is-capacitor": "entailed",
+          "capacitor-is-sample": "entailed",
+          "soldering-declared": "entailed",
+          "solder-material-declared": "entailed"
+        }
+      },
+      "evidence": {
+        "required_claims": [
+          "The plan's capacitor must be a declared capacitor type that is a sample, mounted with a declared soldering process and solder material."
+        ],
+        "source_ids": [
+          "Capacitor-Sample.ttl#MultiLayerCeramicCapacitor",
+          "Capacitor-Sample.ttl#SolderingProcess"
+        ]
+      },
+      "assumptions": [
+        "Ontology assertions constrain the plan but do not by themselves establish that a record exists."
+      ],
+      "constraints": [
+        "The selected component must be a capacitor and a sample under test."
+      ],
+      "scoring": {
+        "answer_weight": 0.0,
+        "constraint_weight": 1.0
+      },
+      "tags": [
+        "constrained-plan",
+        "sample-selection"
+      ],
+      "family_id": "capacitor-under-test",
+      "split": "test",
+      "leakage_group": "capacitor-under-test",
+      "provenance": {
+        "sources": [
+          "SupplementaryMaterials/Ontologies/Capacitor-Sample.ttl",
+          "SupplementaryMaterials/Ontologies/Capacitor-Equipment.ttl",
+          "SupplementaryMaterials/Ontologies/Capacitor-SampleHolder.ttl",
+          "SupplementaryMaterials/SPARQL_Queries/Capacitors.json#qid=1000013",
+          "SupplementaryMaterials/SPARQL_Queries/Capacitors.json#qid=1000018"
+        ],
+        "curator": "OntoCheck benchmark team",
+        "reviewers": [
+          "domain-review-required"
+        ]
+      }
+    }
+  ]
+}

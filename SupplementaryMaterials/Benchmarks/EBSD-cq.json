@@ -1,0 +1,266 @@
+{
+  "schema_version": "2.0",
+  "suite_id": "ebsd-cq-v1",
+  "domain": "materials-science/EBSD",
+  "context": {
+    "ontology_version": "EBSD.ttl",
+    "ontology_commit": "59fbb15",
+    "data_version": "ebsd-competency-v1",
+    "data_commit": "59fbb15",
+    "metric_version": "ontocheck-benchmark-v2"
+  },
+  "namespaces": {
+    "mds": "https://cwrusdle.bitbucket.io/mds/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "inference": {
+    "profile": "graph_path"
+  },
+  "cases": [
+    {
+      "id": "ebsd-retrieval-001",
+      "level": "fact_retrieval",
+      "task_type": "fact_retrieval",
+      "prompt": "What equipment is used in the grinding step of a sample's preparation?",
+      "query": {
+        "language": "sparql",
+        "text": "SELECT ?target WHERE { { mds:Grinding rdfs:subClassOf ?r . ?r owl:onProperty mds:usesEquipment ; owl:someValuesFrom ?target . } UNION { mds:usesEquipment rdfs:domain mds:Grinding ; rdfs:range ?target . } FILTER(isIRI(?target)) }"
+      },
+      "expected": {
+        "kind": "result_set",
+        "values": [
+          "mds:GrindingMachine"
+        ]
+      },
+      "evidence": {
+        "required_claims": [
+          "Grinding uses a grinding machine."
+        ],
+        "source_ids": [
+          "EBSD.ttl#Grinding",
+          "EBSD.ttl#GrindingMachine"
+        ]
+      },
+      "tags": [
+        "relation",
+        "fact-retrieval"
+      ],
+      "family_id": "ebsd-grinding",
+      "split": "test",
+      "leakage_group": "ebsd-grinding",
+      "provenance": {
+        "sources": [
+          "SupplementaryMaterials/Ontologies/EBSD.ttl",
+          "SupplementaryMaterials/SPARQL_Queries/EBSD.json#qid=1000008",
+          "SupplementaryMaterials/SPARQL_Queries/EBSD.json#qid=1000010",
+          "SupplementaryMaterials/SPARQL_Queries/EBSD.json#qid=1000011"
+        ],
+        "curator": "OntoCheck benchmark team",
+        "reviewers": [
+          "domain-review-required"
+        ]
+      }
+    },
+    {
+      "id": "ebsd-deduction-001",
+      "level": "complex_reasoning",
+      "task_type": "deduction",
+      "prompt": "Following the class hierarchy, what kind of process is grinding?",
+      "query": {
+        "language": "graph_path",
+        "source": "mds:Grinding",
+        "predicate": "rdfs:subClassOf",
+        "min_hops": 1,
+        "max_hops": 1
+      },
+      "expected": {
+        "kind": "result_set",
+        "values": [
+          "mds:MaterialsProcessing"
+        ]
+      },
+      "evidence": {
+        "required_paths": [
+          [
+            "mds:Grinding",
+            "rdfs:subClassOf",
+            "mds:MaterialsProcessing"
+          ]
+        ],
+        "required_claims": [
+          "Grinding is a materials processing step."
+        ],
+        "source_ids": [
+          "EBSD.ttl#Grinding"
+        ]
+      },
+      "scoring": {
+        "answer_weight": 0.7,
+        "evidence_weight": 0.3
+      },
+      "tags": [
+        "subclass",
+        "proof"
+      ],
+      "family_id": "ebsd-grinding",
+      "split": "test",
+      "leakage_group": "ebsd-grinding",
+      "provenance": {
+        "sources": [
+          "SupplementaryMaterials/Ontologies/EBSD.ttl",
+          "SupplementaryMaterials/SPARQL_Queries/EBSD.json#qid=1000008"
+        ],
+        "curator": "OntoCheck benchmark team",
+        "reviewers": [
+          "domain-review-required"
+        ]
+      }
+    },
+    {
+      "id": "ebsd-summary-001",
+      "level": "contextual_summarization",
+      "task_type": "contextual_summary",
+      "prompt": "Provide a structured ontology-grounded summary of the grinding machine.",
+      "query": {
+        "language": "sparql_summary",
+        "sections": [
+          {
+            "id": "wheel_speed",
+            "query": "SELECT ?range WHERE { mds:hasGrindingWheelSpeed rdfs:domain mds:GrindingMachine ; rdfs:range ?range . }"
+          },
+          {
+            "id": "depth_of_cut",
+            "query": "SELECT ?range WHERE { mds:hasDepthOfCutPerPass rdfs:domain mds:GrindingMachine ; rdfs:range ?range . }"
+          },
+          {
+            "id": "coolant",
+            "query": "SELECT ?range WHERE { mds:deliversCoolant rdfs:domain mds:GrindingMachine ; rdfs:range ?range . }"
+          }
+        ]
+      },
+      "expected": {
+        "kind": "structured_summary",
+        "values": {
+          "wheel_speed": [
+            "xsd:decimal"
+          ],
+          "depth_of_cut": [
+            "xsd:decimal"
+          ],
+          "coolant": [
+            "mds:GrindingCoolant"
+          ]
+        }
+      },
+      "evidence": {
+        "required_claims": [
+          "The grinding machine records wheel speed and depth of cut per pass, and delivers a grinding coolant."
+        ],
+        "source_ids": [
+          "EBSD.ttl#GrindingMachine"
+        ]
+      },
+      "tags": [
+        "structured-summary",
+        "equipment"
+      ],
+      "family_id": "ebsd-grinding",
+      "split": "test",
+      "leakage_group": "ebsd-grinding",
+      "provenance": {
+        "sources": [
+          "SupplementaryMaterials/Ontologies/EBSD.ttl",
+          "SupplementaryMaterials/SPARQL_Queries/EBSD.json#qid=1000010",
+          "SupplementaryMaterials/SPARQL_Queries/EBSD.json#qid=1000011",
+          "SupplementaryMaterials/SPARQL_Queries/EBSD.json#qid=1000014"
+        ],
+        "curator": "OntoCheck benchmark team",
+        "reviewers": [
+          "domain-review-required"
+        ]
+      }
+    },
+    {
+      "id": "ebsd-plan-001",
+      "level": "constrained_generation",
+      "task_type": "constrained_plan",
+      "prompt": "Can an ontology-grounded plan record the grinding wheel speed and the polishing voltage used to prepare a sample?",
+      "query": {
+        "language": "sparql_constraints",
+        "checks": [
+          {
+            "id": "sample-undergoes-processing",
+            "query": "ASK { mds:undergoesProcessing rdfs:domain mds:Sample ; rdfs:range mds:MaterialsProcessing . }"
+          },
+          {
+            "id": "electropolishing-is-processing",
+            "query": "ASK { mds:DryElectropolishing rdfs:subClassOf mds:MaterialsProcessing . }"
+          },
+          {
+            "id": "wheel-speed-on-grinding-machine",
+            "query": "ASK { mds:hasGrindingWheelSpeed rdfs:domain mds:GrindingMachine . }"
+          },
+          {
+            "id": "voltage-on-electropolish-system",
+            "query": "ASK { mds:hasPolishingVoltage rdfs:domain mds:ElectropolishSystem . }"
+          },
+          {
+            "id": "electropolishing-uses-system",
+            "query": "ASK { mds:usesEquipment rdfs:domain mds:DryElectropolishing ; rdfs:range mds:ElectropolishSystem . }"
+          }
+        ]
+      },
+      "expected": {
+        "kind": "constraint_checks",
+        "values": {
+          "sample-undergoes-processing": "entailed",
+          "electropolishing-is-processing": "entailed",
+          "wheel-speed-on-grinding-machine": "entailed",
+          "voltage-on-electropolish-system": "entailed",
+          "electropolishing-uses-system": "entailed"
+        }
+      },
+      "evidence": {
+        "required_claims": [
+          "A sample undergoes grinding and dry electropolishing; each step uses equipment whose settings are recorded."
+        ],
+        "source_ids": [
+          "EBSD.ttl#GrindingMachine",
+          "EBSD.ttl#ElectropolishSystem"
+        ]
+      },
+      "assumptions": [
+        "Ontology assertions constrain the plan but do not by themselves establish that a record exists."
+      ],
+      "constraints": [
+        "Each setting must belong to the equipment of its processing step."
+      ],
+      "scoring": {
+        "answer_weight": 0.0,
+        "constraint_weight": 1.0
+      },
+      "tags": [
+        "constrained-plan",
+        "processing-chain"
+      ],
+      "family_id": "ebsd-grinding",
+      "split": "test",
+      "leakage_group": "ebsd-grinding",
+      "provenance": {
+        "sources": [
+          "SupplementaryMaterials/Ontologies/EBSD.ttl",
+          "SupplementaryMaterials/SPARQL_Queries/EBSD.json#qid=1000014",
+          "SupplementaryMaterials/SPARQL_Queries/EBSD.json#qid=1000015",
+          "SupplementaryMaterials/SPARQL_Queries/EBSD.json#qid=1000016"
+        ],
+        "curator": "OntoCheck benchmark team",
+        "reviewers": [
+          "domain-review-required"
+        ]
+      }
+    }
+  ]
+}

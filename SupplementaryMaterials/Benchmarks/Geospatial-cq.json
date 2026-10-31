@@ -1,0 +1,266 @@
+{
+  "schema_version": "2.0",
+  "suite_id": "geospatial-cq-v1",
+  "domain": "earth-observation/Geospatial",
+  "context": {
+    "ontology_version": "Geospatial-SatelliteSensorBand.ttl, Geospatial-Rasters.ttl, Geospatial-mdsGeo.ttl",
+    "ontology_commit": "59fbb15",
+    "data_version": "geospatial-competency-v1",
+    "data_commit": "59fbb15",
+    "metric_version": "ontocheck-benchmark-v2"
+  },
+  "namespaces": {
+    "mds": "https://cwrusdle.bitbucket.io/mds/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "inference": {
+    "profile": "graph_path"
+  },
+  "cases": [
+    {
+      "id": "geospatial-retrieval-001",
+      "level": "fact_retrieval",
+      "task_type": "fact_retrieval",
+      "prompt": "What is a sensor such as ASTER mounted on?",
+      "query": {
+        "language": "sparql",
+        "text": "SELECT ?range WHERE { mds:mountedOn rdfs:domain mds:Sensor ; rdfs:range ?range . }"
+      },
+      "expected": {
+        "kind": "result_set",
+        "values": [
+          "mds:Satellite"
+        ]
+      },
+      "evidence": {
+        "required_claims": [
+          "A sensor is mounted on a satellite."
+        ],
+        "source_ids": [
+          "Geospatial-SatelliteSensorBand.ttl#Sensor",
+          "Geospatial-SatelliteSensorBand.ttl#Satellite"
+        ]
+      },
+      "tags": [
+        "relation",
+        "fact-retrieval"
+      ],
+      "family_id": "geospatial-aster-terra",
+      "split": "test",
+      "leakage_group": "geospatial-aster-terra",
+      "provenance": {
+        "sources": [
+          "SupplementaryMaterials/Ontologies/Geospatial-SatelliteSensorBand.ttl",
+          "SupplementaryMaterials/Ontologies/Geospatial-Rasters.ttl",
+          "SupplementaryMaterials/Ontologies/Geospatial-mdsGeo.ttl",
+          "SupplementaryMaterials/SPARQL_Queries/Geospatial.json#qid=1000001"
+        ],
+        "curator": "OntoCheck benchmark team",
+        "reviewers": [
+          "domain-review-required"
+        ]
+      }
+    },
+    {
+      "id": "geospatial-deduction-001",
+      "level": "complex_reasoning",
+      "task_type": "deduction",
+      "prompt": "Following the class hierarchy, what kind of thing is elevation?",
+      "query": {
+        "language": "graph_path",
+        "source": "mds:Elevation",
+        "predicate": "rdfs:subClassOf",
+        "min_hops": 1,
+        "max_hops": 1
+      },
+      "expected": {
+        "kind": "result_set",
+        "values": [
+          "mds:GeospatialProperty"
+        ]
+      },
+      "evidence": {
+        "required_paths": [
+          [
+            "mds:Elevation",
+            "rdfs:subClassOf",
+            "mds:GeospatialProperty"
+          ]
+        ],
+        "required_claims": [
+          "Elevation is a geospatial property a raster can contain."
+        ],
+        "source_ids": [
+          "Geospatial-SatelliteSensorBand.ttl#Elevation"
+        ]
+      },
+      "scoring": {
+        "answer_weight": 0.7,
+        "evidence_weight": 0.3
+      },
+      "tags": [
+        "subclass",
+        "proof"
+      ],
+      "family_id": "geospatial-aster-terra",
+      "split": "test",
+      "leakage_group": "geospatial-aster-terra",
+      "provenance": {
+        "sources": [
+          "SupplementaryMaterials/Ontologies/Geospatial-SatelliteSensorBand.ttl",
+          "SupplementaryMaterials/Ontologies/Geospatial-Rasters.ttl",
+          "SupplementaryMaterials/Ontologies/Geospatial-mdsGeo.ttl",
+          "SupplementaryMaterials/SPARQL_Queries/Geospatial.json#qid=1000004"
+        ],
+        "curator": "OntoCheck benchmark team",
+        "reviewers": [
+          "domain-review-required"
+        ]
+      }
+    },
+    {
+      "id": "geospatial-summary-001",
+      "level": "contextual_summarization",
+      "task_type": "contextual_summary",
+      "prompt": "Provide a structured ontology-grounded summary of a sensor.",
+      "query": {
+        "language": "sparql_summary",
+        "sections": [
+          {
+            "id": "platform",
+            "query": "SELECT ?range WHERE { mds:mountedOn rdfs:domain mds:Sensor ; rdfs:range ?range . }"
+          },
+          {
+            "id": "bands",
+            "query": "SELECT ?range WHERE { mds:containsBand rdfs:domain mds:Sensor ; rdfs:range ?range . }"
+          },
+          {
+            "id": "owner",
+            "query": "SELECT ?range WHERE { mds:ownedByAgency rdfs:domain mds:Sensor ; rdfs:range ?range . }"
+          }
+        ]
+      },
+      "expected": {
+        "kind": "structured_summary",
+        "values": {
+          "platform": [
+            "mds:Satellite"
+          ],
+          "bands": [
+            "mds:Band"
+          ],
+          "owner": [
+            "mds:Agency"
+          ]
+        }
+      },
+      "evidence": {
+        "required_claims": [
+          "A sensor is mounted on a satellite, collects bands and is owned by an agency."
+        ],
+        "source_ids": [
+          "Geospatial-SatelliteSensorBand.ttl#Sensor"
+        ]
+      },
+      "tags": [
+        "structured-summary",
+        "instrument"
+      ],
+      "family_id": "geospatial-aster-terra",
+      "split": "test",
+      "leakage_group": "geospatial-aster-terra",
+      "provenance": {
+        "sources": [
+          "SupplementaryMaterials/Ontologies/Geospatial-SatelliteSensorBand.ttl",
+          "SupplementaryMaterials/Ontologies/Geospatial-Rasters.ttl",
+          "SupplementaryMaterials/Ontologies/Geospatial-mdsGeo.ttl",
+          "SupplementaryMaterials/SPARQL_Queries/Geospatial.json#qid=1000001",
+          "SupplementaryMaterials/SPARQL_Queries/Geospatial.json#qid=1000002",
+          "SupplementaryMaterials/SPARQL_Queries/Geospatial.json#qid=1000013"
+        ],
+        "curator": "OntoCheck benchmark team",
+        "reviewers": [
+          "domain-review-required"
+        ]
+      }
+    },
+    {
+      "id": "geospatial-plan-001",
+      "level": "constrained_generation",
+      "task_type": "constrained_plan",
+      "prompt": "Can an ontology-grounded plan select rasters from the Terra satellite at a given spatial resolution within a geohash?",
+      "query": {
+        "language": "sparql_constraints",
+        "checks": [
+          {
+            "id": "raster-from-satellite",
+            "query": "ASK { mds:generatedBySatellite rdfs:domain mds:GeospatialRaster ; rdfs:range mds:Satellite . }"
+          },
+          {
+            "id": "raster-resolution",
+            "query": "ASK { mds:hasSpatialResolution rdfs:domain mds:GeospatialRaster ; rdfs:range mds:SpatialResolution . }"
+          },
+          {
+            "id": "raster-geohash",
+            "query": "ASK { mds:occupiesSpatialRegion rdfs:domain mds:GeospatialRaster ; rdfs:range mds:Geohash . }"
+          },
+          {
+            "id": "band-from-sensor",
+            "query": "ASK { mds:producedBy rdfs:domain mds:Band ; rdfs:range mds:Sensor . }"
+          }
+        ]
+      },
+      "expected": {
+        "kind": "constraint_checks",
+        "values": {
+          "raster-from-satellite": "entailed",
+          "raster-resolution": "entailed",
+          "raster-geohash": "entailed",
+          "band-from-sensor": "entailed"
+        }
+      },
+      "evidence": {
+        "required_claims": [
+          "Rasters link to their satellite, spatial resolution and geohash; bands link to their sensor."
+        ],
+        "source_ids": [
+          "Geospatial-SatelliteSensorBand.ttl#GeospatialRaster"
+        ]
+      },
+      "assumptions": [
+        "Ontology assertions constrain the plan but do not by themselves establish that a record exists."
+      ],
+      "constraints": [
+        "Every selected raster must come from the requested satellite and region."
+      ],
+      "scoring": {
+        "answer_weight": 0.0,
+        "constraint_weight": 1.0
+      },
+      "tags": [
+        "constrained-plan",
+        "selection"
+      ],
+      "family_id": "geospatial-aster-terra",
+      "split": "test",
+      "leakage_group": "geospatial-aster-terra",
+      "provenance": {
+        "sources": [
+          "SupplementaryMaterials/Ontologies/Geospatial-SatelliteSensorBand.ttl",
+          "SupplementaryMaterials/Ontologies/Geospatial-Rasters.ttl",
+          "SupplementaryMaterials/Ontologies/Geospatial-mdsGeo.ttl",
+          "SupplementaryMaterials/SPARQL_Queries/Geospatial.json#qid=1000015",
+          "SupplementaryMaterials/SPARQL_Queries/Geospatial.json#qid=1000018",
+          "SupplementaryMaterials/SPARQL_Queries/Geospatial.json#qid=1000006"
+        ],
+        "curator": "OntoCheck benchmark team",
+        "reviewers": [
+          "domain-review-required"
+        ]
+      }
+    }
+  ]
+}

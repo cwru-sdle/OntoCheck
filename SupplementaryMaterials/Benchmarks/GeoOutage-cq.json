@@ -1,0 +1,277 @@
+{
+  "schema_version": "2.0",
+  "suite_id": "geooutage-cq-v1",
+  "domain": "power-outage/GeoOutage",
+  "context": {
+    "ontology_version": "GeoOutage.ttl",
+    "ontology_commit": "59fbb15",
+    "data_version": "geooutage-competency-v1",
+    "data_commit": "59fbb15",
+    "metric_version": "ontocheck-benchmark-v2"
+  },
+  "namespaces": {
+    "goo": "https://purl.archive.org/geooutageonto/#",
+    "mds": "https://cwrusdle.bitbucket.io/mds/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "inference": {
+    "profile": "graph_path"
+  },
+  "cases": [
+    {
+      "id": "geooutage-retrieval-001",
+      "level": "fact_retrieval",
+      "task_type": "fact_retrieval",
+      "prompt": "What kind of place does an outage record, NTL image or outage map represent?",
+      "query": {
+        "language": "sparql",
+        "text": "SELECT ?place WHERE { goo:representsCounty rdfs:range ?place . }"
+      },
+      "expected": {
+        "kind": "result_set",
+        "values": [
+          "goo:County"
+        ]
+      },
+      "evidence": {
+        "required_claims": [
+          "Outage records, NTL images and outage maps each represent a county."
+        ],
+        "source_ids": [
+          "GeoOutage.ttl#representsCounty"
+        ]
+      },
+      "tags": [
+        "relation",
+        "fact-retrieval"
+      ],
+      "family_id": "geooutage-county-records",
+      "split": "test",
+      "leakage_group": "geooutage-county-records",
+      "provenance": {
+        "sources": [
+          "SupplementaryMaterials/Ontologies/GeoOutage.ttl",
+          "SupplementaryMaterials/SPARQL_Queries/GeoOutage.json#qid=1000004",
+          "SupplementaryMaterials/SPARQL_Queries/GeoOutage.json#qid=1000005",
+          "SupplementaryMaterials/SPARQL_Queries/GeoOutage.json#qid=1000006"
+        ],
+        "curator": "OntoCheck benchmark team",
+        "reviewers": [
+          "domain-review-required"
+        ]
+      }
+    },
+    {
+      "id": "geooutage-deduction-001",
+      "level": "complex_reasoning",
+      "task_type": "deduction",
+      "prompt": "Following the class hierarchy, what kind of entity is an NTL image two levels up?",
+      "query": {
+        "language": "graph_path",
+        "source": "goo:NTLImage",
+        "predicate": "rdfs:subClassOf",
+        "min_hops": 2,
+        "max_hops": 2
+      },
+      "expected": {
+        "kind": "result_set",
+        "values": [
+          "mds:GeospatialRaster",
+          "goo:CountyScopedEntity",
+          "goo:SpectralBandScopedEntity"
+        ]
+      },
+      "evidence": {
+        "required_paths": [
+          [
+            "goo:NTLImage",
+            "rdfs:subClassOf",
+            "goo:SatelliteImage",
+            "rdfs:subClassOf",
+            "mds:GeospatialRaster"
+          ],
+          [
+            "goo:NTLImage",
+            "rdfs:subClassOf",
+            "goo:SatelliteImage",
+            "rdfs:subClassOf",
+            "goo:CountyScopedEntity"
+          ],
+          [
+            "goo:NTLImage",
+            "rdfs:subClassOf",
+            "goo:SatelliteImage",
+            "rdfs:subClassOf",
+            "goo:SpectralBandScopedEntity"
+          ]
+        ],
+        "required_claims": [
+          "An NTL image is a satellite image.",
+          "A satellite image is a county-scoped geospatial raster of spectral bands."
+        ],
+        "source_ids": [
+          "GeoOutage.ttl#NTLImage",
+          "GeoOutage.ttl#SatelliteImage"
+        ]
+      },
+      "scoring": {
+        "answer_weight": 0.7,
+        "evidence_weight": 0.3
+      },
+      "tags": [
+        "subclass",
+        "two-hop",
+        "proof"
+      ],
+      "family_id": "geooutage-county-records",
+      "split": "test",
+      "leakage_group": "geooutage-county-records",
+      "provenance": {
+        "sources": [
+          "SupplementaryMaterials/Ontologies/GeoOutage.ttl",
+          "SupplementaryMaterials/SPARQL_Queries/GeoOutage.json#qid=1000005",
+          "SupplementaryMaterials/SPARQL_Queries/GeoOutage.json#qid=1000012",
+          "SupplementaryMaterials/SPARQL_Queries/GeoOutage.json#qid=1000013"
+        ],
+        "curator": "OntoCheck benchmark team",
+        "reviewers": [
+          "domain-review-required"
+        ]
+      }
+    },
+    {
+      "id": "geooutage-summary-001",
+      "level": "contextual_summarization",
+      "task_type": "contextual_summary",
+      "prompt": "Provide a structured ontology-grounded summary of a customer outage record.",
+      "query": {
+        "language": "sparql_summary",
+        "sections": [
+          {
+            "id": "outage_count",
+            "query": "SELECT ?range WHERE { goo:numberOfOutages rdfs:domain goo:CustomerOutageRecord ; rdfs:range ?range . }"
+          },
+          {
+            "id": "county",
+            "query": "SELECT ?place WHERE { goo:CustomerOutageRecord rdfs:subClassOf ?scope . goo:representsCounty rdfs:domain ?scope ; rdfs:range ?place . }"
+          }
+        ]
+      },
+      "expected": {
+        "kind": "structured_summary",
+        "values": {
+          "outage_count": [
+            "xsd:integer"
+          ],
+          "county": [
+            "goo:County"
+          ]
+        }
+      },
+      "evidence": {
+        "required_claims": [
+          "An outage record counts outages and represents a county."
+        ],
+        "source_ids": [
+          "GeoOutage.ttl#CustomerOutageRecord"
+        ]
+      },
+      "tags": [
+        "structured-summary",
+        "record"
+      ],
+      "family_id": "geooutage-county-records",
+      "split": "test",
+      "leakage_group": "geooutage-county-records",
+      "provenance": {
+        "sources": [
+          "SupplementaryMaterials/Ontologies/GeoOutage.ttl",
+          "SupplementaryMaterials/SPARQL_Queries/GeoOutage.json#qid=1000004",
+          "SupplementaryMaterials/SPARQL_Queries/GeoOutage.json#qid=1000008"
+        ],
+        "curator": "OntoCheck benchmark team",
+        "reviewers": [
+          "domain-review-required"
+        ]
+      }
+    },
+    {
+      "id": "geooutage-plan-001",
+      "level": "constrained_generation",
+      "task_type": "constrained_plan",
+      "prompt": "Can an ontology-grounded plan find the NTL image and outage map for the highest-outage record in a county?",
+      "query": {
+        "language": "sparql_constraints",
+        "checks": [
+          {
+            "id": "record-represents-county",
+            "query": "ASK { goo:CustomerOutageRecord rdfs:subClassOf ?scope . goo:representsCounty rdfs:domain ?scope . }"
+          },
+          {
+            "id": "record-counts-outages",
+            "query": "ASK { goo:numberOfOutages rdfs:domain goo:CustomerOutageRecord . }"
+          },
+          {
+            "id": "image-has-outage-map",
+            "query": "ASK { goo:hasOutageMap rdfs:domain goo:NTLImage ; rdfs:range goo:OutageMap . }"
+          },
+          {
+            "id": "record-links-ntl-image",
+            "query": "ASK { ?p rdfs:domain goo:CustomerOutageRecord ; rdfs:range goo:NTLImage . }"
+          }
+        ]
+      },
+      "expected": {
+        "kind": "constraint_checks",
+        "values": {
+          "record-represents-county": "entailed",
+          "record-counts-outages": "entailed",
+          "image-has-outage-map": "entailed",
+          "record-links-ntl-image": "entailed"
+        }
+      },
+      "evidence": {
+        "required_claims": [
+          "A county's outage records, NTL images and outage maps can be joined, and each record links to its NTL image."
+        ],
+        "source_ids": [
+          "GeoOutage.ttl#CustomerOutageRecord",
+          "GeoOutage.ttl#NTLImage",
+          "GeoOutage.ttl#OutageMap"
+        ]
+      },
+      "assumptions": [
+        "Ontology assertions constrain the plan but do not by themselves establish that a record exists."
+      ],
+      "constraints": [
+        "The image and map must belong to the same county as the record."
+      ],
+      "scoring": {
+        "answer_weight": 0.0,
+        "constraint_weight": 1.0
+      },
+      "tags": [
+        "constrained-plan",
+        "cross-source"
+      ],
+      "family_id": "geooutage-county-records",
+      "split": "test",
+      "leakage_group": "geooutage-county-records",
+      "provenance": {
+        "sources": [
+          "SupplementaryMaterials/Ontologies/GeoOutage.ttl",
+          "SupplementaryMaterials/SPARQL_Queries/GeoOutage.json#qid=1000009",
+          "SupplementaryMaterials/SPARQL_Queries/GeoOutage.json#qid=1000011",
+          "SupplementaryMaterials/SPARQL_Queries/GeoOutage.json#qid=1000018"
+        ],
+        "curator": "OntoCheck benchmark team",
+        "reviewers": [
+          "domain-review-required"
+        ]
+      }
+    }
+  ]
+}

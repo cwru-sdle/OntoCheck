@@ -4,6 +4,7 @@
       "name": "EBSD",
       "files": ["Ontologies/EBSD.ttl"],
       "questions": "SPARQL_Queries/EBSD.json",
+      "benchmark": "Benchmarks/EBSD-cq.json",
       "domain_prefixes": ["mds"]
     },
     {
@@ -14,12 +15,14 @@
         "Ontologies/Capacitor-SampleHolder.ttl"
       ],
       "questions": "SPARQL_Queries/Capacitors.json",
+      "benchmark": "Benchmarks/Capacitors-cq.json",
       "domain_prefixes": ["mds"]
     },
     {
       "name": "GeoOutage",
       "files": ["Ontologies/GeoOutage.ttl"],
       "questions": "SPARQL_Queries/GeoOutage.json",
+      "benchmark": "Benchmarks/GeoOutage-cq.json",
       "domain_prefixes": ["goo"]
     },
     {
@@ -30,6 +33,7 @@
         "Ontologies/Geospatial-mdsGeo.ttl"
       ],
       "questions": "SPARQL_Queries/Geospatial.json",
+      "benchmark": "Benchmarks/Geospatial-cq.json",
       "domain_prefixes": ["mds"]
     },
     {
