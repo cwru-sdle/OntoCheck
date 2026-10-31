@@ -21,6 +21,7 @@ from .query_fitness import (
     structural_fitness,
     structural_fitness_v_0_1_0,
 )
+from .retrieval_fitness import retrieval_fitness, retrieval_fitness_v_0_1_0
 
 # ---------------------------------------------------------------------------
 # Metric registry and framework integration
@@ -187,6 +188,8 @@ __all__ = [
     "counterfactual_importance",
     "conceptual_fitness_v_0_1_0",
     "structural_fitness_v_0_1_0",
+    "retrieval_fitness",
+    "retrieval_fitness_v_0_1_0",
     "counterfactual_importance_v_0_1_0",
 
     # Metric registry

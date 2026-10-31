@@ -9,8 +9,9 @@ tables per domain:
   :mod:`ontocheck.context_weighting`);
 * ``ontocheck`` -- OntoCheck's own metrics, task-based Recall and Precision,
   conceptual fitness, structural fitness and counterfactual concept
-  importance (see :mod:`ontocheck.query_fitness`), and the benchmark suite's
-  answer scores.
+  importance (see :mod:`ontocheck.query_fitness`), retrieval fitness for
+  domains with instance data (see :mod:`ontocheck.retrieval_fitness`), and
+  the benchmark suite's answer scores.
 
 Every row carries a ``level`` of the fitness profile: ``0`` for metrics of
 the ontology alone, ``I`` conceptual, ``II-A`` structural, ``II-B`` logical,
@@ -43,7 +44,7 @@ line::
 With ``--update`` the named domains replace their entries in an existing
 output file and every other entry is kept.
 
-Version: 0.0.2
+Version: 0.0.3
 """
 
 import argparse
@@ -200,12 +201,14 @@ def _framework_tables(ttl, questions, domain_prefixes, allow_network, has_abox):
     return tables
 
 
-def _ontocheck_table(ttl, questions, benchmark, domain_prefixes, allow_network):
+def _ontocheck_table(ttl, questions, benchmark, domain_prefixes, allow_network,
+                     has_abox=False):
     from .query_fitness import (
         conceptual_fitness,
         counterfactual_importance,
         structural_fitness,
     )
+    from .retrieval_fitness import retrieval_fitness
     from .run_assessment import CORE_METRIC_NAMES, METRIC_DISPATCHER, _scalarize
     from .task_based_metric import task_based_metric_v_0_0_1
 
@@ -272,8 +275,32 @@ def _ontocheck_table(ttl, questions, benchmark, domain_prefixes, allow_network):
 
     add("logicalFitness", "Logical fitness", "fitness",
         status="Not run (no logical requirements)", level="II-B")
-    add("retrievalFitness", "Retrieval fitness", "fitness",
-        status="Not run (no retriever)", level="III")
+    if questions is None or not has_abox:
+        add("retrievalFitness", "Evidence recall", "retrieval",
+            status="Not run (no instance data)" if questions else
+            "Skipped (no competency questions)", level="III")
+    else:
+        try:
+            r = retrieval_fitness(str(ttl), questions)
+            d = r.detail
+            add("retrievalFitness", "Evidence recall", "retrieval", r.score,
+                r.status, {"evidence_precision": d.get("evidence_precision"),
+                           "distractor_rate": d.get("distractor_rate"),
+                           "support_path_recall": d.get("support_path_recall"),
+                           "triples": d.get("triples"),
+                           "recall_without_ontology":
+                               (d.get("lexical") or {}).get("ER"),
+                           "budget": d.get("budget"),
+                           "queries": d.get("queries")}, "III")
+            for q in d.get("per_query", []):
+                entry = queries.setdefault(
+                    q["qid"], {"qid": q["qid"], "question": q["question"]})
+                entry.update({"ER": q["ER"], "EP": q["EP"],
+                              "support_path_recall": q["support_path_recall"],
+                              "ER_without_ontology": q["lexical"]["ER"]})
+        except Exception as e:                   # noqa: BLE001
+            add("retrievalFitness", "Evidence recall", "retrieval",
+                status=f"Error: {e}", level="III")
 
     downstream = (("benchmarkScore", "Benchmark score"),
                   ("answerAccuracy", "Answer accuracy"),
@@ -380,7 +407,8 @@ def score_domain(name, files, questions=None, benchmark=None,
             tables = _framework_tables(ttl, questions, domain_prefixes,
                                        allow_network, has_abox)
             tables["ontocheck"], queries, cases = _ontocheck_table(
-                ttl, questions, benchmark, domain_prefixes, allow_network)
+                ttl, questions, benchmark, domain_prefixes, allow_network,
+                has_abox)
         except Exception as e:                   # noqa: BLE001
             entry["error"] = f"{type(e).__name__}: {e}"
             return entry
